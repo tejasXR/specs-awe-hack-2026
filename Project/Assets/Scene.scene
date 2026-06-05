@@ -7,6 +7,7 @@
     - !<own> 1416c76c-1d53-48aa-b87b-74ae62bf5cb9
     - !<own> 5812bd22-f107-4533-b408-f0862e396b68
     - !<own> af4aeb34-8a6d-4c73-82fc-fe2a2b1320f7
+    - !<own> d5581c0e-2321-45fe-839e-46c9a8d2033f
     - !<own> 1206153a-0537-45da-8207-6282b3a2feba
     - !<own> 5c6774a0-b43f-4410-b149-73346125e759
     - !<own> e86787f7-0576-4444-ab4c-855b7e4bcc5a
@@ -604,7 +605,7 @@
 - !<SceneObject/1206153a-0537-45da-8207-6282b3a2feba>
   PrefabRemaps:
     []
-  Name: MLSpatializer
+  Name: "MLSpatializer [Breadboard]"
   Enabled: true
   Layers: 1
   LocalTransform: !<TransformEntity>
@@ -4242,6 +4243,24 @@
     []
   Components:
     - !<own> afe036d7-ed16-49cd-81f2-e2ec09e4a4b0
+- !<ScriptComponent/92d6b8e7-6c1c-43c1-b5c3-1d035b7b9f99>
+  PrefabRemaps:
+    []
+  Name: CameraTexture
+  Enabled: true
+  ScriptAsset: !<reference> 7230e3d3-0783-4472-84a1-93c30de0a698
+  ScriptInputsDefault:
+    {}
+  ScriptTypesDefault:
+    {}
+  ScriptInputs:
+    "":
+      uiImage: !<reference.Image> b372579d-8c95-4b13-9149-28a54664a355
+      croppedImage: !<reference.Image> 9ba7bea1-c904-4fa6-ae01-d501025a929c
+      screenTexture: !<reference.Texture> 19b09aae-b059-4551-b002-c759e908b66c
+  ScriptTypes:
+    "":
+      {}
 - !<SceneObject/933e0736-9e68-4c26-8c67-44b294762b50>
   PrefabRemaps:
     []
@@ -5137,6 +5156,47 @@
     []
   Components:
     - !<own> 8c12c8e3-941d-470d-9cde-e5fa9d1d4221
+- !<ScriptComponent/b3f42504-3d1b-4ecd-8e77-13d72e5114d5>
+  PrefabRemaps:
+    []
+  Name: MLSpatializer
+  Enabled: true
+  ScriptAsset: !<reference> 40361e63-8b75-43fd-8e3a-d5547f82b063
+  ScriptInputsDefault:
+    iouThreshold: true
+    enableAllClasses: true
+    enableCallbacks: true
+    enableLogging: true
+    enableLoggingLifecycle: true
+  ScriptTypesDefault:
+    {}
+  ScriptInputs:
+    "":
+      model: !<reference.MLAsset> da932c5e-80a1-4de0-a0bc-a54c48b56eed
+      inputTexture: !<reference.Texture> 19b09aae-b059-4551-b002-c759e908b66c
+      maxDetectionCount: !<float> 1.000000
+      detectionPersistence: 0.200000
+      scoreThreshold: 0.700000
+      iouThreshold: 0.500000
+      centerThreshold: !<float> 1.000000
+      classLabels: !<string[]>
+        - Monitors
+        - tvmonitor
+      enableAllClasses: true
+      enableCallbacks: false
+      monitorDetectionCallbacks: !<MappingBased.AssignableType[]>
+        - !<reference> b95a7af9-a9a5-4b4b-8d50-af27a8bd37c9
+      monitorDetectedFunctions: !<string[]>
+        - updateOffsetWithDetectedObject
+      monitorLostFunctions: !<string[]>
+        - updateOffsetWithoutDetectedObject
+      debugLogging: false
+      logText: !<reference.Text> 7ba8a73b-a579-4c76-ac60-aea45d47ad39
+      enableLogging: false
+      enableLoggingLifecycle: false
+  ScriptTypes:
+    "":
+      {}
 - !<SceneObject/b6cb7074-5b59-4fe6-8fe9-261f4ace7a46>
   PrefabRemaps:
     []
@@ -5183,7 +5243,7 @@
     {}
   ScriptInputs:
     "":
-      model: !<reference.MLAsset> da932c5e-80a1-4de0-a0bc-a54c48b56eed
+      model: !<reference.MLAsset> e8f4e548-1341-4f1d-98f8-7449ce4c2e2b
       inputTexture: !<reference.Texture> 19b09aae-b059-4551-b002-c759e908b66c
       maxDetectionCount: !<float> 1.000000
       detectionPersistence: 0.200000
@@ -5191,8 +5251,13 @@
       iouThreshold: 0.500000
       centerThreshold: !<float> 1.000000
       classLabels: !<string[]>
-        - Monitors
-        - tvmonitor
+        - breadboard
+        - capacitor 1k micro
+        - capacitor 470 micro
+        - green LED
+        - "null"
+        - push button
+        - yellow LED
       enableAllClasses: true
       enableCallbacks: false
       monitorDetectionCallbacks: !<MappingBased.AssignableType[]>
@@ -6167,6 +6232,22 @@
   ScriptTypes:
     "":
       {}
+- !<SceneObject/d5581c0e-2321-45fe-839e-46c9a8d2033f>
+  PrefabRemaps:
+    []
+  Name: MLSpatializer
+  Enabled: false
+  Layers: 1
+  LocalTransform: !<TransformEntity>
+    Position: {x: -10.000000, y: 0.000000, z: 0.000000}
+    Rotation: {x: 0.000000, y: 0.000000, z: 0.000000}
+    Scale: {x: 1.000000, y: 1.000000, z: 1.000000}
+    HasSegmentScaleCompensation: false
+  Children:
+    []
+  Components:
+    - !<own> b3f42504-3d1b-4ecd-8e77-13d72e5114d5
+    - !<own> 92d6b8e7-6c1c-43c1-b5c3-1d035b7b9f99
 - !<ScreenTransform/dc35ce71-9354-4161-b7d8-24c06fcffe91>
   PrefabRemaps:
     []
