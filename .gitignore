@@ -31,5 +31,3 @@ BackUp/**
 *.lock
 
 Workspaces/** 
-
-*.meta
