@@ -1,0 +1,164 @@
+- !<AssetImportMetadata/d3f6648a-714f-4b94-91c3-b9ad3a73de84>
+  ImportedAssetIds:
+    FileMLAsset: !<reference> aca58d53-34b5-422a-a824-9d3db539d6db
+  ImporterName: FileMLAssetImporter
+  PrimaryAsset: !<reference> aca58d53-34b5-422a-a824-9d3db539d6db
+  PackageType: NotAPackage
+  LegacyPackagePolicy: ~
+  ExtraData:
+    {}
+  AssetDataMap:
+    {}
+  DependentFiles:
+    []
+  ImporterSettings: !<FileMLAssetImporterSettings>
+    Inputs:
+      - !<MLInput>
+        Name: images
+        Shape: {x: 224.000000, y: 224.000000, z: 3.000000}
+        Normalizations:
+          - scale: 1.000000
+            bias: 0.000000
+          - scale: 1.000000
+            bias: 0.000000
+          - scale: 1.000000
+            bias: 0.000000
+        Transformer:
+          stretch: true
+          alignment.horizontal: Center
+          alignment.vertical: Center
+          fill: {x: 0.000000, y: 0.000000, z: 0.000000, w: 1.000000}
+          flipX: false
+          flipY: false
+          rotation: None
+        Texture: !<reference> 00000000-0000-0000-0000-000000000000
+    Outputs:
+      - !<MLOutput>
+        Name: output
+        Shape: {x: 28.000000, y: 28.000000, z: 18.000000}
+        Normalizations:
+          - scale: 1.000000
+            bias: 0.000000
+          - scale: 1.000000
+            bias: 0.000000
+          - scale: 1.000000
+            bias: 0.000000
+          - scale: 1.000000
+            bias: 0.000000
+          - scale: 1.000000
+            bias: 0.000000
+          - scale: 1.000000
+            bias: 0.000000
+          - scale: 1.000000
+            bias: 0.000000
+          - scale: 1.000000
+            bias: 0.000000
+          - scale: 1.000000
+            bias: 0.000000
+          - scale: 1.000000
+            bias: 0.000000
+          - scale: 1.000000
+            bias: 0.000000
+          - scale: 1.000000
+            bias: 0.000000
+          - scale: 1.000000
+            bias: 0.000000
+          - scale: 1.000000
+            bias: 0.000000
+          - scale: 1.000000
+            bias: 0.000000
+          - scale: 1.000000
+            bias: 0.000000
+          - scale: 1.000000
+            bias: 0.000000
+          - scale: 1.000000
+            bias: 0.000000
+        InputName: ""
+        OutputTexture: !<reference> 00000000-0000-0000-0000-000000000000
+      - !<MLOutput>
+        Name: 270
+        Shape: {x: 14.000000, y: 14.000000, z: 18.000000}
+        Normalizations:
+          - scale: 1.000000
+            bias: 0.000000
+          - scale: 1.000000
+            bias: 0.000000
+          - scale: 1.000000
+            bias: 0.000000
+          - scale: 1.000000
+            bias: 0.000000
+          - scale: 1.000000
+            bias: 0.000000
+          - scale: 1.000000
+            bias: 0.000000
+          - scale: 1.000000
+            bias: 0.000000
+          - scale: 1.000000
+            bias: 0.000000
+          - scale: 1.000000
+            bias: 0.000000
+          - scale: 1.000000
+            bias: 0.000000
+          - scale: 1.000000
+            bias: 0.000000
+          - scale: 1.000000
+            bias: 0.000000
+          - scale: 1.000000
+            bias: 0.000000
+          - scale: 1.000000
+            bias: 0.000000
+          - scale: 1.000000
+            bias: 0.000000
+          - scale: 1.000000
+            bias: 0.000000
+          - scale: 1.000000
+            bias: 0.000000
+          - scale: 1.000000
+            bias: 0.000000
+        InputName: ""
+        OutputTexture: !<reference> 00000000-0000-0000-0000-000000000000
+      - !<MLOutput>
+        Name: 272
+        Shape: {x: 7.000000, y: 7.000000, z: 18.000000}
+        Normalizations:
+          - scale: 1.000000
+            bias: 0.000000
+          - scale: 1.000000
+            bias: 0.000000
+          - scale: 1.000000
+            bias: 0.000000
+          - scale: 1.000000
+            bias: 0.000000
+          - scale: 1.000000
+            bias: 0.000000
+          - scale: 1.000000
+            bias: 0.000000
+          - scale: 1.000000
+            bias: 0.000000
+          - scale: 1.000000
+            bias: 0.000000
+          - scale: 1.000000
+            bias: 0.000000
+          - scale: 1.000000
+            bias: 0.000000
+          - scale: 1.000000
+            bias: 0.000000
+          - scale: 1.000000
+            bias: 0.000000
+          - scale: 1.000000
+            bias: 0.000000
+          - scale: 1.000000
+            bias: 0.000000
+          - scale: 1.000000
+            bias: 0.000000
+          - scale: 1.000000
+            bias: 0.000000
+          - scale: 1.000000
+            bias: 0.000000
+          - scale: 1.000000
+            bias: 0.000000
+        InputName: ""
+        OutputTexture: !<reference> 00000000-0000-0000-0000-000000000000
+  CompressionSettings: !<SingleCompressionSettings>
+    CompressorName: FastDnn
+    CompressionSettings: !<own> 00000000-0000-0000-0000-000000000000
