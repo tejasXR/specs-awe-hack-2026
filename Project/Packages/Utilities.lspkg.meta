@@ -1,8 +1,26 @@
-- !<AssetImportMetadata/84fa3cd7-6624-4a99-9fd9-a6357eb69919>
+- !<AssetImportMetadata/62e96dd9-7cf2-47ff-9f16-fbd42be95b2f>
   ImportedAssetIds:
-    {}
+    48ffa37b-0632-4475-ab95-268a6870ab18: !<reference> ae19014c-7dad-4e5e-9ad8-2bba1703a32d
+    c2f44a43-590d-4b4b-bb3c-5ab87b69220b: !<reference> 4107fb73-09ec-47eb-9016-50cadf606239
+    08d9c8a5-ade9-4ead-baa5-a67607fcb42e: !<reference> 6d2dd6ef-b66d-4787-86f8-8a409548e2d4
+    5467b549-734d-40f4-ad20-2b6a8b231b62: !<reference> 7c89b94e-3d90-4e17-a2fa-313fe5cd2874
+    6dc1c3d5-5573-4eeb-94dc-a4f196ca7141: !<reference> 8299ebf1-ec44-49fa-915e-a0b52a133268
+    7d8efcce-41c4-416a-b551-4022152efc88: !<reference> f35ecc59-7e4d-44bd-abed-eee96d81d4e8
+    27370fae-f24f-4a0a-ad99-05566dd71a3f: !<reference> a7da3eff-6085-4fce-95f2-d28790a6b7fa
+    16fd837e-286c-4b57-937e-dc060280cf51: !<reference> 8391d910-1872-4b41-a4e7-58ca15580853
+    2982a47f-91aa-461f-9847-2e329d5f7a07: !<reference> beb81c5f-ca15-47d4-b6f0-6fb13f0af29e
+    97cde632-5391-4f1b-90ea-703b5c49a738: !<reference> 3ad9d4c8-8528-44d7-a7e6-a20c1a118cd6
+    b8e0c364-d5f3-440d-a556-f79e69963cb0: !<reference> 4dfae05e-ad4d-4570-941b-378ad5ad4a5d
+    0efad73a-b4c3-46d4-92eb-48c09357491b: !<reference> a40ab026-9b2b-477c-9512-e7f4c535012c
+    568f47f3-6dd5-46ba-bb10-a01796057cfb: !<reference> 20d03dd9-1386-49c5-945d-48644c077e7e
+    926d649f-fff6-4fd8-807c-158e460bb845: !<reference> bde0b2b9-462e-4195-8ad5-4e89fafa5d43
+    a0ed64b6-f8c8-473c-9a52-c3e702c6e52d: !<reference> cadf59e9-a97e-46ae-8ce0-bb298158d398
+    638734e2-667d-491d-9738-bf82f52d11e3: !<reference> d0b2b723-70bc-447b-9498-0477c86ace04
+    92e68ba7-a5f7-4be1-bdcf-bd19457aec01: !<reference> ea43179c-d052-4a08-b786-2b167d1e8e8f
+    17bafaab-a20b-4478-8605-44a9bd8f7f6d: !<reference> df1c6cd9-e946-4971-ac8f-53c2300a6a78
+    bcbc4a73-e526-4294-9cef-60563be6208f: !<reference> 7177cc45-1088-4b6f-b220-ecf91c2e6535
   ImporterName: NativePackageImporter
-  PrimaryAsset: !<reference> cea19acc-138c-41ad-8b25-772a2d615c73
+  PrimaryAsset: !<reference> 45dbf586-4bdb-4fcf-95cd-030cad9f5d25
   PackageType: PackedNativePackageRoot
   LegacyPackagePolicy: ~
   ExtraData:
