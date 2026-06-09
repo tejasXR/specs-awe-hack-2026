@@ -1,0 +1,53 @@
+- !<AssetImportMetadata/b3293956-3112-4c63-a676-904fdb78f56a>
+  ImportedAssetIds:
+    TypeScriptAsset: !<reference> 72850fad-956f-496e-87ce-b92a3fb30aca
+  ImporterName: TypeScriptAssetImporter
+  PrimaryAsset: !<reference> 72850fad-956f-496e-87ce-b92a3fb30aca
+  PackageType: NotAPackage
+  LegacyPackagePolicy: ~
+  ExtraData:
+    {}
+  AssetDataMap:
+    TypeScriptAsset: !<own> e99cf09b-50cc-4b33-adb4-13abc2627006
+  DependentFiles:
+    []
+  ImporterSettings: !<AssetImporterSettings>
+    {}
+  CompressionSettings: !<own> 00000000-0000-0000-0000-000000000000
+- !<TypeScriptAssetData/e99cf09b-50cc-4b33-adb4-13abc2627006>
+  SvgIcon: ""
+  SetupScript:
+    code: ""
+  Description: ""
+  VersionMajor: 0
+  VersionMinor: 0
+  VersionPatch: 0
+  ComponentUid: f523f066-5d4b-49e4-ad5f-eea5d50608fd
+  ExportUid: 00000000-0000-0000-0000-000000000000
+  PackagePolicy: CanBeUnpacked
+  ScriptInputsHidden:
+    assistant: false
+    floatAmplitude: false
+    floatFrequency: false
+    moveSpeed: false
+  ScriptTypesHidden:
+    {}
+  ReadMe: !<reference> 00000000-0000-0000-0000-000000000000
+  DeclarationFile: !<reference> 00000000-0000-0000-0000-000000000000
+  Tags:
+    []
+  Attachments:
+    []
+  DefaultScriptInputs:
+    - assistant: !<MappingBased.AssignableType> 00000000-0000-0000-0000-000000000000
+      floatAmplitude: !<float> 2.000000
+      floatFrequency: 0.500000
+      moveSpeed: !<float> 30.000000
+  ScriptTypes:
+    -
+      {}
+  InputLines:
+    - // @input AssignableType assistant
+    - // @input float floatAmplitude = 2
+    - // @input float floatFrequency = 0.5
+    - // @input float moveSpeed = 30
