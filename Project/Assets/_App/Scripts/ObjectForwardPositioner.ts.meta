@@ -22,11 +22,11 @@
   VersionMajor: 0
   VersionMinor: 0
   VersionPatch: 0
-  ComponentUid: 00000000-0000-0000-0000-000000000000
+  ComponentUid: 3d70f5b8-e988-4229-bfc3-7f75bf43773b
   ExportUid: 00000000-0000-0000-0000-000000000000
   PackagePolicy: CanBeUnpacked
   ScriptInputsHidden:
-    {}
+    additiveVectorPosition: false
   ScriptTypesHidden:
     {}
   ReadMe: !<reference> 00000000-0000-0000-0000-000000000000
@@ -36,10 +36,9 @@
   Attachments:
     []
   DefaultScriptInputs:
-    -
-      {}
+    - additiveVectorPosition: !<Vec3> {x: 0.000000, y: 0.000000, z: 0.000000}
   ScriptTypes:
     -
       {}
   InputLines:
-    []
+    - // @input vec3 additiveVectorPosition
