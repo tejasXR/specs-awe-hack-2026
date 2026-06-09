@@ -1,0 +1,50 @@
+- !<AssetImportMetadata/98ffd0ab-f49a-4b64-9f7a-10fb51510de0>
+  ImportedAssetIds:
+    TypeScriptAsset: !<reference> 9b9ba524-38ea-4684-9630-7420ac456a29
+  ImporterName: TypeScriptAssetImporter
+  PrimaryAsset: !<reference> 9b9ba524-38ea-4684-9630-7420ac456a29
+  PackageType: NotAPackage
+  LegacyPackagePolicy: ~
+  ExtraData:
+    {}
+  AssetDataMap:
+    TypeScriptAsset: !<own> 9a72529e-5a24-4b75-a3e7-d54deaa8d927
+  DependentFiles:
+    []
+  ImporterSettings: !<AssetImporterSettings>
+    {}
+  CompressionSettings: !<own> 00000000-0000-0000-0000-000000000000
+- !<TypeScriptAssetData/9a72529e-5a24-4b75-a3e7-d54deaa8d927>
+  SvgIcon: ""
+  SetupScript:
+    code: ""
+  Description: ""
+  VersionMajor: 0
+  VersionMinor: 0
+  VersionPatch: 0
+  ComponentUid: 3d4cea90-efa7-41cc-890d-bf3e0d6d7b00
+  ExportUid: 00000000-0000-0000-0000-000000000000
+  PackagePolicy: CanBeUnpacked
+  ScriptInputsHidden:
+    debugText: false
+    pointingConeAngle: false
+    sceneSetupObj: false
+  ScriptTypesHidden:
+    {}
+  ReadMe: !<reference> 00000000-0000-0000-0000-000000000000
+  DeclarationFile: !<reference> 00000000-0000-0000-0000-000000000000
+  Tags:
+    []
+  Attachments:
+    []
+  DefaultScriptInputs:
+    - pointingConeAngle: !<float> 35.000000
+      debugText: !<reference.Text> 00000000-0000-0000-0000-000000000000
+      sceneSetupObj: !<reference.SceneObject> 00000000-0000-0000-0000-000000000000
+  ScriptTypes:
+    -
+      {}
+  InputLines:
+    - // @input float pointingConeAngle = 25
+    - // @input Component.Text debugText
+    - // @input SceneObject sceneSetupObj
