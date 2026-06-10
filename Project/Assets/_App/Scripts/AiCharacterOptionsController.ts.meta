@@ -1,0 +1,51 @@
+- !<AssetImportMetadata/5b268d3d-5f79-40de-8727-d8f3fdedd76c>
+  ImportedAssetIds:
+    TypeScriptAsset: !<reference> 3f4f9132-11aa-4492-86e4-330be9056aec
+  ImporterName: TypeScriptAssetImporter
+  PrimaryAsset: !<reference> 3f4f9132-11aa-4492-86e4-330be9056aec
+  PackageType: NotAPackage
+  LegacyPackagePolicy: ~
+  ExtraData:
+    {}
+  AssetDataMap:
+    TypeScriptAsset: !<own> ea59cb1f-f36a-4cc2-b464-84d9e8bbbf7d
+  DependentFiles:
+    []
+  ImporterSettings: !<AssetImporterSettings>
+    {}
+  CompressionSettings: !<own> 00000000-0000-0000-0000-000000000000
+- !<TypeScriptAssetData/ea59cb1f-f36a-4cc2-b464-84d9e8bbbf7d>
+  SvgIcon: ""
+  SetupScript:
+    code: ""
+  Description: ""
+  VersionMajor: 0
+  VersionMinor: 0
+  VersionPatch: 0
+  ComponentUid: 0429b63f-5cab-4877-bb6a-a606953cc0a8
+  ExportUid: 00000000-0000-0000-0000-000000000000
+  PackagePolicy: CanBeUnpacked
+  ScriptInputsHidden:
+    hideOnStart: false
+    interactions: false
+    optionObjects: false
+  ScriptTypesHidden:
+    {}
+  ReadMe: !<reference> 00000000-0000-0000-0000-000000000000
+  DeclarationFile: !<reference> 00000000-0000-0000-0000-000000000000
+  Tags:
+    []
+  Attachments:
+    []
+  DefaultScriptInputs:
+    - interactions: !<MappingBased.AssignableType> 00000000-0000-0000-0000-000000000000
+      hideOnStart: true
+      optionObjects: !<reference.SceneObject[]>
+        []
+  ScriptTypes:
+    -
+      {}
+  InputLines:
+    - // @input AssignableType interactions
+    - '// @input bool hideOnStart = true {"hint":"Disable all option objects on start so the pinch reveal is deterministic"}'
+    - "// @input SceneObject[] optionObjects"
