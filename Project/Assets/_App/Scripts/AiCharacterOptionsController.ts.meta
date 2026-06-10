@@ -40,7 +40,7 @@
   DefaultScriptInputs:
     - interactions: !<MappingBased.AssignableType> 00000000-0000-0000-0000-000000000000
       hideOnStart: true
-      optionObjects: !<reference.SceneObject[]>
+      optionObjects: !<MappingBased.AssignableType_1[]>
         []
   ScriptTypes:
     -
@@ -48,4 +48,4 @@
   InputLines:
     - // @input AssignableType interactions
     - '// @input bool hideOnStart = true {"hint":"Disable all option objects on start so the pinch reveal is deterministic"}'
-    - "// @input SceneObject[] optionObjects"
+    - "// @input AssignableType_1[] optionObjects"
