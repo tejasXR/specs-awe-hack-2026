@@ -4,7 +4,6 @@ import { AiCharacterOptionsController } from "./AiCharacterOptionsController";
 
 const TWO_PI = Math.PI * 2;
 const ARRIVE_EPSILON = 0.01; // cm — distances below this count as "arrived"
-const FLOAT_FADE_SECONDS = 0.25; // ease the bob in/out so toggles never snap mid-bob
 
 @component
 export class AiCharacterMover extends BaseScriptComponent {
@@ -13,7 +12,7 @@ export class AiCharacterMover extends BaseScriptComponent {
   assistant!: AiCharacter;
 
   @input
-  @hint("While this controller's options are visible, the float bob pauses")
+  @hint("While this controller's options are visible, the mover pauses (bob and travel)")
   @allowUndefined
   optionsController!: AiCharacterOptionsController;
 
@@ -37,7 +36,7 @@ export class AiCharacterMover extends BaseScriptComponent {
   private readonly _scratchWorldPosition = new vec3(0, 0, 0); // reused every frame
 
   private _isFloatSuppressed: boolean = false;
-  private _floatWeight: number = 1; // 1 = full bob, 0 = none; eased toward target
+  private _floatPhase: number = 0; // advances only while unsuppressed, so pause/resume is seamless
 
   private _unsubscribeFromState?: unsubscribe;
   private _unsubscribeFromOptions?: unsubscribe;
@@ -49,15 +48,6 @@ export class AiCharacterMover extends BaseScriptComponent {
   }
 
   private onStart(): void {
-    if (isNull(this.assistant)) {
-      print(
-        "[" +
-          AiCharacterMover.name +
-          "] 'assistant' input is not wired — disabled.",
-      );
-      return;
-    }
-
     this._basePosition = copyOf(this._transform.getWorldPosition());
     this._destination = copyOf(this._basePosition);
 
@@ -83,7 +73,6 @@ export class AiCharacterMover extends BaseScriptComponent {
     this._unsubscribeFromOptions?.();
   }
 
-  /** The single place that branches on state — it only picks the destination. */
   private onStateChanged(state: AiCharacterState): void {
     switch (state.kind) {
       case "idling":
@@ -103,34 +92,23 @@ export class AiCharacterMover extends BaseScriptComponent {
   }
 
   private onUpdate(): void {
+    // Paused while the options are open — phase freezes with everything else,
+    // so resume continues the bob exactly where it left off.
+    if (this._isFloatSuppressed) {
+      return;
+    }
+
     const deltaTime = getDeltaTime();
     this.moveBaseTowardDestination(deltaTime);
-    this.updateFloatWeight(deltaTime);
+    this._floatPhase += deltaTime * this.floatFrequency * TWO_PI;
 
-    const bob =
-      Math.sin(getTime() * this.floatFrequency * TWO_PI) *
-      this.floatAmplitude *
-      this._floatWeight;
+    const bob = Math.sin(this._floatPhase) * this.floatAmplitude;
     this._scratchWorldPosition.x = this._basePosition.x;
     this._scratchWorldPosition.y = this._basePosition.y + bob;
     this._scratchWorldPosition.z = this._basePosition.z;
     this._transform.setWorldPosition(this._scratchWorldPosition);
   }
 
-  /** Eases the bob weight toward 0 (suppressed) or 1 over FLOAT_FADE_SECONDS. */
-  private updateFloatWeight(deltaTime: number): void {
-    const target = this._isFloatSuppressed ? 0 : 1;
-    const maxStep = deltaTime / FLOAT_FADE_SECONDS;
-    const remaining = target - this._floatWeight;
-
-    if (Math.abs(remaining) <= maxStep) {
-      this._floatWeight = target;
-    } else {
-      this._floatWeight += Math.sign(remaining) * maxStep;
-    }
-  }
-
-  /** Constant-speed move-towards with a clean snap on arrival. */
   private moveBaseTowardDestination(deltaTime: number): void {
     const toDestination = this._destination.sub(this._basePosition);
     const distance = toDestination.length;
@@ -147,7 +125,6 @@ export class AiCharacterMover extends BaseScriptComponent {
   }
 }
 
-/** vec3 is a mutable reference type — copy at ownership boundaries, don't alias. */
 const copyOf = (v: vec3): vec3 => new vec3(v.x, v.y, v.z);
 
 const assertNever = (x: never): never => {
