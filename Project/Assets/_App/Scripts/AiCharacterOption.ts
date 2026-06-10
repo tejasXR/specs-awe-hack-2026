@@ -14,13 +14,8 @@ export class AiCharacterOption extends BaseScriptComponent {
   @hint("Pinch button that selects this option")
   pinchButton!: Interactable;
 
-  @input
-  @hint("Pop-in duration, in milliseconds")
-  showDurationMs: number = 250;
-
-  @input
-  @hint("Shrink-out duration, in milliseconds")
-  hideDurationMs: number = 180;
+  private _showDurationMs: number = 250;
+  private _hideDurationMs: number = 180;
 
   private readonly onOptionSelectedEvent = new Event<AiCharacterOption>();
 
@@ -33,9 +28,6 @@ export class AiCharacterOption extends BaseScriptComponent {
 
   constructor() {
     super();
-    this._unsubscribeFromPinchButton = this.pinchButton.onTriggerEnd.add(() =>
-      this.onOptionSelectedEvent.invoke(this),
-    );
   }
 
   onAwake(): void {
@@ -44,7 +36,11 @@ export class AiCharacterOption extends BaseScriptComponent {
     this.createEvent("OnDestroyEvent").bind(() => this.onDestroy());
   }
 
-  private onStart(): void {}
+  private onStart(): void {
+    this._unsubscribeFromPinchButton = this.pinchButton.onTriggerEnd.add(
+      (event) => this.optionSelected(),
+    );
+  }
 
   private onDestroy(): void {
     this._unsubscribeFromPinchButton?.();
@@ -58,7 +54,7 @@ export class AiCharacterOption extends BaseScriptComponent {
     this._activeTween = LSTween.scaleToLocal(
       this._transform,
       vec3.one(),
-      this.showDurationMs,
+      this._showDurationMs,
     )
       .easing(Easing.Back.Out)
       .start();
@@ -70,13 +66,17 @@ export class AiCharacterOption extends BaseScriptComponent {
     this._activeTween = LSTween.scaleToLocal(
       this._transform,
       vec3.zero(),
-      this.hideDurationMs,
+      this._hideDurationMs,
     )
       .easing(Easing.Back.In)
       .onComplete(() => {
         this.sceneObject.enabled = false;
       })
       .start();
+  }
+
+  private optionSelected() {
+    this.onOptionSelectedEvent.invoke(this);
   }
 
   private stopActiveTween(): void {
