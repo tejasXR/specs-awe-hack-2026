@@ -26,7 +26,9 @@
   ExportUid: 00000000-0000-0000-0000-000000000000
   PackagePolicy: CanBeUnpacked
   ScriptInputsHidden:
-    {}
+    hideDurationMs: false
+    pinchButton: false
+    showDurationMs: false
   ScriptTypesHidden:
     {}
   ReadMe: !<reference> 00000000-0000-0000-0000-000000000000
@@ -36,10 +38,13 @@
   Attachments:
     []
   DefaultScriptInputs:
-    -
-      {}
+    - pinchButton: !<MappingBased.AssignableType> 00000000-0000-0000-0000-000000000000
+      showDurationMs: !<float> 250.000000
+      hideDurationMs: !<float> 180.000000
   ScriptTypes:
     -
       {}
   InputLines:
-    []
+    - '// @input AssignableType pinchButton {"hint":"Pinch button that selects this option"}'
+    - '// @input float showDurationMs = 250 {"hint":"Pop-in duration, in milliseconds"}'
+    - '// @input float hideDurationMs = 180 {"hint":"Shrink-out duration, in milliseconds"}'

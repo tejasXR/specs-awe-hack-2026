@@ -1,4 +1,86 @@
+import { LSTween } from "LSTween.lspkg/Examples/Scripts/LSTween";
+import Easing from "LSTween.lspkg/TweenJS/Easing";
+import { Tween } from "LSTween.lspkg/TweenJS/Tween";
+import { Interactable } from "SpectaclesInteractionKit.lspkg/Components/Interaction/Interactable/Interactable";
+import { PinchButton } from "SpectaclesInteractionKit.lspkg/Components/UI/PinchButton/PinchButton";
+import Event, {
+  PublicApi,
+  unsubscribe,
+} from "SpectaclesInteractionKit.lspkg/Utils/Event";
+
 @component
-export class AiCharcaterOption extends BaseScriptComponent {
-  onAwake() {}
+export class AiCharacterOption extends BaseScriptComponent {
+  @input
+  @hint("Pinch button that selects this option")
+  pinchButton!: Interactable;
+
+  @input
+  @hint("Pop-in duration, in milliseconds")
+  showDurationMs: number = 250;
+
+  @input
+  @hint("Shrink-out duration, in milliseconds")
+  hideDurationMs: number = 180;
+
+  private readonly onOptionSelectedEvent = new Event<AiCharacterOption>();
+
+  readonly onOptionSelected: PublicApi<AiCharacterOption> =
+    this.onOptionSelectedEvent.publicApi();
+
+  private _transform!: Transform;
+  private _activeTween?: Tween<{ t: number }>;
+  private _unsubscribeFromPinchButton?: unsubscribe;
+
+  constructor() {
+    super();
+    this._unsubscribeFromPinchButton = this.pinchButton.onTriggerEnd.add(() =>
+      this.onOptionSelectedEvent.invoke(this),
+    );
+  }
+
+  onAwake(): void {
+    this._transform = this.getTransform();
+    this.createEvent("OnStartEvent").bind(() => this.onStart());
+    this.createEvent("OnDestroyEvent").bind(() => this.onDestroy());
+  }
+
+  private onStart(): void {}
+
+  private onDestroy(): void {
+    this._unsubscribeFromPinchButton?.();
+  }
+
+  show(): void {
+    this.stopActiveTween();
+    this.sceneObject.enabled = true;
+
+    // Tween from the *current* scale so an interrupted hide reverses smoothly.
+    this._activeTween = LSTween.scaleToLocal(
+      this._transform,
+      vec3.one(),
+      this.showDurationMs,
+    )
+      .easing(Easing.Back.Out)
+      .start();
+  }
+
+  hide(): void {
+    this.stopActiveTween();
+
+    this._activeTween = LSTween.scaleToLocal(
+      this._transform,
+      vec3.zero(),
+      this.hideDurationMs,
+    )
+      .easing(Easing.Back.In)
+      .onComplete(() => {
+        this.sceneObject.enabled = false;
+      })
+      .start();
+  }
+
+  private stopActiveTween(): void {
+    this._activeTween?.stop();
+    this._activeTween = undefined;
+  }
 }
