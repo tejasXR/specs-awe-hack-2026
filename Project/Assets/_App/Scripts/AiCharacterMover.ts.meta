@@ -30,6 +30,7 @@
     floatAmplitude: false
     floatFrequency: false
     moveToDestinationSpeed: false
+    optionsController: false
   ScriptTypesHidden:
     {}
   ReadMe: !<reference> 00000000-0000-0000-0000-000000000000
@@ -40,6 +41,7 @@
     []
   DefaultScriptInputs:
     - assistant: !<MappingBased.AssignableType> 00000000-0000-0000-0000-000000000000
+      optionsController: !<MappingBased.AssignableType_1> 00000000-0000-0000-0000-000000000000
       floatAmplitude: !<float> 2.000000
       floatFrequency: 0.500000
       moveToDestinationSpeed: !<float> 30.000000
@@ -48,6 +50,11 @@
       {}
   InputLines:
     - '// @input AssignableType assistant {"hint":"The AiCharacter state store this mover follows"}'
-    - '// @input float floatAmplitude = 2 {"hint":"Vertical bob amplitude, in cm"}'
-    - '// @input float floatFrequency = 0.5 {"hint":"Bob cycles per second"}'
+    - "// @input AssignableType_1 optionsController {\"hint\":\"While this controller's options are visible, the float bob pauses\"}"
+    - '// @ui {"widget":"group_start", "label":"Float Bob"}'
+    - '// @input float floatAmplitude = 2 {"hint":"How far the character bobs up and down (magnitude), in cm"}'
+    - '// @input float floatFrequency = 0.5 {"hint":"How fast the character bobs, in cycles per second"}'
+    - '// @ui {"widget":"group_end"}'
+    - '// @ui {"widget":"group_start", "label":"Travel"}'
     - '// @input float moveToDestinationSpeed = 30 {"hint":"Travel speed toward the destination, in cm per second"}'
+    - '// @ui {"widget":"group_end"}'
