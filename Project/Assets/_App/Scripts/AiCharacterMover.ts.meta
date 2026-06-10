@@ -29,7 +29,7 @@
     assistant: false
     floatAmplitude: false
     floatFrequency: false
-    moveSpeed: false
+    moveToDestinationSpeed: false
   ScriptTypesHidden:
     {}
   ReadMe: !<reference> 00000000-0000-0000-0000-000000000000
@@ -42,12 +42,12 @@
     - assistant: !<MappingBased.AssignableType> 00000000-0000-0000-0000-000000000000
       floatAmplitude: !<float> 2.000000
       floatFrequency: 0.500000
-      moveSpeed: !<float> 30.000000
+      moveToDestinationSpeed: !<float> 30.000000
   ScriptTypes:
     -
       {}
   InputLines:
-    - // @input AssignableType assistant
-    - // @input float floatAmplitude = 2
-    - // @input float floatFrequency = 0.5
-    - // @input float moveSpeed = 30
+    - '// @input AssignableType assistant {"hint":"The AiCharacter state store this mover follows"}'
+    - '// @input float floatAmplitude = 2 {"hint":"Vertical bob amplitude, in cm"}'
+    - '// @input float floatFrequency = 0.5 {"hint":"Bob cycles per second"}'
+    - '// @input float moveToDestinationSpeed = 30 {"hint":"Travel speed toward the destination, in cm per second"}'
