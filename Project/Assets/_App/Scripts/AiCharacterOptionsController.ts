@@ -1,5 +1,5 @@
 import type { unsubscribe } from "SpectaclesInteractionKit.lspkg/Utils/Event";
-import { AiCharacterInteractionController } from "./AiCharacterInteractions";
+import { AiCharacterInteractionController } from "./AiCharacterInteractionController";
 
 @component
 export class AiCharacterOptionsController extends BaseScriptComponent {
@@ -24,9 +24,7 @@ export class AiCharacterOptionsController extends BaseScriptComponent {
 
   private onStart(): void {
     if (isNull(this.interactions)) {
-      print(
-        "[AiCharacterOptionsController] 'interactions' input is not wired — disabled.",
-      );
+      print("Interactions controller not wired -- returning early.");
       return;
     }
 
