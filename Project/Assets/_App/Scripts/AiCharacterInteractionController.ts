@@ -24,7 +24,9 @@ export class AiCharacterInteractionController extends BaseScriptComponent {
   }
 
   private onStart(): void {
-    this.interactable.onTriggerStart.add((event) => this.handlePinched(event));
+    this._unsubscribeFromTrigger = this.interactable.onTriggerStart.add(
+      (event) => this.handlePinched(event),
+    );
   }
 
   private handlePinched(event: InteractorEvent): void {
