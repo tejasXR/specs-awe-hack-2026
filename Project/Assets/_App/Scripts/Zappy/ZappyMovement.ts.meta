@@ -1,20 +1,20 @@
-- !<AssetImportMetadata/b3293956-3112-4c63-a676-904fdb78f56a>
+- !<AssetImportMetadata/344c2e29-af94-4415-b16e-7bf2f9c60e0a>
   ImportedAssetIds:
-    TypeScriptAsset: !<reference> 72850fad-956f-496e-87ce-b92a3fb30aca
+    TypeScriptAsset: !<reference> a9af9e6e-eaaa-4f7e-bf7b-50cc7fd04c70
   ImporterName: TypeScriptAssetImporter
-  PrimaryAsset: !<reference> 72850fad-956f-496e-87ce-b92a3fb30aca
+  PrimaryAsset: !<reference> a9af9e6e-eaaa-4f7e-bf7b-50cc7fd04c70
   PackageType: NotAPackage
   LegacyPackagePolicy: ~
   ExtraData:
     {}
   AssetDataMap:
-    TypeScriptAsset: !<own> e99cf09b-50cc-4b33-adb4-13abc2627006
+    TypeScriptAsset: !<own> eb5b281c-685a-4947-96b9-a6fce9c3652e
   DependentFiles:
     []
   ImporterSettings: !<AssetImporterSettings>
     {}
   CompressionSettings: !<own> 00000000-0000-0000-0000-000000000000
-- !<TypeScriptAssetData/e99cf09b-50cc-4b33-adb4-13abc2627006>
+- !<TypeScriptAssetData/eb5b281c-685a-4947-96b9-a6fce9c3652e>
   SvgIcon: ""
   SetupScript:
     code: ""
@@ -22,11 +22,10 @@
   VersionMajor: 0
   VersionMinor: 0
   VersionPatch: 0
-  ComponentUid: f523f066-5d4b-49e4-ad5f-eea5d50608fd
+  ComponentUid: cc4c18a7-1020-4af4-8921-2f498036d1fa
   ExportUid: 00000000-0000-0000-0000-000000000000
   PackagePolicy: CanBeUnpacked
   ScriptInputsHidden:
-    assistant: false
     floatAmplitude: false
     floatFrequency: false
     moveToDestinationSpeed: false
@@ -40,8 +39,7 @@
   Attachments:
     []
   DefaultScriptInputs:
-    - assistant: !<MappingBased.AssignableType> 00000000-0000-0000-0000-000000000000
-      optionsController: !<MappingBased.AssignableType_1> 00000000-0000-0000-0000-000000000000
+    - optionsController: !<MappingBased.AssignableType> 00000000-0000-0000-0000-000000000000
       floatAmplitude: !<float> 2.000000
       floatFrequency: 0.500000
       moveToDestinationSpeed: !<float> 30.000000
@@ -49,11 +47,12 @@
     -
       {}
   InputLines:
-    - '// @input AssignableType assistant {"hint":"The AiCharacter state store this mover follows"}'
-    - "// @input AssignableType_1 optionsController {\"hint\":\"While this controller's options are visible, the mover pauses (bob and travel)\"}"
+    - '// @ui {"widget":"separator"}'
+    - '// @ui {"widget":"label", "label":"References"}'
+    - "// @input AssignableType optionsController {\"hint\":\"While this controller's options are visible, movement pauses (bob and travel)\"}"
     - '// @ui {"widget":"group_start", "label":"Float Bob"}'
-    - '// @input float floatAmplitude = 2 {"hint":"How far the character bobs up and down (magnitude), in cm"}'
-    - '// @input float floatFrequency = 0.5 {"hint":"How fast the character bobs, in cycles per second"}'
+    - '// @input float floatAmplitude = 2 {"hint":"How far Zappy bobs up and down (magnitude), in cm"}'
+    - '// @input float floatFrequency = 0.5 {"hint":"How fast Zappy bobs, in cycles per second"}'
     - '// @ui {"widget":"group_end"}'
     - '// @ui {"widget":"group_start", "label":"Travel"}'
     - '// @input float moveToDestinationSpeed = 30 {"hint":"Travel speed toward the destination, in cm per second"}'

@@ -2,13 +2,13 @@ import Event, {
   PublicApi,
   unsubscribe,
 } from "SpectaclesInteractionKit.lspkg/Utils/Event";
-import { AiCharacterInteractionController } from "./AiCharacterInteractionController";
-import { AiCharacterOption } from "./AiCharacterOption";
+import { ZappyInteractionsController } from "./ZappyInteractionsController";
+import { ZappyOptionUI } from "./ZappyOptionUI";
 
 @component
-export class AiCharacterOptionsController extends BaseScriptComponent {
+export class ZappyOptionsController extends BaseScriptComponent {
   @input
-  interactions!: AiCharacterInteractionController;
+  interactions!: ZappyInteractionsController;
 
   @input
   @hint(
@@ -19,7 +19,7 @@ export class AiCharacterOptionsController extends BaseScriptComponent {
   private _optionStaggerMs: number = 100;
 
   @input
-  optionObjects!: AiCharacterOption[];
+  optionObjects!: ZappyOptionUI[];
 
   private readonly onOptionsToggledEvent = new Event<boolean>();
 
@@ -57,7 +57,9 @@ export class AiCharacterOptionsController extends BaseScriptComponent {
     this._unsubscribesFromOptions = this.optionObjects
       .filter((option) => !isNull(option) && option.onOptionSelected != null)
       .map((option) =>
-        option.onOptionSelected.add((selected) => this.onOptionSelected(selected)),
+        option.onOptionSelected.add((selected) =>
+          this.onOptionSelected(selected),
+        ),
       );
   }
 
@@ -75,7 +77,7 @@ export class AiCharacterOptionsController extends BaseScriptComponent {
   }
 
   /** An option was selected — dismiss the menu. */
-  private onOptionSelected(option: AiCharacterOption): void {
+  private onOptionSelected(option: ZappyOptionUI): void {
     this.hideOptions();
   }
 

@@ -6,7 +6,7 @@ import Event, {
 } from "SpectaclesInteractionKit.lspkg/Utils/Event";
 
 @component
-export class AiCharacterInteractionController extends BaseScriptComponent {
+export class ZappyInteractionsController extends BaseScriptComponent {
   @input
   @allowUndefined
   @hint("The Interactable on the character's pinch target (needs a collider)")
@@ -26,7 +26,9 @@ export class AiCharacterInteractionController extends BaseScriptComponent {
 
   private onStart(): void {
     if (isNull(this.interactable)) {
-      print("[AiCharacterInteractionController] ⚠ interactable not assigned — skipping");
+      print(
+        "[AiCharacterInteractionController] ⚠ interactable not assigned — skipping",
+      );
       return;
     }
     this._unsubscribeFromTrigger = this.interactable.onTriggerStart.add(

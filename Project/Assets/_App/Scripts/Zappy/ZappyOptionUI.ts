@@ -9,7 +9,7 @@ import Event, {
 } from "SpectaclesInteractionKit.lspkg/Utils/Event";
 
 @component
-export class AiCharacterOption extends BaseScriptComponent {
+export class ZappyOptionUI extends BaseScriptComponent {
   @input
   @allowUndefined
   @hint("Pinch button that selects this option")
@@ -18,9 +18,9 @@ export class AiCharacterOption extends BaseScriptComponent {
   private _showDurationMs: number = 250;
   private _hideDurationMs: number = 180;
 
-  private readonly onOptionSelectedEvent = new Event<AiCharacterOption>();
+  private readonly onOptionSelectedEvent = new Event<ZappyOptionUI>();
 
-  readonly onOptionSelected: PublicApi<AiCharacterOption> =
+  readonly onOptionSelected: PublicApi<ZappyOptionUI> =
     this.onOptionSelectedEvent.publicApi();
 
   private _transform!: Transform;
@@ -39,7 +39,11 @@ export class AiCharacterOption extends BaseScriptComponent {
 
   private onStart(): void {
     if (isNull(this.pinchButton)) {
-      print("[AiCharacterOption] ⚠ pinchButton not assigned on '" + this.getSceneObject().name + "' — skipping");
+      print(
+        "[AiCharacterOption] ⚠ pinchButton not assigned on '" +
+          this.getSceneObject().name +
+          "' — skipping",
+      );
       return;
     }
     this._unsubscribeFromPinchButton = this.pinchButton.onTriggerEnd.add(
