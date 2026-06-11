@@ -68,6 +68,10 @@ export class ZappyAI extends BaseScriptComponent {
 
   onAwake(): void {
     // Policy: how Zappy feels about the brain's facts.
+    this.createEvent("OnStartEvent").bind(() => this.onStart());
+  }
+
+  onStart() {
     this.unsubs.push(
       this.brain.onRequestStarted.add(() =>
         this.setEmotion(ZappyEmotion.Thinking, 0.5),
