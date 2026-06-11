@@ -1,0 +1,47 @@
+- !<AssetImportMetadata/22b1b11f-63ab-46d9-8248-0e02e55e213c>
+  ImportedAssetIds:
+    TypeScriptAsset: !<reference> cf942907-7a80-49e8-a01f-1e5ffbf66529
+  ImporterName: TypeScriptAssetImporter
+  PrimaryAsset: !<reference> cf942907-7a80-49e8-a01f-1e5ffbf66529
+  PackageType: NotAPackage
+  LegacyPackagePolicy: ~
+  ExtraData:
+    {}
+  AssetDataMap:
+    TypeScriptAsset: !<own> 1ac70873-62c1-4496-908d-d69b096dafe2
+  DependentFiles:
+    []
+  ImporterSettings: !<AssetImporterSettings>
+    {}
+  CompressionSettings: !<own> 00000000-0000-0000-0000-000000000000
+- !<TypeScriptAssetData/1ac70873-62c1-4496-908d-d69b096dafe2>
+  SvgIcon: ""
+  SetupScript:
+    code: ""
+  Description: ""
+  VersionMajor: 0
+  VersionMinor: 0
+  VersionPatch: 0
+  ComponentUid: 91aee57b-04a0-4330-9e22-c06bcbceea04
+  ExportUid: 00000000-0000-0000-0000-000000000000
+  PackagePolicy: CanBeUnpacked
+  ScriptInputsHidden:
+    checkWork: false
+    interactable: false
+  ScriptTypesHidden:
+    {}
+  ReadMe: !<reference> 00000000-0000-0000-0000-000000000000
+  DeclarationFile: !<reference> 00000000-0000-0000-0000-000000000000
+  Tags:
+    []
+  Attachments:
+    []
+  DefaultScriptInputs:
+    - interactable: !<MappingBased.AssignableType> 00000000-0000-0000-0000-000000000000
+      checkWork: !<MappingBased.AssignableType_1> 00000000-0000-0000-0000-000000000000
+  ScriptTypes:
+    -
+      {}
+  InputLines:
+    - '// @input AssignableType interactable {"hint":"The Interactable on the Check Work button"}'
+    - '// @input AssignableType_1 checkWork {"hint":"The CheckWorkController component"}'

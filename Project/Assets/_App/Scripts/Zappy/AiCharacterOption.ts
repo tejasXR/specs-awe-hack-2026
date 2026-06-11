@@ -11,6 +11,7 @@ import Event, {
 @component
 export class AiCharacterOption extends BaseScriptComponent {
   @input
+  @allowUndefined
   @hint("Pinch button that selects this option")
   pinchButton!: Interactable;
 
@@ -37,6 +38,10 @@ export class AiCharacterOption extends BaseScriptComponent {
   }
 
   private onStart(): void {
+    if (isNull(this.pinchButton)) {
+      print("[AiCharacterOption] ⚠ pinchButton not assigned on '" + this.getSceneObject().name + "' — skipping");
+      return;
+    }
     this._unsubscribeFromPinchButton = this.pinchButton.onTriggerEnd.add(
       (event) => this.optionSelected(),
     );

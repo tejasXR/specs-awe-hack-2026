@@ -54,9 +54,11 @@ export class AiCharacterOptionsController extends BaseScriptComponent {
       this.onCharacterPinched(),
     );
 
-    this._unsubscribesFromOptions = this.optionObjects.map((option) =>
-      option.onOptionSelected.add((selected) => this.onOptionSelected(selected)),
-    );
+    this._unsubscribesFromOptions = this.optionObjects
+      .filter((option) => !isNull(option) && option.onOptionSelected != null)
+      .map((option) =>
+        option.onOptionSelected.add((selected) => this.onOptionSelected(selected)),
+      );
   }
 
   private onDestroy(): void {
@@ -103,11 +105,15 @@ export class AiCharacterOptionsController extends BaseScriptComponent {
         }
 
         const option = this.optionObjects[i];
-        option.show();
+        if (!isNull(option)) {
+          option.show();
+        }
       }
     } else {
       this.optionObjects.forEach((option) => {
-        option.hide();
+        if (!isNull(option)) {
+          option.hide();
+        }
       });
     }
   }

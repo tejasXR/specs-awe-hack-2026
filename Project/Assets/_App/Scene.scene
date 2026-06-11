@@ -13,6 +13,9 @@
     - !<own> 29fcc15e-7002-459f-86d6-ba5aef66d5e5
     - !<own> 05161d3a-5097-4b20-9eed-43e61e454bb4
     - !<own> 48790dd4-99ef-49c0-a0f8-9f9791bf2823
+    - !<own> 28af58eb-78c3-41dd-99d3-466a91aaf34c
+    - !<own> 4eae7982-b0a1-402e-84f5-2d8994ef83b5
+    - !<own> 82571ce9-7591-44b5-b9ba-23552e8a6a3d
     - !<own> 56dfefe5-eba1-4d1a-b973-4c52513e04fe
   layers: !<Layers/267ee9a7-aff2-4f9d-9a49-f71214747d03>
     userLayers:
@@ -2557,6 +2560,23 @@
     []
   Components:
     - !<own> f8a34539-f66b-466a-8278-e6834c5bc8b8
+- !<AudioComponent/13eea8c6-3a41-42e1-86fe-1d95051270ac>
+  PrefabRemaps:
+    []
+  Name: Audio
+  Enabled: true
+  AudioTrack: !<reference> 00000000-0000-0000-0000-000000000000
+  EnableAutoplayLoop: false
+  Volume: 1.000000
+  EnableMixToSnap: false
+  RecordVolume: 1.000000
+  EnableSpatialAudio: false
+  EnableDistanceEffect: false
+  CurveType: Logarithm
+  MinDistance: 0.000000
+  MaxDistance: 100.000000
+  EnableDirectivityEffect: false
+  EnablePositionEffect: false
 - !<SceneObject/142fa5b4-a78f-47e6-a0a6-04c546dc11ec>
   PrefabRemaps:
     []
@@ -4604,6 +4624,23 @@
   BodySettingValue: 1.000000
   Damping: 0.000000
   AngularDamping: 0.000000
+- !<SceneObject/28af58eb-78c3-41dd-99d3-466a91aaf34c>
+  PrefabRemaps:
+    []
+  Name: GameManager
+  Enabled: true
+  Layers: 1
+  LocalTransform: !<TransformEntity>
+    Position: {x: 0.000000, y: 0.000000, z: 0.000000}
+    Rotation: {x: 0.000000, y: 0.000000, z: 0.000000}
+    Scale: {x: 1.000000, y: 1.000000, z: 1.000000}
+    HasSegmentScaleCompensation: false
+  Children:
+    []
+  Components:
+    - !<own> b95efe19-b24f-4537-aaed-ce38556f8c0c
+    - !<own> ceee87c3-00a6-4266-813d-7f409cc1e012
+    - !<own> 82d81a8e-736d-4bf0-a700-ba69bb7f4184
 - !<SceneObject/29797a48-6b7f-46f5-a331-8fe1de2a04f4>
   PrefabRemaps:
     []
@@ -4760,6 +4797,8 @@
   Components:
     - !<own> 2b1ccf16-d675-4890-8fe6-9f761c878e70
     - !<own> ce1ff490-3463-4530-a42f-3ddae70ab278
+    - !<own> ba9b0252-db63-4aee-ba69-de0f00706d9b
+    - !<own> 13eea8c6-3a41-42e1-86fe-1d95051270ac
 - !<SceneObject/2aa9bd36-58f8-49f1-90a0-80cbcc8527d9>
   PrefabRemaps:
     []
@@ -6635,15 +6674,7 @@
   TwoSided: false
 - !<SceneObject/3805ce42-8b9f-4696-a624-c0b5225017c0>
   PrefabRemaps:
-    - 0bb9055d-3cd7-4411-9b66-4208120aa6de: b8588c1d-823a-471c-7b4b-37333697bfde
-    - 2222f5f7-0210-4d7c-9d10-b49c333d057f: 84511c33-5838-4266-700a-e260ee843e3c
-    - 3453c4f8-e869-4413-b41c-ff1ce86d779b: 4fc99d84-e027-4fa7-4951-ef443019f899
-    - 3805ce42-8b9f-4696-a624-c0b5225017c0: 1ac16214-53e3-441e-71f3-c08a6e1dac8c
-    - 5d0d652f-4d39-4ec6-be82-3c9de6d66762: 3cac1dd3-ae92-4bed-5cd3-aaaa2a8a3b8d
-    - 89e9039f-b612-4b58-9e48-fefb16ee1df0: 2958ef73-128f-428d-7656-a248f95ab95e
-    - df678fff-bbbf-4e7f-ae4a-430d4e535639: 82ed9d4a-547c-48cb-4c6d-0de53351b74a
-    - e4537f11-d3a3-4fa9-be6a-0bcff1dbb4eb: f7aee82f-059f-4f21-7087-7c23628d42cd
-    - e678b103-9d86-406e-9439-28a6fa56be58: 6ea3b285-a97c-4d6d-5ebf-a2b1b367a002
+    []
   Name: Low Poly Breadboard
   Enabled: true
   Layers: 1
@@ -9090,6 +9121,21 @@
     []
   Components:
     - !<own> 66ec0665-8af3-4b42-a1f4-f26dc1fbad19
+- !<SceneObject/4eae7982-b0a1-402e-84f5-2d8994ef83b5>
+  PrefabRemaps:
+    []
+  Name: Orchestrator
+  Enabled: true
+  Layers: 1
+  LocalTransform: !<TransformEntity>
+    Position: {x: 0.000000, y: 0.000000, z: 0.000000}
+    Rotation: {x: 0.000000, y: 0.000000, z: 0.000000}
+    Scale: {x: 1.000000, y: 1.000000, z: 1.000000}
+    HasSegmentScaleCompensation: false
+  Children:
+    []
+  Components:
+    - !<own> db923ddd-b23b-4317-8c17-85d8b2b9d6a0
 - !<Image/4eb33ceb-1cec-4b5d-a715-78fd4f50bd60>
   PrefabRemaps:
     []
@@ -15344,6 +15390,21 @@
     []
   Components:
     - !<own> 25dd8292-6d24-4b57-895c-4afac1de3523
+- !<SceneObject/82571ce9-7591-44b5-b9ba-23552e8a6a3d>
+  PrefabRemaps:
+    []
+  Name: RSG Credentials
+  Enabled: true
+  Layers: 1
+  LocalTransform: !<TransformEntity>
+    Position: {x: 0.000000, y: 0.000000, z: 0.000000}
+    Rotation: {x: 0.000000, y: 0.000000, z: 0.000000}
+    Scale: {x: 1.000000, y: 1.000000, z: 1.000000}
+    HasSegmentScaleCompensation: false
+  Children:
+    []
+  Components:
+    - !<own> 9225fe03-04dd-4f2c-93d9-7c73abd45e71
 - !<SceneObject/8265d4f3-2d96-4d87-a1e0-19c5c24e52f4>
   PrefabRemaps:
     []
@@ -15456,6 +15517,22 @@
     CapitalizationOverride: None
   DepthTest: false
   TwoSided: false
+- !<ScriptComponent/82d81a8e-736d-4bf0-a700-ba69bb7f4184>
+  PrefabRemaps:
+    []
+  Name: GameManager
+  Enabled: true
+  ScriptAsset: !<reference> a1d0adc9-5175-4ce2-9fda-3161eb9ca08e
+  ScriptInputsDefault:
+    enableLogging: true
+  ScriptTypesDefault:
+    {}
+  ScriptInputs:
+    "":
+      enableLogging: true
+  ScriptTypes:
+    "":
+      {}
 - !<Image/82f13042-576d-4840-ad75-f49874c9e45b>
   PrefabRemaps:
     []
@@ -17185,6 +17262,29 @@
     []
   Components:
     - !<own> 756b9b44-5010-4d31-b653-878cb33a94d2
+- !<ScriptComponent/9225fe03-04dd-4f2c-93d9-7c73abd45e71>
+  PrefabRemaps:
+    []
+  Name: RemoteServiceGatewayCredentials
+  Enabled: true
+  ScriptAsset: !<reference> 84568520-7301-4bfa-9fc4-0d74fbb19b6b
+  ScriptInputsDefault:
+    openAIToken: true
+    snapToken: true
+    enableLogging: true
+    enableLoggingLifecycle: true
+  ScriptTypesDefault:
+    {}
+  ScriptInputs:
+    "":
+      openAIToken: "[INSERT OPENAI TOKEN HERE]"
+      googleToken: d79f4e34-6434-464d-9fef-3b22a040a77d
+      snapToken: "[INSERT SNAP TOKEN HERE]"
+      enableLogging: false
+      enableLoggingLifecycle: false
+  ScriptTypes:
+    "":
+      {}
 - !<RenderMeshVisual/92404b15-92b5-43d4-a5cd-9620da633ae6>
   PrefabRemaps:
     []
@@ -21403,6 +21503,26 @@
   ScriptTypes:
     "":
       {}
+- !<ScriptComponent/b95efe19-b24f-4537-aaed-ce38556f8c0c>
+  PrefabRemaps:
+    []
+  Name: ExperienceOrchestrator
+  Enabled: true
+  ScriptAsset: !<reference> 9e80a400-949a-45ce-a4a4-340988ab3966
+  ScriptInputsDefault:
+    greetOnStart: true
+    enableLogging: true
+    panelDistance: true
+  ScriptTypesDefault:
+    {}
+  ScriptInputs:
+    "":
+      greetOnStart: true
+      enableLogging: true
+      panelDistance: !<float> 80.000000
+  ScriptTypes:
+    "":
+      {}
 - !<ScriptComponent/b99548f1-398b-4118-87c2-7b08d868d73b>
   PrefabRemaps:
     []
@@ -21599,6 +21719,26 @@
         []
       onFinishedCallbacks:
         []
+  ScriptTypes:
+    "":
+      {}
+- !<ScriptComponent/ba9b0252-db63-4aee-ba69-de0f00706d9b>
+  PrefabRemaps:
+    []
+  Name: ZappyAI
+  Enabled: true
+  ScriptAsset: !<reference> 45c7f51a-2723-4832-a2fa-7cfcae0b8c41
+  ScriptInputsDefault:
+    enableLogging: true
+    speechText: true
+  ScriptTypesDefault:
+    {}
+  ScriptInputs:
+    "":
+      enableLogging: true
+      speechText: !<reference.Text> 00000000-0000-0000-0000-000000000000
+      ttsModule: !<reference.TextToSpeechModule> 66611ae7-ebe5-4cd2-99c9-5b7ba67ca8b1
+      audioComponent: !<reference.AudioComponent> 13eea8c6-3a41-42e1-86fe-1d95051270ac
   ScriptTypes:
     "":
       {}
@@ -24321,6 +24461,42 @@
     - !<own> ca8b4890-e55c-4e22-a16e-4022d829163f
   Components:
     []
+- !<ScriptComponent/ceee87c3-00a6-4266-813d-7f409cc1e012>
+  PrefabRemaps:
+    []
+  Name: CheckWorkController
+  Enabled: true
+  ScriptAsset: !<reference> 66879c1c-5086-46e8-83d6-acc43670bbd8
+  ScriptInputsDefault:
+    zappyAI: true
+    gameManager: true
+    camModule: true
+    cropTexture: true
+    cropLeft: true
+    cropRight: true
+    cropBottom: true
+    cropTop: true
+    previewImage: true
+    previewPanel: true
+    enableLogging: true
+  ScriptTypesDefault:
+    {}
+  ScriptInputs:
+    "":
+      zappyAI: !<MappingBased.AssignableType> 00000000-0000-0000-0000-000000000000
+      gameManager: !<MappingBased.AssignableType_1> 00000000-0000-0000-0000-000000000000
+      camModule: !<reference.CameraModule> 00000000-0000-0000-0000-000000000000
+      cropTexture: !<reference.Texture> 00000000-0000-0000-0000-000000000000
+      cropLeft: -0.400000
+      cropRight: 0.400000
+      cropBottom: -0.400000
+      cropTop: 0.400000
+      previewImage: !<reference.Image> 00000000-0000-0000-0000-000000000000
+      previewPanel: !<reference.SceneObject> 00000000-0000-0000-0000-000000000000
+      enableLogging: true
+  ScriptTypes:
+    "":
+      {}
 - !<SceneObject/cf5486a1-a4cc-491b-b79b-4c094ff0f841>
   PrefabRemaps:
     []
@@ -24931,6 +25107,24 @@
     - !<own> df3a2f75-2918-4b29-bb73-c6fbe0692210
   Components:
     - !<own> e3d3e51c-4b4a-4741-ba37-75b298056db5
+- !<ScriptComponent/d4e4ea5c-ab36-4964-94e8-10e13bccd1ee>
+  PrefabRemaps:
+    []
+  Name: CheckWorkBridge
+  Enabled: true
+  ScriptAsset: !<reference> cf942907-7a80-49e8-a01f-1e5ffbf66529
+  ScriptInputsDefault:
+    interactable: true
+    checkWork: true
+  ScriptTypesDefault:
+    {}
+  ScriptInputs:
+    "":
+      interactable: !<MappingBased.AssignableType> 00000000-0000-0000-0000-000000000000
+      checkWork: !<MappingBased.AssignableType_1> 00000000-0000-0000-0000-000000000000
+  ScriptTypes:
+    "":
+      {}
 - !<SceneObject/d50c7be2-3cd3-496e-867d-1aa488bb16b3>
   PrefabRemaps:
     []
@@ -25619,6 +25813,26 @@
     []
   Components:
     - !<own> 18194589-e271-43a7-9ea6-10d1179e38ed
+- !<ScriptComponent/db923ddd-b23b-4317-8c17-85d8b2b9d6a0>
+  PrefabRemaps:
+    []
+  Name: ExperienceOrchestrator
+  Enabled: true
+  ScriptAsset: !<reference> 9e80a400-949a-45ce-a4a4-340988ab3966
+  ScriptInputsDefault:
+    greetOnStart: true
+    enableLogging: true
+    panelDistance: true
+  ScriptTypesDefault:
+    {}
+  ScriptInputs:
+    "":
+      greetOnStart: true
+      enableLogging: true
+      panelDistance: !<float> 80.000000
+  ScriptTypes:
+    "":
+      {}
 - !<RenderMeshVisual/dba66048-87f2-439f-8fdd-599aadc8ae38>
   PrefabRemaps:
     []
@@ -29010,6 +29224,7 @@
     - !<own> 202a17a1-dfdd-4d05-9abb-f5e7a8146605
   Components:
     - !<own> 43425d27-9a6b-458a-abae-f1d8838d84f8
+    - !<own> d4e4ea5c-ab36-4964-94e8-10e13bccd1ee
 - !<SceneObject/f73fe039-533b-4f5a-98ee-f2eeaea1431e>
   PrefabRemaps:
     []

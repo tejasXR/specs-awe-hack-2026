@@ -1,0 +1,104 @@
+- !<AssetImportMetadata/d583ae2b-9775-4b53-9cef-f3e51cd71d7f>
+  ImportedAssetIds:
+    TypeScriptAsset: !<reference> 9e80a400-949a-45ce-a4a4-340988ab3966
+  ImporterName: TypeScriptAssetImporter
+  PrimaryAsset: !<reference> 9e80a400-949a-45ce-a4a4-340988ab3966
+  PackageType: NotAPackage
+  LegacyPackagePolicy: ~
+  ExtraData:
+    {}
+  AssetDataMap:
+    TypeScriptAsset: !<own> 3ca3cf6e-11f5-4926-ad02-650a604e9dd2
+  DependentFiles:
+    []
+  ImporterSettings: !<AssetImporterSettings>
+    {}
+  CompressionSettings: !<own> 00000000-0000-0000-0000-000000000000
+- !<TypeScriptAssetData/3ca3cf6e-11f5-4926-ad02-650a604e9dd2>
+  SvgIcon: ""
+  SetupScript:
+    code: ""
+  Description: ""
+  VersionMajor: 0
+  VersionMinor: 0
+  VersionPatch: 0
+  ComponentUid: 4d21ef39-84e9-4fc3-8edb-9d0a5e25ad55
+  ExportUid: 00000000-0000-0000-0000-000000000000
+  PackagePolicy: CanBeUnpacked
+  ScriptInputsHidden:
+    completionMessageInput: false
+    completionPanel: false
+    completionStatsInput: false
+    completionTitleInput: false
+    componentTrayInput: false
+    enableLogging: false
+    greetOnStart: false
+    inLevelPanel: false
+    levelNameInput: false
+    panelDistance: false
+    startMenuPanel: false
+    stepComponentInput: false
+    stepCounterInput: false
+    stepHintInput: false
+    stepInstructionInput: false
+    stepPlacementInput: false
+    timerInput: false
+    voiceCueLabelTextInput: false
+    voiceCueText: false
+  ScriptTypesHidden:
+    {}
+  ReadMe: !<reference> 00000000-0000-0000-0000-000000000000
+  DeclarationFile: !<reference> 00000000-0000-0000-0000-000000000000
+  Tags:
+    []
+  Attachments:
+    []
+  DefaultScriptInputs:
+    - greetOnStart: true
+      enableLogging: true
+      panelDistance: !<float> 80.000000
+      startMenuPanel: !<reference.SceneObject> 00000000-0000-0000-0000-000000000000
+      inLevelPanel: !<reference.SceneObject> 00000000-0000-0000-0000-000000000000
+      voiceCueText: !<reference.Text> 00000000-0000-0000-0000-000000000000
+      voiceCueLabelTextInput: !<reference.Text> 00000000-0000-0000-0000-000000000000
+      stepInstructionInput: !<reference.Text> 00000000-0000-0000-0000-000000000000
+      stepCounterInput: !<reference.Text> 00000000-0000-0000-0000-000000000000
+      levelNameInput: !<reference.Text> 00000000-0000-0000-0000-000000000000
+      stepHintInput: !<reference.Text> 00000000-0000-0000-0000-000000000000
+      stepComponentInput: !<reference.Text> 00000000-0000-0000-0000-000000000000
+      stepPlacementInput: !<reference.Text> 00000000-0000-0000-0000-000000000000
+      componentTrayInput: !<reference.Text> 00000000-0000-0000-0000-000000000000
+      timerInput: !<reference.Text> 00000000-0000-0000-0000-000000000000
+      completionPanel: !<reference.SceneObject> 00000000-0000-0000-0000-000000000000
+      completionTitleInput: !<reference.Text> 00000000-0000-0000-0000-000000000000
+      completionStatsInput: !<reference.Text> 00000000-0000-0000-0000-000000000000
+      completionMessageInput: !<reference.Text> 00000000-0000-0000-0000-000000000000
+  ScriptTypes:
+    -
+      {}
+  InputLines:
+    - // @input bool greetOnStart
+    - // @input bool enableLogging = true
+    - '// @input float panelDistance = 80 {"hint":"Distance from camera for floating panels (cm)"}'
+    - '// @ui {"widget":"separator"}'
+    - '// @ui {"widget":"label", "label":"<b>Start Menu Panel</b>"}'
+    - '// @input SceneObject startMenuPanel {"hint":"Start menu root SceneObject — shown on launch"}'
+    - '// @ui {"widget":"separator"}'
+    - '// @ui {"widget":"label", "label":"<b>In-Level HUD</b>"}'
+    - '// @input SceneObject inLevelPanel {"hint":"In-level HUD root SceneObject"}'
+    - '// @input Component.Text voiceCueText {"hint":"Voice cue text (LEFT panel)"}'
+    - "// @input Component.Text voiceCueLabelTextInput {\"hint\":\"Voice cue label (e.g. 'VOICE CUE')\"}"
+    - '// @input Component.Text stepInstructionInput {"hint":"Step instruction (main text, CENTER panel)"}'
+    - "// @input Component.Text stepCounterInput {\"hint\":\"Step counter (e.g. 'Step 2 of 7')\"}"
+    - '// @input Component.Text levelNameInput {"hint":"Level name text"}'
+    - '// @input Component.Text stepHintInput {"hint":"Step hint text"}'
+    - '// @input Component.Text stepComponentInput {"hint":"Current component name"}'
+    - '// @input Component.Text stepPlacementInput {"hint":"Placement instruction"}'
+    - '// @input Component.Text componentTrayInput {"hint":"Component tray text"}'
+    - '// @input Component.Text timerInput {"hint":"Timer text"}'
+    - '// @ui {"widget":"separator"}'
+    - '// @ui {"widget":"label", "label":"<b>Completion Panel</b>"}'
+    - '// @input SceneObject completionPanel {"hint":"Completion root SceneObject"}'
+    - '// @input Component.Text completionTitleInput {"hint":"Completion title text"}'
+    - '// @input Component.Text completionStatsInput {"hint":"Completion stats text"}'
+    - '// @input Component.Text completionMessageInput {"hint":"Completion message text"}'
