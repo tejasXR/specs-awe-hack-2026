@@ -15,13 +15,9 @@ import Event, {
 } from "SpectaclesInteractionKit.lspkg/Utils/Event";
 import WorldCameraFinderProvider from "SpectaclesInteractionKit.lspkg/Providers/CameraProvider/WorldCameraFinderProvider";
 
-import { AiCharacter } from "./Zappy/AiCharacter";
-import { AiCharacterOption } from "./Zappy/AiCharacterOption";
-import { AiCharacterOptionsController } from "./Zappy/AiCharacterOptionsController";
-import {
-  ZappyAI,
-  ZappyResponse,
-} from "./Zappy/ZappyAI";
+import { ZappyOptionUI } from "./Zappy/ZappyOptionUI";
+import { ZappyOptionsController } from "./Zappy/ZappyOptionsController";
+import { ZappyAI, ZappyResponse } from "./Zappy/ZappyAI";
 import {
   GameManager,
   GameScreen,
@@ -51,69 +47,98 @@ export class ExperienceOrchestrator extends BaseScriptComponent {
   // ─── UI Panel Inputs (wire these in Lens Studio Inspector!) ───
 
   @ui.separator
-  @ui.label('<b>Start Menu Panel</b>')
-
-  @input @hint("Start menu root SceneObject — shown on launch") @allowUndefined
+  @ui.label("<b>Start Menu Panel</b>")
+  @input
+  @hint("Start menu root SceneObject — shown on launch")
+  @allowUndefined
   startMenuPanel!: SceneObject;
 
   @ui.separator
-  @ui.label('<b>In-Level HUD</b>')
-
-  @input @hint("In-level HUD root SceneObject") @allowUndefined
+  @ui.label("<b>In-Level HUD</b>")
+  @input
+  @hint("In-level HUD root SceneObject")
+  @allowUndefined
   inLevelPanel!: SceneObject;
 
-  @input @hint("Voice cue text (LEFT panel)") @allowUndefined
+  @input
+  @hint("Voice cue text (LEFT panel)")
+  @allowUndefined
   voiceCueText!: Text;
 
-  @input @hint("Voice cue label (e.g. 'VOICE CUE')") @allowUndefined
+  @input
+  @hint("Voice cue label (e.g. 'VOICE CUE')")
+  @allowUndefined
   voiceCueLabelTextInput!: Text;
 
-  @input @hint("Step instruction (main text, CENTER panel)") @allowUndefined
+  @input
+  @hint("Step instruction (main text, CENTER panel)")
+  @allowUndefined
   stepInstructionInput!: Text;
 
-  @input @hint("Step counter (e.g. 'Step 2 of 7')") @allowUndefined
+  @input
+  @hint("Step counter (e.g. 'Step 2 of 7')")
+  @allowUndefined
   stepCounterInput!: Text;
 
-  @input @hint("Level name text") @allowUndefined
+  @input
+  @hint("Level name text")
+  @allowUndefined
   levelNameInput!: Text;
 
-  @input @hint("Step hint text") @allowUndefined
+  @input
+  @hint("Step hint text")
+  @allowUndefined
   stepHintInput!: Text;
 
-  @input @hint("Current component name") @allowUndefined
+  @input
+  @hint("Current component name")
+  @allowUndefined
   stepComponentInput!: Text;
 
-  @input @hint("Placement instruction") @allowUndefined
+  @input
+  @hint("Placement instruction")
+  @allowUndefined
   stepPlacementInput!: Text;
 
-  @input @hint("Component tray text") @allowUndefined
+  @input
+  @hint("Component tray text")
+  @allowUndefined
   componentTrayInput!: Text;
 
-  @input @hint("Timer text") @allowUndefined
+  @input
+  @hint("Timer text")
+  @allowUndefined
   timerInput!: Text;
 
   @ui.separator
-  @ui.label('<b>Completion Panel</b>')
-
-  @input @hint("Completion root SceneObject") @allowUndefined
+  @ui.label("<b>Completion Panel</b>")
+  @input
+  @hint("Completion root SceneObject")
+  @allowUndefined
   completionPanel!: SceneObject;
 
-  @input @hint("Completion title text") @allowUndefined
+  @input
+  @hint("Completion title text")
+  @allowUndefined
   completionTitleInput!: Text;
 
-  @input @hint("Completion stats text") @allowUndefined
+  @input
+  @hint("Completion stats text")
+  @allowUndefined
   completionStatsInput!: Text;
 
-  @input @hint("Completion message text") @allowUndefined
+  @input
+  @hint("Completion message text")
+  @allowUndefined
   completionMessageInput!: Text;
 
   // --- Resolved at runtime ---
 
   private gameManager: GameManager;
   private zappyAI: ZappyAI;
-  private character: AiCharacter;
-  private optionsController: AiCharacterOptionsController | null = null;
-  private levelOptions: AiCharacterOption[] = [];
+  // private character: AiCharacter;
+  private optionsController: ZappyOptionsController | null = null;
+  private levelOptions: ZappyOptionUI[] = [];
   private bleController: BreadboardBleController | null = null;
   private unsubs: unsubscribe[] = [];
   private isInLevel: boolean = false;
@@ -161,7 +186,8 @@ export class ExperienceOrchestrator extends BaseScriptComponent {
     print("[Orchestrator] --- AUTO-DISCOVERY STARTING ---");
 
     // Camera
-    this.cameraTransform = WorldCameraFinderProvider.getInstance().getTransform();
+    this.cameraTransform =
+      WorldCameraFinderProvider.getInstance().getTransform();
     print("[Orchestrator] Camera transform acquired");
 
     const scene = global.scene;
@@ -171,11 +197,13 @@ export class ExperienceOrchestrator extends BaseScriptComponent {
     this.gameManager = gmObj.getComponent(GameManager.getTypeName());
     if (!this.gameManager) {
       gmObj = this.findObjectByName(scene, "GameManager");
-      if (gmObj) this.gameManager = gmObj.getComponent(GameManager.getTypeName());
+      if (gmObj)
+        this.gameManager = gmObj.getComponent(GameManager.getTypeName());
     }
     if (!this.gameManager) {
       const orchObj = this.findObjectByName(scene, "Orchestrator");
-      if (orchObj) this.gameManager = orchObj.getComponent(GameManager.getTypeName());
+      if (orchObj)
+        this.gameManager = orchObj.getComponent(GameManager.getTypeName());
     }
     if (!this.gameManager) {
       print("[Orchestrator] GameManager NOT FOUND -- ABORTING");
@@ -188,12 +216,12 @@ export class ExperienceOrchestrator extends BaseScriptComponent {
     if (this.zappyObj) {
       print("[Orchestrator] Found 'Zappy' object");
       this.zappyAI = this.zappyObj.getComponent(ZappyAI.getTypeName());
-      this.character = this.zappyObj.getComponent(AiCharacter.getTypeName());
+      // this.character = this.zappyObj.getComponent(AiCharacter.getTypeName());
     } else {
       print("[Orchestrator] No 'Zappy' object -- ABORTING");
       return;
     }
-    if (!this.zappyAI || !this.character) {
+    if (!this.zappyAI) {
       print("[Orchestrator] ZappyAI or AiCharacter missing -- ABORTING");
       return;
     }
@@ -202,16 +230,23 @@ export class ExperienceOrchestrator extends BaseScriptComponent {
     // -- Options controller + option buttons --
     this.optionsObj = this.findChildByName(this.zappyObj, "Options");
     if (this.optionsObj) {
-      this.optionsController = this.optionsObj.getComponent(AiCharacterOptionsController.getTypeName());
-      if (this.optionsController) print("[Orchestrator] OptionsController found");
+      this.optionsController = this.optionsObj.getComponent(
+        ZappyOptionsController.getTypeName(),
+      );
+      if (this.optionsController)
+        print("[Orchestrator] OptionsController found");
     }
 
-    const optionNames = ["Check Work Option", "General Help Option", "Information Option"];
+    const optionNames = [
+      "Check Work Option",
+      "General Help Option",
+      "Information Option",
+    ];
     if (this.optionsObj) {
       for (const name of optionNames) {
         const child = this.findChildByName(this.optionsObj, name);
         if (child) {
-          const opt = child.getComponent(AiCharacterOption.getTypeName());
+          const opt = child.getComponent(ZappyOptionUI.getTypeName());
           if (opt) {
             this.levelOptions.push(opt);
             print("[Orchestrator] Option found: '" + name + "'");
@@ -223,7 +258,9 @@ export class ExperienceOrchestrator extends BaseScriptComponent {
     // -- BLE Controller --
     const bleObj = this.findObjectByName(scene, "BLE Controller");
     if (bleObj) {
-      this.bleController = bleObj.getComponent(BreadboardBleController.getTypeName());
+      this.bleController = bleObj.getComponent(
+        BreadboardBleController.getTypeName(),
+      );
       if (this.bleController) print("[Orchestrator] BLE found");
     }
 
@@ -255,10 +292,16 @@ export class ExperienceOrchestrator extends BaseScriptComponent {
 
     // Also try alternate names and common parent objects
     const names = [
-      "ExperienceInitialization", "Experience Initialization",
-      "Scene Setup", "SceneSetup", "Debug Text",
-      "Initialization", "Init", "Setup",
-      "Forward Positioner", "ObjectForwardPositioner",
+      "ExperienceInitialization",
+      "Experience Initialization",
+      "Scene Setup",
+      "SceneSetup",
+      "Debug Text",
+      "Initialization",
+      "Init",
+      "Setup",
+      "Forward Positioner",
+      "ObjectForwardPositioner",
     ];
     for (const name of names) {
       const obj = this.findObjectByName(scene, name);
@@ -286,7 +329,11 @@ export class ExperienceOrchestrator extends BaseScriptComponent {
     const textComp = obj.getComponent("Component.Text") as Text;
     if (textComp && textComp.text && textComp.text.indexOf(search) >= 0) {
       obj.enabled = false;
-      print("[Orchestrator] Disabled text: '" + textComp.text.substring(0, 40) + "...'");
+      print(
+        "[Orchestrator] Disabled text: '" +
+          textComp.text.substring(0, 40) +
+          "...'",
+      );
     }
     for (let i = 0; i < obj.getChildrenCount(); i++) {
       this.searchAndDisableText(obj.getChild(i), search);
@@ -297,7 +344,8 @@ export class ExperienceOrchestrator extends BaseScriptComponent {
 
   private buildAllPanels(): void {
     // Check if real panels are wired
-    this.usingRealPanels = !isNull(this.startMenuPanel) && !isNull(this.inLevelPanel);
+    this.usingRealPanels =
+      !isNull(this.startMenuPanel) && !isNull(this.inLevelPanel);
 
     if (this.usingRealPanels) {
       print("[Orchestrator] Using REAL UI panels from Inspector");
@@ -312,22 +360,46 @@ export class ExperienceOrchestrator extends BaseScriptComponent {
   private setupRealPanels(): void {
     this.startMenuRoot = this.startMenuPanel;
     this.inLevelRoot = this.inLevelPanel;
-    this.completionRoot = isNull(this.completionPanel) ? null : this.completionPanel;
+    this.completionRoot = isNull(this.completionPanel)
+      ? null
+      : this.completionPanel;
 
     // Map @input text components to internal refs
-    this.voiceCueLabelText = isNull(this.voiceCueLabelTextInput) ? null : this.voiceCueLabelTextInput;
-    this.voiceCueBodyText = isNull(this.voiceCueText) ? null : this.voiceCueText;
-    this.stepInstructionText = isNull(this.stepInstructionInput) ? null : this.stepInstructionInput;
-    this.stepCounterText = isNull(this.stepCounterInput) ? null : this.stepCounterInput;
-    this.stepLevelNameText = isNull(this.levelNameInput) ? null : this.levelNameInput;
+    this.voiceCueLabelText = isNull(this.voiceCueLabelTextInput)
+      ? null
+      : this.voiceCueLabelTextInput;
+    this.voiceCueBodyText = isNull(this.voiceCueText)
+      ? null
+      : this.voiceCueText;
+    this.stepInstructionText = isNull(this.stepInstructionInput)
+      ? null
+      : this.stepInstructionInput;
+    this.stepCounterText = isNull(this.stepCounterInput)
+      ? null
+      : this.stepCounterInput;
+    this.stepLevelNameText = isNull(this.levelNameInput)
+      ? null
+      : this.levelNameInput;
     this.stepHintText = isNull(this.stepHintInput) ? null : this.stepHintInput;
-    this.stepComponentText = isNull(this.stepComponentInput) ? null : this.stepComponentInput;
-    this.stepPlacementText = isNull(this.stepPlacementInput) ? null : this.stepPlacementInput;
-    this.componentTrayText = isNull(this.componentTrayInput) ? null : this.componentTrayInput;
+    this.stepComponentText = isNull(this.stepComponentInput)
+      ? null
+      : this.stepComponentInput;
+    this.stepPlacementText = isNull(this.stepPlacementInput)
+      ? null
+      : this.stepPlacementInput;
+    this.componentTrayText = isNull(this.componentTrayInput)
+      ? null
+      : this.componentTrayInput;
     this.timerDisplayText = isNull(this.timerInput) ? null : this.timerInput;
-    this.completionTitleText = isNull(this.completionTitleInput) ? null : this.completionTitleInput;
-    this.completionStatsText = isNull(this.completionStatsInput) ? null : this.completionStatsInput;
-    this.completionMessageText = isNull(this.completionMessageInput) ? null : this.completionMessageInput;
+    this.completionTitleText = isNull(this.completionTitleInput)
+      ? null
+      : this.completionTitleInput;
+    this.completionStatsText = isNull(this.completionStatsInput)
+      ? null
+      : this.completionStatsInput;
+    this.completionMessageText = isNull(this.completionMessageInput)
+      ? null
+      : this.completionMessageInput;
 
     print("[Orchestrator] Real panels mapped");
   }
@@ -340,12 +412,37 @@ export class ExperienceOrchestrator extends BaseScriptComponent {
     this.startMenuRoot = global.scene.createSceneObject("StartMenu_Root");
     this.startMenuRoot.setParent(parent);
 
-    this.makePanel(this.startMenuRoot, "MenuBG", new vec3(0, 2, 0.5), 24, 20, new vec4(0.06, 0.08, 0.16, 0.95));
-    this.menuTitleText = this.makeText(this.startMenuRoot, "Menu_Title", new vec3(0, 20, 0), 42, new vec4(0.0, 0.9, 0.8, 1));
+    this.makePanel(
+      this.startMenuRoot,
+      "MenuBG",
+      new vec3(0, 2, 0.5),
+      24,
+      20,
+      new vec4(0.06, 0.08, 0.16, 0.95),
+    );
+    this.menuTitleText = this.makeText(
+      this.startMenuRoot,
+      "Menu_Title",
+      new vec3(0, 20, 0),
+      42,
+      new vec4(0.0, 0.9, 0.8, 1),
+    );
     this.menuTitleText.text = "AR CIRCUIT LAB";
-    this.menuSubtitleText = this.makeText(this.startMenuRoot, "Menu_Subtitle", new vec3(0, 12, 0), 24, new vec4(1, 1, 1, 1));
+    this.menuSubtitleText = this.makeText(
+      this.startMenuRoot,
+      "Menu_Subtitle",
+      new vec3(0, 12, 0),
+      24,
+      new vec4(1, 1, 1, 1),
+    );
     this.menuSubtitleText.text = "What do you\nwant to build?";
-    this.menuModesText = this.makeText(this.startMenuRoot, "Menu_Modes", new vec3(0, -4, 0), 18, new vec4(0.9, 0.9, 0.9, 1));
+    this.menuModesText = this.makeText(
+      this.startMenuRoot,
+      "Menu_Modes",
+      new vec3(0, -4, 0),
+      18,
+      new vec4(0.9, 0.9, 0.9, 1),
+    );
     this.menuModesText.text =
       "\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\n" +
       "  \u25CF  LEARN\n     LED Circuit - Beginner\n" +
@@ -360,40 +457,152 @@ export class ExperienceOrchestrator extends BaseScriptComponent {
     this.inLevelRoot = global.scene.createSceneObject("InLevel_Root");
     this.inLevelRoot.setParent(parent);
 
-    this.makePanel(this.inLevelRoot, "VC_BG", new vec3(-35, 5, 0.5), 18, 12, new vec4(0.06, 0.08, 0.16, 0.9));
-    this.voiceCueLabelText = this.makeText(this.inLevelRoot, "VC_Label", new vec3(-35, 12, 0), 12, new vec4(0.0, 0.9, 0.8, 1));
+    this.makePanel(
+      this.inLevelRoot,
+      "VC_BG",
+      new vec3(-35, 5, 0.5),
+      18,
+      12,
+      new vec4(0.06, 0.08, 0.16, 0.9),
+    );
+    this.voiceCueLabelText = this.makeText(
+      this.inLevelRoot,
+      "VC_Label",
+      new vec3(-35, 12, 0),
+      12,
+      new vec4(0.0, 0.9, 0.8, 1),
+    );
     this.voiceCueLabelText.text = "VOICE CUE";
-    this.voiceCueBodyText = this.makeText(this.inLevelRoot, "VC_Body", new vec3(-35, 2, 0), 14, new vec4(0.9, 0.9, 0.9, 1));
+    this.voiceCueBodyText = this.makeText(
+      this.inLevelRoot,
+      "VC_Body",
+      new vec3(-35, 2, 0),
+      14,
+      new vec4(0.9, 0.9, 0.9, 1),
+    );
     this.voiceCueBodyText.text = "";
 
-    this.makePanel(this.inLevelRoot, "Step_BG", new vec3(0, 5, 0.5), 22, 18, new vec4(0.06, 0.08, 0.16, 0.9));
-    this.stepLevelNameText = this.makeText(this.inLevelRoot, "Step_Level", new vec3(0, 22, 0), 12, new vec4(0.9, 0.7, 0.1, 1));
-    this.stepCounterText = this.makeText(this.inLevelRoot, "Step_Counter", new vec3(0, 17, 0), 12, new vec4(0.6, 0.6, 0.6, 1));
-    this.stepInstructionText = this.makeText(this.inLevelRoot, "Step_Instr", new vec3(0, 8, 0), 22, new vec4(1, 1, 1, 1));
-    this.stepHintText = this.makeText(this.inLevelRoot, "Step_Hint", new vec3(0, 0, 0), 14, new vec4(0.7, 0.7, 0.7, 1));
-    this.stepComponentText = this.makeText(this.inLevelRoot, "Step_Comp", new vec3(0, -7, 0), 16, new vec4(0.3, 0.9, 0.4, 1));
-    this.stepPlacementText = this.makeText(this.inLevelRoot, "Step_Place", new vec3(0, -14, 0), 12, new vec4(0.0, 0.9, 0.8, 1));
+    this.makePanel(
+      this.inLevelRoot,
+      "Step_BG",
+      new vec3(0, 5, 0.5),
+      22,
+      18,
+      new vec4(0.06, 0.08, 0.16, 0.9),
+    );
+    this.stepLevelNameText = this.makeText(
+      this.inLevelRoot,
+      "Step_Level",
+      new vec3(0, 22, 0),
+      12,
+      new vec4(0.9, 0.7, 0.1, 1),
+    );
+    this.stepCounterText = this.makeText(
+      this.inLevelRoot,
+      "Step_Counter",
+      new vec3(0, 17, 0),
+      12,
+      new vec4(0.6, 0.6, 0.6, 1),
+    );
+    this.stepInstructionText = this.makeText(
+      this.inLevelRoot,
+      "Step_Instr",
+      new vec3(0, 8, 0),
+      22,
+      new vec4(1, 1, 1, 1),
+    );
+    this.stepHintText = this.makeText(
+      this.inLevelRoot,
+      "Step_Hint",
+      new vec3(0, 0, 0),
+      14,
+      new vec4(0.7, 0.7, 0.7, 1),
+    );
+    this.stepComponentText = this.makeText(
+      this.inLevelRoot,
+      "Step_Comp",
+      new vec3(0, -7, 0),
+      16,
+      new vec4(0.3, 0.9, 0.4, 1),
+    );
+    this.stepPlacementText = this.makeText(
+      this.inLevelRoot,
+      "Step_Place",
+      new vec3(0, -14, 0),
+      12,
+      new vec4(0.0, 0.9, 0.8, 1),
+    );
 
-    this.makePanel(this.inLevelRoot, "CT_BG", new vec3(0, 28, 0.5), 22, 3, new vec4(0.08, 0.1, 0.2, 0.85));
-    this.componentTrayText = this.makeText(this.inLevelRoot, "CompTray", new vec3(0, 28, 0), 10, new vec4(0.9, 0.7, 0.1, 1));
+    this.makePanel(
+      this.inLevelRoot,
+      "CT_BG",
+      new vec3(0, 28, 0.5),
+      22,
+      3,
+      new vec4(0.08, 0.1, 0.2, 0.85),
+    );
+    this.componentTrayText = this.makeText(
+      this.inLevelRoot,
+      "CompTray",
+      new vec3(0, 28, 0),
+      10,
+      new vec4(0.9, 0.7, 0.1, 1),
+    );
     this.componentTrayText.text = "COMPONENT TRAY";
-    this.timerDisplayText = this.makeText(this.inLevelRoot, "Timer", new vec3(30, 22, 0), 16, new vec4(1, 1, 1, 1));
+    this.timerDisplayText = this.makeText(
+      this.inLevelRoot,
+      "Timer",
+      new vec3(30, 22, 0),
+      16,
+      new vec4(1, 1, 1, 1),
+    );
     this.timerDisplayText.text = "00:00";
 
     // COMPLETION
     this.completionRoot = global.scene.createSceneObject("Completion_Root");
     this.completionRoot.setParent(parent);
-    this.makePanel(this.completionRoot, "Comp_BG", new vec3(0, 0, 0.5), 22, 14, new vec4(0.06, 0.08, 0.16, 0.95));
-    this.completionTitleText = this.makeText(this.completionRoot, "Comp_Title", new vec3(0, 12, 0), 32, new vec4(0.3, 0.9, 0.4, 1));
+    this.makePanel(
+      this.completionRoot,
+      "Comp_BG",
+      new vec3(0, 0, 0.5),
+      22,
+      14,
+      new vec4(0.06, 0.08, 0.16, 0.95),
+    );
+    this.completionTitleText = this.makeText(
+      this.completionRoot,
+      "Comp_Title",
+      new vec3(0, 12, 0),
+      32,
+      new vec4(0.3, 0.9, 0.4, 1),
+    );
     this.completionTitleText.text = "CIRCUIT COMPLETE!";
-    this.completionStatsText = this.makeText(this.completionRoot, "Comp_Stats", new vec3(0, 0, 0), 18, new vec4(1, 1, 1, 1));
-    this.completionMessageText = this.makeText(this.completionRoot, "Comp_Msg", new vec3(0, -10, 0), 16, new vec4(0.9, 0.7, 0.1, 1));
+    this.completionStatsText = this.makeText(
+      this.completionRoot,
+      "Comp_Stats",
+      new vec3(0, 0, 0),
+      18,
+      new vec4(1, 1, 1, 1),
+    );
+    this.completionMessageText = this.makeText(
+      this.completionRoot,
+      "Comp_Msg",
+      new vec3(0, -10, 0),
+      16,
+      new vec4(0.9, 0.7, 0.1, 1),
+    );
 
     print("[Orchestrator] Fallback panels built");
   }
 
   /** Helper: create a styled Text. */
-  private makeText(parent: SceneObject, name: string, localPos: vec3, size: number, color?: vec4): Text {
+  private makeText(
+    parent: SceneObject,
+    name: string,
+    localPos: vec3,
+    size: number,
+    color?: vec4,
+  ): Text {
     const obj = global.scene.createSceneObject(name);
     obj.setParent(parent);
     const text = obj.createComponent("Component.Text") as Text;
@@ -411,7 +620,14 @@ export class ExperienceOrchestrator extends BaseScriptComponent {
   }
 
   /** Helper: create a dark background panel using filled blocks. */
-  private makePanel(parent: SceneObject, name: string, localPos: vec3, cols: number, rows: number, bgColor: vec4): void {
+  private makePanel(
+    parent: SceneObject,
+    name: string,
+    localPos: vec3,
+    cols: number,
+    rows: number,
+    bgColor: vec4,
+  ): void {
     const obj = global.scene.createSceneObject(name);
     obj.setParent(parent);
     const text = obj.createComponent("Component.Text") as Text;
@@ -491,17 +707,27 @@ export class ExperienceOrchestrator extends BaseScriptComponent {
       const toCamera = camPos.sub(panelPos);
       toCamera.y = 0;
       if (toCamera.length > 0.01) {
-        root.getTransform().setWorldRotation(
-          quat.lookAt(toCamera.normalize(), vec3.up()),
-        );
+        root
+          .getTransform()
+          .setWorldRotation(quat.lookAt(toCamera.normalize(), vec3.up()));
       }
-      print("[Orchestrator] Panel positioned at " + panelPos.x.toFixed(1) + ", " + panelPos.y.toFixed(1) + ", " + panelPos.z.toFixed(1));
+      print(
+        "[Orchestrator] Panel positioned at " +
+          panelPos.x.toFixed(1) +
+          ", " +
+          panelPos.y.toFixed(1) +
+          ", " +
+          panelPos.z.toFixed(1),
+      );
     }
   }
 
   // --- Scene Traversal Helpers ---
 
-  private findObjectByName(scene: ScriptScene, name: string): SceneObject | null {
+  private findObjectByName(
+    scene: ScriptScene,
+    name: string,
+  ): SceneObject | null {
     const rootCount = scene.getRootObjectsCount();
     for (let i = 0; i < rootCount; i++) {
       const found = this.searchTree(scene.getRootObject(i), name);
@@ -520,7 +746,10 @@ export class ExperienceOrchestrator extends BaseScriptComponent {
     return null;
   }
 
-  private findChildByName(parent: SceneObject, name: string): SceneObject | null {
+  private findChildByName(
+    parent: SceneObject,
+    name: string,
+  ): SceneObject | null {
     const childCount = parent.getChildrenCount();
     for (let i = 0; i < childCount; i++) {
       if (parent.getChild(i).name === name) return parent.getChild(i);
@@ -542,13 +771,19 @@ export class ExperienceOrchestrator extends BaseScriptComponent {
       this.gameManager.onStepAdvanced.add((data) => this.onStepAdvanced(data)),
     );
     this.unsubs.push(
-      this.gameManager.onStepSubmitted.add((data) => this.onStepSubmitted(data)),
+      this.gameManager.onStepSubmitted.add((data) =>
+        this.onStepSubmitted(data),
+      ),
     );
     this.unsubs.push(
-      this.gameManager.onLevelCompleted.add((data) => this.onLevelCompleted(data)),
+      this.gameManager.onLevelCompleted.add((data) =>
+        this.onLevelCompleted(data),
+      ),
     );
     this.unsubs.push(
-      this.gameManager.onScreenChanged.add((data) => this.onScreenChanged(data)),
+      this.gameManager.onScreenChanged.add((data) =>
+        this.onScreenChanged(data),
+      ),
     );
     this.unsubs.push(
       this.gameManager.onModeChanged.add((mode) => {
@@ -586,7 +821,12 @@ export class ExperienceOrchestrator extends BaseScriptComponent {
               print("[Orchestrator] ASK ZAPPY pressed");
               const step = this.gameManager.getCurrentStep();
               if (step) {
-                this.zappyAI.activate("The user needs help with: " + step.instruction + ". Hint: " + step.hint);
+                this.zappyAI.activate(
+                  "The user needs help with: " +
+                    step.instruction +
+                    ". Hint: " +
+                    step.hint,
+                );
               }
             }
           } else {
@@ -600,13 +840,17 @@ export class ExperienceOrchestrator extends BaseScriptComponent {
       );
     }
     if (this.levelOptions.length > 0) {
-      print("[Orchestrator] " + this.levelOptions.length + " option buttons wired");
+      print(
+        "[Orchestrator] " + this.levelOptions.length + " option buttons wired",
+      );
     }
 
     // BLE events
     if (this.bleController) {
       this.unsubs.push(
-        this.bleController.onStateChanged.add((state) => this.onBleStateChanged(state)),
+        this.bleController.onStateChanged.add((state) =>
+          this.onBleStateChanged(state),
+        ),
       );
       this.unsubs.push(
         this.bleController.onStatus.add((status) => this.onBleStatus(status)),
@@ -643,17 +887,31 @@ export class ExperienceOrchestrator extends BaseScriptComponent {
     this.gameManager.startLevel(levelIndex);
     this.isInLevel = true;
     this.zappyAI.activate(
-      "The user chose '" + level.name + "': " + level.description + ". Introduce the level briefly!",
+      "The user chose '" +
+        level.name +
+        "': " +
+        level.description +
+        ". Introduce the level briefly!",
     );
   }
 
   private onStepAdvanced(data: StepAdvanceData): void {
-    print("[Orchestrator] Step " + (data.index + 1) + "/" + data.totalSteps + ": " + data.step.instruction);
+    print(
+      "[Orchestrator] Step " +
+        (data.index + 1) +
+        "/" +
+        data.totalSteps +
+        ": " +
+        data.step.instruction,
+    );
 
     // Update CENTER step panel
     const level = this.gameManager.getCurrentLevel();
     if (level) {
-      this.setTextSafe(this.stepLevelNameText, level.name + " - " + level.difficulty);
+      this.setTextSafe(
+        this.stepLevelNameText,
+        level.name + " - " + level.difficulty,
+      );
 
       // Component tray: highlight current component
       const parts: string[] = [];
@@ -667,47 +925,71 @@ export class ExperienceOrchestrator extends BaseScriptComponent {
       this.setTextSafe(this.componentTrayText, parts.join("  |  "));
     }
 
-    this.setTextSafe(this.stepCounterText, "Step " + (data.index + 1) + " of " + data.totalSteps);
+    this.setTextSafe(
+      this.stepCounterText,
+      "Step " + (data.index + 1) + " of " + data.totalSteps,
+    );
     this.setTextSafe(this.stepInstructionText, data.step.instruction);
     this.setTextSafe(this.stepHintText, data.step.hint);
-    this.setTextSafe(this.stepComponentText, data.step.component ? "Component: " + data.step.component : "");
+    this.setTextSafe(
+      this.stepComponentText,
+      data.step.component ? "Component: " + data.step.component : "",
+    );
     this.setTextSafe(this.stepPlacementText, data.step.placement || "");
 
     // Update LEFT voice cue panel
     if (data.step.voice && data.step.voice.cue) {
       this.setTextSafe(this.voiceCueLabelText, "VOICE CUE");
       this.setTextSafe(this.voiceCueBodyText, data.step.voice.cue);
-      print("[Orchestrator] Voice cue: " + data.step.voice.cue.substring(0, 60) + "...");
+      print(
+        "[Orchestrator] Voice cue: " +
+          data.step.voice.cue.substring(0, 60) +
+          "...",
+      );
 
       // Send to Zappy for TTS
       this.zappyAI.activate(
-        "Guide the user through this step. Say EXACTLY this: " + data.step.voice.cue,
+        "Guide the user through this step. Say EXACTLY this: " +
+          data.step.voice.cue,
       );
     } else {
-      this.zappyAI.askAboutStep(data.step.instruction + " (Hint: " + data.step.hint + ")");
+      this.zappyAI.askAboutStep(
+        data.step.instruction + " (Hint: " + data.step.hint + ")",
+      );
     }
 
-    const charPos = this.character.getTransform().getWorldPosition();
-    this.character.help(charPos);
+    // const charPos = this.character.getTransform().getWorldPosition();
+    // this.character.help(charPos);
   }
 
   private onStepSubmitted(data: StepSubmitData): void {
     if (data.skipped) {
       print("[Orchestrator] Step " + (data.index + 1) + " SKIPPED");
       this.setTextSafe(this.voiceCueLabelText, "SKIPPED");
-      this.setTextSafe(this.voiceCueBodyText, "Step skipped -- you can review later.");
-      this.zappyAI.activate("The user skipped a step. Briefly acknowledge and encourage.");
+      this.setTextSafe(
+        this.voiceCueBodyText,
+        "Step skipped -- you can review later.",
+      );
+      this.zappyAI.activate(
+        "The user skipped a step. Briefly acknowledge and encourage.",
+      );
     } else if (data.passed) {
       print("[Orchestrator] Step " + (data.index + 1) + " PASSED");
       const confirmCue = data.step.voice.confirm;
       if (confirmCue) {
         this.setTextSafe(this.voiceCueLabelText, "CONFIRMED");
         this.setTextSafe(this.voiceCueBodyText, confirmCue);
-        this.zappyAI.activate("The user completed the step correctly. Say EXACTLY this: " + confirmCue);
+        this.zappyAI.activate(
+          "The user completed the step correctly. Say EXACTLY this: " +
+            confirmCue,
+        );
       } else {
         this.setTextSafe(this.voiceCueLabelText, "CORRECT");
         this.setTextSafe(this.voiceCueBodyText, "Step completed!");
-        this.zappyAI.celebrateStep(data.index + 1, this.gameManager.getTotalSteps());
+        this.zappyAI.celebrateStep(
+          data.index + 1,
+          this.gameManager.getTotalSteps(),
+        );
       }
     }
   }
@@ -716,33 +998,54 @@ export class ExperienceOrchestrator extends BaseScriptComponent {
     const level = this.gameManager.getLevelData(data.levelIndex);
     const mins = Math.floor(data.elapsedSeconds / 60);
     const secs = Math.floor(data.elapsedSeconds % 60);
-    const timeStr = mins.toString().padStart(2, "0") + ":" + secs.toString().padStart(2, "0");
+    const timeStr =
+      mins.toString().padStart(2, "0") + ":" + secs.toString().padStart(2, "0");
 
-    print("[Orchestrator] COMPLETE: " + level.name +
-      " in " + timeStr +
-      " | skipped " + data.stepsSkipped + "/" + data.totalSteps +
-      " | mode=" + data.mode);
+    print(
+      "[Orchestrator] COMPLETE: " +
+        level.name +
+        " in " +
+        timeStr +
+        " | skipped " +
+        data.stepsSkipped +
+        "/" +
+        data.totalSteps +
+        " | mode=" +
+        data.mode,
+    );
 
     this.isInLevel = false;
 
     // Update completion panel
     this.setTextSafe(this.completionTitleText, level.name + "\nCOMPLETE!");
-    this.setTextSafe(this.completionStatsText,
-      "Time: " + timeStr + "\n" +
-      "Steps: " + (data.totalSteps - data.stepsSkipped) + "/" + data.totalSteps + " completed\n" +
-      "Skipped: " + data.stepsSkipped);
-    this.setTextSafe(this.completionMessageText, data.stepsSkipped === 0
-      ? "Perfect run! Every step nailed!"
-      : "Great work! Try again for a perfect score.");
+    this.setTextSafe(
+      this.completionStatsText,
+      "Time: " +
+        timeStr +
+        "\n" +
+        "Steps: " +
+        (data.totalSteps - data.stepsSkipped) +
+        "/" +
+        data.totalSteps +
+        " completed\n" +
+        "Skipped: " +
+        data.stepsSkipped,
+    );
+    this.setTextSafe(
+      this.completionMessageText,
+      data.stepsSkipped === 0
+        ? "Perfect run! Every step nailed!"
+        : "Great work! Try again for a perfect score.",
+    );
 
     this.zappyAI.celebrateStep(data.totalSteps, data.totalSteps);
-    this.character.idle();
+    // this.character.idle();
   }
 
   private onScreenChanged(data: ScreenChangeData): void {
     print("[Orchestrator] Screen: " + data.previous + " -> " + data.screen);
     if (data.screen === GameScreen.MainMenu) {
-      this.character.idle();
+      // this.character.idle();
       this.isInLevel = false;
     }
     this.showScreen(data.screen);
@@ -769,7 +1072,10 @@ export class ExperienceOrchestrator extends BaseScriptComponent {
   private onUpdate(): void {
     // Update timer during level
     if (this.isInLevel && this.timerDisplayText) {
-      this.setTextSafe(this.timerDisplayText, this.gameManager.getElapsedTimeFormatted());
+      this.setTextSafe(
+        this.timerDisplayText,
+        this.gameManager.getElapsedTimeFormatted(),
+      );
     }
   }
 }
