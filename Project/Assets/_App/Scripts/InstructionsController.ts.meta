@@ -29,8 +29,9 @@
     autoStart: false
     breadboardOrigin: false
     hoverOffsetCm: false
-    instructionPromptOrigin: false
-    instructionPromptPrefab: false
+    instructionDefinitions: false
+    instructionPrompt: false
+    instructionPromptLocationObj: false
   ScriptTypesHidden:
     {}
   ReadMe: !<reference> 00000000-0000-0000-0000-000000000000
@@ -41,8 +42,10 @@
     []
   DefaultScriptInputs:
     - breadboardOrigin: !<reference.SceneObject> 00000000-0000-0000-0000-000000000000
-      instructionPromptOrigin: !<reference.SceneObject> 00000000-0000-0000-0000-000000000000
-      instructionPromptPrefab: !<reference.ObjectPrefab> 00000000-0000-0000-0000-000000000000
+      instructionPrompt: !<MappingBased.AssignableType> 00000000-0000-0000-0000-000000000000
+      instructionPromptLocationObj: !<reference.SceneObject> 00000000-0000-0000-0000-000000000000
+      instructionDefinitions:
+        []
       hoverOffsetCm: !<float> 1.000000
       autoStart: false
   ScriptTypes:
@@ -52,8 +55,18 @@
     - '// @ui {"widget":"separator"}'
     - '// @ui {"widget":"label", "label":"References"}'
     - '// @input SceneObject breadboardOrigin {"hint":"Transform whose pivot sits at breadboard hole A1 — prompts spawn as its children"}'
-    - // @input SceneObject instructionPromptOrigin
-    - "// @input Asset.ObjectPrefab instructionPromptPrefab {\"hint\":\"'Instruction Prompt' prefab with an InstructionPrompt component at its root\"}"
+    - '// @input AssignableType instructionPrompt {"hint":"The single InstructionPrompt living in the scene"}'
+    - // @input SceneObject instructionPromptLocationObj
+    - '// @ui {"widget":"separator"}'
+    - '// @ui {"widget":"label", "label":"Sequence"}'
+    - /*
+    - "@typedef InstructionDefinition"
+    - '@property {string} column = "A" {"widget":"combobox", "values":[{"label":"A", "value":"A"}, {"label":"B", "value":"B"}, {"label":"C", "value":"C"}, {"label":"D", "value":"D"}, {"label":"E", "value":"E"}, {"label":"F", "value":"F"}, {"label":"G", "value":"G"}, {"label":"H", "value":"H"}, {"label":"I", "value":"I"}, {"label":"J", "value":"J"}]}'
+    - '@property {float} row = 10 {"widget":"slider", "min":10, "max":40, "step":1}'
+    - "@property {string} title"
+    - '@property {string} description {"widget":"text_area"}'
+    - "*/"
+    - "// @input InstructionDefinition[] instructionDefinitions = {}"
     - "// @input float hoverOffsetCm = 1 {\"hint\":\"Lift above the board surface so the prompt doesn't clip into it, in cm\"}"
     - '// @ui {"widget":"separator"}'
     - '// @ui {"widget":"label", "label":"Behavior"}'
