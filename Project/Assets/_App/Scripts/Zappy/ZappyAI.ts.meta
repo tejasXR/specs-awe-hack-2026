@@ -1,0 +1,47 @@
+- !<AssetImportMetadata/d25963de-7137-4945-b59a-d915e398b696>
+  ImportedAssetIds:
+    TypeScriptAsset: !<reference> 45c7f51a-2723-4832-a2fa-7cfcae0b8c41
+  ImporterName: TypeScriptAssetImporter
+  PrimaryAsset: !<reference> 45c7f51a-2723-4832-a2fa-7cfcae0b8c41
+  PackageType: NotAPackage
+  LegacyPackagePolicy: ~
+  ExtraData:
+    {}
+  AssetDataMap:
+    TypeScriptAsset: !<own> 07fe1df9-94fd-4f4d-b0e4-578986ad023c
+  DependentFiles:
+    []
+  ImporterSettings: !<AssetImporterSettings>
+    {}
+  CompressionSettings: !<own> 00000000-0000-0000-0000-000000000000
+- !<TypeScriptAssetData/07fe1df9-94fd-4f4d-b0e4-578986ad023c>
+  SvgIcon: ""
+  SetupScript:
+    code: ""
+  Description: ""
+  VersionMajor: 0
+  VersionMinor: 0
+  VersionPatch: 0
+  ComponentUid: 5b8e01cc-c4d9-4f6e-8ad4-61b2bba247a1
+  ExportUid: 00000000-0000-0000-0000-000000000000
+  PackagePolicy: CanBeUnpacked
+  ScriptInputsHidden:
+    enableLogging: false
+    speechText: false
+  ScriptTypesHidden:
+    {}
+  ReadMe: !<reference> 00000000-0000-0000-0000-000000000000
+  DeclarationFile: !<reference> 00000000-0000-0000-0000-000000000000
+  Tags:
+    []
+  Attachments:
+    []
+  DefaultScriptInputs:
+    - enableLogging: true
+      speechText: !<reference.Text> 00000000-0000-0000-0000-000000000000
+  ScriptTypes:
+    -
+      {}
+  InputLines:
+    - '// @input bool enableLogging = true {"hint":"Enable debug logging"}'
+    - '// @input Component.Text speechText {"hint":"Optional text component for speech display"}'

@@ -8,6 +8,7 @@ import Event, {
 @component
 export class AiCharacterInteractionController extends BaseScriptComponent {
   @input
+  @allowUndefined
   @hint("The Interactable on the character's pinch target (needs a collider)")
   interactable!: Interactable;
 
@@ -24,6 +25,10 @@ export class AiCharacterInteractionController extends BaseScriptComponent {
   }
 
   private onStart(): void {
+    if (isNull(this.interactable)) {
+      print("[AiCharacterInteractionController] ⚠ interactable not assigned — skipping");
+      return;
+    }
     this._unsubscribeFromTrigger = this.interactable.onTriggerStart.add(
       (event) => this.handlePinched(event),
     );

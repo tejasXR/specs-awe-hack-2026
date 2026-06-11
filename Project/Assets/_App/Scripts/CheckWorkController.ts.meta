@@ -1,0 +1,72 @@
+- !<AssetImportMetadata/35328588-fc9c-45e0-b304-2b1ba5028b4c>
+  ImportedAssetIds:
+    TypeScriptAsset: !<reference> 8eb2b0ed-6698-4fcf-a8f8-7a1a04ecdd16
+  ImporterName: TypeScriptAssetImporter
+  PrimaryAsset: !<reference> 8eb2b0ed-6698-4fcf-a8f8-7a1a04ecdd16
+  PackageType: NotAPackage
+  LegacyPackagePolicy: ~
+  ExtraData:
+    {}
+  AssetDataMap:
+    TypeScriptAsset: !<own> 4db1ef19-894a-44fd-a7a0-bd2f28879376
+  DependentFiles:
+    []
+  ImporterSettings: !<AssetImporterSettings>
+    {}
+  CompressionSettings: !<own> 00000000-0000-0000-0000-000000000000
+- !<TypeScriptAssetData/4db1ef19-894a-44fd-a7a0-bd2f28879376>
+  SvgIcon: ""
+  SetupScript:
+    code: ""
+  Description: ""
+  VersionMajor: 0
+  VersionMinor: 0
+  VersionPatch: 0
+  ComponentUid: 34a8b981-14e2-4f9f-a354-fca51fcdd9b8
+  ExportUid: 00000000-0000-0000-0000-000000000000
+  PackagePolicy: CanBeUnpacked
+  ScriptInputsHidden:
+    camModule: false
+    cropBottom: false
+    cropLeft: false
+    cropRight: false
+    cropTexture: false
+    cropTop: false
+    enableLogging: false
+    previewImage: false
+    previewPanel: false
+  ScriptTypesHidden:
+    {}
+  ReadMe: !<reference> 00000000-0000-0000-0000-000000000000
+  DeclarationFile: !<reference> 00000000-0000-0000-0000-000000000000
+  Tags:
+    []
+  Attachments:
+    []
+  DefaultScriptInputs:
+    - camModule: !<reference.CameraModule> 00000000-0000-0000-0000-000000000000
+      cropTexture: !<reference.Texture> 00000000-0000-0000-0000-000000000000
+      cropLeft: -0.400000
+      cropRight: 0.400000
+      cropBottom: -0.400000
+      cropTop: 0.400000
+      previewImage: !<reference.Image> 00000000-0000-0000-0000-000000000000
+      previewPanel: !<reference.SceneObject> 00000000-0000-0000-0000-000000000000
+      enableLogging: true
+  ScriptTypes:
+    -
+      {}
+  InputLines:
+    - '// @ui {"widget":"separator"}'
+    - '// @ui {"widget":"label", "label":"<span style=\"color: #60A5FA;\">Camera Capture</span>"}'
+    - '// @input Asset.CameraModule camModule {"hint":"CameraModule from the scene for capturing frames (optional for now)"}'
+    - '// @input Asset.Texture cropTexture {"hint":"Optional: cropped texture for focused breadboard view. If not set, uses full camera frame."}'
+    - '// @input float cropLeft = -0.4 {"hint":"Crop rectangle left boundary (-1 to 1)"}'
+    - '// @input float cropRight = 0.4 {"hint":"Crop rectangle right boundary (-1 to 1)"}'
+    - '// @input float cropBottom = -0.4 {"hint":"Crop rectangle bottom boundary (-1 to 1)"}'
+    - '// @input float cropTop = 0.4 {"hint":"Crop rectangle top boundary (-1 to 1)"}'
+    - '// @ui {"widget":"separator"}'
+    - '// @ui {"widget":"label", "label":"<span style=\"color: #60A5FA;\">Display</span>"}'
+    - '// @input Component.Image previewImage {"hint":"Optional: Image component to show the captured frame as preview"}'
+    - '// @input SceneObject previewPanel {"hint":"Optional: SceneObject to show/hide as a capture preview panel"}'
+    - '// @input bool enableLogging = true {"hint":"Enable debug logging"}'
