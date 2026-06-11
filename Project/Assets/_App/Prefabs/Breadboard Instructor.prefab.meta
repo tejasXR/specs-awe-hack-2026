@@ -41,6 +41,9 @@
   Enabled: true
   ScriptAsset: !<reference> 2efdd206-e8d1-4aa8-a4c7-bf3142bdf39c
   ScriptInputsDefault:
+    instructionPrompt: true
+    instructionPromptLocationObj: true
+    instructionDefinitions: true
     hoverOffsetCm: true
     autoStart: true
   ScriptTypesDefault:
@@ -48,8 +51,10 @@
   ScriptInputs:
     "":
       breadboardOrigin: !<reference.SceneObject> 3805ce42-8b9f-4696-a624-c0b5225017c0
-      instructionPromptOrigin: !<reference.SceneObject> bbbb9afb-a00f-43c4-52f8-c1b382b58249
-      instructionPromptPrefab: !<reference.ObjectPrefab> adeea334-5a88-4634-9bd1-14feaa461434
+      instructionPrompt: !<MappingBased.AssignableType> 00000000-0000-0000-0000-000000000000
+      instructionPromptLocationObj: !<reference.SceneObject> 00000000-0000-0000-0000-000000000000
+      instructionDefinitions:
+        []
       hoverOffsetCm: !<float> 1.000000
       autoStart: false
   ScriptTypes:
