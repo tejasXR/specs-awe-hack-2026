@@ -21817,17 +21817,14 @@
   Enabled: true
   ScriptAsset: !<reference> 45c7f51a-2723-4832-a2fa-7cfcae0b8c41
   ScriptInputsDefault:
-    brain: true
-    emotionController: true
-    voice: true
     enableLogging: true
   ScriptTypesDefault:
     {}
   ScriptInputs:
     "":
-      brain: !<MappingBased.AssignableType> 00000000-0000-0000-0000-000000000000
-      emotionController: !<MappingBased.AssignableType_1> 00000000-0000-0000-0000-000000000000
-      voice: !<MappingBased.AssignableType_2> 00000000-0000-0000-0000-000000000000
+      brain: !<MappingBased.AssignableType> 3b371450-9210-46b9-95f7-d87136c07845
+      emotionController: !<MappingBased.AssignableType_1> 08e571f5-3a28-4406-a2bd-3c2295ef10ce
+      voice: !<MappingBased.AssignableType_2> 64d77276-44e9-4da3-abf9-cd8918d636af
       enableLogging: true
   ScriptTypes:
     "":
