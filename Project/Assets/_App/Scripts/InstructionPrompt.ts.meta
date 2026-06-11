@@ -26,10 +26,12 @@
   ExportUid: 00000000-0000-0000-0000-000000000000
   PackagePolicy: CanBeUnpacked
   ScriptInputsHidden:
+    descriptionText: false
     lineEnd: false
     lineMaterial: false
     lineStart: false
     promptContainer: false
+    titleText: false
   ScriptTypesHidden:
     {}
   ReadMe: !<reference> 00000000-0000-0000-0000-000000000000
@@ -41,6 +43,8 @@
   DefaultScriptInputs:
     - promptContainer: !<reference.SceneObject> 00000000-0000-0000-0000-000000000000
       lineMaterial: !<reference.Material> 00000000-0000-0000-0000-000000000000
+      titleText: !<reference.Text> 00000000-0000-0000-0000-000000000000
+      descriptionText: !<reference.Text> 00000000-0000-0000-0000-000000000000
       lineStart: !<reference.SceneObject> 00000000-0000-0000-0000-000000000000
       lineEnd: !<reference.SceneObject> 00000000-0000-0000-0000-000000000000
   ScriptTypes:
@@ -49,5 +53,7 @@
   InputLines:
     - // @input SceneObject promptContainer
     - '// @input Asset.Material lineMaterial {"hint":"Material for the callout line (LineRenderer clones it)"}'
+    - // @input Component.Text titleText
+    - // @input Component.Text descriptionText
     - // @input SceneObject lineStart
     - // @input SceneObject lineEnd

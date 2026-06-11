@@ -11,6 +11,13 @@ export class InstructionPrompt extends BaseScriptComponent {
   @hint("Material for the callout line (LineRenderer clones it)")
   lineMaterial!: Material;
 
+  @input
+  @allowUndefined
+  titleText: Text;
+
+  @input
+  descriptionText: Text;
+
   // TODO: TEJAS, create a way to draw multiple lines in case we are specific using wires
   @input
   lineStart!: SceneObject;
@@ -18,23 +25,48 @@ export class InstructionPrompt extends BaseScriptComponent {
   @input
   lineEnd!: SceneObject;
 
-  private _line!: LineRenderer;
+  private _lines: LineRenderer[] = [];
   private _lineWidthStartCm: number = 0.2;
   private _lineWidthEndCm: number = 0.1;
+  private _maxLines: number = 3;
+
+  private _updateEvent!: UpdateEvent;
+  private _targetPositions: vec3[] = [];
 
   onAwake() {
-    this._line = this.createLineRenderer();
-    this._line.setEnabled(false);
+    // Pre-create the line renderer pool to avoid dynamic allocations at runtime
+    for (let i = 0; i < this._maxLines; i++) {
+      const line = this.createLineRenderer();
+      line.setEnabled(false);
+      this._lines.push(line);
+    }
+
+    // Set up frame update loop for real-time tracking, disabled by default
+    this._updateEvent = this.createEvent("UpdateEvent");
+    this._updateEvent.bind(() => this.updateLinePositions());
+    this._updateEvent.enabled = false;
   }
 
   setup(
     title: string,
     description: string,
     promptPosition: vec3,
-    cellWorldPosition: vec3,
+    targetPositions: vec3[],
   ) {
     this.promptContainer.getTransform().setWorldPosition(promptPosition);
-    this.lineEnd.getTransform().setWorldPosition(cellWorldPosition);
+
+    if (this.titleText) {
+      this.titleText.text = title;
+    }
+    if (this.descriptionText) {
+      this.descriptionText.text = description;
+    }
+
+    this._targetPositions = targetPositions;
+
+    if (this.lineEnd && targetPositions.length > 0) {
+      this.lineEnd.getTransform().setWorldPosition(targetPositions[0]);
+    }
   }
 
   private createLineRenderer(): LineRenderer {
@@ -49,16 +81,28 @@ export class InstructionPrompt extends BaseScriptComponent {
     return line;
   }
 
-  setLine(startWorld: vec3, endWorld: vec3) {
+  private updateLinePositions(): void {
+    const startWorld = this.lineStart.getTransform().getWorldPosition();
+
+    for (let i = 0; i < this._lines.length; i++) {
+      if (i < this._targetPositions.length) {
+        this.setLine(this._lines[i], startWorld, this._targetPositions[i]);
+      } else {
+        this._lines[i].setEnabled(false);
+      }
+    }
+  }
+
+  private setLine(line: LineRenderer, startWorld: vec3, endWorld: vec3) {
     const toEnd = endWorld.sub(startWorld);
     const length = toEnd.length;
     if (length < MIN_LINE_LENGTH_CM) {
-      this._line.setEnabled(false); // degenerate — endpoints coincide
+      line.setEnabled(false); // degenerate — endpoints coincide
       return;
     }
-    this._line.setEnabled(true);
+    line.setEnabled(true);
 
-    const transform = this._line!.getTransform();
+    const transform = line.getTransform();
     transform.setWorldPosition(startWorld.add(toEnd.uniformScale(0.5)));
 
     // A near-vertical line is parallel to the default up reference — swap it
@@ -74,11 +118,16 @@ export class InstructionPrompt extends BaseScriptComponent {
 
   show(): void {
     this.promptContainer.enabled = true;
-    this._line.setEnabled(this._line.points.length > 0);
+    this._updateEvent.enabled = true;
+    this.updateLinePositions();
   }
 
   hide(): void {
     this.promptContainer.enabled = false;
-    this._line.setEnabled(false);
+    this._updateEvent.enabled = false;
+    for (let i = 0; i < this._lines.length; i++) {
+      this._lines[i].setEnabled(false);
+    }
   }
 }
+
