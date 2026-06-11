@@ -7,13 +7,13 @@ import {
 } from "./BreadboardGrid";
 import { InstructionPrompt } from "./InstructionPrompt";
 
-export interface InstructionData {
-  cell: BreadboardCell;
-  prompt: InstructionDefinition;
-}
+// export interface InstructionData {
+//   cell: BreadboardCell;
+//   promptData: InstructionDefinition;
+// }
 
 export interface InstructionStepEvent {
-  instruction: InstructionData;
+  instruction: InstructionDefinition;
   currentIndex: number;
   totalCount: number;
 }
@@ -94,7 +94,6 @@ export class InstructionsController extends BaseScriptComponent {
   @hint("Show the first queued instruction as soon as the lens starts")
   autoStart: boolean = false;
 
-  // private _instructionalDatas: InstructionData[] = [];
   private _currentIndex: number = NO_STEP;
 
   private readonly onStepChangedEvent = new Event<InstructionStepEvent>();
@@ -177,13 +176,12 @@ export class InstructionsController extends BaseScriptComponent {
   }
 
   private moveToStep(index: number): void {
-    const step = this.instructionDefinitions[index];
-
-    var cellData = this.toBreadboardCell(step);
+    const instructionDefinition = this.instructionDefinitions[index];
+    const cellData = this.toBreadboardCell(instructionDefinition);
 
     this.instructionPrompt.setup(
-      step.title,
-      step.description,
+      instructionDefinition.title,
+      instructionDefinition.description,
       this.instructionPromptLocationObj.getTransform().getWorldPosition(),
       cellToWorldPosition(
         cellData,
@@ -191,13 +189,14 @@ export class InstructionsController extends BaseScriptComponent {
         this.breadboardOrigin.getTransform(),
       ),
     );
+
     this.instructionPrompt.show();
 
     this._currentIndex = index;
     this.onStepChangedEvent.invoke({
-      step,
+      instruction: instructionDefinition,
       currentIndex: index,
-      totalCount: this._steps.length,
+      totalCount: this.instructionDefinitions.length,
     });
   }
 
@@ -205,14 +204,32 @@ export class InstructionsController extends BaseScriptComponent {
     if (this._currentIndex < 0) {
       return;
     }
-    this.instructionDefinitions[this._currentIndex].prompt?.hide();
+    this.instructionPrompt.hide();
   }
 
+  /**
+   * Inspector widgets already constrain column (A–J) and row (playground
+   * slider), so a failure here means a misconfigured definition — fail loudly
+   * rather than hand an invalid cell to the grid math.
+   */
   private toBreadboardCell(definition: InstructionDefinition): BreadboardCell {
+    if (!isBreadboardColumn(definition.column)) {
+      throw new Error(
+        `InstructionsController: invalid column "${definition.column}" — expected A–J`,
+      );
+    }
+
     const cell: BreadboardCell = {
       column: definition.column,
       row: definition.row,
     };
-    return isWithinPlayground(cell) ? cell : undefined;
+
+    if (!isWithinPlayground(cell)) {
+      throw new Error(
+        `InstructionsController: cell ${cell.column}${cell.row} is outside the playground rows`,
+      );
+    }
+
+    return cell;
   }
 }
