@@ -1831,22 +1831,6 @@
   ScriptTypes:
     "":
       {}
-- !<ScriptComponent/08e571f5-3a28-4406-a2bd-3c2295ef10ce>
-  PrefabRemaps:
-    []
-  Name: ZappyEmotionController
-  Enabled: true
-  ScriptAsset: !<reference> bb8be629-d32c-4bf7-81fa-5735d4c65f77
-  ScriptInputsDefault:
-    enableLogging: true
-  ScriptTypesDefault:
-    {}
-  ScriptInputs:
-    "":
-      enableLogging: false
-  ScriptTypes:
-    "":
-      {}
 - !<SceneObject/09202516-6371-4e61-aa40-52606c741cec>
   PrefabRemaps:
     []
@@ -1862,24 +1846,6 @@
     []
   Components:
     - !<own> 86c48750-692b-4694-9701-2df7c0d8875b
-- !<SceneObject/09b3b740-5a5f-4913-822e-1711add83075>
-  PrefabRemaps:
-    []
-  Name: Zappy Brain
-  Enabled: true
-  Layers: 1
-  LocalTransform: !<TransformEntity>
-    Position: {x: 0.000000, y: 0.000000, z: 0.000000}
-    Rotation: {x: 0.000000, y: 0.000000, z: 0.000000}
-    Scale: {x: 1.000000, y: 1.000000, z: 1.000000}
-    HasSegmentScaleCompensation: false
-  Children:
-    []
-  Components:
-    - !<own> 3b371450-9210-46b9-95f7-d87136c07845
-    - !<own> 08e571f5-3a28-4406-a2bd-3c2295ef10ce
-    - !<own> 64d77276-44e9-4da3-abf9-cd8918d636af
-    - !<own> dbffb760-6b78-4857-89d0-b49ccad8c9b4
 - !<RenderMeshVisual/09ed48bc-70e7-441f-b77b-726ee503e03f>
   PrefabRemaps:
     []
@@ -4845,13 +4811,16 @@
     Scale: {x: 1.000000, y: 1.000000, z: 1.000000}
     HasSegmentScaleCompensation: false
   Children:
-    - !<own> 09b3b740-5a5f-4913-822e-1711add83075
     - !<own> fd5cba35-f969-49db-83be-3561516d6219
     - !<own> d0465920-bae7-46f9-9787-8b3cacc77332
     - !<own> 11195d15-f42f-403a-9995-e8529957f102
   Components:
     - !<own> ba9b0252-db63-4aee-ba69-de0f00706d9b
     - !<own> 13eea8c6-3a41-42e1-86fe-1d95051270ac
+    - !<own> e6305008-0fd4-431d-ada3-90d29c567823
+    - !<own> c50a6368-e171-4a94-8eef-e0f21d636b95
+    - !<own> cca2d5c1-ea66-4515-818c-977305c8f7a6
+    - !<own> 5e98edc9-1ea4-411b-801a-283a17001bea
 - !<SceneObject/2aa9bd36-58f8-49f1-90a0-80cbcc8527d9>
   PrefabRemaps:
     []
@@ -7023,22 +6992,6 @@
   RotationAngle: 0
   Pivot: {x: 0.000000, y: 0.000000}
   ExtentsTarget: !<reference> 00000000-0000-0000-0000-000000000000
-- !<ScriptComponent/3b371450-9210-46b9-95f7-d87136c07845>
-  PrefabRemaps:
-    []
-  Name: ZappyBrain
-  Enabled: true
-  ScriptAsset: !<reference> cee0f999-f974-454c-8772-ca1a64195445
-  ScriptInputsDefault:
-    enableLogging: true
-  ScriptTypesDefault:
-    {}
-  ScriptInputs:
-    "":
-      enableLogging: false
-  ScriptTypes:
-    "":
-      {}
 - !<Text/3b391a0f-bc75-45fb-95e9-212a4b2cab85>
   PrefabRemaps:
     []
@@ -11151,6 +11104,25 @@
     []
   Components:
     - !<own> 0b26532c-3e92-46be-b484-25f6a4d9fbc2
+- !<ScriptComponent/5e98edc9-1ea4-411b-801a-283a17001bea>
+  PrefabRemaps:
+    []
+  Name: ZappyMovement
+  Enabled: true
+  ScriptAsset: !<reference> a9af9e6e-eaaa-4f7e-bf7b-50cc7fd04c70
+  ScriptInputsDefault:
+    moveToDestinationSpeed: true
+  ScriptTypesDefault:
+    {}
+  ScriptInputs:
+    "":
+      optionsController: !<MappingBased.AssignableType> f095966d-62d4-45ec-a437-09b4ac264bcb
+      floatAmplitude: !<float> 1.000000
+      floatFrequency: 0.250000
+      moveToDestinationSpeed: !<float> 30.000000
+  ScriptTypes:
+    "":
+      {}
 - !<SceneObject/5efae0f2-be12-401e-b2d7-295d468cdf67>
   PrefabRemaps:
     []
@@ -11939,29 +11911,6 @@
     []
   Components:
     - !<own> b372579d-8c95-4b13-9149-28a54664a355
-- !<ScriptComponent/64d77276-44e9-4da3-abf9-cd8918d636af>
-  PrefabRemaps:
-    []
-  Name: ZappyVoice
-  Enabled: true
-  ScriptAsset: !<reference> 48835098-7cfb-4484-91bc-3d61af11fd57
-  ScriptInputsDefault:
-    speechText: true
-    voiceName: true
-    enableLogging: true
-  ScriptTypesDefault:
-    {}
-  ScriptInputs:
-    "":
-      emotionController: !<MappingBased.AssignableType> 08e571f5-3a28-4406-a2bd-3c2295ef10ce
-      ttsModule: !<reference.TextToSpeechModule> 66611ae7-ebe5-4cd2-99c9-5b7ba67ca8b1
-      audioComponent: !<reference.AudioComponent> 13eea8c6-3a41-42e1-86fe-1d95051270ac
-      speechText: !<reference.Text> 00000000-0000-0000-0000-000000000000
-      voiceName: Sasha
-      enableLogging: false
-  ScriptTypes:
-    "":
-      {}
 - !<Text/652f93c1-a309-401e-8091-de2284b54001>
   PrefabRemaps:
     []
@@ -22002,9 +21951,9 @@
     {}
   ScriptInputs:
     "":
-      brain: !<MappingBased.AssignableType> 3b371450-9210-46b9-95f7-d87136c07845
-      emotionController: !<MappingBased.AssignableType_1> 08e571f5-3a28-4406-a2bd-3c2295ef10ce
-      voice: !<MappingBased.AssignableType_2> 64d77276-44e9-4da3-abf9-cd8918d636af
+      brain: !<MappingBased.AssignableType> e6305008-0fd4-431d-ada3-90d29c567823
+      emotionController: !<MappingBased.AssignableType_1> c50a6368-e171-4a94-8eef-e0f21d636b95
+      voice: !<MappingBased.AssignableType_2> cca2d5c1-ea66-4515-818c-977305c8f7a6
       enableLogging: true
   ScriptTypes:
     "":
@@ -23394,6 +23343,22 @@
     - !<own> 575637b2-cafb-4de5-a771-1a302757b5ea
   Components:
     []
+- !<ScriptComponent/c50a6368-e171-4a94-8eef-e0f21d636b95>
+  PrefabRemaps:
+    []
+  Name: ZappyEmotionController
+  Enabled: true
+  ScriptAsset: !<reference> bb8be629-d32c-4bf7-81fa-5735d4c65f77
+  ScriptInputsDefault:
+    enableLogging: true
+  ScriptTypesDefault:
+    {}
+  ScriptInputs:
+    "":
+      enableLogging: false
+  ScriptTypes:
+    "":
+      {}
 - !<ScriptComponent/c5160bef-08c8-483f-b655-7e33186bea5b>
   PrefabRemaps:
     []
@@ -24305,6 +24270,29 @@
     bottom: 0.000000
     right: 0.000000
     top: 0.000000
+- !<ScriptComponent/cca2d5c1-ea66-4515-818c-977305c8f7a6>
+  PrefabRemaps:
+    []
+  Name: ZappyVoice
+  Enabled: true
+  ScriptAsset: !<reference> 48835098-7cfb-4484-91bc-3d61af11fd57
+  ScriptInputsDefault:
+    speechText: true
+    voiceName: true
+    enableLogging: true
+  ScriptTypesDefault:
+    {}
+  ScriptInputs:
+    "":
+      emotionController: !<MappingBased.AssignableType> c50a6368-e171-4a94-8eef-e0f21d636b95
+      ttsModule: !<reference.TextToSpeechModule> 66611ae7-ebe5-4cd2-99c9-5b7ba67ca8b1
+      audioComponent: !<reference.AudioComponent> 13eea8c6-3a41-42e1-86fe-1d95051270ac
+      speechText: !<reference.Text> 00000000-0000-0000-0000-000000000000
+      voiceName: Sasha
+      enableLogging: false
+  ScriptTypes:
+    "":
+      {}
 - !<Image/cccdd368-c6ce-4a36-b092-87ad444f3ff4>
   PrefabRemaps:
     []
@@ -26146,27 +26134,6 @@
     - !<own> 5a6fdd08-6b6f-4af0-887b-119ae6ed2f43
   Components:
     []
-- !<ScriptComponent/dbffb760-6b78-4857-89d0-b49ccad8c9b4>
-  PrefabRemaps:
-    []
-  Name: ZappyMovement
-  Enabled: true
-  ScriptAsset: !<reference> a9af9e6e-eaaa-4f7e-bf7b-50cc7fd04c70
-  ScriptInputsDefault:
-    floatAmplitude: true
-    floatFrequency: true
-    moveToDestinationSpeed: true
-  ScriptTypesDefault:
-    {}
-  ScriptInputs:
-    "":
-      optionsController: !<MappingBased.AssignableType> f095966d-62d4-45ec-a437-09b4ac264bcb
-      floatAmplitude: !<float> 2.000000
-      floatFrequency: 0.500000
-      moveToDestinationSpeed: !<float> 30.000000
-  ScriptTypes:
-    "":
-      {}
 - !<SceneObject/dc342e44-a812-4768-bb8b-ff1014601cb5>
   PrefabRemaps:
     []
@@ -27280,6 +27247,22 @@
     - !<own> 13771af1-98da-4455-a0f1-175f89d7e8f0
     - !<own> c756bfec-5edb-4bb5-9717-b56237939553
     - !<own> 8e5b1251-4da5-4733-9f63-d5d771c69b7e
+- !<ScriptComponent/e6305008-0fd4-431d-ada3-90d29c567823>
+  PrefabRemaps:
+    []
+  Name: ZappyBrain
+  Enabled: true
+  ScriptAsset: !<reference> cee0f999-f974-454c-8772-ca1a64195445
+  ScriptInputsDefault:
+    enableLogging: true
+  ScriptTypesDefault:
+    {}
+  ScriptInputs:
+    "":
+      enableLogging: false
+  ScriptTypes:
+    "":
+      {}
 - !<ColliderComponent/e65640f5-971c-482a-916f-766676a1b6b2>
   PrefabRemaps:
     []
