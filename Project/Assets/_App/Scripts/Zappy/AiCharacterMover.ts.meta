@@ -50,7 +50,7 @@
       {}
   InputLines:
     - '// @input AssignableType assistant {"hint":"The AiCharacter state store this mover follows"}'
-    - "// @input AssignableType_1 optionsController {\"hint\":\"While this controller's options are visible, the float bob pauses\"}"
+    - "// @input AssignableType_1 optionsController {\"hint\":\"While this controller's options are visible, the mover pauses (bob and travel)\"}"
     - '// @ui {"widget":"group_start", "label":"Float Bob"}'
     - '// @input float floatAmplitude = 2 {"hint":"How far the character bobs up and down (magnitude), in cm"}'
     - '// @input float floatFrequency = 0.5 {"hint":"How fast the character bobs, in cycles per second"}'
