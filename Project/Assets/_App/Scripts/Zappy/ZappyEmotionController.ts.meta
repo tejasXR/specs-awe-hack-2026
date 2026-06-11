@@ -1,0 +1,44 @@
+- !<AssetImportMetadata/5d206986-8c07-4135-80e6-18a2bba9fa9e>
+  ImportedAssetIds:
+    TypeScriptAsset: !<reference> bb8be629-d32c-4bf7-81fa-5735d4c65f77
+  ImporterName: TypeScriptAssetImporter
+  PrimaryAsset: !<reference> bb8be629-d32c-4bf7-81fa-5735d4c65f77
+  PackageType: NotAPackage
+  LegacyPackagePolicy: ~
+  ExtraData:
+    {}
+  AssetDataMap:
+    TypeScriptAsset: !<own> 97ad12c5-5b87-4a8c-bc3f-09cacd30667b
+  DependentFiles:
+    []
+  ImporterSettings: !<AssetImporterSettings>
+    {}
+  CompressionSettings: !<own> 00000000-0000-0000-0000-000000000000
+- !<TypeScriptAssetData/97ad12c5-5b87-4a8c-bc3f-09cacd30667b>
+  SvgIcon: ""
+  SetupScript:
+    code: ""
+  Description: ""
+  VersionMajor: 0
+  VersionMinor: 0
+  VersionPatch: 0
+  ComponentUid: 02d12c17-d700-4cc0-b16f-2e146bed8d99
+  ExportUid: 00000000-0000-0000-0000-000000000000
+  PackagePolicy: CanBeUnpacked
+  ScriptInputsHidden:
+    enableLogging: false
+  ScriptTypesHidden:
+    {}
+  ReadMe: !<reference> 00000000-0000-0000-0000-000000000000
+  DeclarationFile: !<reference> 00000000-0000-0000-0000-000000000000
+  Tags:
+    []
+  Attachments:
+    []
+  DefaultScriptInputs:
+    - enableLogging: false
+  ScriptTypes:
+    -
+      {}
+  InputLines:
+    - '// @input bool enableLogging {"hint":"Enable debug logging"}'
