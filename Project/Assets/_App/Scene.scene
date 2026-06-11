@@ -1830,6 +1830,22 @@
   ScriptTypes:
     "":
       {}
+- !<ScriptComponent/08e571f5-3a28-4406-a2bd-3c2295ef10ce>
+  PrefabRemaps:
+    []
+  Name: ZappyEmotionController
+  Enabled: true
+  ScriptAsset: !<reference> bb8be629-d32c-4bf7-81fa-5735d4c65f77
+  ScriptInputsDefault:
+    enableLogging: true
+  ScriptTypesDefault:
+    {}
+  ScriptInputs:
+    "":
+      enableLogging: false
+  ScriptTypes:
+    "":
+      {}
 - !<SceneObject/09202516-6371-4e61-aa40-52606c741cec>
   PrefabRemaps:
     []
@@ -1845,6 +1861,24 @@
     []
   Components:
     - !<own> 86c48750-692b-4694-9701-2df7c0d8875b
+- !<SceneObject/09b3b740-5a5f-4913-822e-1711add83075>
+  PrefabRemaps:
+    []
+  Name: Zappy Brain
+  Enabled: true
+  Layers: 1
+  LocalTransform: !<TransformEntity>
+    Position: {x: 0.000000, y: 0.000000, z: 0.000000}
+    Rotation: {x: 0.000000, y: 0.000000, z: 0.000000}
+    Scale: {x: 1.000000, y: 1.000000, z: 1.000000}
+    HasSegmentScaleCompensation: false
+  Children:
+    []
+  Components:
+    - !<own> 3b371450-9210-46b9-95f7-d87136c07845
+    - !<own> 08e571f5-3a28-4406-a2bd-3c2295ef10ce
+    - !<own> 64d77276-44e9-4da3-abf9-cd8918d636af
+    - !<own> dbffb760-6b78-4857-89d0-b49ccad8c9b4
 - !<RenderMeshVisual/09ed48bc-70e7-441f-b77b-726ee503e03f>
   PrefabRemaps:
     []
@@ -4628,7 +4662,7 @@
   PrefabRemaps:
     []
   Name: GameManager
-  Enabled: true
+  Enabled: false
   Layers: 1
   LocalTransform: !<TransformEntity>
     Position: {x: 0.000000, y: 0.000000, z: 0.000000}
@@ -4791,12 +4825,11 @@
     Scale: {x: 1.000000, y: 1.000000, z: 1.000000}
     HasSegmentScaleCompensation: false
   Children:
+    - !<own> 09b3b740-5a5f-4913-822e-1711add83075
     - !<own> fd5cba35-f969-49db-83be-3561516d6219
     - !<own> d0465920-bae7-46f9-9787-8b3cacc77332
     - !<own> 11195d15-f42f-403a-9995-e8529957f102
   Components:
-    - !<own> 2b1ccf16-d675-4890-8fe6-9f761c878e70
-    - !<own> ce1ff490-3463-4530-a42f-3ddae70ab278
     - !<own> ba9b0252-db63-4aee-ba69-de0f00706d9b
     - !<own> 13eea8c6-3a41-42e1-86fe-1d95051270ac
 - !<SceneObject/2aa9bd36-58f8-49f1-90a0-80cbcc8527d9>
@@ -4834,22 +4867,6 @@
   BlendNormals: false
   BlendShapes:
     {}
-- !<ScriptComponent/2b1ccf16-d675-4890-8fe6-9f761c878e70>
-  PrefabRemaps:
-    []
-  Name: AiCharacter
-  Enabled: true
-  ScriptAsset: !<reference> e9ff70f3-1bd3-479d-8aa3-c080ffa06957
-  ScriptInputsDefault:
-    {}
-  ScriptTypesDefault:
-    {}
-  ScriptInputs:
-    "":
-      {}
-  ScriptTypes:
-    "":
-      {}
 - !<SceneObject/2b53c271-6642-4d92-9c94-77f8d2b710d2>
   PrefabRemaps:
     []
@@ -6971,6 +6988,22 @@
   RotationAngle: 0
   Pivot: {x: 0.000000, y: 0.000000}
   ExtentsTarget: !<reference> 00000000-0000-0000-0000-000000000000
+- !<ScriptComponent/3b371450-9210-46b9-95f7-d87136c07845>
+  PrefabRemaps:
+    []
+  Name: ZappyBrain
+  Enabled: true
+  ScriptAsset: !<reference> cee0f999-f974-454c-8772-ca1a64195445
+  ScriptInputsDefault:
+    enableLogging: true
+  ScriptTypesDefault:
+    {}
+  ScriptInputs:
+    "":
+      enableLogging: false
+  ScriptTypes:
+    "":
+      {}
 - !<Text/3b391a0f-bc75-45fb-95e9-212a4b2cab85>
   PrefabRemaps:
     []
@@ -7592,7 +7625,7 @@
 - !<ScriptComponent/43425d27-9a6b-458a-abae-f1d8838d84f8>
   PrefabRemaps:
     []
-  Name: AiCharacterOption
+  Name: ZappyOptionUI
   Enabled: true
   ScriptAsset: !<reference> 926ac0e9-4ea8-4550-b45b-ad43487bfa53
   ScriptInputsDefault:
@@ -9125,7 +9158,7 @@
   PrefabRemaps:
     []
   Name: Orchestrator
-  Enabled: true
+  Enabled: false
   Layers: 1
   LocalTransform: !<TransformEntity>
     Position: {x: 0.000000, y: 0.000000, z: 0.000000}
@@ -11871,6 +11904,29 @@
     []
   Components:
     - !<own> b372579d-8c95-4b13-9149-28a54664a355
+- !<ScriptComponent/64d77276-44e9-4da3-abf9-cd8918d636af>
+  PrefabRemaps:
+    []
+  Name: ZappyVoice
+  Enabled: true
+  ScriptAsset: !<reference> 48835098-7cfb-4484-91bc-3d61af11fd57
+  ScriptInputsDefault:
+    speechText: true
+    voiceName: true
+    enableLogging: true
+  ScriptTypesDefault:
+    {}
+  ScriptInputs:
+    "":
+      emotionController: !<MappingBased.AssignableType> 08e571f5-3a28-4406-a2bd-3c2295ef10ce
+      ttsModule: !<reference.TextToSpeechModule> 66611ae7-ebe5-4cd2-99c9-5b7ba67ca8b1
+      audioComponent: !<reference.AudioComponent> 13eea8c6-3a41-42e1-86fe-1d95051270ac
+      speechText: !<reference.Text> 00000000-0000-0000-0000-000000000000
+      voiceName: Sasha
+      enableLogging: false
+  ScriptTypes:
+    "":
+      {}
 - !<Text/652f93c1-a309-401e-8091-de2284b54001>
   PrefabRemaps:
     []
@@ -14606,7 +14662,7 @@
 - !<ScriptComponent/7c7a7e93-ee08-4bc6-86e9-535875a7101d>
   PrefabRemaps:
     []
-  Name: AiCharacterOption
+  Name: ZappyOptionUI
   Enabled: true
   ScriptAsset: !<reference> 926ac0e9-4ea8-4550-b45b-ad43487bfa53
   ScriptInputsDefault:
@@ -18498,7 +18554,7 @@
 - !<ScriptComponent/9c24682f-06e2-40e6-a048-4aeb6c8b02ad>
   PrefabRemaps:
     []
-  Name: AiCharacterInteractionController
+  Name: ZappyInteractionsController
   Enabled: true
   ScriptAsset: !<reference> 32297ed6-b679-489e-8f67-472408f9e41a
   ScriptInputsDefault:
@@ -21513,6 +21569,22 @@
     greetOnStart: true
     enableLogging: true
     panelDistance: true
+    startMenuPanel: true
+    inLevelPanel: true
+    voiceCueText: true
+    voiceCueLabelTextInput: true
+    stepInstructionInput: true
+    stepCounterInput: true
+    levelNameInput: true
+    stepHintInput: true
+    stepComponentInput: true
+    stepPlacementInput: true
+    componentTrayInput: true
+    timerInput: true
+    completionPanel: true
+    completionTitleInput: true
+    completionStatsInput: true
+    completionMessageInput: true
   ScriptTypesDefault:
     {}
   ScriptInputs:
@@ -21520,6 +21592,22 @@
       greetOnStart: true
       enableLogging: true
       panelDistance: !<float> 80.000000
+      startMenuPanel: !<reference.SceneObject> 00000000-0000-0000-0000-000000000000
+      inLevelPanel: !<reference.SceneObject> 00000000-0000-0000-0000-000000000000
+      voiceCueText: !<reference.Text> 00000000-0000-0000-0000-000000000000
+      voiceCueLabelTextInput: !<reference.Text> 00000000-0000-0000-0000-000000000000
+      stepInstructionInput: !<reference.Text> 00000000-0000-0000-0000-000000000000
+      stepCounterInput: !<reference.Text> 00000000-0000-0000-0000-000000000000
+      levelNameInput: !<reference.Text> 00000000-0000-0000-0000-000000000000
+      stepHintInput: !<reference.Text> 00000000-0000-0000-0000-000000000000
+      stepComponentInput: !<reference.Text> 00000000-0000-0000-0000-000000000000
+      stepPlacementInput: !<reference.Text> 00000000-0000-0000-0000-000000000000
+      componentTrayInput: !<reference.Text> 00000000-0000-0000-0000-000000000000
+      timerInput: !<reference.Text> 00000000-0000-0000-0000-000000000000
+      completionPanel: !<reference.SceneObject> 00000000-0000-0000-0000-000000000000
+      completionTitleInput: !<reference.Text> 00000000-0000-0000-0000-000000000000
+      completionStatsInput: !<reference.Text> 00000000-0000-0000-0000-000000000000
+      completionMessageInput: !<reference.Text> 00000000-0000-0000-0000-000000000000
   ScriptTypes:
     "":
       {}
@@ -21729,16 +21817,18 @@
   Enabled: true
   ScriptAsset: !<reference> 45c7f51a-2723-4832-a2fa-7cfcae0b8c41
   ScriptInputsDefault:
+    brain: true
+    emotionController: true
+    voice: true
     enableLogging: true
-    speechText: true
   ScriptTypesDefault:
     {}
   ScriptInputs:
     "":
+      brain: !<MappingBased.AssignableType> 00000000-0000-0000-0000-000000000000
+      emotionController: !<MappingBased.AssignableType_1> 00000000-0000-0000-0000-000000000000
+      voice: !<MappingBased.AssignableType_2> 00000000-0000-0000-0000-000000000000
       enableLogging: true
-      speechText: !<reference.Text> 00000000-0000-0000-0000-000000000000
-      ttsModule: !<reference.TextToSpeechModule> 66611ae7-ebe5-4cd2-99c9-5b7ba67ca8b1
-      audioComponent: !<reference.AudioComponent> 13eea8c6-3a41-42e1-86fe-1d95051270ac
   ScriptTypes:
     "":
       {}
@@ -24361,27 +24451,6 @@
   RotationAngle: 0
   Pivot: {x: 0.000000, y: 0.000000}
   ExtentsTarget: !<reference> 00000000-0000-0000-0000-000000000000
-- !<ScriptComponent/ce1ff490-3463-4530-a42f-3ddae70ab278>
-  PrefabRemaps:
-    []
-  Name: AiCharacterMover
-  Enabled: true
-  ScriptAsset: !<reference> 72850fad-956f-496e-87ce-b92a3fb30aca
-  ScriptInputsDefault:
-    floatAmplitude: true
-    moveToDestinationSpeed: true
-  ScriptTypesDefault:
-    {}
-  ScriptInputs:
-    "":
-      assistant: !<MappingBased.AssignableType> 2b1ccf16-d675-4890-8fe6-9f761c878e70
-      optionsController: !<MappingBased.AssignableType_1> f095966d-62d4-45ec-a437-09b4ac264bcb
-      floatAmplitude: !<float> 2.000000
-      floatFrequency: 0.100000
-      moveToDestinationSpeed: !<float> 30.000000
-  ScriptTypes:
-    "":
-      {}
 - !<Image/ce3c8ee3-bf1a-45fb-b0db-481d2a268064>
   PrefabRemaps:
     []
@@ -25298,7 +25367,7 @@
 - !<ScriptComponent/d6440a62-3b94-4239-b85e-649a61c816de>
   PrefabRemaps:
     []
-  Name: AiCharacterOption
+  Name: ZappyOptionUI
   Enabled: true
   ScriptAsset: !<reference> 926ac0e9-4ea8-4550-b45b-ad43487bfa53
   ScriptInputsDefault:
@@ -25823,6 +25892,22 @@
     greetOnStart: true
     enableLogging: true
     panelDistance: true
+    startMenuPanel: true
+    inLevelPanel: true
+    voiceCueText: true
+    voiceCueLabelTextInput: true
+    stepInstructionInput: true
+    stepCounterInput: true
+    levelNameInput: true
+    stepHintInput: true
+    stepComponentInput: true
+    stepPlacementInput: true
+    componentTrayInput: true
+    timerInput: true
+    completionPanel: true
+    completionTitleInput: true
+    completionStatsInput: true
+    completionMessageInput: true
   ScriptTypesDefault:
     {}
   ScriptInputs:
@@ -25830,6 +25915,22 @@
       greetOnStart: true
       enableLogging: true
       panelDistance: !<float> 80.000000
+      startMenuPanel: !<reference.SceneObject> 00000000-0000-0000-0000-000000000000
+      inLevelPanel: !<reference.SceneObject> 00000000-0000-0000-0000-000000000000
+      voiceCueText: !<reference.Text> 00000000-0000-0000-0000-000000000000
+      voiceCueLabelTextInput: !<reference.Text> 00000000-0000-0000-0000-000000000000
+      stepInstructionInput: !<reference.Text> 00000000-0000-0000-0000-000000000000
+      stepCounterInput: !<reference.Text> 00000000-0000-0000-0000-000000000000
+      levelNameInput: !<reference.Text> 00000000-0000-0000-0000-000000000000
+      stepHintInput: !<reference.Text> 00000000-0000-0000-0000-000000000000
+      stepComponentInput: !<reference.Text> 00000000-0000-0000-0000-000000000000
+      stepPlacementInput: !<reference.Text> 00000000-0000-0000-0000-000000000000
+      componentTrayInput: !<reference.Text> 00000000-0000-0000-0000-000000000000
+      timerInput: !<reference.Text> 00000000-0000-0000-0000-000000000000
+      completionPanel: !<reference.SceneObject> 00000000-0000-0000-0000-000000000000
+      completionTitleInput: !<reference.Text> 00000000-0000-0000-0000-000000000000
+      completionStatsInput: !<reference.Text> 00000000-0000-0000-0000-000000000000
+      completionMessageInput: !<reference.Text> 00000000-0000-0000-0000-000000000000
   ScriptTypes:
     "":
       {}
@@ -25868,6 +25969,27 @@
     - !<own> 5a6fdd08-6b6f-4af0-887b-119ae6ed2f43
   Components:
     []
+- !<ScriptComponent/dbffb760-6b78-4857-89d0-b49ccad8c9b4>
+  PrefabRemaps:
+    []
+  Name: ZappyMovement
+  Enabled: true
+  ScriptAsset: !<reference> a9af9e6e-eaaa-4f7e-bf7b-50cc7fd04c70
+  ScriptInputsDefault:
+    floatAmplitude: true
+    floatFrequency: true
+    moveToDestinationSpeed: true
+  ScriptTypesDefault:
+    {}
+  ScriptInputs:
+    "":
+      optionsController: !<MappingBased.AssignableType> f095966d-62d4-45ec-a437-09b4ac264bcb
+      floatAmplitude: !<float> 2.000000
+      floatFrequency: 0.500000
+      moveToDestinationSpeed: !<float> 30.000000
+  ScriptTypes:
+    "":
+      {}
 - !<SceneObject/dc342e44-a812-4768-bb8b-ff1014601cb5>
   PrefabRemaps:
     []
@@ -28444,7 +28566,7 @@
 - !<ScriptComponent/f095966d-62d4-45ec-a437-09b4ac264bcb>
   PrefabRemaps:
     []
-  Name: AiCharacterOptionsController
+  Name: ZappyOptionsController
   Enabled: true
   ScriptAsset: !<reference> 3f4f9132-11aa-4492-86e4-330be9056aec
   ScriptInputsDefault:
