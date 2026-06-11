@@ -13,6 +13,7 @@
     - !<own> 29fcc15e-7002-459f-86d6-ba5aef66d5e5
     - !<own> 05161d3a-5097-4b20-9eed-43e61e454bb4
     - !<own> 48790dd4-99ef-49c0-a0f8-9f9791bf2823
+    - !<own> 56dfefe5-eba1-4d1a-b973-4c52513e04fe
   layers: !<Layers/267ee9a7-aff2-4f9d-9a49-f71214747d03>
     userLayers:
       - |
@@ -2475,7 +2476,7 @@
     {}
   ScriptInputs:
     "":
-      targetingMode: !<float> 7.000000
+      targetingMode: !<float> 1.000000
       targetingVisual: !<float> 1.000000
       ignoreInteractionPlane: false
       keepHoverOnTrigger: false
@@ -4587,7 +4588,7 @@
   Enabled: true
   Shape: !<Sphere>
     FitVisual: false
-    Radius: 6.000000
+    Radius: 4.000000
   Matter: !<reference> 00000000-0000-0000-0000-000000000000
   Filter: !<reference> 00000000-0000-0000-0000-000000000000
   OverlapFilter: !<reference> 00000000-0000-0000-0000-000000000000
@@ -4598,7 +4599,7 @@
   ForceCompound: false
   Intangible: false
   ShowCollider: true
-  Dynamic: true
+  Dynamic: false
   BodySetting: Density
   BodySettingValue: 1.000000
   Damping: 0.000000
@@ -5450,6 +5451,27 @@
   RotationAngle: 0
   Pivot: {x: 0.000000, y: 0.000000}
   ExtentsTarget: !<reference> 00000000-0000-0000-0000-000000000000
+- !<ScriptComponent/308e2967-8a99-4664-8725-9245ceb8e794>
+  PrefabRemaps:
+    []
+  Name: BreadboardBleController
+  Enabled: true
+  ScriptAsset: !<reference> 46e63a35-ce7e-4666-8de6-1217efe6aef3
+  ScriptInputsDefault:
+    autoConnectOnStart: true
+    scanTimeoutSeconds: true
+    simulateInEditor: true
+  ScriptTypesDefault:
+    {}
+  ScriptInputs:
+    "":
+      bluetoothModule: !<reference.BluetoothCentralModule> 9808fbcb-4156-4a98-94a8-9f7ba3247f24
+      autoConnectOnStart: true
+      scanTimeoutSeconds: !<float> 15.000000
+      simulateInEditor: true
+  ScriptTypes:
+    "":
+      {}
 - !<ScriptComponent/309fe760-be1f-49d2-a56c-8dcbddc61bc2>
   PrefabRemaps:
     []
@@ -7543,14 +7565,12 @@
   Enabled: true
   ScriptAsset: !<reference> 926ac0e9-4ea8-4550-b45b-ad43487bfa53
   ScriptInputsDefault:
-    showDurationMs: true
-    hideDurationMs: true
+    {}
   ScriptTypesDefault:
     {}
   ScriptInputs:
     "":
-      showDurationMs: !<float> 250.000000
-      hideDurationMs: !<float> 180.000000
+      pinchButton: !<MappingBased.AssignableType> 5e36b469-d5d2-42e2-b524-2c0a72f3e9c5
   ScriptTypes:
     "":
       {}
@@ -8845,7 +8865,7 @@
     {}
   ScriptInputs:
     "":
-      targetingMode: !<float> 7.000000
+      targetingMode: !<float> 1.000000
       targetingVisual: !<float> 1.000000
       ignoreInteractionPlane: false
       keepHoverOnTrigger: false
@@ -9846,6 +9866,21 @@
     - !<own> 4b754eae-a064-4b63-9c38-892cc1959b12
   Components:
     - !<own> 89a536fd-a941-488a-baed-50b886a1e586
+- !<SceneObject/56dfefe5-eba1-4d1a-b973-4c52513e04fe>
+  PrefabRemaps:
+    []
+  Name: BLE Controller
+  Enabled: true
+  Layers: 1
+  LocalTransform: !<TransformEntity>
+    Position: {x: 0.000000, y: 0.000000, z: 0.000000}
+    Rotation: {x: 0.000000, y: 0.000000, z: 0.000000}
+    Scale: {x: 1.000000, y: 1.000000, z: 1.000000}
+    HasSegmentScaleCompensation: false
+  Children:
+    []
+  Components:
+    - !<own> 308e2967-8a99-4664-8725-9245ceb8e794
 - !<Image/57128ae6-ac6e-4881-a54e-e00eff537ba2>
   PrefabRemaps:
     []
@@ -10972,7 +11007,7 @@
     {}
   ScriptInputs:
     "":
-      targetingMode: !<float> 7.000000
+      targetingMode: !<float> 1.000000
       targetingVisual: !<float> 1.000000
       ignoreInteractionPlane: false
       keepHoverOnTrigger: false
@@ -14529,14 +14564,12 @@
   Enabled: true
   ScriptAsset: !<reference> 926ac0e9-4ea8-4550-b45b-ad43487bfa53
   ScriptInputsDefault:
-    showDurationMs: true
-    hideDurationMs: true
+    {}
   ScriptTypesDefault:
     {}
   ScriptInputs:
     "":
-      showDurationMs: !<float> 250.000000
-      hideDurationMs: !<float> 180.000000
+      pinchButton: !<MappingBased.AssignableType> 124e388e-b2e3-4950-8323-0b0090739fcd
   ScriptTypes:
     "":
       {}
@@ -19635,7 +19668,6 @@
     enableInstantDrag: true
     isScrollable: true
     allowMultipleInteractors: true
-    enablePokeDirectionality: true
     acceptableXDirections: true
     acceptableYDirections: true
     acceptableZDirections: true
@@ -19644,14 +19676,14 @@
     {}
   ScriptInputs:
     "":
-      targetingMode: !<float> 7.000000
+      targetingMode: !<float> 1.000000
       targetingVisual: !<float> 1.000000
       ignoreInteractionPlane: false
       keepHoverOnTrigger: false
       enableInstantDrag: false
       isScrollable: false
       allowMultipleInteractors: true
-      enablePokeDirectionality: false
+      enablePokeDirectionality: true
       acceptableXDirections: !<float> 0.000000
       acceptableYDirections: !<float> 0.000000
       acceptableZDirections: !<float> 1.000000
@@ -25076,14 +25108,12 @@
   Enabled: true
   ScriptAsset: !<reference> 926ac0e9-4ea8-4550-b45b-ad43487bfa53
   ScriptInputsDefault:
-    showDurationMs: true
-    hideDurationMs: true
+    {}
   ScriptTypesDefault:
     {}
   ScriptInputs:
     "":
-      showDurationMs: !<float> 250.000000
-      hideDurationMs: !<float> 180.000000
+      pinchButton: !<MappingBased.AssignableType> 4e39cffe-a63a-48b6-8386-fb7a58df0aaf
   ScriptTypes:
     "":
       {}
@@ -29992,7 +30022,7 @@
   Enabled: true
   Layers: 1
   LocalTransform: !<TransformEntity>
-    Position: {x: 0.000000, y: 1.000000, z: -50.000000}
+    Position: {x: 0.000000, y: 0.000000, z: 0.000000}
     Rotation: {x: 0.000000, y: 0.000000, z: 0.000000}
     Scale: {x: 1.000000, y: 1.000000, z: 1.000000}
     HasSegmentScaleCompensation: false
@@ -30000,10 +30030,10 @@
     []
   Components:
     - !<own> 9c24682f-06e2-40e6-a048-4aeb6c8b02ad
+    - !<own> 28483858-cf1c-48f4-b85e-6fc1a7d27494
     - !<own> a6ce47e7-a516-43ae-b9c9-b727cd9d3f39
     - !<own> 252fc71d-8d64-4180-a678-58ad5c34972b
     - !<own> c8707b66-9160-445e-ad72-4668294f5837
-    - !<own> 28483858-cf1c-48f4-b85e-6fc1a7d27494
 - !<SceneObject/fd97ae7f-7aae-4fb3-9727-4a67501d4f08>
   PrefabRemaps:
     []
