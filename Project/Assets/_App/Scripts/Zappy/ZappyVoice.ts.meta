@@ -1,0 +1,63 @@
+- !<AssetImportMetadata/78c49a5a-dcf4-4184-b065-ed5fa229664c>
+  ImportedAssetIds:
+    TypeScriptAsset: !<reference> 48835098-7cfb-4484-91bc-3d61af11fd57
+  ImporterName: TypeScriptAssetImporter
+  PrimaryAsset: !<reference> 48835098-7cfb-4484-91bc-3d61af11fd57
+  PackageType: NotAPackage
+  LegacyPackagePolicy: ~
+  ExtraData:
+    {}
+  AssetDataMap:
+    TypeScriptAsset: !<own> 4e7b25f5-65b1-4aa3-a3b8-9ee51c720fc2
+  DependentFiles:
+    []
+  ImporterSettings: !<AssetImporterSettings>
+    {}
+  CompressionSettings: !<own> 00000000-0000-0000-0000-000000000000
+- !<TypeScriptAssetData/4e7b25f5-65b1-4aa3-a3b8-9ee51c720fc2>
+  SvgIcon: ""
+  SetupScript:
+    code: ""
+  Description: ""
+  VersionMajor: 0
+  VersionMinor: 0
+  VersionPatch: 0
+  ComponentUid: 51cfdbdd-6674-4607-a4bd-1005d51b3336
+  ExportUid: 00000000-0000-0000-0000-000000000000
+  PackagePolicy: CanBeUnpacked
+  ScriptInputsHidden:
+    audioComponent: false
+    emotionController: false
+    enableLogging: false
+    speechText: false
+    ttsModule: false
+    voiceName: false
+  ScriptTypesHidden:
+    {}
+  ReadMe: !<reference> 00000000-0000-0000-0000-000000000000
+  DeclarationFile: !<reference> 00000000-0000-0000-0000-000000000000
+  Tags:
+    []
+  Attachments:
+    []
+  DefaultScriptInputs:
+    - emotionController: !<MappingBased.AssignableType> 00000000-0000-0000-0000-000000000000
+      ttsModule: !<reference.TextToSpeechModule> 00000000-0000-0000-0000-000000000000
+      audioComponent: !<reference.AudioComponent> 00000000-0000-0000-0000-000000000000
+      speechText: !<reference.Text> 00000000-0000-0000-0000-000000000000
+      voiceName: Sasha
+      enableLogging: false
+  ScriptTypes:
+    -
+      {}
+  InputLines:
+    - '// @ui {"widget":"separator"}'
+    - '// @ui {"widget":"label", "label":"References"}'
+    - // @input AssignableType emotionController
+    - '// @input Asset.TextToSpeechModule ttsModule {"hint":"TextToSpeechModule asset — add via Resources > + > Text To Speech Module"}'
+    - '// @input Component.AudioComponent audioComponent {"hint":"AudioComponent that plays the synthesized speech"}'
+    - '// @input Component.Text speechText {"hint":"Optional caption text — mirrors whatever Zappy says"}'
+    - '// @ui {"widget":"separator"}'
+    - '// @ui {"widget":"label", "label":"Settings"}'
+    - '// @input string voiceName = "Sasha" {"hint":"TTS voice preset name"}'
+    - '// @input bool enableLogging {"hint":"Enable debug logging"}'
