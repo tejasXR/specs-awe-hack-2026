@@ -26,8 +26,10 @@
   ExportUid: 00000000-0000-0000-0000-000000000000
   PackagePolicy: CanBeUnpacked
   ScriptInputsHidden:
+    audioComponent: false
     enableLogging: false
     speechText: false
+    ttsModule: false
   ScriptTypesHidden:
     {}
   ReadMe: !<reference> 00000000-0000-0000-0000-000000000000
@@ -39,9 +41,13 @@
   DefaultScriptInputs:
     - enableLogging: true
       speechText: !<reference.Text> 00000000-0000-0000-0000-000000000000
+      ttsModule: !<reference.TextToSpeechModule> 00000000-0000-0000-0000-000000000000
+      audioComponent: !<reference.AudioComponent> 00000000-0000-0000-0000-000000000000
   ScriptTypes:
     -
       {}
   InputLines:
     - '// @input bool enableLogging = true {"hint":"Enable debug logging"}'
     - '// @input Component.Text speechText {"hint":"Optional text component for speech display"}'
+    - '// @input Asset.TextToSpeechModule ttsModule {"hint":"TextToSpeechModule asset — add via Resources > + > Text To Speech Module"}'
+    - '// @input Component.AudioComponent audioComponent {"hint":"AudioComponent on this object for TTS playback"}'

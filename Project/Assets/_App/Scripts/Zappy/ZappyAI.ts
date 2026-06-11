@@ -54,6 +54,16 @@ export class ZappyAI extends BaseScriptComponent {
   @allowUndefined
   speechText!: Text;
 
+  @input
+  @hint("TextToSpeechModule asset — add via Resources > + > Text To Speech Module")
+  @allowUndefined
+  ttsModule!: TextToSpeechModule;
+
+  @input
+  @hint("AudioComponent on this object for TTS playback")
+  @allowUndefined
+  audioComponent!: AudioComponent;
+
   // ─── Events (Tejas's pattern) ─────────────────────────────────
 
   private readonly onEmotionChangedEvent = new Event<ZappyEmotionData>();
@@ -75,6 +85,7 @@ export class ZappyAI extends BaseScriptComponent {
 
   private personality: ZappyPersonality = ZappyPersonality.Mascot;
   private isBusy: boolean = false;
+  private isSpeaking: boolean = false;
   private history: Array<{ role: string; parts: Array<{ text: string }> }> = [];
 
   private readonly MASCOT_PROMPT =
@@ -383,7 +394,42 @@ export class ZappyAI extends BaseScriptComponent {
       this.speechText.text = resp.speech;
     }
 
+    // Speak out loud via TTS
+    this.speak(resp.speech);
+
     this.log("Zappy says: " + resp.speech);
+  }
+
+  // --- Text-to-Speech ---
+
+  private speak(text: string): void {
+    if (isNull(this.ttsModule)) {
+      this.log("TTS module not assigned -- skipping speech");
+      return;
+    }
+    if (isNull(this.audioComponent)) {
+      this.log("AudioComponent not assigned -- skipping speech");
+      return;
+    }
+
+    const options = TextToSpeech.Options.create();
+    options.voiceName = "Sasha";
+
+    this.isSpeaking = true;
+    this.ttsModule.synthesize(
+      text,
+      options,
+      (audioTrack: AudioTrackAsset, wordInfo: TextToSpeech.WordInfo[], phonemeInfo: TextToSpeech.PhonemeInfo[], voiceStyle: any) => {
+        this.log("TTS audio ready (" + wordInfo.length + " words)");
+        this.audioComponent.audioTrack = audioTrack;
+        this.audioComponent.play(1);
+        this.isSpeaking = false;
+      },
+      (error: number, description: string) => {
+        this.log("TTS error " + error + ": " + description);
+        this.isSpeaking = false;
+      },
+    );
   }
 
   private emitEmotion(emotion: ZappyEmotion, intensity: number): void {

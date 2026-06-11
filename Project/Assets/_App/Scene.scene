@@ -2560,6 +2560,23 @@
     []
   Components:
     - !<own> f8a34539-f66b-466a-8278-e6834c5bc8b8
+- !<AudioComponent/13eea8c6-3a41-42e1-86fe-1d95051270ac>
+  PrefabRemaps:
+    []
+  Name: Audio
+  Enabled: true
+  AudioTrack: !<reference> 00000000-0000-0000-0000-000000000000
+  EnableAutoplayLoop: false
+  Volume: 1.000000
+  EnableMixToSnap: false
+  RecordVolume: 1.000000
+  EnableSpatialAudio: false
+  EnableDistanceEffect: false
+  CurveType: Logarithm
+  MinDistance: 0.000000
+  MaxDistance: 100.000000
+  EnableDirectivityEffect: false
+  EnablePositionEffect: false
 - !<SceneObject/142fa5b4-a78f-47e6-a0a6-04c546dc11ec>
   PrefabRemaps:
     []
@@ -4781,6 +4798,7 @@
     - !<own> 2b1ccf16-d675-4890-8fe6-9f761c878e70
     - !<own> ce1ff490-3463-4530-a42f-3ddae70ab278
     - !<own> ba9b0252-db63-4aee-ba69-de0f00706d9b
+    - !<own> 13eea8c6-3a41-42e1-86fe-1d95051270ac
 - !<SceneObject/2aa9bd36-58f8-49f1-90a0-80cbcc8527d9>
   PrefabRemaps:
     []
@@ -21494,12 +21512,14 @@
   ScriptInputsDefault:
     greetOnStart: true
     enableLogging: true
+    panelDistance: true
   ScriptTypesDefault:
     {}
   ScriptInputs:
     "":
       greetOnStart: true
       enableLogging: true
+      panelDistance: !<float> 80.000000
   ScriptTypes:
     "":
       {}
@@ -21717,6 +21737,8 @@
     "":
       enableLogging: true
       speechText: !<reference.Text> 00000000-0000-0000-0000-000000000000
+      ttsModule: !<reference.TextToSpeechModule> 66611ae7-ebe5-4cd2-99c9-5b7ba67ca8b1
+      audioComponent: !<reference.AudioComponent> 13eea8c6-3a41-42e1-86fe-1d95051270ac
   ScriptTypes:
     "":
       {}
@@ -25800,12 +25822,14 @@
   ScriptInputsDefault:
     greetOnStart: true
     enableLogging: true
+    panelDistance: true
   ScriptTypesDefault:
     {}
   ScriptInputs:
     "":
       greetOnStart: true
       enableLogging: true
+      panelDistance: !<float> 80.000000
   ScriptTypes:
     "":
       {}

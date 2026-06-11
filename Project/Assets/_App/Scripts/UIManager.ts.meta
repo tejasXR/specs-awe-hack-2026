@@ -1,0 +1,53 @@
+- !<AssetImportMetadata/647cd844-2c52-46ba-8d6a-8b5c242cbe57>
+  ImportedAssetIds:
+    TypeScriptAsset: !<reference> bc82ba8f-8ad8-49ec-8d1d-4e64e2c51f60
+  ImporterName: TypeScriptAssetImporter
+  PrimaryAsset: !<reference> bc82ba8f-8ad8-49ec-8d1d-4e64e2c51f60
+  PackageType: NotAPackage
+  LegacyPackagePolicy: ~
+  ExtraData:
+    {}
+  AssetDataMap:
+    TypeScriptAsset: !<own> b7318073-1547-415b-91e0-d976f29d7ada
+  DependentFiles:
+    []
+  ImporterSettings: !<AssetImporterSettings>
+    {}
+  CompressionSettings: !<own> 00000000-0000-0000-0000-000000000000
+- !<TypeScriptAssetData/b7318073-1547-415b-91e0-d976f29d7ada>
+  SvgIcon: ""
+  SetupScript:
+    code: ""
+  Description: ""
+  VersionMajor: 0
+  VersionMinor: 0
+  VersionPatch: 0
+  ComponentUid: 1fdfe954-70a8-46ff-8181-8b9218b81d9a
+  ExportUid: 00000000-0000-0000-0000-000000000000
+  PackagePolicy: CanBeUnpacked
+  ScriptInputsHidden:
+    cameraObject: false
+    enableLogging: false
+    panelDistance: false
+    zappyObject: false
+  ScriptTypesHidden:
+    {}
+  ReadMe: !<reference> 00000000-0000-0000-0000-000000000000
+  DeclarationFile: !<reference> 00000000-0000-0000-0000-000000000000
+  Tags:
+    []
+  Attachments:
+    []
+  DefaultScriptInputs:
+    - enableLogging: true
+      cameraObject: !<reference.SceneObject> 00000000-0000-0000-0000-000000000000
+      zappyObject: !<reference.SceneObject> 00000000-0000-0000-0000-000000000000
+      panelDistance: !<float> 80.000000
+  ScriptTypes:
+    -
+      {}
+  InputLines:
+    - '// @input bool enableLogging = true {"hint":"Enable debug logging"}'
+    - '// @input SceneObject cameraObject {"hint":"Camera object for positioning panels in front of user"}'
+    - '// @input SceneObject zappyObject {"hint":"The Zappy SceneObject -- will be shown/hidden based on game state"}'
+    - '// @input float panelDistance = 80 {"hint":"Distance from camera for floating panels (cm)"}'
