@@ -7,11 +7,6 @@ import {
 } from "./BreadboardGrid";
 import { InstructionPrompt } from "./InstructionPrompt";
 
-// export interface InstructionData {
-//   cell: BreadboardCell;
-//   promptData: InstructionDefinition;
-// }
-
 export interface InstructionStepEvent {
   instruction: InstructionDefinition;
   currentIndex: number;
@@ -35,11 +30,34 @@ export class InstructionDefinition {
       new ComboBoxItem("J", "J"),
     ]),
   )
-  column: string = "A";
+  columnStart: string = "A";
 
   @input
   @widget(new SliderWidget(10, 40, 1)) // playground rows only
-  row: number = 10;
+  rowStart: number = 10;
+
+  @input
+  @allowUndefined
+  @widget(
+    new ComboBoxWidget([
+      new ComboBoxItem("A", "A"),
+      new ComboBoxItem("B", "B"),
+      new ComboBoxItem("C", "C"),
+      new ComboBoxItem("D", "D"),
+      new ComboBoxItem("E", "E"),
+      new ComboBoxItem("F", "F"),
+      new ComboBoxItem("G", "G"),
+      new ComboBoxItem("H", "H"),
+      new ComboBoxItem("I", "I"),
+      new ComboBoxItem("J", "J"),
+    ]),
+  )
+  columnEnd: string | undefined;
+
+  @input
+  @allowUndefined
+  @widget(new SliderWidget(10, 40, 1))
+  rowEnd: number | undefined;
 
   @input
   title: string = "";
@@ -176,18 +194,41 @@ export class InstructionsController extends BaseScriptComponent {
   }
 
   private moveToStep(index: number): void {
+
     const instructionDefinition = this.instructionDefinitions[index];
-    const cellData = this.toBreadboardCell(instructionDefinition);
+    const cellStart = this.toBreadboardCell({ column: instructionDefinition.columnStart, row: instructionDefinition.rowStart });
+
+    const targetPositions: vec3[] = [];
+    targetPositions.push(
+      cellToWorldPosition(
+        cellStart,
+        this.hoverOffsetCm,
+        this.breadboardOrigin.getTransform(),
+      ),
+    );
+
+    if (
+      instructionDefinition.columnEnd !== undefined &&
+      instructionDefinition.rowEnd !== undefined
+    ) {
+      const cellEndData = this.toBreadboardCell({
+        column: instructionDefinition.columnEnd,
+        row: instructionDefinition.rowEnd,
+      });
+      targetPositions.push(
+        cellToWorldPosition(
+          cellEndData,
+          this.hoverOffsetCm,
+          this.breadboardOrigin.getTransform(),
+        ),
+      );
+    }
 
     this.instructionPrompt.setup(
       instructionDefinition.title,
       instructionDefinition.description,
       this.instructionPromptLocationObj.getTransform().getWorldPosition(),
-      cellToWorldPosition(
-        cellData,
-        this.hoverOffsetCm,
-        this.breadboardOrigin.getTransform(),
-      ),
+      targetPositions,
     );
 
     this.instructionPrompt.show();
@@ -200,6 +241,7 @@ export class InstructionsController extends BaseScriptComponent {
     });
   }
 
+  // TEJAS: Unused since we have one prompt, but still keeping in case we need it
   private hideCurrentPrompt(): void {
     if (this._currentIndex < 0) {
       return;
@@ -212,7 +254,10 @@ export class InstructionsController extends BaseScriptComponent {
    * slider), so a failure here means a misconfigured definition — fail loudly
    * rather than hand an invalid cell to the grid math.
    */
-  private toBreadboardCell(definition: InstructionDefinition): BreadboardCell {
+  private toBreadboardCell(definition: {
+    column: string;
+    row: number;
+  }): BreadboardCell {
     if (!isBreadboardColumn(definition.column)) {
       throw new Error(
         `InstructionsController: invalid column "${definition.column}" — expected A–J`,
