@@ -8,7 +8,7 @@
  *
  * SETUP: Requires RemoteServiceGateway.lspkg installed via Lens Studio
  *        Asset Library + Google Token set in RemoteServiceGatewayCredentials.
- *        Token: d79f4e34-6434-464d-9fef-3b22a040a77d
+ *        Token: (set in RemoteServiceGatewayCredentials asset in Lens Studio)
  */
 import { Gemini } from "RemoteServiceGateway.lspkg/HostedExternal/Gemini";
 import { GeminiTypes } from "RemoteServiceGateway.lspkg/HostedExternal/GeminiTypes";
