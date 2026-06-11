@@ -17,6 +17,7 @@
     - !<own> 4eae7982-b0a1-402e-84f5-2d8994ef83b5
     - !<own> 82571ce9-7591-44b5-b9ba-23552e8a6a3d
     - !<own> 56dfefe5-eba1-4d1a-b973-4c52513e04fe
+    - !<own> b86cbb43-e82e-48ed-89e0-a449f10cd53e
   layers: !<Layers/267ee9a7-aff2-4f9d-9a49-f71214747d03>
     userLayers:
       - |
@@ -3600,6 +3601,25 @@
     []
   Components:
     - !<own> fdd58431-3ab2-4fc7-9e54-86e9db4a26ec
+- !<Image/1e37424d-e9c2-4aa3-9cb8-1ce2f2e7f942>
+  PrefabRemaps:
+    []
+  Name: Image
+  Enabled: true
+  RenderOrder: 10
+  StretchMode: Fit
+  VerticalAlignment: Center
+  HorizontalAlignment: Center
+  MeshShadowMode: None
+  ShadowColor: {x: 1.000000, y: 1.000000, z: 1.000000, w: 1.000000}
+  ShadowDensity: 1.000000
+  Materials:
+    - !<reference> 50d26e1b-31a8-4bcb-87ac-b84460e34bcf
+  FlipX: false
+  FlipY: false
+  RotationAngle: 0
+  Pivot: {x: 0.000000, y: 0.000000}
+  ExtentsTarget: !<reference> 00000000-0000-0000-0000-000000000000
 - !<SceneObject/1e7bdb72-b2c7-45ce-95eb-79a4928d1355>
   PrefabRemaps:
     []
@@ -6539,6 +6559,21 @@
     []
   Components:
     - !<own> 25fac10e-a41d-4dcd-88b4-c12607eb38b1
+- !<SceneObject/35d91114-1565-4665-b989-527d52bcbe1e>
+  PrefabRemaps:
+    []
+  Name: Text
+  Enabled: true
+  Layers: 1
+  LocalTransform: !<TransformEntity>
+    Position: {x: 0.000000, y: 15.000000, z: 0.000000}
+    Rotation: {x: 0.000000, y: 0.000000, z: 0.000000}
+    Scale: {x: 1.000000, y: 1.000000, z: 1.000000}
+    HasSegmentScaleCompensation: false
+  Children:
+    []
+  Components:
+    - !<own> acbd78e4-a682-4782-b971-8be5310677fe
 - !<RenderMeshVisual/36b6685a-9ac1-4522-ab4f-83d94258cd94>
   PrefabRemaps:
     []
@@ -16447,6 +16482,31 @@
     []
   Components:
     - !<own> e65e0750-215e-4c7b-bcc2-ef72bb412e58
+- !<ScriptComponent/8aef77b7-cee7-46a5-bf28-432bdceaa790>
+  PrefabRemaps:
+    []
+  Name: CameraTexture
+  Enabled: true
+  ScriptAsset: !<reference> 74ae0a66-62ec-42fd-9c70-e59aa9a380b6
+  ScriptInputsDefault:
+    enableLogging: true
+    enableLoggingLifecycle: true
+  ScriptTypesDefault:
+    {}
+  ScriptInputs:
+    "":
+      uiImage: !<reference.Image> 1e37424d-e9c2-4aa3-9cb8-1ce2f2e7f942
+      screenTexture: !<reference.Texture> 648530c4-c193-4a20-8a7f-508cd30c605a
+      camModule: !<reference.CameraModule> 34040a72-4cad-4d9d-915f-7414cd3c4cb9
+      cropLeft: -0.800000
+      cropRight: 0.800000
+      cropBottom: -0.800000
+      cropTop: 0.800000
+      enableLogging: false
+      enableLoggingLifecycle: false
+  ScriptTypes:
+    "":
+      {}
 - !<ScreenTransform/8b0fe525-d6a2-47d3-82ca-a39e40c8ea0d>
   PrefabRemaps:
     []
@@ -18327,6 +18387,21 @@
     - !<own> 442228ad-068d-4b99-bd45-ac1bd3b6abbb
   Components:
     - !<own> 30ec960e-53a4-4cc2-beb5-bda00e57d070
+- !<SceneObject/9acc0748-ba2a-42a5-97bf-86eac44dd836>
+  PrefabRemaps:
+    []
+  Name: CaptureCropped
+  Enabled: true
+  Layers: 1
+  LocalTransform: !<TransformEntity>
+    Position: {x: 0.000000, y: 0.000000, z: 1.000000}
+    Rotation: {x: 0.000000, y: 0.000000, z: 0.000000}
+    Scale: {x: 17.000000, y: 17.000000, z: 1.000000}
+    HasSegmentScaleCompensation: false
+  Children:
+    []
+  Components:
+    - !<own> 1e37424d-e9c2-4aa3-9cb8-1ce2f2e7f942
 - !<ScriptComponent/9af39919-fe19-4fd0-b0b3-45e761ec7e9a>
   PrefabRemaps:
     []
@@ -20183,6 +20258,90 @@
     []
   Components:
     - !<own> bcd53446-5319-4cf7-a48a-859b55c746ed
+- !<Text/acbd78e4-a682-4782-b971-8be5310677fe>
+  PrefabRemaps:
+    []
+  Name: Text
+  Enabled: true
+  RenderOrder: 0
+  StretchMode: Stretch
+  VerticalAlignment: Center
+  HorizontalAlignment: Center
+  MeshShadowMode: None
+  ShadowColor: {x: 1.000000, y: 1.000000, z: 1.000000, w: 1.000000}
+  ShadowDensity: 1.000000
+  Text: |-
+    This set up allows you to crop an exsiting texture. 
+    
+    Modify the offset in the Screen Crop Texture object you find in the package folder 
+  Editable: false
+  ShowEditingPreview: true
+  TouchHandler: !<reference> 00000000-0000-0000-0000-000000000000
+  SizeToFit: false
+  FontSize: 30
+  Font: !<reference> 00000000-0000-0000-0000-000000000000
+  LayoutRect:
+    left: -7.500000
+    bottom: -2.250000
+    right: 7.500000
+    top: 2.250000
+  OverflowVertical: Overflow
+  OverflowHorizontal: Wrap
+  Fill: !<TextFill>
+    Mode: Solid
+    Color: {x: 1.000000, y: 1.000000, z: 1.000000, w: 1.000000}
+    Texture: !<reference> 00000000-0000-0000-0000-000000000000
+    ColorTint: {x: 1.000000, y: 1.000000, z: 1.000000, w: 1.000000}
+    TileCount: 5.000000
+    TileZone: Rect
+    TextureStretch: FitWidth
+  BlendMode: PremultipliedAlpha
+  Outline: !<OutlineSettings>
+    Enabled: false
+    Fill: !<TextFill>
+      Mode: Solid
+      Color: {x: 0.000000, y: 0.000000, z: 0.000000, w: 1.000000}
+      Texture: !<reference> 00000000-0000-0000-0000-000000000000
+      ColorTint: {x: 1.000000, y: 1.000000, z: 1.000000, w: 1.000000}
+      TileCount: 5.000000
+      TileZone: Rect
+      TextureStretch: FitWidth
+    Size: 0.250000
+  Dropshadow: !<DropshadowSettings>
+    Enabled: false
+    Fill: !<TextFill>
+      Mode: Solid
+      Color: {x: 0.000000, y: 0.000000, z: 0.000000, w: 1.000000}
+      Texture: !<reference> 00000000-0000-0000-0000-000000000000
+      ColorTint: {x: 1.000000, y: 1.000000, z: 1.000000, w: 1.000000}
+      TileCount: 5.000000
+      TileZone: Rect
+      TextureStretch: FitWidth
+    OffsetX: 0.250000
+    OffsetY: 0.250000
+  Background: !<BackgroundSettings>
+    Enabled: true
+    Fill: !<TextFill>
+      Mode: Solid
+      Color: {x: 0.016800, y: 0.198352, z: 1.000000, w: 1.000000}
+      Texture: !<reference> 00000000-0000-0000-0000-000000000000
+      ColorTint: {x: 1.000000, y: 1.000000, z: 1.000000, w: 1.000000}
+      TileCount: 5.000000
+      TileZone: Rect
+      TextureStretch: FitWidth
+    Margins:
+      left: 0.500000
+      bottom: 0.500000
+      right: 0.500000
+      top: 0.500000
+    CornerRadius: 1.000000
+  AdvancedLayout: !<TextAdvancedLayout>
+    ExtentsTarget: !<reference> 00000000-0000-0000-0000-000000000000
+    LetterSpacing: 0.000000
+    LineSpacing: 1.000000
+    CapitalizationOverride: None
+  DepthTest: false
+  TwoSided: false
 - !<SceneObject/acdaf263-ffb4-42dd-bced-954f9e5059ff>
   PrefabRemaps:
     []
@@ -21513,6 +21672,27 @@
     - !<own> 50c7378c-5160-466a-a9b2-fa7d3d6ea579
   Components:
     - !<own> 7779a856-0f5d-4499-9f19-68a07c8c4177
+- !<SceneObject/b86cbb43-e82e-48ed-89e0-a449f10cd53e>
+  PrefabRemaps:
+    - 1e37424d-e9c2-4aa3-9cb8-1ce2f2e7f942: 75c60143-6541-4308-6399-0094c53b9440
+    - 35d91114-1565-4665-b989-527d52bcbe1e: 07f060bb-b21d-4c5e-5f38-528fcb070861
+    - 8aef77b7-cee7-46a5-bf28-432bdceaa790: 64085342-8b01-4563-4bbd-3cf421b4517f
+    - 9acc0748-ba2a-42a5-97bf-86eac44dd836: d3574a89-7ede-4324-434d-e3e8c14d4fb5
+    - acbd78e4-a682-4782-b971-8be5310677fe: 9f62cd63-ddb4-4a3a-4774-e727ee22b12e
+    - b86cbb43-e82e-48ed-89e0-a449f10cd53e: 978d015e-936a-48d0-6d1b-cb3d2ad5ee89
+  Name: Cropped Camera Texture
+  Enabled: true
+  Layers: 1
+  LocalTransform: !<TransformEntity>
+    Position: {x: 0.000000, y: 0.000000, z: -50.000000}
+    Rotation: {x: 0.000000, y: 0.000000, z: 0.000000}
+    Scale: {x: 1.000000, y: 1.000000, z: 1.000000}
+    HasSegmentScaleCompensation: false
+  Children:
+    - !<own> 35d91114-1565-4665-b989-527d52bcbe1e
+    - !<own> 9acc0748-ba2a-42a5-97bf-86eac44dd836
+  Components:
+    - !<own> 8aef77b7-cee7-46a5-bf28-432bdceaa790
 - !<SceneObject/b8c7303e-835a-447b-afc3-84d0ddfb111b>
   PrefabRemaps:
     []
