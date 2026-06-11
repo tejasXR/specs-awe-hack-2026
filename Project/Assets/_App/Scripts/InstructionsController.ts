@@ -15,6 +15,14 @@ export interface InstructionStepEvent {
 
 @typedef
 export class InstructionDefinition {
+
+  @input
+  title: string;
+
+  @input
+  @widget(new TextAreaWidget())
+  description: string = "";
+
   @input
   @widget(
     new ComboBoxWidget([
@@ -37,7 +45,11 @@ export class InstructionDefinition {
   rowStart: number = 10;
 
   @input
+  useEndPin: boolean = false;
+
+  @input
   @allowUndefined
+  @showIf("useEndPin", true)
   @widget(
     new ComboBoxWidget([
       new ComboBoxItem("A", "A"),
@@ -56,15 +68,9 @@ export class InstructionDefinition {
 
   @input
   @allowUndefined
+  @showIf("useEndPin", true)
   @widget(new SliderWidget(10, 40, 1))
   rowEnd: number | undefined;
-
-  @input
-  title: string = "";
-
-  @input
-  @widget(new TextAreaWidget())
-  description: string = "";
 }
 
 const NO_STEP = -1;
@@ -149,26 +155,6 @@ export class InstructionsController extends BaseScriptComponent {
     this.moveToStep(0);
   }
 
-  // queueInstruction(instructionData: InstructionData): boolean {
-  //   if (!isWithinPlayground(instructionData.cell)) {
-  //     print(
-  //       "Rejected: instruction outside playground: " +
-  //         instructionData.cell.column +
-  //         instructionData.cell.row,
-  //     );
-  //     return false;
-  //   }
-
-  //   this._instructionalDatas.push(instructionData);
-  //   return true;
-  // }
-
-  // queueInstructions(instructionDatas: InstructionData[]): number {
-  //   return instructionDatas.filter((instructionDatas) =>
-  //     this.queueInstruction(instructionDatas),
-  //   ).length;
-  // }
-
   nextInSequence(): void {
     if (this._currentIndex === NO_STEP) {
       return;
@@ -194,7 +180,6 @@ export class InstructionsController extends BaseScriptComponent {
   }
 
   private moveToStep(index: number): void {
-
     const instructionDefinition = this.instructionDefinitions[index];
     const cellStart = this.toBreadboardCell({ column: instructionDefinition.columnStart, row: instructionDefinition.rowStart });
 
@@ -208,6 +193,7 @@ export class InstructionsController extends BaseScriptComponent {
     );
 
     if (
+      instructionDefinition.useEndPin &&
       instructionDefinition.columnEnd !== undefined &&
       instructionDefinition.rowEnd !== undefined
     ) {
