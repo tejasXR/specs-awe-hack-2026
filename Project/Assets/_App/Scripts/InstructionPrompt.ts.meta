@@ -1,0 +1,53 @@
+- !<AssetImportMetadata/588da58e-5103-46b2-ac94-7b8af81740da>
+  ImportedAssetIds:
+    TypeScriptAsset: !<reference> 76a0a880-fa7e-4afc-8817-049d1a0ca386
+  ImporterName: TypeScriptAssetImporter
+  PrimaryAsset: !<reference> 76a0a880-fa7e-4afc-8817-049d1a0ca386
+  PackageType: NotAPackage
+  LegacyPackagePolicy: ~
+  ExtraData:
+    {}
+  AssetDataMap:
+    TypeScriptAsset: !<own> 9c428cb6-6ced-4e57-811b-c21ad446f986
+  DependentFiles:
+    []
+  ImporterSettings: !<AssetImporterSettings>
+    {}
+  CompressionSettings: !<own> 00000000-0000-0000-0000-000000000000
+- !<TypeScriptAssetData/9c428cb6-6ced-4e57-811b-c21ad446f986>
+  SvgIcon: ""
+  SetupScript:
+    code: ""
+  Description: ""
+  VersionMajor: 0
+  VersionMinor: 0
+  VersionPatch: 0
+  ComponentUid: 83342964-41d7-4484-b90f-4a26373311be
+  ExportUid: 00000000-0000-0000-0000-000000000000
+  PackagePolicy: CanBeUnpacked
+  ScriptInputsHidden:
+    lineEnd: false
+    lineMaterial: false
+    lineStart: false
+    promptContainer: false
+  ScriptTypesHidden:
+    {}
+  ReadMe: !<reference> 00000000-0000-0000-0000-000000000000
+  DeclarationFile: !<reference> 00000000-0000-0000-0000-000000000000
+  Tags:
+    []
+  Attachments:
+    []
+  DefaultScriptInputs:
+    - promptContainer: !<reference.SceneObject> 00000000-0000-0000-0000-000000000000
+      lineMaterial: !<reference.Material> 00000000-0000-0000-0000-000000000000
+      lineStart: !<reference.SceneObject> 00000000-0000-0000-0000-000000000000
+      lineEnd: !<reference.SceneObject> 00000000-0000-0000-0000-000000000000
+  ScriptTypes:
+    -
+      {}
+  InputLines:
+    - // @input SceneObject promptContainer
+    - '// @input Asset.Material lineMaterial {"hint":"Material for the callout line (LineRenderer clones it)"}'
+    - // @input SceneObject lineStart
+    - // @input SceneObject lineEnd

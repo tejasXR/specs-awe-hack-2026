@@ -1,0 +1,60 @@
+- !<AssetImportMetadata/02054752-1d47-4246-a384-0cb4420046da>
+  ImportedAssetIds:
+    TypeScriptAsset: !<reference> 2efdd206-e8d1-4aa8-a4c7-bf3142bdf39c
+  ImporterName: TypeScriptAssetImporter
+  PrimaryAsset: !<reference> 2efdd206-e8d1-4aa8-a4c7-bf3142bdf39c
+  PackageType: NotAPackage
+  LegacyPackagePolicy: ~
+  ExtraData:
+    {}
+  AssetDataMap:
+    TypeScriptAsset: !<own> 769ce1d1-8f65-485c-a1bd-f544acb2c02e
+  DependentFiles:
+    []
+  ImporterSettings: !<AssetImporterSettings>
+    {}
+  CompressionSettings: !<own> 00000000-0000-0000-0000-000000000000
+- !<TypeScriptAssetData/769ce1d1-8f65-485c-a1bd-f544acb2c02e>
+  SvgIcon: ""
+  SetupScript:
+    code: ""
+  Description: ""
+  VersionMajor: 0
+  VersionMinor: 0
+  VersionPatch: 0
+  ComponentUid: d9cc564d-2e1f-40a8-8975-e72aa909da55
+  ExportUid: 00000000-0000-0000-0000-000000000000
+  PackagePolicy: CanBeUnpacked
+  ScriptInputsHidden:
+    autoStart: false
+    breadboardOrigin: false
+    hoverOffsetCm: false
+    instructionPromptOrigin: false
+    instructionPromptPrefab: false
+  ScriptTypesHidden:
+    {}
+  ReadMe: !<reference> 00000000-0000-0000-0000-000000000000
+  DeclarationFile: !<reference> 00000000-0000-0000-0000-000000000000
+  Tags:
+    []
+  Attachments:
+    []
+  DefaultScriptInputs:
+    - breadboardOrigin: !<reference.SceneObject> 00000000-0000-0000-0000-000000000000
+      instructionPromptOrigin: !<reference.SceneObject> 00000000-0000-0000-0000-000000000000
+      instructionPromptPrefab: !<reference.ObjectPrefab> 00000000-0000-0000-0000-000000000000
+      hoverOffsetCm: !<float> 1.000000
+      autoStart: false
+  ScriptTypes:
+    -
+      {}
+  InputLines:
+    - '// @ui {"widget":"separator"}'
+    - '// @ui {"widget":"label", "label":"References"}'
+    - '// @input SceneObject breadboardOrigin {"hint":"Transform whose pivot sits at breadboard hole A1 — prompts spawn as its children"}'
+    - // @input SceneObject instructionPromptOrigin
+    - "// @input Asset.ObjectPrefab instructionPromptPrefab {\"hint\":\"'Instruction Prompt' prefab with an InstructionPrompt component at its root\"}"
+    - "// @input float hoverOffsetCm = 1 {\"hint\":\"Lift above the board surface so the prompt doesn't clip into it, in cm\"}"
+    - '// @ui {"widget":"separator"}'
+    - '// @ui {"widget":"label", "label":"Behavior"}'
+    - '// @input bool autoStart {"hint":"Show the first queued instruction as soon as the lens starts"}'
