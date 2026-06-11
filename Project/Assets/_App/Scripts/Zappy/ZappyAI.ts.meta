@@ -26,10 +26,10 @@
   ExportUid: 00000000-0000-0000-0000-000000000000
   PackagePolicy: CanBeUnpacked
   ScriptInputsHidden:
-    audioComponent: false
+    brain: false
+    emotionController: false
     enableLogging: false
-    speechText: false
-    ttsModule: false
+    voice: false
   ScriptTypesHidden:
     {}
   ReadMe: !<reference> 00000000-0000-0000-0000-000000000000
@@ -39,15 +39,19 @@
   Attachments:
     []
   DefaultScriptInputs:
-    - enableLogging: true
-      speechText: !<reference.Text> 00000000-0000-0000-0000-000000000000
-      ttsModule: !<reference.TextToSpeechModule> 00000000-0000-0000-0000-000000000000
-      audioComponent: !<reference.AudioComponent> 00000000-0000-0000-0000-000000000000
+    - brain: !<MappingBased.AssignableType> 00000000-0000-0000-0000-000000000000
+      emotionController: !<MappingBased.AssignableType_1> 00000000-0000-0000-0000-000000000000
+      voice: !<MappingBased.AssignableType_2> 00000000-0000-0000-0000-000000000000
+      enableLogging: true
   ScriptTypes:
     -
       {}
   InputLines:
-    - '// @input bool enableLogging = true {"hint":"Enable debug logging"}'
-    - '// @input Component.Text speechText {"hint":"Optional text component for speech display"}'
-    - '// @input Asset.TextToSpeechModule ttsModule {"hint":"TextToSpeechModule asset — add via Resources > + > Text To Speech Module"}'
-    - '// @input Component.AudioComponent audioComponent {"hint":"AudioComponent on this object for TTS playback"}'
+    - '// @ui {"widget":"separator"}'
+    - '// @ui {"widget":"label", "label":"Components"}'
+    - '// @input AssignableType brain {"hint":"ZappyBrain — the Gemini client"}'
+    - "// @input AssignableType_1 emotionController {\"hint\":\"ZappyEmotionController — holds Zappy's mood\"}"
+    - "// @input AssignableType_2 voice {\"hint\":\"ZappyVoice — speaks Zappy's lines\"}"
+    - '// @ui {"widget":"separator"}'
+    - '// @ui {"widget":"label", "label":"Settings"}'
+    - '// @input bool enableLogging {"hint":"Enable debug logging"}'
