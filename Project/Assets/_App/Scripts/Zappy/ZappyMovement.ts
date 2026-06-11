@@ -20,13 +20,9 @@ const ARRIVE_EPSILON = 0.01; // cm — distances below this count as "arrived"
 
 @component
 export class ZappyMovement extends BaseScriptComponent {
-  @ui.separator
-  @ui.label("References")
+
+
   @input
-  @hint(
-    "While this controller's options are visible, movement pauses (bob and travel)",
-  )
-  @allowUndefined
   optionsController!: ZappyOptionsController;
 
   @ui.group_start("Float Bob")
