@@ -1,0 +1,59 @@
+- !<ObjectPrefab/054b332a-9995-4afd-8991-a782c4f77687>
+  PackagePath: ""
+  objects:
+    - !<own> 69ef29cf-96fb-48d2-938d-93ade78ab0e0
+  LazyLoading: false
+  RetainAssets: true
+- !<SceneObject/69ef29cf-96fb-48d2-938d-93ade78ab0e0>
+  PrefabRemaps:
+    - 69ef29cf-96fb-48d2-938d-93ade78ab0e0: 69ef29cf-96fb-48d2-6c72-6c5218754f1f
+    - a28a7a5a-aa01-4bfa-a08a-7778f2b307d8: a28a7a5a-aa01-4bfa-5f75-88870d4cf827
+    - bbbb9afb-a00f-43c4-ad07-3e4c7d4a7db6: bbbb9afb-a00f-43c4-52f8-c1b382b58249
+  Name: Breadboard Instructor
+  Enabled: true
+  Layers: 1
+  LocalTransform: !<TransformEntity>
+    Position: {x: 0.000000, y: 0.000000, z: 0.000000}
+    Rotation: {x: 0.000000, y: 0.000000, z: 0.000000}
+    Scale: {x: 1.000000, y: 1.000000, z: 1.000000}
+    HasSegmentScaleCompensation: false
+  Children:
+    - !<own> bbbb9afb-a00f-43c4-ad07-3e4c7d4a7db6
+  Components:
+    - !<own> a28a7a5a-aa01-4bfa-a08a-7778f2b307d8
+- !<ScriptComponent/a28a7a5a-aa01-4bfa-a08a-7778f2b307d8>
+  PrefabRemaps:
+    []
+  Name: InstructionsController
+  Enabled: true
+  ScriptAsset: !<reference> 2efdd206-e8d1-4aa8-a4c7-bf3142bdf39c
+  ScriptInputsDefault:
+    hoverOffsetCm: true
+    autoStart: true
+  ScriptTypesDefault:
+    {}
+  ScriptInputs:
+    "":
+      breadboardOrigin: !<reference.SceneObject> 3805ce42-8b9f-4696-a624-c0b5225017c0
+      instructionPromptOrigin: !<reference.SceneObject> bbbb9afb-a00f-43c4-ad07-3e4c7d4a7db6
+      instructionPromptPrefab: !<reference.ObjectPrefab> adeea334-5a88-4634-9bd1-14feaa461434
+      hoverOffsetCm: !<float> 1.000000
+      autoStart: false
+  ScriptTypes:
+    "":
+      {}
+- !<SceneObject/bbbb9afb-a00f-43c4-ad07-3e4c7d4a7db6>
+  PrefabRemaps:
+    []
+  Name: Instruction Prompt Origin
+  Enabled: true
+  Layers: 1
+  LocalTransform: !<TransformEntity>
+    Position: {x: 0.000000, y: 0.000000, z: 0.000000}
+    Rotation: {x: 0.000000, y: 0.000000, z: 0.000000}
+    Scale: {x: 1.000000, y: 1.000000, z: 1.000000}
+    HasSegmentScaleCompensation: false
+  Children:
+    []
+  Components:
+    []

@@ -1,0 +1,21 @@
+- !<ObjectPrefab/adeea334-5a88-4634-9bd1-14feaa461434>
+  PackagePath: ""
+  objects:
+    - !<own> a2e40ef3-2e0f-4f5e-a0e3-49a7a20df0eb
+  LazyLoading: false
+  RetainAssets: true
+- !<SceneObject/a2e40ef3-2e0f-4f5e-a0e3-49a7a20df0eb>
+  PrefabRemaps:
+    - a2e40ef3-2e0f-4f5e-a0e3-49a7a20df0eb: a2e40ef3-2e0f-4f5e-5f1c-b6585df20f14
+  Name: Instruction Prompt
+  Enabled: true
+  Layers: 1
+  LocalTransform: !<TransformEntity>
+    Position: {x: 0.000000, y: 0.000000, z: 0.000000}
+    Rotation: {x: 0.000000, y: 0.000000, z: 0.000000}
+    Scale: {x: 1.000000, y: 1.000000, z: 1.000000}
+    HasSegmentScaleCompensation: false
+  Children:
+    []
+  Components:
+    []
