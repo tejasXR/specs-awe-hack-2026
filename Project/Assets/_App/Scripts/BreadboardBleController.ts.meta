@@ -1,0 +1,53 @@
+- !<AssetImportMetadata/282c7bbd-e1f4-4552-b71d-bcb198ab74b6>
+  ImportedAssetIds:
+    TypeScriptAsset: !<reference> 46e63a35-ce7e-4666-8de6-1217efe6aef3
+  ImporterName: TypeScriptAssetImporter
+  PrimaryAsset: !<reference> 46e63a35-ce7e-4666-8de6-1217efe6aef3
+  PackageType: NotAPackage
+  LegacyPackagePolicy: ~
+  ExtraData:
+    {}
+  AssetDataMap:
+    TypeScriptAsset: !<own> b7e0a053-59ea-45f7-9572-ceffd2198c16
+  DependentFiles:
+    []
+  ImporterSettings: !<AssetImporterSettings>
+    {}
+  CompressionSettings: !<own> 00000000-0000-0000-0000-000000000000
+- !<TypeScriptAssetData/b7e0a053-59ea-45f7-9572-ceffd2198c16>
+  SvgIcon: ""
+  SetupScript:
+    code: ""
+  Description: ""
+  VersionMajor: 0
+  VersionMinor: 0
+  VersionPatch: 0
+  ComponentUid: bb8171fd-f74e-4c67-99fe-c395eceab268
+  ExportUid: 00000000-0000-0000-0000-000000000000
+  PackagePolicy: CanBeUnpacked
+  ScriptInputsHidden:
+    autoConnectOnStart: false
+    bluetoothModule: false
+    scanTimeoutSeconds: false
+    simulateInEditor: false
+  ScriptTypesHidden:
+    {}
+  ReadMe: !<reference> 00000000-0000-0000-0000-000000000000
+  DeclarationFile: !<reference> 00000000-0000-0000-0000-000000000000
+  Tags:
+    []
+  Attachments:
+    []
+  DefaultScriptInputs:
+    - bluetoothModule: !<reference.BluetoothCentralModule> 00000000-0000-0000-0000-000000000000
+      autoConnectOnStart: true
+      scanTimeoutSeconds: !<float> 15.000000
+      simulateInEditor: true
+  ScriptTypes:
+    -
+      {}
+  InputLines:
+    - "// @input Asset.BluetoothCentralModule bluetoothModule {\"hint\":\"BluetoothCentralModule asset from the project's Modules folder\"}"
+    - '// @input bool autoConnectOnStart = true {"hint":"Start scanning for the board as soon as the lens starts"}'
+    - '// @input float scanTimeoutSeconds = 15 {"hint":"Seconds to scan before giving up"}'
+    - '// @input bool simulateInEditor = true {"hint":"Fake the connection + heartbeat in the editor / without hardware"}'
