@@ -44,9 +44,9 @@
     - breadboardOrigin: !<reference.SceneObject> 00000000-0000-0000-0000-000000000000
       instructionPrompt: !<MappingBased.AssignableType> 00000000-0000-0000-0000-000000000000
       instructionPromptLocationObj: !<reference.SceneObject> 00000000-0000-0000-0000-000000000000
+      hoverOffsetCm: !<float> 1.000000
       instructionDefinitions:
         []
-      hoverOffsetCm: !<float> 1.000000
       autoStart: false
   ScriptTypes:
     -
@@ -57,6 +57,7 @@
     - '// @input SceneObject breadboardOrigin {"hint":"Transform whose pivot sits at breadboard hole A1 — prompts spawn as its children"}'
     - '// @input AssignableType instructionPrompt {"hint":"The single InstructionPrompt living in the scene"}'
     - // @input SceneObject instructionPromptLocationObj
+    - "// @input float hoverOffsetCm = 1 {\"hint\":\"Lift above the board surface so the prompt doesn't clip into it, in cm\"}"
     - '// @ui {"widget":"separator"}'
     - '// @ui {"widget":"label", "label":"Sequence"}'
     - /*
@@ -70,7 +71,6 @@
     - '@property {float} rowEnd {"widget":"slider", "min":10, "max":40, "step":1, "showIf":"useEndPin", "showIfValue":true}'
     - "*/"
     - "// @input InstructionDefinition[] instructionDefinitions = {}"
-    - "// @input float hoverOffsetCm = 1 {\"hint\":\"Lift above the board surface so the prompt doesn't clip into it, in cm\"}"
     - '// @ui {"widget":"separator"}'
     - '// @ui {"widget":"label", "label":"Behavior"}'
     - '// @input bool autoStart {"hint":"Show the first queued instruction as soon as the lens starts"}'

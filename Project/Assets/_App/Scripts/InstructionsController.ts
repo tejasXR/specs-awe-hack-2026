@@ -15,7 +15,6 @@ export interface InstructionStepEvent {
 
 @typedef
 export class InstructionDefinition {
-
   @input
   title: string;
 
@@ -101,16 +100,16 @@ export class InstructionsController extends BaseScriptComponent {
   @input
   instructionPromptLocationObj!: SceneObject;
 
-  @ui.separator
-  @ui.label("Sequence")
-  @input
-  instructionDefinitions: InstructionDefinition[] = [];
-
   @input
   @hint(
     "Lift above the board surface so the prompt doesn't clip into it, in cm",
   )
   hoverOffsetCm: number = 1.0;
+
+  @ui.separator
+  @ui.label("Sequence")
+  @input
+  instructionDefinitions: InstructionDefinition[] = [];
 
   @ui.separator
   @ui.label("Behavior")
@@ -181,7 +180,10 @@ export class InstructionsController extends BaseScriptComponent {
 
   private moveToStep(index: number): void {
     const instructionDefinition = this.instructionDefinitions[index];
-    const cellStart = this.toBreadboardCell({ column: instructionDefinition.columnStart, row: instructionDefinition.rowStart });
+    const cellStart = this.toBreadboardCell({
+      column: instructionDefinition.columnStart,
+      row: instructionDefinition.rowStart,
+    });
 
     const targetPositions: vec3[] = [];
     targetPositions.push(

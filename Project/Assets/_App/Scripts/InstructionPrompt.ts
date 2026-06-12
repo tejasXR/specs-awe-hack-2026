@@ -22,23 +22,23 @@ export class InstructionPrompt extends BaseScriptComponent {
   lineStart!: SceneObject;
 
   private _lines: LineRenderer[] = [];
-  private _lineObjs: SceneObject[] = [];
-  private _lineWidthStartCm: number = 0.2;
-  private _lineWidthEndCm: number = 0.1;
+  private _lineWidthStartCm: number = 1;
+  private _lineWidthEndCm: number = 1;
   private _maxLines: number = 3;
 
   private _updateEvent!: UpdateEvent;
   private _targetPositions: vec3[] = [];
 
   onAwake() {
-    // Pre-create the line renderer pool to avoid dynamic allocations at runtime
-    // for (let i = 0; i < this._maxLines; i++) {
-    //   const line = this.createLineRenderer();
-    //   line.setEnabled(false);
-    //   this._lines.push(line);
-    // }
+    // Pre-create a fixed pool of lines: no per-step create/destroy churn, no
+    // runtime allocations. Each is repositioned every frame while shown.
+    for (let i = 0; i < this._maxLines; i++) {
+      const line = this.createLineRenderer();
+      line.setEnabled(false);
+      this._lines.push(line);
+    }
 
-    // Set up frame update loop for real-time tracking, disabled by default
+    // Frame loop for real-time tracking, disabled until the prompt is shown.
     this._updateEvent = this.createEvent("UpdateEvent");
     this._updateEvent.bind(() => this.updateLinePositions());
     this._updateEvent.enabled = false;
@@ -59,38 +59,23 @@ export class InstructionPrompt extends BaseScriptComponent {
       this.descriptionText.text = description;
     }
 
-    // Destroy previous line objects
-    for (let i = 0; i < this._lines.length; i++) {
-      this._lineObjs[i].destroy();
-    }
-
+    // Just record the targets — updateLinePositions() (driven by show() and the
+    // frame loop) decides which pooled lines to draw and where.
     this._targetPositions = targetPositions;
-
-    this._targetPositions.forEach((endLinePosition) => {
-      this.createLineRenderer(endLinePosition);
-    });
   }
 
-  private createLineRenderer(lineEnd: vec3): LineRenderer {
-    var line = new LineRenderer({
+  private createLineRenderer(): LineRenderer {
+    // The two points here are placeholders: setLine() overwrites them in the
+    // container's local space every frame, so any valid 2-point segment will do.
+    const line = new LineRenderer({
       material: this.lineMaterial,
-      points: [this.lineStart.getTransform().getWorldPosition(), lineEnd],
+      points: [vec3.zero(), new vec3(0, 0, 1)],
       startWidth: this._lineWidthStartCm,
       endWidth: this._lineWidthEndCm,
       lookAtCamera: true, // billboard the strip so it's visible from any angle
     });
 
-    var line = line.attachToScene(this.getSceneObject());
-    var lineObj = line.getSceneObject();
-    this._lineObjs.push(lineObj);
-
-    print(
-      "New line for instructional prompts created from " +
-        line.points[0] +
-        " to " +
-        line.points[1],
-    );
-
+    line.attachToScene(this.getSceneObject());
     return line;
   }
 
@@ -107,26 +92,21 @@ export class InstructionPrompt extends BaseScriptComponent {
   }
 
   private setLine(line: LineRenderer, startWorld: vec3, endWorld: vec3) {
-    const toEnd = endWorld.sub(startWorld);
-    const length = toEnd.length;
+    const length = endWorld.distance(startWorld);
     if (length < MIN_LINE_LENGTH_CM) {
       line.setEnabled(false); // degenerate — endpoints coincide
       return;
     }
     line.setEnabled(true);
 
-    const transform = line.getTransform();
-    transform.setWorldPosition(startWorld.add(toEnd.uniformScale(0.5)));
-
-    // A near-vertical line is parallel to the default up reference — swap it
-    // out so lookAt stays stable.
-    const direction = toEnd.uniformScale(1 / length);
-    const up =
-      Math.abs(direction.dot(vec3.up())) > 0.99 ? vec3.forward() : vec3.up();
-    transform.setWorldRotation(quat.lookAt(direction, up));
-
-    const scale = transform.getLocalScale();
-    transform.setLocalScale(new vec3(scale.x, scale.y, length));
+    // LineRenderer bakes its points straight into mesh vertices in the line
+    // container's LOCAL space. Convert the world endpoints into that space so the
+    // line lands exactly between them, regardless of the parent's transform.
+    const toLocal = line.getTransform().getInvertedWorldTransform();
+    line.points = [
+      toLocal.multiplyPoint(startWorld),
+      toLocal.multiplyPoint(endWorld),
+    ];
   }
 
   show(): void {
