@@ -2,7 +2,7 @@
   PackagePath: ""
   objects:
     - !<own> e9884957-0ac5-46d1-ba4b-19360e7da964
-  LazyLoading: false
+  LazyLoading: true
   RetainAssets: true
 - !<SceneObject/07e9262b-6d4a-4d36-be4e-3eb509499332>
   PrefabRemaps:
@@ -164,7 +164,6 @@
       titleText: !<reference.Text> d4670ba4-89b1-4df3-adff-0f4033241fb8
       descriptionText: !<reference.Text> 58202976-c421-4eec-8d56-bed1e9ecd83c
       lineStart: !<reference.SceneObject> 07e9262b-6d4a-4d36-be4e-3eb509499332
-      lineEnd: !<reference.SceneObject> 66be790a-7fe2-43b1-b973-668b4ec4caa4
   ScriptTypes:
     "":
       {}
