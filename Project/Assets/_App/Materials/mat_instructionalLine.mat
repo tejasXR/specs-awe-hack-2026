@@ -1,14 +1,22 @@
-- !<Material/f58fa7ac-86cc-41ad-b508-65451817bdb7>
+- !<Material/f8b7ca3d-faaf-476a-97ed-793d8d1fc7c5>
   PackagePath: ""
   PassesInfo:
-    - !<own> 45dab6f3-7e9d-4cdf-800c-70b91703afaf
-- !<PassInfo/45dab6f3-7e9d-4cdf-800c-70b91703afaf>
+    - !<own> 04bbedd4-de4a-48e0-a55e-4388d62f2aac
+- !<PassInfo/04bbedd4-de4a-48e0-a55e-4388d62f2aac>
   CachedProperties:
-    []
+    - overrideTimeDelta:
+        typeIdx: 1
+        value: 0.000000
+    - overrideTimeElapsed:
+        typeIdx: 1
+        value: 0.000000
+    - overrideTimeEnabled:
+        typeIdx: 0
+        value: 0
   DepthWrite: true
   DepthTest: true
   DepthFunction: LessEqual
-  TwoSided: false
+  TwoSided: true
   ColorMask: {x: true, y: true, z: true, w: true}
   CullMode: Back
   PolygonOffset: {x: 0.000000, y: 0.000000}
@@ -16,22 +24,67 @@
   FrustumCullPad: 0.000000
   InstanceCount: 1
   Defines:
-    - NODE_13_DROPLIST_ITEM 0
-    - NODE_27_DROPLIST_ITEM 0
-    - NODE_49_DROPLIST_ITEM 0
-    - NODE_69_DROPLIST_ITEM 0
+    []
   BlendMode: Disabled
   Properties:
-    Port_Default_N204:
+    Port_Input1_N014:
+      typeIdx: 1
+      value: 2.000000
+    Port_Position1_N066:
+      typeIdx: 1
+      value: 0.200000
+    Port_Position1_N070:
+      typeIdx: 1
+      value: 1.000000
+    Port_Position1_N073:
+      typeIdx: 1
+      value: 0.300000
+    Port_Position1_N077:
+      typeIdx: 1
+      value: 0.700000
+    Port_Position2_N073:
+      typeIdx: 1
+      value: 0.700000
+    Port_Value0_N077:
+      typeIdx: 5
+      value: {x: 1.000000, y: 1.000000, z: 0.000000, w: 0.000000}
+    Port_Value2_N067:
       typeIdx: 1
       value: 0.000000
-    Port_Default_N369:
+    Port_Value2_N077:
       typeIdx: 5
-      value: {x: 1.000000, y: 1.000000, z: 1.000000, w: 1.000000}
+      value: {x: 1.000000, y: 1.000000, z: 0.000000, w: 0.000000}
+    Port_Value3_N040:
+      typeIdx: 1
+      value: 0.000000
+    Port_Value3_N060:
+      typeIdx: 1
+      value: 0.000000
+    Port_Value_N008:
+      typeIdx: 2
+      value: true
     PreviewEnabled:
       typeIdx: 0
       value: 0
-    baseColor:
+    PreviewNodeID:
+      typeIdx: 0
+      value: 77
+    endColor:
       typeIdx: 5
       value: {x: 1.000000, y: 1.000000, z: 1.000000, w: 1.000000}
-  Pass: !<reference> 55726c4d-82ba-4cb1-b3cf-3b9a2ca6aa47
+    endWidth:
+      typeIdx: 1
+      value: 0.100000
+    maxAlpha:
+      typeIdx: 1
+      value: 1.000000
+    startColor:
+      typeIdx: 5
+      value: {x: 1.000000, y: 1.000000, z: 1.000000, w: 1.000000}
+    startWidth:
+      typeIdx: 1
+      value: 0.100000
+    visualStyle:
+      typeIdx: 0
+      value: 3
+  Pass: !<reference> 719a076d-4225-4fe9-9c0b-5d36443d3091
