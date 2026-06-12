@@ -3,8 +3,9 @@
  * position relative to the breadboard origin transform.
  *
  * Conventions (agreed for this project):
- *  - The breadboard origin transform's pivot sits at hole A1.
- *  - +column (A → J) runs along local X; +row (1 → 64) runs along local Z.
+ *  - The breadboard origin transform's pivot sits at hole A1 (top-left).
+ *  - +column (A → J) runs along local +Z; +row (1 → 64) runs along local -X;
+ *    +Y points out of the holes (hover lifts content off the surface).
  *  - Rotation/placement of the board is handled outside — everything here is
  *    local space, so it follows the origin wherever it goes.
  *  - A 2.5 mm trench gap sits between the E and F banks.
@@ -15,7 +16,7 @@ export const BREADBOARD_COLUMNS = "ABCDEFGHIJ";
 
 export const HOLE_PITCH_CM: number = 0.254;
 
-export const BANK_GAP_CM: number = 0.25;
+export const BANK_GAP_CM: number = 0.58;
 
 export type BreadboardColumn =
   | "A"
@@ -78,17 +79,22 @@ export function isWithinPlayground(cell: BreadboardCell): boolean {
  * Cell → position local to the breadboard origin (pivot = hole A1).
  * Assumes a valid cell — validate with isWithinPlayground first.
  */
-function cellToLocalPosition(cell: BreadboardCell, hoverOffset: number): vec3 {
+export function cellToLocalPosition(
+  cell: BreadboardCell,
+  hoverOffset: number,
+): vec3 {
   const columnIndex = columnToIndex(cell.column);
 
-  let x = columnIndex * HOLE_PITCH_CM;
+  // Columns (A → J) run along +Z; the center trench adds a gap past column E.
+  let columnOffset = columnIndex * HOLE_PITCH_CM;
   if (columnIndex >= FIRST_FAR_BANK_INDEX) {
-    x += BANK_GAP_CM;
+    columnOffset += BANK_GAP_CM;
   }
 
-  const z = (cell.row - 1) * HOLE_PITCH_CM;
+  // Rows (1 → 64) run along -X; hover lifts out of the holes along +Y.
+  const rowOffset = (cell.row - 1) * HOLE_PITCH_CM;
 
-  return new vec3(x, hoverOffset, z);
+  return new vec3(-rowOffset, hoverOffset, columnOffset);
 }
 
 /**

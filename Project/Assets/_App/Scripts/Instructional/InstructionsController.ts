@@ -1,7 +1,7 @@
 import Event, { PublicApi } from "SpectaclesInteractionKit.lspkg/Utils/Event";
 import {
   BreadboardCell,
-  cellToWorldPosition,
+  cellToLocalPosition,
   isBreadboardColumn,
   isWithinPlayground,
 } from "./BreadboardGrid";
@@ -185,14 +185,10 @@ export class InstructionsController extends BaseScriptComponent {
       row: instructionDefinition.rowStart,
     });
 
-    const targetPositions: vec3[] = [];
-    targetPositions.push(
-      cellToWorldPosition(
-        cellStart,
-        this.hoverOffsetCm,
-        this.breadboardOrigin.getTransform(),
-      ),
-    );
+    // Origin-LOCAL cell positions — the prompt parents its lines to the
+    // breadboard origin, so these follow the board's position/rotation directly.
+    const localTargets: vec3[] = [];
+    localTargets.push(cellToLocalPosition(cellStart, this.hoverOffsetCm));
 
     if (
       instructionDefinition.useEndPin &&
@@ -203,20 +199,15 @@ export class InstructionsController extends BaseScriptComponent {
         column: instructionDefinition.columnEnd,
         row: instructionDefinition.rowEnd,
       });
-      targetPositions.push(
-        cellToWorldPosition(
-          cellEndData,
-          this.hoverOffsetCm,
-          this.breadboardOrigin.getTransform(),
-        ),
-      );
+      localTargets.push(cellToLocalPosition(cellEndData, this.hoverOffsetCm));
     }
 
     this.instructionPrompt.setup(
       instructionDefinition.title,
       instructionDefinition.description,
       this.instructionPromptLocationObj.getTransform().getWorldPosition(),
-      targetPositions,
+      this.breadboardOrigin,
+      localTargets,
     );
 
     this.instructionPrompt.show();

@@ -22,23 +22,16 @@ export class InstructionPrompt extends BaseScriptComponent {
   lineStart!: SceneObject;
 
   private _lines: LineRenderer[] = [];
-  private _lineWidthStartCm: number = 1;
-  private _lineWidthEndCm: number = 1;
+  private _lineWidthStartCm: number = 0.05;
+  private _lineWidthEndCm: number = 0.05;
   private _maxLines: number = 3;
 
   private _updateEvent!: UpdateEvent;
-  private _targetPositions: vec3[] = [];
+  private _localTargets: vec3[] = [];
 
   onAwake() {
-    // Pre-create a fixed pool of lines: no per-step create/destroy churn, no
-    // runtime allocations. Each is repositioned every frame while shown.
-    for (let i = 0; i < this._maxLines; i++) {
-      const line = this.createLineRenderer();
-      line.setEnabled(false);
-      this._lines.push(line);
-    }
-
     // Frame loop for real-time tracking, disabled until the prompt is shown.
+    // The line pool is built on first setup(), once the breadboard origin is known.
     this._updateEvent = this.createEvent("UpdateEvent");
     this._updateEvent.bind(() => this.updateLinePositions());
     this._updateEvent.enabled = false;
@@ -48,7 +41,8 @@ export class InstructionPrompt extends BaseScriptComponent {
     title: string,
     description: string,
     promptPosition: vec3,
-    targetPositions: vec3[],
+    breadboardOrigin: SceneObject,
+    localTargets: vec3[],
   ) {
     this.promptContainer.getTransform().setWorldPosition(promptPosition);
 
@@ -59,14 +53,26 @@ export class InstructionPrompt extends BaseScriptComponent {
       this.descriptionText.text = description;
     }
 
-    // Just record the targets — updateLinePositions() (driven by show() and the
-    // frame loop) decides which pooled lines to draw and where.
-    this._targetPositions = targetPositions;
+    this.ensureLinePool(breadboardOrigin);
+
+    // Targets are origin-LOCAL cell positions — never world. updateLinePositions()
+    // (driven by show() and the frame loop) decides which pooled lines to draw.
+    this._localTargets = localTargets;
   }
 
-  private createLineRenderer(): LineRenderer {
-    // The two points here are placeholders: setLine() overwrites them in the
-    // container's local space every frame, so any valid 2-point segment will do.
+  private ensureLinePool(breadboardOrigin: SceneObject): void {
+    if (this._lines.length > 0) {
+      return; // already built — the origin is stable for the lens's lifetime
+    }
+    for (let i = 0; i < this._maxLines; i++) {
+      const line = this.createLineRenderer(breadboardOrigin);
+      line.setEnabled(false);
+      this._lines.push(line);
+    }
+  }
+
+  private createLineRenderer(breadboardOrigin: SceneObject): LineRenderer {
+    // The two points here are placeholders: setLine() overwrites them every frame.
     const line = new LineRenderer({
       material: this.lineMaterial,
       points: [vec3.zero(), new vec3(0, 0, 1)],
@@ -75,7 +81,9 @@ export class InstructionPrompt extends BaseScriptComponent {
       lookAtCamera: true, // billboard the strip so it's visible from any angle
     });
 
-    line.attachToScene(this.getSceneObject());
+    // Parent to the breadboard origin so the line's local space IS the board's:
+    // origin-local cell points can be used directly and track the board for free.
+    line.attachToScene(breadboardOrigin);
     return line;
   }
 
@@ -83,30 +91,31 @@ export class InstructionPrompt extends BaseScriptComponent {
     const startWorld = this.lineStart.getTransform().getWorldPosition();
 
     for (let i = 0; i < this._lines.length; i++) {
-      if (i < this._targetPositions.length) {
-        this.setLine(this._lines[i], startWorld, this._targetPositions[i]);
+      if (i < this._localTargets.length) {
+        this.setLine(this._lines[i], startWorld, this._localTargets[i]);
       } else {
         this._lines[i].setEnabled(false);
       }
     }
   }
 
-  private setLine(line: LineRenderer, startWorld: vec3, endWorld: vec3) {
-    const length = endWorld.distance(startWorld);
+  private setLine(line: LineRenderer, startWorld: vec3, endLocal: vec3) {
+    // The line is parented to the breadboard origin, so its local space is the
+    // board's. endLocal (a cell position) is already in that space; the start
+    // just needs to come from world into it.
+    const startLocal = line
+      .getTransform()
+      .getInvertedWorldTransform()
+      .multiplyPoint(startWorld);
+
+    const length = endLocal.distance(startLocal);
     if (length < MIN_LINE_LENGTH_CM) {
       line.setEnabled(false); // degenerate — endpoints coincide
       return;
     }
     line.setEnabled(true);
 
-    // LineRenderer bakes its points straight into mesh vertices in the line
-    // container's LOCAL space. Convert the world endpoints into that space so the
-    // line lands exactly between them, regardless of the parent's transform.
-    const toLocal = line.getTransform().getInvertedWorldTransform();
-    line.points = [
-      toLocal.multiplyPoint(startWorld),
-      toLocal.multiplyPoint(endWorld),
-    ];
+    line.points = [startLocal, endLocal];
   }
 
   show(): void {
