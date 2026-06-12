@@ -18,8 +18,8 @@ import Event, {
   PublicApi,
   unsubscribe,
 } from "SpectaclesInteractionKit.lspkg/Utils/Event";
-import { ZappyAI, ZappyResponse } from "./Zappy/ZappyAI";
-import { GameManager, StepData } from "./GameManager";
+import { ZappyAI, ZappyResponse } from "../Zappy/ZappyAI";
+import { GameManager, StepData } from "../GameManager";
 
 // --- Types ---
 
@@ -38,17 +38,16 @@ export class CheckWorkController extends BaseScriptComponent {
   private gameManager: GameManager;
 
   @ui.separator
-  @ui.label(
-    '<span style="color: #60A5FA;">Camera Capture</span>',
-  )
-
+  @ui.label('<span style="color: #60A5FA;">Camera Capture</span>')
   @input
   @hint("CameraModule from the scene for capturing frames (optional for now)")
   @allowUndefined
   camModule!: CameraModule;
 
   @input
-  @hint("Optional: cropped texture for focused breadboard view. If not set, uses full camera frame.")
+  @hint(
+    "Optional: cropped texture for focused breadboard view. If not set, uses full camera frame.",
+  )
   @allowUndefined
   cropTexture!: Texture;
 
@@ -69,10 +68,7 @@ export class CheckWorkController extends BaseScriptComponent {
   cropTop: number = 0.4;
 
   @ui.separator
-  @ui.label(
-    '<span style="color: #60A5FA;">Display</span>',
-  )
-
+  @ui.label('<span style="color: #60A5FA;">Display</span>')
   @input
   @hint("Optional: Image component to show the captured frame as preview")
   @allowUndefined
@@ -138,7 +134,9 @@ export class CheckWorkController extends BaseScriptComponent {
 
     // Also check same object
     if (!this.gameManager) {
-      const comps = this.getSceneObject().getComponents("Component.ScriptComponent");
+      const comps = this.getSceneObject().getComponents(
+        "Component.ScriptComponent",
+      );
       for (let i = 0; i < comps.length; i++) {
         const comp = comps[i];
         if (comp.getTypeName() === "GameManager") {
@@ -162,7 +160,10 @@ export class CheckWorkController extends BaseScriptComponent {
 
   // --- Scene Traversal Helpers ---
 
-  private findObjectByName(scene: ScriptScene, name: string): SceneObject | null {
+  private findObjectByName(
+    scene: ScriptScene,
+    name: string,
+  ): SceneObject | null {
     const rootCount = scene.getRootObjectsCount();
     for (let i = 0; i < rootCount; i++) {
       const found = this.searchTree(scene.getRootObject(i), name);
@@ -238,7 +239,11 @@ export class CheckWorkController extends BaseScriptComponent {
       this.cameraRequest.imageSmallerDimension = isEditor ? 352 : 756;
 
       this.cameraTexture = this.camModule.requestCamera(this.cameraRequest);
-      this.log("Camera initialized (resolution: " + this.cameraRequest.imageSmallerDimension + ")");
+      this.log(
+        "Camera initialized (resolution: " +
+          this.cameraRequest.imageSmallerDimension +
+          ")",
+      );
 
       // Set up crop if texture provided
       if (!isNull(this.cropTexture)) {

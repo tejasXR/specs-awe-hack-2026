@@ -21,7 +21,7 @@ import {
   StepSubmitData,
   LevelCompleteData,
   ScreenChangeData,
-} from "./GameManager";
+} from "../GameManager";
 
 @component
 export class UIManager extends BaseScriptComponent {
@@ -109,10 +109,14 @@ export class UIManager extends BaseScriptComponent {
     this.buildCompletionPanel();
 
     // Subscribe to GameManager events
-    this.gameManager.onScreenChanged.add((data) => this.handleScreenChange(data));
+    this.gameManager.onScreenChanged.add((data) =>
+      this.handleScreenChange(data),
+    );
     this.gameManager.onStepAdvanced.add((data) => this.handleStepAdvance(data));
     this.gameManager.onStepSubmitted.add((data) => this.handleStepSubmit(data));
-    this.gameManager.onLevelCompleted.add((data) => this.handleLevelComplete(data));
+    this.gameManager.onLevelCompleted.add((data) =>
+      this.handleLevelComplete(data),
+    );
 
     // Start with menu visible
     this.showScreen(GameScreen.MainMenu);
@@ -133,7 +137,9 @@ export class UIManager extends BaseScriptComponent {
 
   private buildStartMenu(): void {
     const parent = this.getSceneObject();
-    this.startMenuRoot = parent.createComponent("Component.ScriptComponent").getSceneObject();
+    this.startMenuRoot = parent
+      .createComponent("Component.ScriptComponent")
+      .getSceneObject();
     // Actually, let's create a child SceneObject properly
     this.startMenuRoot = global.scene.createSceneObject("StartMenu");
     this.startMenuRoot.setParent(parent);
@@ -266,7 +272,9 @@ export class UIManager extends BaseScriptComponent {
 
     const ctTitleObj = global.scene.createSceneObject("CTTitle");
     ctTitleObj.setParent(this.componentTrayPanel);
-    this.componentTrayTitle = ctTitleObj.createComponent("Component.Text") as Text;
+    this.componentTrayTitle = ctTitleObj.createComponent(
+      "Component.Text",
+    ) as Text;
     this.componentTrayTitle.text = "COMPONENT TRAY";
     this.componentTrayTitle.size = 12;
     this.componentTrayTitle.horizontalAlignment = HorizontalAlignment.Center;
@@ -274,7 +282,9 @@ export class UIManager extends BaseScriptComponent {
 
     const ctItemsObj = global.scene.createSceneObject("CTItems");
     ctItemsObj.setParent(this.componentTrayPanel);
-    this.componentTrayItems = ctItemsObj.createComponent("Component.Text") as Text;
+    this.componentTrayItems = ctItemsObj.createComponent(
+      "Component.Text",
+    ) as Text;
     this.componentTrayItems.text = "";
     this.componentTrayItems.size = 16;
     this.componentTrayItems.horizontalAlignment = HorizontalAlignment.Center;
@@ -289,7 +299,9 @@ export class UIManager extends BaseScriptComponent {
     this.timerText.horizontalAlignment = HorizontalAlignment.Right;
     timerObj.getTransform().setLocalPosition(new vec3(35, 18, 0));
 
-    this.log("In-level panels built (voice cue + step + component tray + timer)");
+    this.log(
+      "In-level panels built (voice cue + step + component tray + timer)",
+    );
   }
 
   private buildCompletionPanel(): void {
@@ -376,7 +388,10 @@ export class UIManager extends BaseScriptComponent {
     const panelPos = camPos.add(camFwd.uniformScale(-this.panelDistance));
 
     // Position the active root at that location
-    if (this.currentScreen === GameScreen.MainMenu || this.currentScreen === GameScreen.ModeSelect) {
+    if (
+      this.currentScreen === GameScreen.MainMenu ||
+      this.currentScreen === GameScreen.ModeSelect
+    ) {
       if (this.startMenuRoot) {
         this.startMenuRoot.getTransform().setWorldPosition(panelPos);
       }
@@ -418,7 +433,8 @@ export class UIManager extends BaseScriptComponent {
       this.componentTrayItems.text = trayParts.join("  |  ");
     }
 
-    this.stepCounter.text = "Step " + (data.index + 1) + " of " + data.totalSteps;
+    this.stepCounter.text =
+      "Step " + (data.index + 1) + " of " + data.totalSteps;
     this.stepInstruction.text = data.step.instruction;
     this.stepHint.text = data.step.hint;
 
@@ -466,18 +482,29 @@ export class UIManager extends BaseScriptComponent {
     const level = this.gameManager.getLevelData(data.levelIndex);
     const minutes = Math.floor(data.elapsedSeconds / 60);
     const seconds = Math.floor(data.elapsedSeconds % 60);
-    const timeStr = minutes.toString().padStart(2, "0") + ":" + seconds.toString().padStart(2, "0");
+    const timeStr =
+      minutes.toString().padStart(2, "0") +
+      ":" +
+      seconds.toString().padStart(2, "0");
 
     this.completionTitle.text = level.name + "\nCOMPLETE!";
     this.completionStats.text =
-      "Time: " + timeStr + "\n" +
-      "Steps: " + (data.totalSteps - data.stepsSkipped) + "/" + data.totalSteps + " completed\n" +
-      "Skipped: " + data.stepsSkipped;
+      "Time: " +
+      timeStr +
+      "\n" +
+      "Steps: " +
+      (data.totalSteps - data.stepsSkipped) +
+      "/" +
+      data.totalSteps +
+      " completed\n" +
+      "Skipped: " +
+      data.stepsSkipped;
 
     if (data.stepsSkipped === 0) {
       this.completionMessage.text = "Perfect run! Every step completed!";
     } else {
-      this.completionMessage.text = "Great work! Try again for a perfect score.";
+      this.completionMessage.text =
+        "Great work! Try again for a perfect score.";
     }
 
     this.log("Completion panel updated: " + level.name + " in " + timeStr);
@@ -491,7 +518,10 @@ export class UIManager extends BaseScriptComponent {
 
   // --- Helpers ---
 
-  private findObjectByName(scene: ScriptScene, name: string): SceneObject | null {
+  private findObjectByName(
+    scene: ScriptScene,
+    name: string,
+  ): SceneObject | null {
     const rootCount = scene.getRootObjectsCount();
     for (let i = 0; i < rootCount; i++) {
       const found = this.searchTree(scene.getRootObject(i), name);

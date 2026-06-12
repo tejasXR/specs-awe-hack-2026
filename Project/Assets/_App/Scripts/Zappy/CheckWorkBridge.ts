@@ -2,7 +2,7 @@
  * CheckWorkBridge — Connects a PinchButtonCapsule to the CheckWorkController.
  */
 import { Interactable } from "SpectaclesInteractionKit.lspkg/Components/Interaction/Interactable/Interactable";
-import { CheckWorkController } from "../CheckWorkController";
+import { CheckWorkController } from "./CheckWorkController";
 
 @component
 export class CheckWorkBridge extends BaseScriptComponent {

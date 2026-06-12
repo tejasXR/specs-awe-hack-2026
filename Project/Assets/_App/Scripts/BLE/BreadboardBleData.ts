@@ -6,7 +6,7 @@
  * currently mangles bytes above 0x7F (see BLE Playground HueEventEmitter), so
  * the whole protocol lives in the 7-bit-safe range.
  */
-export namespace BreadboardControllerData {
+export namespace BreadboardBleData {
   /** Exact advertised name — ScanFilter.deviceName matching is case-sensitive. */
   export const deviceName = "Zappy-Board";
 
@@ -19,5 +19,6 @@ export namespace BreadboardControllerData {
    * NOTIFY — 2 bytes: [heartbeat 0..127 (1 Hz, wraps), current LED level 0..127].
    * The board also notifies immediately after every LED write (state echo).
    */
-  export const statusCharacteristicUUID = "0d83c1f0-2026-4a57-a1d0-86e25ce40003";
+  export const statusCharacteristicUUID =
+    "0d83c1f0-2026-4a57-a1d0-86e25ce40003";
 }

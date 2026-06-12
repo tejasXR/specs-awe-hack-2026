@@ -23,12 +23,13 @@ import Event, {
   PublicApi,
   unsubscribe,
 } from "SpectaclesInteractionKit.lspkg/Utils/Event";
-import { ZappyBrain, ZappyResponse } from "./Zappy/ZappyBrain";
 import {
   DetectedComponent,
   COMPONENT_INFO,
   ComponentClass,
 } from "./ComponentIdentifier";
+import { ZappyResponse } from "../Zappy/ZappyAI";
+import { ZappyBrain } from "../Zappy/ZappyBrain";
 
 // ─── Types ──────────────────────────────────────────────────────
 
@@ -80,13 +81,11 @@ export class ComponentDetector extends BaseScriptComponent {
 
   private readonly onScanStartedEvent = new Event<void>();
   /** Fires when a scan request is accepted and sent. */
-  readonly onScanStarted: PublicApi<void> =
-    this.onScanStartedEvent.publicApi();
+  readonly onScanStarted: PublicApi<void> = this.onScanStartedEvent.publicApi();
 
   private readonly onScanFailedEvent = new Event<string>();
   /** Fires with the error description when a scan fails. */
-  readonly onScanFailed: PublicApi<string> =
-    this.onScanFailedEvent.publicApi();
+  readonly onScanFailed: PublicApi<string> = this.onScanFailedEvent.publicApi();
 
   // ─── Private State ────────────────────────────────────────────
 
@@ -218,7 +217,7 @@ export class ComponentDetector extends BaseScriptComponent {
       "imagePosX and imagePosY are normalized 0.0–1.0 from top-left.\n" +
       "confidence is your certainty 0.0–1.0.\n" +
       "Include a specific label (e.g. '220Ω Resistor' not just 'Resistor').\n" +
-      "If no components are visible, return {\"components\":[]}.\n" +
+      'If no components are visible, return {"components":[]}.\n' +
       "RESPOND WITH ONLY THE JSON, NO OTHER TEXT."
     );
   }
@@ -292,10 +291,8 @@ export class ComponentDetector extends BaseScriptComponent {
           description: item.description || "",
           confidence:
             typeof item.confidence === "number" ? item.confidence : 0.5,
-          imagePosX:
-            typeof item.imagePosX === "number" ? item.imagePosX : 0.5,
-          imagePosY:
-            typeof item.imagePosY === "number" ? item.imagePosY : 0.5,
+          imagePosX: typeof item.imagePosX === "number" ? item.imagePosX : 0.5,
+          imagePosY: typeof item.imagePosY === "number" ? item.imagePosY : 0.5,
         });
       }
 

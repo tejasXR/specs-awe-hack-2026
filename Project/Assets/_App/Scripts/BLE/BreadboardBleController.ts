@@ -1,5 +1,5 @@
 import Event, { PublicApi } from "SpectaclesInteractionKit.lspkg/Utils/Event";
-import { BreadboardControllerData } from "./BreadboardControllerData";
+import { BreadboardBleData } from "./BreadboardBleData";
 
 export type BreadboardConnectionState =
   | { kind: "idle" }
@@ -51,7 +51,8 @@ export class BreadboardBleController extends BaseScriptComponent {
 
   private readonly onStatusEvent = new Event<BreadboardStatus>();
   /** Fires on every status notification from the board (~1 Hz + LED echoes). */
-  readonly onStatus: PublicApi<BreadboardStatus> = this.onStatusEvent.publicApi();
+  readonly onStatus: PublicApi<BreadboardStatus> =
+    this.onStatusEvent.publicApi();
 
   private _gatt?: Bluetooth.BluetoothGatt;
   private _ledCharacteristic?: Bluetooth.BluetoothGattCharacteristic;
@@ -99,7 +100,7 @@ export class BreadboardBleController extends BaseScriptComponent {
     this.setState({ kind: "scanning" });
 
     const filter = new Bluetooth.ScanFilter();
-    filter.deviceName = BreadboardControllerData.deviceName;
+    filter.deviceName = BreadboardBleData.deviceName;
 
     const settings = new Bluetooth.ScanSettings();
     settings.uniqueDevices = true;
@@ -110,7 +111,7 @@ export class BreadboardBleController extends BaseScriptComponent {
       .startScan(
         [filter],
         settings,
-        (result) => result.deviceName === BreadboardControllerData.deviceName,
+        (result) => result.deviceName === BreadboardBleData.deviceName,
       )
       .then((result) => this.onBoardFound(result))
       .catch((error) => {
@@ -187,14 +188,14 @@ export class BreadboardBleController extends BaseScriptComponent {
 
   private subscribeToBoard(): void {
     try {
-      const service = this._gatt!.getService(BreadboardControllerData.serviceUUID);
+      const service = this._gatt!.getService(BreadboardBleData.serviceUUID);
 
       this._ledCharacteristic = service.getCharacteristic(
-        BreadboardControllerData.ledCharacteristicUUID,
+        BreadboardBleData.ledCharacteristicUUID,
       );
 
       const statusCharacteristic = service.getCharacteristic(
-        BreadboardControllerData.statusCharacteristicUUID,
+        BreadboardBleData.statusCharacteristicUUID,
       );
       statusCharacteristic
         .registerNotifications((value) => this.onStatusNotification(value))
@@ -213,7 +214,9 @@ export class BreadboardBleController extends BaseScriptComponent {
     this.onStatusEvent.invoke({ heartbeat: value[0], ledLevel: value[1] });
   }
 
-  private onConnectionStateChanged(e: Bluetooth.ConnectionStateChangedEvent): void {
+  private onConnectionStateChanged(
+    e: Bluetooth.ConnectionStateChangedEvent,
+  ): void {
     // 0 = disconnected, 1 = connected (see BLE Playground ScanResult.ts)
     if (e.state.toString() === "0") {
       this._ledCharacteristic = undefined;
@@ -249,7 +252,11 @@ export class BreadboardBleController extends BaseScriptComponent {
 
   private setState(next: BreadboardConnectionState): void {
     this._state = next;
-    this.log("state → " + next.kind + (next.kind === "failed" ? " (" + next.reason + ")" : ""));
+    this.log(
+      "state → " +
+        next.kind +
+        (next.kind === "failed" ? " (" + next.reason + ")" : ""),
+    );
     this.onStateChangedEvent.invoke(next);
   }
 

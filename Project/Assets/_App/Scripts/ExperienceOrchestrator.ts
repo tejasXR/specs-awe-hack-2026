@@ -31,7 +31,7 @@ import {
   BreadboardBleController,
   BreadboardConnectionState,
   BreadboardStatus,
-} from "./BreadboardBleController";
+} from "./BLE/BreadboardBleController";
 
 // --- Component ---
 
