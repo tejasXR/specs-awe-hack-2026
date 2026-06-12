@@ -28,7 +28,7 @@
   ScriptInputsHidden:
     debugText: false
     pointingConeAngle: false
-    sceneSetupObj: false
+    spaceSetup: false
   ScriptTypesHidden:
     {}
   ReadMe: !<reference> 00000000-0000-0000-0000-000000000000
@@ -40,11 +40,11 @@
   DefaultScriptInputs:
     - pointingConeAngle: !<float> 35.000000
       debugText: !<reference.Text> 00000000-0000-0000-0000-000000000000
-      sceneSetupObj: !<reference.SceneObject> 00000000-0000-0000-0000-000000000000
+      spaceSetup: !<MappingBased.AssignableType> 00000000-0000-0000-0000-000000000000
   ScriptTypes:
     -
       {}
   InputLines:
     - // @input float pointingConeAngle = 25
     - // @input Component.Text debugText
-    - // @input SceneObject sceneSetupObj
+    - // @input AssignableType spaceSetup

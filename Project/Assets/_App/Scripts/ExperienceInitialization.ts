@@ -2,6 +2,7 @@ import WorldCameraFinderProvider from "SpectaclesInteractionKit.lspkg/Providers/
 import { HandInputData } from "SpectaclesInteractionKit.lspkg/Providers/HandInputData/HandInputData";
 import type TrackedHand from "SpectaclesInteractionKit.lspkg/Providers/HandInputData/TrackedHand";
 import Event, { PublicApi } from "SpectaclesInteractionKit.lspkg/Utils/Event";
+import { SpaceSetup } from "./SpaceSetup";
 
 type HoldState =
   | { phase: "idle" }
@@ -17,7 +18,7 @@ export class ExperienceInitialization extends BaseScriptComponent {
   debugText!: Text;
 
   @input
-  sceneSetupObj!: SceneObject;
+  spaceSetup!: SpaceSetup;
 
   private _stillnessRadius: number = 2.0;
   private _holdDuration: number = 0.5;
@@ -43,7 +44,7 @@ export class ExperienceInitialization extends BaseScriptComponent {
 
   onStart() {
     print("Scene setup deactivaed");
-    this.sceneSetupObj.enabled = false;
+    this.spaceSetup.enabled = false;
   }
 
   private onUpdate() {
@@ -114,10 +115,9 @@ export class ExperienceInitialization extends BaseScriptComponent {
   }
 
   private onHoldComplete() {
-    this.sceneSetupObj.enabled = true;
-    this.sceneSetupObj
-      .getTransform()
-      .setWorldPosition(this.hand.indexFinger[4].position);
+    var setupPosition = this.hand.indexFinger[4].position;
+
+    this.spaceSetup.setup(setupPosition);
 
     var transform = this.getTransform();
     var camera = WorldCameraFinderProvider.getInstance();
