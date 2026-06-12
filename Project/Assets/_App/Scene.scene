@@ -6933,14 +6933,13 @@
   ScriptAsset: !<reference> 9b9ba524-38ea-4684-9630-7420ac456a29
   ScriptInputsDefault:
     pointingConeAngle: true
-    spaceSetup: true
   ScriptTypesDefault:
     {}
   ScriptInputs:
     "":
       pointingConeAngle: !<float> 35.000000
       debugText: !<reference.Text> 80ecaf45-3055-42a6-8383-1dde82747ff0
-      spaceSetup: !<MappingBased.AssignableType> 00000000-0000-0000-0000-000000000000
+      spaceSetup: !<MappingBased.AssignableType> 5a9e8d73-a99d-45b2-8ab8-ff9ddefcafd3
   ScriptTypes:
     "":
       {}
