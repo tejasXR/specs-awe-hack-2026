@@ -1,0 +1,50 @@
+- !<AssetImportMetadata/85815f9c-aa85-405b-a4f7-24d8a21aeb7c>
+  ImportedAssetIds:
+    TypeScriptAsset: !<reference> cba6c937-b0bf-4831-9e86-7efa61b5ab08
+  ImporterName: TypeScriptAssetImporter
+  PrimaryAsset: !<reference> cba6c937-b0bf-4831-9e86-7efa61b5ab08
+  PackageType: NotAPackage
+  LegacyPackagePolicy: ~
+  ExtraData:
+    {}
+  AssetDataMap:
+    TypeScriptAsset: !<own> 561680d3-7fc4-4423-a2e1-07a4bc14bf21
+  DependentFiles:
+    []
+  ImporterSettings: !<AssetImporterSettings>
+    {}
+  CompressionSettings: !<own> 00000000-0000-0000-0000-000000000000
+- !<TypeScriptAssetData/561680d3-7fc4-4423-a2e1-07a4bc14bf21>
+  SvgIcon: ""
+  SetupScript:
+    code: ""
+  Description: ""
+  VersionMajor: 0
+  VersionMinor: 0
+  VersionPatch: 0
+  ComponentUid: 592c1e74-8ca3-42d4-a5b7-74d53f64904c
+  ExportUid: 00000000-0000-0000-0000-000000000000
+  PackagePolicy: CanBeUnpacked
+  ScriptInputsHidden:
+    primaryButton: false
+    secondaryButton: false
+    tertiaryButton: false
+  ScriptTypesHidden:
+    {}
+  ReadMe: !<reference> 00000000-0000-0000-0000-000000000000
+  DeclarationFile: !<reference> 00000000-0000-0000-0000-000000000000
+  Tags:
+    []
+  Attachments:
+    []
+  DefaultScriptInputs:
+    - primaryButton: !<MappingBased.AssignableType> 00000000-0000-0000-0000-000000000000
+      secondaryButton: !<MappingBased.AssignableType_1> 00000000-0000-0000-0000-000000000000
+      tertiaryButton: !<MappingBased.AssignableType_2> 00000000-0000-0000-0000-000000000000
+  ScriptTypes:
+    -
+      {}
+  InputLines:
+    - // @input AssignableType primaryButton
+    - // @input AssignableType_1 secondaryButton
+    - // @input AssignableType_2 tertiaryButton
