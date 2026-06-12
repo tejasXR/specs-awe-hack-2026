@@ -61,14 +61,13 @@
     - '// @ui {"widget":"label", "label":"Sequence"}'
     - /*
     - "@typedef InstructionDefinition"
-    - "@property {string} instructionTitle"
+    - "@property {string} title"
+    - '@property {string} description {"widget":"text_area"}'
     - '@property {string} columnStart = "A" {"widget":"combobox", "values":[{"label":"A", "value":"A"}, {"label":"B", "value":"B"}, {"label":"C", "value":"C"}, {"label":"D", "value":"D"}, {"label":"E", "value":"E"}, {"label":"F", "value":"F"}, {"label":"G", "value":"G"}, {"label":"H", "value":"H"}, {"label":"I", "value":"I"}, {"label":"J", "value":"J"}]}'
     - '@property {float} rowStart = 10 {"widget":"slider", "min":10, "max":40, "step":1}'
     - "@property {bool} useEndPin"
     - '@property {string} columnEnd {"widget":"combobox", "values":[{"label":"A", "value":"A"}, {"label":"B", "value":"B"}, {"label":"C", "value":"C"}, {"label":"D", "value":"D"}, {"label":"E", "value":"E"}, {"label":"F", "value":"F"}, {"label":"G", "value":"G"}, {"label":"H", "value":"H"}, {"label":"I", "value":"I"}, {"label":"J", "value":"J"}], "showIf":"useEndPin", "showIfValue":true}'
     - '@property {float} rowEnd {"widget":"slider", "min":10, "max":40, "step":1, "showIf":"useEndPin", "showIfValue":true}'
-    - "@property {string} title"
-    - '@property {string} description {"widget":"text_area"}'
     - "*/"
     - "// @input InstructionDefinition[] instructionDefinitions = {}"
     - "// @input float hoverOffsetCm = 1 {\"hint\":\"Lift above the board surface so the prompt doesn't clip into it, in cm\"}"
