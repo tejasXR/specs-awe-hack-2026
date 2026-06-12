@@ -18,6 +18,7 @@
     - !<own> e755796e-4e13-4569-a231-ea246816231c
     - !<own> 599941be-0bce-4490-b2d6-675ce62d22f1
     - !<own> 00994c0d-7189-4d57-8af2-bceb57d511de
+    - !<own> 3d94ea28-6de0-47d1-8d38-ea13e7856ec3
   layers: !<Layers/267ee9a7-aff2-4f9d-9a49-f71214747d03>
     userLayers:
       - |
@@ -2462,6 +2463,21 @@
     - !<own> 29af5585-31f2-403a-83c9-900432a300ed
   Components:
     []
+- !<SceneObject/3d94ea28-6de0-47d1-8d38-ea13e7856ec3>
+  PrefabRemaps:
+    []
+  Name: MusicController
+  Enabled: true
+  Layers: 1
+  LocalTransform: !<TransformEntity>
+    Position: {x: 0.000000, y: 0.000000, z: 0.000000}
+    Rotation: {x: 0.000000, y: 0.000000, z: 0.000000}
+    Scale: {x: 1.000000, y: 1.000000, z: 1.000000}
+    HasSegmentScaleCompensation: false
+  Children:
+    []
+  Components:
+    - !<own> 8df55664-959b-4d8a-91ed-cda0ab3af4bc
 - !<SceneObject/3e7dc9a9-c25f-49f5-9615-45d80ae874db>
   PrefabRemaps:
     []
@@ -5276,6 +5292,38 @@
   ForceCompound: false
   Intangible: false
   ShowCollider: false
+- !<ScriptComponent/8df55664-959b-4d8a-91ed-cda0ab3af4bc>
+  PrefabRemaps:
+    []
+  Name: MusicController
+  Enabled: true
+  ScriptAsset: !<reference> 1f72200e-a08b-4848-a7c6-6757e66b9ee9
+  ScriptInputsDefault:
+    deckA: true
+    deckB: true
+    voice: true
+    musicVolume: true
+    crossfadeSeconds: true
+    enableDucking: true
+    duckVolume: true
+    duckFadeSeconds: true
+    enableLogging: true
+  ScriptTypesDefault:
+    {}
+  ScriptInputs:
+    "":
+      deckA: !<reference.AudioComponent> 00000000-0000-0000-0000-000000000000
+      deckB: !<reference.AudioComponent> 00000000-0000-0000-0000-000000000000
+      voice: !<MappingBased.AssignableType> 00000000-0000-0000-0000-000000000000
+      musicVolume: 0.700000
+      crossfadeSeconds: 1.500000
+      enableDucking: true
+      duckVolume: 0.250000
+      duckFadeSeconds: 0.300000
+      enableLogging: false
+  ScriptTypes:
+    "":
+      {}
 - !<Text/9002b3c4-0d6f-4588-a619-8a0911b2d029>
   PrefabRemaps:
     []
