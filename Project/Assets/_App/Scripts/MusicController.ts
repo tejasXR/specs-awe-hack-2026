@@ -66,19 +66,14 @@ export class MusicController extends BaseScriptComponent {
   @hint("Seconds to duck down / release back up")
   duckFadeSeconds: number = 0.3;
   @ui.group_end
-
   @input
   @hint("Enable debug logging")
   enableLogging: boolean = false;
 
-  // ─── Events ───────────────────────────────────────────────────
-
   private readonly onTrackChangedEvent = new Event<AudioTrackAsset>();
-  /** Fires when a new track begins crossing in (with that track). */
+
   readonly onTrackChanged: PublicApi<AudioTrackAsset> =
     this.onTrackChangedEvent.publicApi();
-
-  // ─── Private State ────────────────────────────────────────────
 
   private _decks: AudioComponent[] = [];
   private _weights: number[] = [0, 0]; // current per-deck blend weight
@@ -92,18 +87,12 @@ export class MusicController extends BaseScriptComponent {
   private _update?: SceneEvent;
   private _unsubscribeFromVoice?: unsubscribe;
 
-  // ─── Lifecycle ────────────────────────────────────────────────
-
   onAwake(): void {
     this.createEvent("OnStartEvent").bind(() => this.onStart());
     this.createEvent("OnDestroyEvent").bind(() => this.onDestroy());
   }
 
   private onStart(): void {
-    if (isNull(this.deckA) || isNull(this.deckB)) {
-      this.log("Both deck AudioComponents must be wired — disabled.");
-      return;
-    }
     this._decks = [this.deckA, this.deckB];
 
     // Start silent; the first crossfadeTo() fades a track in from nothing.
@@ -130,23 +119,7 @@ export class MusicController extends BaseScriptComponent {
     this._unsubscribeFromVoice?.();
   }
 
-  // ─── Public API ───────────────────────────────────────────────
-
-  /**
-   * Crossfade to `track`, looping it. The idle deck takes the new track and
-   * rises while the active deck falls. No-op if `track` is already the one
-   * being played to.
-   */
-  crossfadeTo(track: AudioTrackAsset): void {
-    if (isNull(track)) {
-      this.log("crossfadeTo called with no track — ignoring.");
-      return;
-    }
-    if (this._decks.length < 2) {
-      this.log("Decks not ready — ignoring crossfadeTo.");
-      return;
-    }
-
+  play(track: AudioTrackAsset): void {
     const activeDeck = this._decks[this._activeIndex];
     const alreadyPlayingIt =
       activeDeck.audioTrack === track && this._targets[this._activeIndex] === 1;
@@ -192,8 +165,10 @@ export class MusicController extends BaseScriptComponent {
 
   private onUpdate(): void {
     const deltaTime = getDeltaTime();
-    const fadeStep = deltaTime / Math.max(this.crossfadeSeconds, MIN_FADE_SECONDS);
-    const duckStep = deltaTime / Math.max(this.duckFadeSeconds, MIN_FADE_SECONDS);
+    const fadeStep =
+      deltaTime / Math.max(this.crossfadeSeconds, MIN_FADE_SECONDS);
+    const duckStep =
+      deltaTime / Math.max(this.duckFadeSeconds, MIN_FADE_SECONDS);
 
     this._weights[0] = approach(this._weights[0], this._targets[0], fadeStep);
     this._weights[1] = approach(this._weights[1], this._targets[1], fadeStep);
@@ -269,7 +244,11 @@ export class MusicController extends BaseScriptComponent {
 const clamp01 = (value: number): number => Math.max(0, Math.min(1, value));
 
 /** Move `current` toward `target` by at most `maxDelta`. */
-const approach = (current: number, target: number, maxDelta: number): number => {
+const approach = (
+  current: number,
+  target: number,
+  maxDelta: number,
+): number => {
   if (current < target) return Math.min(current + maxDelta, target);
   return Math.max(current - maxDelta, target);
 };
