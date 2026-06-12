@@ -1,0 +1,54 @@
+- !<AssetImportMetadata/04482db0-36a8-4009-a234-e53e921bd694>
+  ImportedAssetIds:
+    TypeScriptAsset: !<reference> c55c1546-0738-41fa-b8d3-403f47517d0b
+  ImporterName: TypeScriptAssetImporter
+  PrimaryAsset: !<reference> c55c1546-0738-41fa-b8d3-403f47517d0b
+  PackageType: NotAPackage
+  LegacyPackagePolicy: ~
+  ExtraData:
+    {}
+  AssetDataMap:
+    TypeScriptAsset: !<own> 602fe388-599e-4223-8848-b13a7ade4ec4
+  DependentFiles:
+    []
+  ImporterSettings: !<AssetImporterSettings>
+    {}
+  CompressionSettings: !<own> 00000000-0000-0000-0000-000000000000
+- !<TypeScriptAssetData/602fe388-599e-4223-8848-b13a7ade4ec4>
+  SvgIcon: ""
+  SetupScript:
+    code: ""
+  Description: ""
+  VersionMajor: 0
+  VersionMinor: 0
+  VersionPatch: 0
+  ComponentUid: eb153d2a-c41c-4d3a-a937-95a0ec750903
+  ExportUid: 00000000-0000-0000-0000-000000000000
+  PackagePolicy: CanBeUnpacked
+  ScriptInputsHidden:
+    componentDividers: false
+    menuConsole: false
+    musicController: false
+    musicTrack: false
+  ScriptTypesHidden:
+    {}
+  ReadMe: !<reference> 00000000-0000-0000-0000-000000000000
+  DeclarationFile: !<reference> 00000000-0000-0000-0000-000000000000
+  Tags:
+    []
+  Attachments:
+    []
+  DefaultScriptInputs:
+    - menuConsole: !<MappingBased.AssignableType> 00000000-0000-0000-0000-000000000000
+      componentDividers: !<reference.SceneObject[]>
+        []
+      musicController: !<MappingBased.AssignableType_1> 00000000-0000-0000-0000-000000000000
+      musicTrack: !<reference.AudioTrackAsset> 00000000-0000-0000-0000-000000000000
+  ScriptTypes:
+    -
+      {}
+  InputLines:
+    - '// @input AssignableType menuConsole {"hint":"Menu revealed when the space is set up"}'
+    - '// @input SceneObject[] componentDividers {"hint":"Scene content enabled when the space is set up"}'
+    - '// @input AssignableType_1 musicController {"hint":"Music controller that plays the setup track"}'
+    - '// @input Asset.AudioTrackAsset musicTrack {"hint":"Track to play when the space is set up"}'
