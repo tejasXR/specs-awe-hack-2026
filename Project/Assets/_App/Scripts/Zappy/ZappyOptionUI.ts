@@ -2,7 +2,6 @@ import { LSTween } from "LSTween.lspkg/Examples/Scripts/LSTween";
 import Easing from "LSTween.lspkg/TweenJS/Easing";
 import { Tween } from "LSTween.lspkg/TweenJS/Tween";
 import { Interactable } from "SpectaclesInteractionKit.lspkg/Components/Interaction/Interactable/Interactable";
-import { PinchButton } from "SpectaclesInteractionKit.lspkg/Components/UI/PinchButton/PinchButton";
 import Event, {
   PublicApi,
   unsubscribe,
