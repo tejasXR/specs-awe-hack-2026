@@ -30,8 +30,8 @@
   ScriptInputsDefault:
     instructionPrompt: true
     instructionPromptLocationObj: true
-    instructionDefinitions: true
     hoverOffsetCm: true
+    instructionDefinitions: true
     autoStart: true
   ScriptTypesDefault:
     {}
@@ -40,9 +40,9 @@
       breadboardOrigin: !<reference.SceneObject> 3805ce42-8b9f-4696-a624-c0b5225017c0
       instructionPrompt: !<MappingBased.AssignableType> 00000000-0000-0000-0000-000000000000
       instructionPromptLocationObj: !<reference.SceneObject> 00000000-0000-0000-0000-000000000000
+      hoverOffsetCm: !<float> 1.000000
       instructionDefinitions:
         []
-      hoverOffsetCm: !<float> 1.000000
       autoStart: false
   ScriptTypes:
     "":
