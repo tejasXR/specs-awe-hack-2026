@@ -27,7 +27,6 @@
   PackagePolicy: CanBeUnpacked
   ScriptInputsHidden:
     descriptionText: false
-    lineEnd: false
     lineMaterial: false
     lineStart: false
     promptContainer: false
@@ -46,7 +45,6 @@
       titleText: !<reference.Text> 00000000-0000-0000-0000-000000000000
       descriptionText: !<reference.Text> 00000000-0000-0000-0000-000000000000
       lineStart: !<reference.SceneObject> 00000000-0000-0000-0000-000000000000
-      lineEnd: !<reference.SceneObject> 00000000-0000-0000-0000-000000000000
   ScriptTypes:
     -
       {}
@@ -56,4 +54,3 @@
     - // @input Component.Text titleText
     - // @input Component.Text descriptionText
     - // @input SceneObject lineStart
-    - // @input SceneObject lineEnd

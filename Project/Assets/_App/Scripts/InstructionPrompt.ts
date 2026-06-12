@@ -12,20 +12,17 @@ export class InstructionPrompt extends BaseScriptComponent {
   lineMaterial!: Material;
 
   @input
-  @allowUndefined
-  titleText: Text;
+  titleText!: Text;
 
   @input
-  descriptionText: Text;
+  @allowUndefined
+  descriptionText!: Text;
 
-  // TODO: TEJAS, create a way to draw multiple lines in case we are specific using wires
   @input
   lineStart!: SceneObject;
 
-  @input
-  lineEnd!: SceneObject;
-
   private _lines: LineRenderer[] = [];
+  private _lineObjs: SceneObject[] = [];
   private _lineWidthStartCm: number = 0.2;
   private _lineWidthEndCm: number = 0.1;
   private _maxLines: number = 3;
@@ -35,11 +32,11 @@ export class InstructionPrompt extends BaseScriptComponent {
 
   onAwake() {
     // Pre-create the line renderer pool to avoid dynamic allocations at runtime
-    for (let i = 0; i < this._maxLines; i++) {
-      const line = this.createLineRenderer();
-      line.setEnabled(false);
-      this._lines.push(line);
-    }
+    // for (let i = 0; i < this._maxLines; i++) {
+    //   const line = this.createLineRenderer();
+    //   line.setEnabled(false);
+    //   this._lines.push(line);
+    // }
 
     // Set up frame update loop for real-time tracking, disabled by default
     this._updateEvent = this.createEvent("UpdateEvent");
@@ -62,21 +59,37 @@ export class InstructionPrompt extends BaseScriptComponent {
       this.descriptionText.text = description;
     }
 
+    // Destroy previous line objects
+    for (let i = 0; i < this._lines.length; i++) {
+      this._lineObjs[i].destroy();
+    }
+
     this._targetPositions = targetPositions;
 
-    if (this.lineEnd && targetPositions.length > 0) {
-      this.lineEnd.getTransform().setWorldPosition(targetPositions[0]);
-    }
+    this._targetPositions.forEach((endLinePosition) => {
+      this.createLineRenderer(endLinePosition);
+    });
   }
 
-  private createLineRenderer(): LineRenderer {
+  private createLineRenderer(lineEnd: vec3): LineRenderer {
     var line = new LineRenderer({
       material: this.lineMaterial,
-      points: [vec3.zero(), vec3.zero()],
+      points: [this.lineStart.getTransform().getWorldPosition(), lineEnd],
       startWidth: this._lineWidthStartCm,
       endWidth: this._lineWidthEndCm,
       lookAtCamera: true, // billboard the strip so it's visible from any angle
     });
+
+    var line = line.attachToScene(this.getSceneObject());
+    var lineObj = line.getSceneObject();
+    this._lineObjs.push(lineObj);
+
+    print(
+      "New line for instructional prompts created from " +
+        line.points[0] +
+        " to " +
+        line.points[1],
+    );
 
     return line;
   }
@@ -130,4 +143,3 @@ export class InstructionPrompt extends BaseScriptComponent {
     }
   }
 }
-
