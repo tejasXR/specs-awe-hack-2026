@@ -39,4 +39,7 @@ export class MenuConsole extends BaseScriptComponent {
       this.onTertiaryPressedEvent.invoke(),
     );
   }
+
+  public show(): void {}
+  public hide(): void {}
 }
