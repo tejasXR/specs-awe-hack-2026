@@ -1,0 +1,74 @@
+- !<AssetImportMetadata/02d5c628-ef7d-4f64-ba5e-035c4cd4ef13>
+  ImportedAssetIds:
+    TypeScriptAsset: !<reference> 1f72200e-a08b-4848-a7c6-6757e66b9ee9
+  ImporterName: TypeScriptAssetImporter
+  PrimaryAsset: !<reference> 1f72200e-a08b-4848-a7c6-6757e66b9ee9
+  PackageType: NotAPackage
+  LegacyPackagePolicy: ~
+  ExtraData:
+    {}
+  AssetDataMap:
+    TypeScriptAsset: !<own> 20218fd9-90a0-47a1-aa83-239be486493b
+  DependentFiles:
+    []
+  ImporterSettings: !<AssetImporterSettings>
+    {}
+  CompressionSettings: !<own> 00000000-0000-0000-0000-000000000000
+- !<TypeScriptAssetData/20218fd9-90a0-47a1-aa83-239be486493b>
+  SvgIcon: ""
+  SetupScript:
+    code: ""
+  Description: ""
+  VersionMajor: 0
+  VersionMinor: 0
+  VersionPatch: 0
+  ComponentUid: f6b9ef69-47d8-4baf-ba1c-ffd187e8120e
+  ExportUid: 00000000-0000-0000-0000-000000000000
+  PackagePolicy: CanBeUnpacked
+  ScriptInputsHidden:
+    crossfadeSeconds: false
+    deckA: false
+    deckB: false
+    duckFadeSeconds: false
+    duckVolume: false
+    enableDucking: false
+    enableLogging: false
+    musicVolume: false
+    voice: false
+  ScriptTypesHidden:
+    {}
+  ReadMe: !<reference> 00000000-0000-0000-0000-000000000000
+  DeclarationFile: !<reference> 00000000-0000-0000-0000-000000000000
+  Tags:
+    []
+  Attachments:
+    []
+  DefaultScriptInputs:
+    - deckA: !<reference.AudioComponent> 00000000-0000-0000-0000-000000000000
+      deckB: !<reference.AudioComponent> 00000000-0000-0000-0000-000000000000
+      voice: !<MappingBased.AssignableType> 00000000-0000-0000-0000-000000000000
+      musicVolume: 0.700000
+      crossfadeSeconds: 1.500000
+      enableDucking: true
+      duckVolume: 0.250000
+      duckFadeSeconds: 0.300000
+      enableLogging: false
+  ScriptTypes:
+    -
+      {}
+  InputLines:
+    - '// @ui {"widget":"separator"}'
+    - '// @ui {"widget":"label", "label":"References"}'
+    - '// @input Component.AudioComponent deckA {"hint":"First music deck — a non-spatial AudioComponent"}'
+    - '// @input Component.AudioComponent deckB {"hint":"Second music deck — a non-spatial AudioComponent"}'
+    - '// @input AssignableType voice {"hint":"ZappyVoice — music ducks under its speech (optional)"}'
+    - '// @ui {"widget":"separator"}'
+    - '// @ui {"widget":"label", "label":"Settings"}'
+    - '// @input float musicVolume = 0.7 {"hint":"Base music volume when not ducked (0–1)"}'
+    - '// @input float crossfadeSeconds = 1.5 {"hint":"Seconds to crossfade from one track to the next"}'
+    - '// @ui {"widget":"group_start", "label":"Ducking"}'
+    - '// @input bool enableDucking = true {"hint":"Lower music volume while Zappy is speaking"}'
+    - '// @input float duckVolume = 0.25 {"hint":"Music volume target while Zappy speaks (0–1)"}'
+    - '// @input float duckFadeSeconds = 0.3 {"hint":"Seconds to duck down / release back up"}'
+    - '// @ui {"widget":"group_end"}'
+    - '// @input bool enableLogging {"hint":"Enable debug logging"}'
