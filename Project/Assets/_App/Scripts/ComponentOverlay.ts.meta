@@ -1,0 +1,74 @@
+- !<AssetImportMetadata/6ecf0344-de2b-4254-8ccd-eb0fa3d4e8a4>
+  ImportedAssetIds:
+    TypeScriptAsset: !<reference> 3e5b7e88-8f69-4560-8fc7-2293240ab277
+  ImporterName: TypeScriptAssetImporter
+  PrimaryAsset: !<reference> 3e5b7e88-8f69-4560-8fc7-2293240ab277
+  PackageType: NotAPackage
+  LegacyPackagePolicy: ~
+  ExtraData:
+    {}
+  AssetDataMap:
+    TypeScriptAsset: !<own> 7a0c8119-da55-4f2b-86e1-a4212b20eddd
+  DependentFiles:
+    []
+  ImporterSettings: !<AssetImporterSettings>
+    {}
+  CompressionSettings: !<own> 00000000-0000-0000-0000-000000000000
+- !<TypeScriptAssetData/7a0c8119-da55-4f2b-86e1-a4212b20eddd>
+  SvgIcon: ""
+  SetupScript:
+    code: ""
+  Description: ""
+  VersionMajor: 0
+  VersionMinor: 0
+  VersionPatch: 0
+  ComponentUid: a8e9f3e3-c76e-4933-bb6e-187a8648029e
+  ExportUid: 00000000-0000-0000-0000-000000000000
+  PackagePolicy: CanBeUnpacked
+  ScriptInputsHidden:
+    descriptionColor: false
+    detector: false
+    displayDuration: false
+    enableLogging: false
+    labelColor: false
+    labelDistance: false
+    labelSize: false
+    labelVerticalOffset: false
+    maxLabels: false
+  ScriptTypesHidden:
+    {}
+  ReadMe: !<reference> 00000000-0000-0000-0000-000000000000
+  DeclarationFile: !<reference> 00000000-0000-0000-0000-000000000000
+  Tags:
+    []
+  Attachments:
+    []
+  DefaultScriptInputs:
+    - detector: !<MappingBased.AssignableType> 00000000-0000-0000-0000-000000000000
+      labelDistance: !<float> 40.000000
+      displayDuration: !<float> 0.000000
+      labelVerticalOffset: !<float> 3.000000
+      maxLabels: !<float> 8.000000
+      labelSize: !<float> 18.000000
+      labelColor: !<Vec4> {x: 0.300000, y: 0.950000, z: 0.500000, w: 1.000000}
+      descriptionColor: !<Vec4> {x: 0.850000, y: 0.850000, z: 0.850000, w: 1.000000}
+      enableLogging: false
+  ScriptTypes:
+    -
+      {}
+  InputLines:
+    - '// @ui {"widget":"separator"}'
+    - '// @ui {"widget":"label", "label":"References"}'
+    - '// @input AssignableType detector {"hint":"ComponentDetector that provides scan results"}'
+    - '// @ui {"widget":"separator"}'
+    - '// @ui {"widget":"label", "label":"Layout"}'
+    - '// @input float labelDistance = 40 {"hint":"Distance from camera to place labels, in cm"}'
+    - '// @input float displayDuration {"hint":"How long labels stay visible before fading, in seconds (0 = permanent)"}'
+    - '// @input float labelVerticalOffset = 3 {"hint":"Vertical offset above the detected position, in cm"}'
+    - '// @input float maxLabels = 8 {"hint":"Maximum number of labels to show simultaneously"}'
+    - '// @ui {"widget":"separator"}'
+    - '// @ui {"widget":"label", "label":"Style"}'
+    - '// @input float labelSize = 18 {"hint":"Label text size"}'
+    - '// @input vec4 labelColor = {0.3,0.95,0.5,1} {"hint":"Label color — component name"}'
+    - '// @input vec4 descriptionColor = {0.85,0.85,0.85,1} {"hint":"Description color — smaller text below the label"}'
+    - '// @input bool enableLogging {"hint":"Enable debug logging"}'

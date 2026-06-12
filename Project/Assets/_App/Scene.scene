@@ -19,6 +19,7 @@
     - !<own> b86cbb43-e82e-48ed-89e0-a449f10cd53e
     - !<own> 0af33c18-ea34-4408-b8e0-dea027c17886
     - !<own> 213426da-4382-4563-9929-b8365695cd47
+    - !<own> 7f77fd87-435b-4ca6-b6f0-7869b5f97ac9
   layers: !<Layers/267ee9a7-aff2-4f9d-9a49-f71214747d03>
     userLayers:
       - |
@@ -3698,6 +3699,37 @@
   RotationAngle: 0
   Pivot: {x: 0.000000, y: 0.000000}
   ExtentsTarget: !<reference> 00000000-0000-0000-0000-000000000000
+- !<ScriptComponent/1ef809b0-c619-433b-b677-326645a26ddc>
+  PrefabRemaps:
+    []
+  Name: ComponentOverlay
+  Enabled: true
+  ScriptAsset: !<reference> 3e5b7e88-8f69-4560-8fc7-2293240ab277
+  ScriptInputsDefault:
+    detector: true
+    labelDistance: true
+    displayDuration: true
+    labelVerticalOffset: true
+    maxLabels: true
+    labelSize: true
+    labelColor: true
+    descriptionColor: true
+  ScriptTypesDefault:
+    {}
+  ScriptInputs:
+    "":
+      detector: !<MappingBased.AssignableType> 00000000-0000-0000-0000-000000000000
+      labelDistance: !<float> 40.000000
+      displayDuration: !<float> 0.000000
+      labelVerticalOffset: !<float> 3.000000
+      maxLabels: !<float> 8.000000
+      labelSize: !<float> 18.000000
+      labelColor: !<Vec4> {x: 0.300000, y: 0.950000, z: 0.500000, w: 1.000000}
+      descriptionColor: !<Vec4> {x: 0.850000, y: 0.850000, z: 0.850000, w: 1.000000}
+      enableLogging: true
+  ScriptTypes:
+    "":
+      {}
 - !<SceneObject/202a17a1-dfdd-4d05-9abb-f5e7a8146605>
   PrefabRemaps:
     []
@@ -4853,6 +4885,7 @@
     - !<own> c50a6368-e171-4a94-8eef-e0f21d636b95
     - !<own> cca2d5c1-ea66-4515-818c-977305c8f7a6
     - !<own> 5e98edc9-1ea4-411b-801a-283a17001bea
+    - !<own> e0f47d20-a0eb-4325-af8e-c360b4eb01b3
 - !<SceneObject/2aa9bd36-58f8-49f1-90a0-80cbcc8527d9>
   PrefabRemaps:
     []
@@ -15070,6 +15103,22 @@
     CapitalizationOverride: None
   DepthTest: false
   TwoSided: false
+- !<SceneObject/7f77fd87-435b-4ca6-b6f0-7869b5f97ac9>
+  PrefabRemaps:
+    []
+  Name: Component Detection
+  Enabled: true
+  Layers: 1
+  LocalTransform: !<TransformEntity>
+    Position: {x: 0.000000, y: 0.000000, z: 0.000000}
+    Rotation: {x: 0.000000, y: 0.000000, z: 0.000000}
+    Scale: {x: 1.000000, y: 1.000000, z: 1.000000}
+    HasSegmentScaleCompensation: false
+  Children:
+    []
+  Components:
+    - !<own> 9aee2879-98f0-4367-88e7-ad0f985531b3
+    - !<own> 1ef809b0-c619-433b-b677-326645a26ddc
 - !<SceneObject/7fb0d12f-1a9f-446c-aa88-02f53b59c142>
   PrefabRemaps:
     []
@@ -18450,6 +18499,27 @@
     []
   Components:
     - !<own> 1e37424d-e9c2-4aa3-9cb8-1ce2f2e7f942
+- !<ScriptComponent/9aee2879-98f0-4367-88e7-ad0f985531b3>
+  PrefabRemaps:
+    []
+  Name: ComponentDetector
+  Enabled: true
+  ScriptAsset: !<reference> c2e8f7db-0c3b-4a05-8e99-cfbe430c538e
+  ScriptInputsDefault:
+    confidenceThreshold: true
+    scanCooldownSeconds: true
+  ScriptTypesDefault:
+    {}
+  ScriptInputs:
+    "":
+      brain: !<MappingBased.AssignableType> e6305008-0fd4-431d-ada3-90d29c567823
+      cameraTexture: !<reference.Texture> 19b09aae-b059-4551-b002-c759e908b66c
+      confidenceThreshold: 0.500000
+      scanCooldownSeconds: !<float> 3.000000
+      enableLogging: true
+  ScriptTypes:
+    "":
+      {}
 - !<ScriptComponent/9af39919-fe19-4fd0-b0b3-45e761ec7e9a>
   PrefabRemaps:
     []
@@ -26874,6 +26944,36 @@
   ForceCompound: false
   Intangible: false
   ShowCollider: false
+- !<ScriptComponent/e0f47d20-a0eb-4325-af8e-c360b4eb01b3>
+  PrefabRemaps:
+    []
+  Name: ZappyVoiceElevenLabs
+  Enabled: true
+  ScriptAsset: !<reference> 5e974cfa-0378-4e6d-a5e2-2f2f3d083b46
+  ScriptInputsDefault:
+    speechText: true
+    stability: true
+    similarityBoost: true
+    styleExaggeration: true
+    enableLogging: true
+  ScriptTypesDefault:
+    {}
+  ScriptInputs:
+    "":
+      emotionController: !<MappingBased.AssignableType> c50a6368-e171-4a94-8eef-e0f21d636b95
+      audioComponent: !<reference.AudioComponent> 13eea8c6-3a41-42e1-86fe-1d95051270ac
+      speechText: !<reference.Text> 00000000-0000-0000-0000-000000000000
+      fallbackVoice: !<MappingBased.AssignableType_1> cca2d5c1-ea66-4515-818c-977305c8f7a6
+      apiKey: sk_2f9e06d6cbcc9e4cf3bce2a632717f815b8ee6f687ae6af2
+      voiceId: zQzvQBubVkDWYuqJYMFn
+      modelId: eleven_flash_v2_5
+      stability: 0.300000
+      similarityBoost: 0.750000
+      styleExaggeration: 0.400000
+      enableLogging: false
+  ScriptTypes:
+    "":
+      {}
 - !<ScriptComponent/e11a79c5-3aa7-4ec1-8c78-17eefa231c4b>
   PrefabRemaps:
     []

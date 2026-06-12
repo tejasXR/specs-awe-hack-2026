@@ -1,0 +1,60 @@
+- !<AssetImportMetadata/015a5d1f-c905-4db5-8d71-ae050991b58b>
+  ImportedAssetIds:
+    TypeScriptAsset: !<reference> c2e8f7db-0c3b-4a05-8e99-cfbe430c538e
+  ImporterName: TypeScriptAssetImporter
+  PrimaryAsset: !<reference> c2e8f7db-0c3b-4a05-8e99-cfbe430c538e
+  PackageType: NotAPackage
+  LegacyPackagePolicy: ~
+  ExtraData:
+    {}
+  AssetDataMap:
+    TypeScriptAsset: !<own> 764505de-ae03-4113-8016-2e0e6ff45a48
+  DependentFiles:
+    []
+  ImporterSettings: !<AssetImporterSettings>
+    {}
+  CompressionSettings: !<own> 00000000-0000-0000-0000-000000000000
+- !<TypeScriptAssetData/764505de-ae03-4113-8016-2e0e6ff45a48>
+  SvgIcon: ""
+  SetupScript:
+    code: ""
+  Description: ""
+  VersionMajor: 0
+  VersionMinor: 0
+  VersionPatch: 0
+  ComponentUid: 3c2863ec-65ec-4a83-9d9c-444a65f02675
+  ExportUid: 00000000-0000-0000-0000-000000000000
+  PackagePolicy: CanBeUnpacked
+  ScriptInputsHidden:
+    brain: false
+    cameraTexture: false
+    confidenceThreshold: false
+    enableLogging: false
+    scanCooldownSeconds: false
+  ScriptTypesHidden:
+    {}
+  ReadMe: !<reference> 00000000-0000-0000-0000-000000000000
+  DeclarationFile: !<reference> 00000000-0000-0000-0000-000000000000
+  Tags:
+    []
+  Attachments:
+    []
+  DefaultScriptInputs:
+    - brain: !<MappingBased.AssignableType> 00000000-0000-0000-0000-000000000000
+      cameraTexture: !<reference.Texture> 00000000-0000-0000-0000-000000000000
+      confidenceThreshold: 0.500000
+      scanCooldownSeconds: !<float> 3.000000
+      enableLogging: false
+  ScriptTypes:
+    -
+      {}
+  InputLines:
+    - '// @ui {"widget":"separator"}'
+    - '// @ui {"widget":"label", "label":"References"}'
+    - '// @input AssignableType brain {"hint":"ZappyBrain — used for Gemini vision requests"}'
+    - '// @input Asset.Texture cameraTexture {"hint":"Texture from the device camera (CropCameraTexture or DeviceCamera)"}'
+    - '// @ui {"widget":"separator"}'
+    - '// @ui {"widget":"label", "label":"Settings"}'
+    - '// @input float confidenceThreshold = 0.5 {"hint":"Minimum confidence to include a detection (0.0–1.0)", "widget":"slider", "min":0, "max":1, "step":0.05}'
+    - '// @input float scanCooldownSeconds = 3 {"hint":"Cooldown between scans in seconds — prevents spamming Gemini"}'
+    - '// @input bool enableLogging {"hint":"Enable debug logging"}'

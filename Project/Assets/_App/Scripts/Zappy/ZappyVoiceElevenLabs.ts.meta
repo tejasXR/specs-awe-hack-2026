@@ -1,0 +1,80 @@
+- !<AssetImportMetadata/e9a322cf-246c-429d-a634-c15c8354e6e0>
+  ImportedAssetIds:
+    TypeScriptAsset: !<reference> 5e974cfa-0378-4e6d-a5e2-2f2f3d083b46
+  ImporterName: TypeScriptAssetImporter
+  PrimaryAsset: !<reference> 5e974cfa-0378-4e6d-a5e2-2f2f3d083b46
+  PackageType: NotAPackage
+  LegacyPackagePolicy: ~
+  ExtraData:
+    {}
+  AssetDataMap:
+    TypeScriptAsset: !<own> 2846741b-a471-4f40-b9fa-eb53df1d6e8d
+  DependentFiles:
+    []
+  ImporterSettings: !<AssetImporterSettings>
+    {}
+  CompressionSettings: !<own> 00000000-0000-0000-0000-000000000000
+- !<TypeScriptAssetData/2846741b-a471-4f40-b9fa-eb53df1d6e8d>
+  SvgIcon: ""
+  SetupScript:
+    code: ""
+  Description: ""
+  VersionMajor: 0
+  VersionMinor: 0
+  VersionPatch: 0
+  ComponentUid: 692704f8-4c23-40f6-9a20-102f12164f63
+  ExportUid: 00000000-0000-0000-0000-000000000000
+  PackagePolicy: CanBeUnpacked
+  ScriptInputsHidden:
+    apiKey: false
+    audioComponent: false
+    emotionController: false
+    enableLogging: false
+    fallbackVoice: false
+    modelId: false
+    similarityBoost: false
+    speechText: false
+    stability: false
+    styleExaggeration: false
+    voiceId: false
+  ScriptTypesHidden:
+    {}
+  ReadMe: !<reference> 00000000-0000-0000-0000-000000000000
+  DeclarationFile: !<reference> 00000000-0000-0000-0000-000000000000
+  Tags:
+    []
+  Attachments:
+    []
+  DefaultScriptInputs:
+    - emotionController: !<MappingBased.AssignableType> 00000000-0000-0000-0000-000000000000
+      audioComponent: !<reference.AudioComponent> 00000000-0000-0000-0000-000000000000
+      speechText: !<reference.Text> 00000000-0000-0000-0000-000000000000
+      fallbackVoice: !<MappingBased.AssignableType_1> 00000000-0000-0000-0000-000000000000
+      apiKey: ""
+      voiceId: ""
+      modelId: ""
+      stability: 0.300000
+      similarityBoost: 0.750000
+      styleExaggeration: 0.400000
+      enableLogging: false
+  ScriptTypes:
+    -
+      {}
+  InputLines:
+    - '// @ui {"widget":"separator"}'
+    - '// @ui {"widget":"label", "label":"References"}'
+    - // @input AssignableType emotionController
+    - '// @input Component.AudioComponent audioComponent {"hint":"AudioComponent that plays the synthesized speech"}'
+    - '// @input Component.Text speechText {"hint":"Optional caption text — mirrors whatever Zappy says (tags stripped)"}'
+    - '// @input AssignableType_1 fallbackVoice {"hint":"Fallback: the built-in Snap TTS voice, used when ElevenLabs fails"}'
+    - '// @ui {"widget":"separator"}'
+    - '// @ui {"widget":"label", "label":"ElevenLabs Config"}'
+    - '// @input string apiKey {"hint":"Your ElevenLabs API key (xi-api-key header)"}'
+    - '// @input string voiceId {"hint":"ElevenLabs voice ID — find this in the ElevenLabs dashboard"}'
+    - '// @input string modelId {"hint":"Use V3 for max expression (~1-2s) or Flash for low latency (~300ms)", "widget":"combobox", "values":[{"label":"V3 (Max Expression)", "value":"eleven_v3"}, {"label":"Flash v2.5 (Low Latency)", "value":"eleven_flash_v2_5"}]}'
+    - '// @ui {"widget":"separator"}'
+    - '// @ui {"widget":"label", "label":"Settings"}'
+    - '// @input float stability = 0.3 {"hint":"Stability (0.0 = variable/expressive, 1.0 = stable/consistent)", "widget":"slider", "min":0, "max":1, "step":0.05}'
+    - '// @input float similarityBoost = 0.75 {"hint":"Similarity boost (higher = closer to original voice)", "widget":"slider", "min":0, "max":1, "step":0.05}'
+    - '// @input float styleExaggeration = 0.4 {"hint":"Style exaggeration (higher = more expressive, costs latency)", "widget":"slider", "min":0, "max":1, "step":0.05}'
+    - '// @input bool enableLogging {"hint":"Enable debug logging"}'
