@@ -26,6 +26,9 @@
   ExportUid: 00000000-0000-0000-0000-000000000000
   PackagePolicy: CanBeUnpacked
   ScriptInputsHidden:
+    hideSpaceSetupOnStart: false
+    introTrack: false
+    musicController: false
     pressBreadboardRecognizer: false
     spaceSetup: false
   ScriptTypesHidden:
@@ -38,10 +41,16 @@
     []
   DefaultScriptInputs:
     - pressBreadboardRecognizer: !<MappingBased.AssignableType> 00000000-0000-0000-0000-000000000000
-      spaceSetup: !<MappingBased.AssignableType_1> 00000000-0000-0000-0000-000000000000
+      musicController: !<MappingBased.AssignableType_1> 00000000-0000-0000-0000-000000000000
+      introTrack: !<reference.AudioTrackAsset> 00000000-0000-0000-0000-000000000000
+      spaceSetup: !<MappingBased.AssignableType_2> 00000000-0000-0000-0000-000000000000
+      hideSpaceSetupOnStart: false
   ScriptTypes:
     -
       {}
   InputLines:
     - // @input AssignableType pressBreadboardRecognizer
-    - // @input AssignableType_1 spaceSetup
+    - '// @input AssignableType_1 musicController {"hint":"Music controller that plays the setup track"}'
+    - '// @input Asset.AudioTrackAsset introTrack {"hint":"Track to play when the space is set up"}'
+    - // @input AssignableType_2 spaceSetup
+    - // @input bool hideSpaceSetupOnStart

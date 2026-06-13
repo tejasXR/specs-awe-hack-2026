@@ -11,25 +11,11 @@ export class SpaceSetup extends BaseScriptComponent {
   @hint("Scene content enabled when the space is set up")
   componentDividers!: SceneObject[];
 
-  @input
-  @hint("Music controller that plays the setup track")
-  musicController!: MusicController;
-
-  @input
-  @hint("Track to play when the space is set up")
-  musicTrack!: AudioTrackAsset;
-
   onAwake() {
     this.createEvent("OnStartEvent").bind(() => this.onStart());
   }
 
-  onStart() {
-    this.menuConsole.hide();
-
-    this.componentDividers.forEach((element) => {
-      element.enabled = false;
-    });
-  }
+  onStart() {}
 
   setup(setupPosition: vec3): void {
     this.getTransform().setWorldPosition(setupPosition);
@@ -38,7 +24,13 @@ export class SpaceSetup extends BaseScriptComponent {
     this.componentDividers.forEach((element) => {
       element.enabled = true;
     });
+  }
 
-    this.musicController.play(this.musicTrack);
+  hideSpace() {
+    this.menuConsole.hide();
+
+    this.componentDividers.forEach((element) => {
+      element.enabled = false;
+    });
   }
 }

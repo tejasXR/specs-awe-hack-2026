@@ -28,8 +28,6 @@
   ScriptInputsHidden:
     componentDividers: false
     menuConsole: false
-    musicController: false
-    musicTrack: false
   ScriptTypesHidden:
     {}
   ReadMe: !<reference> 00000000-0000-0000-0000-000000000000
@@ -42,13 +40,9 @@
     - menuConsole: !<MappingBased.AssignableType> 00000000-0000-0000-0000-000000000000
       componentDividers: !<reference.SceneObject[]>
         []
-      musicController: !<MappingBased.AssignableType_1> 00000000-0000-0000-0000-000000000000
-      musicTrack: !<reference.AudioTrackAsset> 00000000-0000-0000-0000-000000000000
   ScriptTypes:
     -
       {}
   InputLines:
     - '// @input AssignableType menuConsole {"hint":"Menu revealed when the space is set up"}'
     - '// @input SceneObject[] componentDividers {"hint":"Scene content enabled when the space is set up"}'
-    - '// @input AssignableType_1 musicController {"hint":"Music controller that plays the setup track"}'
-    - '// @input Asset.AudioTrackAsset musicTrack {"hint":"Track to play when the space is set up"}'
