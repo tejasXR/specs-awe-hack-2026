@@ -5,11 +5,7 @@ const MIN_LINE_LENGTH_CM = 0.01;
 @component
 export class InstructionPrompt extends BaseScriptComponent {
   @input
-  promptContainer!: SceneObject;
-
-  @input
-  @hint("Material for the callout line (LineRenderer clones it)")
-  lineMaterial!: Material;
+  stepNumberText!: Text;
 
   @input
   titleText!: Text;
@@ -19,12 +15,22 @@ export class InstructionPrompt extends BaseScriptComponent {
   descriptionText!: Text;
 
   @input
+  @allowUndefined
+  buttonLabelText!: Text;
+
+  @input
+  @hint("Material for the callout line (LineRenderer clones it)")
+  lineMaterial!: Material;
+
+  @input
   lineStart!: SceneObject;
 
   private _lines: LineRenderer[] = [];
   private _lineWidthStartCm: number = 0.05;
   private _lineWidthEndCm: number = 0.05;
   private _maxLines: number = 3;
+
+  private _stepStringPrefix: string = "Step ";
 
   private _updateEvent!: UpdateEvent;
   private _localTargets: vec3[] = [];
@@ -38,13 +44,17 @@ export class InstructionPrompt extends BaseScriptComponent {
   }
 
   setup(
+    stepNumber: number,
+    totalStepsInSequence: number,
     title: string,
     description: string,
-    promptPosition: vec3,
     breadboardOrigin: SceneObject,
     localTargets: vec3[],
   ) {
-    this.promptContainer.getTransform().setWorldPosition(promptPosition);
+    if (this.stepNumberText) {
+      this.stepNumberText.text =
+        this._stepStringPrefix + " " + stepNumber + "/" + totalStepsInSequence;
+    }
 
     if (this.titleText) {
       this.titleText.text = title;
@@ -59,6 +69,12 @@ export class InstructionPrompt extends BaseScriptComponent {
     // (driven by show() and the frame loop) decides which pooled lines to draw.
     this._localTargets = localTargets;
   }
+
+  public changeButtonLabel(
+    primaryButtonLabel: string,
+    secondaryButtonLabel: string,
+    tertiaryButtonLabel: string,
+  ) {}
 
   private ensureLinePool(breadboardOrigin: SceneObject): void {
     if (this._lines.length > 0) {
@@ -119,13 +135,11 @@ export class InstructionPrompt extends BaseScriptComponent {
   }
 
   show(): void {
-    this.promptContainer.enabled = true;
     this._updateEvent.enabled = true;
     this.updateLinePositions();
   }
 
   hide(): void {
-    this.promptContainer.enabled = false;
     this._updateEvent.enabled = false;
     for (let i = 0; i < this._lines.length; i++) {
       this._lines[i].setEnabled(false);

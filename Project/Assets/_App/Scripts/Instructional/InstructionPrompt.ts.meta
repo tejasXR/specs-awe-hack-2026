@@ -26,10 +26,11 @@
   ExportUid: 00000000-0000-0000-0000-000000000000
   PackagePolicy: CanBeUnpacked
   ScriptInputsHidden:
+    buttonLabelText: false
     descriptionText: false
     lineMaterial: false
     lineStart: false
-    promptContainer: false
+    stepNumberText: false
     titleText: false
   ScriptTypesHidden:
     {}
@@ -40,17 +41,19 @@
   Attachments:
     []
   DefaultScriptInputs:
-    - promptContainer: !<reference.SceneObject> 00000000-0000-0000-0000-000000000000
-      lineMaterial: !<reference.Material> 00000000-0000-0000-0000-000000000000
+    - stepNumberText: !<reference.Text> 00000000-0000-0000-0000-000000000000
       titleText: !<reference.Text> 00000000-0000-0000-0000-000000000000
       descriptionText: !<reference.Text> 00000000-0000-0000-0000-000000000000
+      buttonLabelText: !<reference.Text> 00000000-0000-0000-0000-000000000000
+      lineMaterial: !<reference.Material> 00000000-0000-0000-0000-000000000000
       lineStart: !<reference.SceneObject> 00000000-0000-0000-0000-000000000000
   ScriptTypes:
     -
       {}
   InputLines:
-    - // @input SceneObject promptContainer
-    - '// @input Asset.Material lineMaterial {"hint":"Material for the callout line (LineRenderer clones it)"}'
+    - // @input Component.Text stepNumberText
     - // @input Component.Text titleText
     - // @input Component.Text descriptionText
+    - // @input Component.Text buttonLabelText
+    - '// @input Asset.Material lineMaterial {"hint":"Material for the callout line (LineRenderer clones it)"}'
     - // @input SceneObject lineStart

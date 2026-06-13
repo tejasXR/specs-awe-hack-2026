@@ -202,10 +202,15 @@ export class InstructionsController extends BaseScriptComponent {
       localTargets.push(cellToLocalPosition(cellEndData, this.hoverOffsetCm));
     }
 
+    var instructionPosition = this.instructionPromptLocationObj
+      .getTransform()
+      .getWorldPosition();
+
     this.instructionPrompt.setup(
+      this.currentIndex,
+      this.stepCount,
       instructionDefinition.title,
       instructionDefinition.description,
-      this.instructionPromptLocationObj.getTransform().getWorldPosition(),
       this.breadboardOrigin,
       localTargets,
     );
