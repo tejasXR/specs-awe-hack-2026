@@ -16,7 +16,7 @@ export interface InstructionStepEvent {
 @typedef
 export class InstructionDefinition {
   @input
-  title: string;
+  title!: string;
 
   @input
   @widget(new TextAreaWidget())
@@ -202,18 +202,14 @@ export class InstructionsController extends BaseScriptComponent {
       localTargets.push(cellToLocalPosition(cellEndData, this.hoverOffsetCm));
     }
 
-    var instructionPosition = this.instructionPromptLocationObj
-      .getTransform()
-      .getWorldPosition();
+    this.instructionPrompt.setStepText(this.currentIndex, this.stepCount);
 
-    this.instructionPrompt.setup(
-      this.currentIndex,
-      this.stepCount,
+    this.instructionPrompt.setTitleAndDescription(
       instructionDefinition.title,
       instructionDefinition.description,
-      this.breadboardOrigin,
-      localTargets,
     );
+
+    this.instructionPrompt.setLineTargets(this.breadboardOrigin, localTargets);
 
     this.instructionPrompt.show();
 

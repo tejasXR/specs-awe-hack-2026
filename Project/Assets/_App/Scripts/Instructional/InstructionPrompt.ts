@@ -38,43 +38,70 @@ export class InstructionPrompt extends BaseScriptComponent {
   onAwake() {
     // Frame loop for real-time tracking, disabled until the prompt is shown.
     // The line pool is built on first setup(), once the breadboard origin is known.
+    this.createEvent("OnStartEvent").bind(() => this.onStart());
     this._updateEvent = this.createEvent("UpdateEvent");
     this._updateEvent.bind(() => this.updateLinePositions());
     this._updateEvent.enabled = false;
   }
 
-  setup(
-    stepNumber: number,
-    totalStepsInSequence: number,
-    title: string,
-    description: string,
-    breadboardOrigin: SceneObject,
-    localTargets: vec3[],
-  ) {
+  onStart() {}
+
+  overrideStepText(overrideText: string) {
+    if (this.stepNumberText) {
+      this.stepNumberText.text = overrideText;
+    }
+  }
+
+  setStepText(stepNumber: number, totalStepsInSequence: number): void {
     if (this.stepNumberText) {
       this.stepNumberText.text =
         this._stepStringPrefix + " " + stepNumber + "/" + totalStepsInSequence;
     }
+  }
 
+  setTitleAndDescription(title: string, description: string): void {
     if (this.titleText) {
       this.titleText.text = title;
     }
     if (this.descriptionText) {
       this.descriptionText.text = description;
     }
+  }
 
+  // Targets are origin-LOCAL cell positions
+  setLineTargets(breadboardOrigin: SceneObject, localTargets: vec3[]): void {
     this.ensureLinePool(breadboardOrigin);
 
-    // Targets are origin-LOCAL cell positions — never world. updateLinePositions()
-    // (driven by show() and the frame loop) decides which pooled lines to draw.
     this._localTargets = localTargets;
   }
 
   public changeButtonLabel(
     primaryButtonLabel: string,
-    secondaryButtonLabel: string,
-    tertiaryButtonLabel: string,
-  ) {}
+    secondaryButtonLabel: string = "",
+    tertiaryButtonLabel: string = "",
+  ) {
+    const labels = [
+      primaryButtonLabel,
+      secondaryButtonLabel,
+      tertiaryButtonLabel,
+    ];
+    this.buttonLabelText.text = labels
+      .map((label, i) => (label ? `[${i + 1}] ${label}` : undefined))
+      .filter((line): line is string => line !== undefined)
+      .join("\n");
+  }
+
+  show(): void {
+    this._updateEvent.enabled = true;
+    this.updateLinePositions();
+  }
+
+  hide(): void {
+    this._updateEvent.enabled = false;
+    for (let i = 0; i < this._lines.length; i++) {
+      this._lines[i].setEnabled(false);
+    }
+  }
 
   private ensureLinePool(breadboardOrigin: SceneObject): void {
     if (this._lines.length > 0) {
@@ -115,10 +142,10 @@ export class InstructionPrompt extends BaseScriptComponent {
     }
   }
 
+  // The line is parented to the breadboard origin, so its local space is the
+  // board's. endLocal (a cell position) is already in that space; the start
+  // just needs to come from world into it.
   private setLine(line: LineRenderer, startWorld: vec3, endLocal: vec3) {
-    // The line is parented to the breadboard origin, so its local space is the
-    // board's. endLocal (a cell position) is already in that space; the start
-    // just needs to come from world into it.
     const startLocal = line
       .getTransform()
       .getInvertedWorldTransform()
@@ -132,17 +159,5 @@ export class InstructionPrompt extends BaseScriptComponent {
     line.setEnabled(true);
 
     line.points = [startLocal, endLocal];
-  }
-
-  show(): void {
-    this._updateEvent.enabled = true;
-    this.updateLinePositions();
-  }
-
-  hide(): void {
-    this._updateEvent.enabled = false;
-    for (let i = 0; i < this._lines.length; i++) {
-      this._lines[i].setEnabled(false);
-    }
   }
 }
