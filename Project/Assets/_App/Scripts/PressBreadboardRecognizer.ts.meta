@@ -1,0 +1,50 @@
+- !<AssetImportMetadata/ed2b5fdc-dc75-4b54-a500-1c67651f39b0>
+  ImportedAssetIds:
+    TypeScriptAsset: !<reference> 1a97e4c3-c8c3-4407-867d-b86c9fee8bcd
+  ImporterName: TypeScriptAssetImporter
+  PrimaryAsset: !<reference> 1a97e4c3-c8c3-4407-867d-b86c9fee8bcd
+  PackageType: NotAPackage
+  LegacyPackagePolicy: ~
+  ExtraData:
+    {}
+  AssetDataMap:
+    TypeScriptAsset: !<own> 5f4dc8c8-7a72-4c93-9fbd-dbdc6f8db0dd
+  DependentFiles:
+    []
+  ImporterSettings: !<AssetImporterSettings>
+    {}
+  CompressionSettings: !<own> 00000000-0000-0000-0000-000000000000
+- !<TypeScriptAssetData/5f4dc8c8-7a72-4c93-9fbd-dbdc6f8db0dd>
+  SvgIcon: ""
+  SetupScript:
+    code: ""
+  Description: ""
+  VersionMajor: 0
+  VersionMinor: 0
+  VersionPatch: 0
+  ComponentUid: 82b16a88-6dfd-4820-9ba0-2aa398b3d01a
+  ExportUid: 00000000-0000-0000-0000-000000000000
+  PackagePolicy: CanBeUnpacked
+  ScriptInputsHidden:
+    curledAngle: false
+    debugText: false
+    extendedAngle: false
+  ScriptTypesHidden:
+    {}
+  ReadMe: !<reference> 00000000-0000-0000-0000-000000000000
+  DeclarationFile: !<reference> 00000000-0000-0000-0000-000000000000
+  Tags:
+    []
+  Attachments:
+    []
+  DefaultScriptInputs:
+    - extendedAngle: !<float> 150.000000
+      curledAngle: !<float> 80.000000
+      debugText: !<reference.Text> 00000000-0000-0000-0000-000000000000
+  ScriptTypes:
+    -
+      {}
+  InputLines:
+    - '// @input float extendedAngle = 150 {"hint":"Index must bend MORE than this angle (degrees) to count as extended. SIK treats 150° as flat/straight."}'
+    - '// @input float curledAngle = 80 {"hint":"A finger must bend LESS than this angle (degrees) to count as curled. SIK treats 80° as closed."}'
+    - '// @input Component.Text debugText {"hint":"Debug readout for hand-tracking / pointing-pose state."}'

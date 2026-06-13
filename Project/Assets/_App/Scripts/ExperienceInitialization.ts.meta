@@ -26,8 +26,7 @@
   ExportUid: 00000000-0000-0000-0000-000000000000
   PackagePolicy: CanBeUnpacked
   ScriptInputsHidden:
-    debugText: false
-    pointingConeAngle: false
+    pressBreadboardRecognizer: false
     spaceSetup: false
   ScriptTypesHidden:
     {}
@@ -38,13 +37,11 @@
   Attachments:
     []
   DefaultScriptInputs:
-    - pointingConeAngle: !<float> 35.000000
-      debugText: !<reference.Text> 00000000-0000-0000-0000-000000000000
-      spaceSetup: !<MappingBased.AssignableType> 00000000-0000-0000-0000-000000000000
+    - pressBreadboardRecognizer: !<MappingBased.AssignableType> 00000000-0000-0000-0000-000000000000
+      spaceSetup: !<MappingBased.AssignableType_1> 00000000-0000-0000-0000-000000000000
   ScriptTypes:
     -
       {}
   InputLines:
-    - // @input float pointingConeAngle = 25
-    - // @input Component.Text debugText
-    - // @input AssignableType spaceSetup
+    - // @input AssignableType pressBreadboardRecognizer
+    - // @input AssignableType_1 spaceSetup
