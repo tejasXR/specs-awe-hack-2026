@@ -1,0 +1,63 @@
+- !<AssetImportMetadata/68659744-5dfd-4bc6-b40c-466ce94e57f3>
+  ImportedAssetIds:
+    TypeScriptAsset: !<reference> 5ef2ea3e-ed73-4c4c-9520-5b0e1de8e5bf
+  ImporterName: TypeScriptAssetImporter
+  PrimaryAsset: !<reference> 5ef2ea3e-ed73-4c4c-9520-5b0e1de8e5bf
+  PackageType: NotAPackage
+  LegacyPackagePolicy: ~
+  ExtraData:
+    {}
+  AssetDataMap:
+    TypeScriptAsset: !<own> 30761f1a-5e99-42cd-b3c1-54838e08992a
+  DependentFiles:
+    []
+  ImporterSettings: !<AssetImporterSettings>
+    {}
+  CompressionSettings: !<own> 00000000-0000-0000-0000-000000000000
+- !<TypeScriptAssetData/30761f1a-5e99-42cd-b3c1-54838e08992a>
+  SvgIcon: ""
+  SetupScript:
+    code: ""
+  Description: ""
+  VersionMajor: 0
+  VersionMinor: 0
+  VersionPatch: 0
+  ComponentUid: 51a83b7f-af5b-4bba-a71a-ebf9b89f8e5c
+  ExportUid: 00000000-0000-0000-0000-000000000000
+  PackagePolicy: CanBeUnpacked
+  ScriptInputsHidden:
+    instructionPrompt: false
+    menuConsole: false
+    onboardingSteps: false
+  ScriptTypesHidden:
+    {}
+  ReadMe: !<reference> 00000000-0000-0000-0000-000000000000
+  DeclarationFile: !<reference> 00000000-0000-0000-0000-000000000000
+  Tags:
+    []
+  Attachments:
+    []
+  DefaultScriptInputs:
+    - instructionPrompt: !<MappingBased.AssignableType> 00000000-0000-0000-0000-000000000000
+      menuConsole: !<MappingBased.AssignableType_1> 00000000-0000-0000-0000-000000000000
+      onboardingSteps:
+        []
+  ScriptTypes:
+    -
+      {}
+  InputLines:
+    - '// @ui {"widget":"separator"}'
+    - '// @ui {"widget":"label", "label":"References"}'
+    - '// @input AssignableType instructionPrompt {"hint":"The single InstructionPrompt living in the scene"}'
+    - '// @input AssignableType_1 menuConsole {"hint":"Console whose primary/secondary buttons drive next/previous"}'
+    - '// @ui {"widget":"separator"}'
+    - '// @ui {"widget":"label", "label":"Sequence"}'
+    - /*
+    - "@typedef OnboardingStep"
+    - "@property {string} stepText"
+    - "@property {string} title"
+    - '@property {string} description {"widget":"text_area"}'
+    - "@property {string} primaryButtonText"
+    - "@property {string} secondaryButtonText"
+    - "*/"
+    - "// @input OnboardingStep[] onboardingSteps = {}"
