@@ -1,0 +1,37 @@
+- !<NativePackageDescriptor/c7b5a2b7-ea93-453f-a592-aaa8e49af961>
+  PackagePath: ""
+  StudioVersion:
+    major: 5
+    minor: 15
+    patch: 4
+    build: 26022322
+    type: Unset
+    buildFlavor: ""
+    timestamp: 0
+    commit: ""
+  Description: "This asset contains a number of elemental particles effects made using GPU particles, including Rain, Snow, Blizzard, Bokeh, Sparkles, Embers, and Cartoon Fountain. It also contains a simple particle controller script compatible with all GPU Particles."
+  SvgIcon: ""
+  SetupScript:
+    code: ""
+  VersionMajor: 1
+  VersionMinor: 0
+  VersionPatch: 0
+  UpdateCheckpoint: 76
+  ExportUid: 7e81216a-364a-4886-b9bd-08223b3144b6
+  ComponentUid: 9bd9c593-c350-42f8-90ff-5c59b8c12f63
+  PackagePolicy: CanBeUnpackedTransparent
+  ReadMe: !<reference> 00000000-0000-0000-0000-000000000000
+  Tags:
+    []
+  Attachments:
+    []
+  Instantiable: !<reference> 00000000-0000-0000-0000-000000000000
+  AssetLibraryDependencyStructure: !<AssetLibraryDependencyStructure>
+    Name: ""
+    AssetId: ""
+    Hash: ""
+    Version:
+      major: 0
+      minor: 0
+      patch: 0
+      build: 0

@@ -1,0 +1,51 @@
+- !<AssetImportMetadata/fba02cf1-24af-41ee-f340-0fc428e5f7e1>
+  ImportedAssetIds:
+    JavaScriptAsset: !<reference> 7a6dbb6c-8c91-480f-b18f-229d929f4d6d
+  ImporterName: JavaScriptAssetImporter
+  PrimaryAsset: !<reference> 7a6dbb6c-8c91-480f-b18f-229d929f4d6d
+  PackageType: NotAPackage
+  LegacyPackagePolicy: ~
+  ExtraData:
+    AssetLibraryId: 2pVU1q7LDcTnYiXjXltahi
+  AssetDataMap:
+    JavaScriptAsset: !<own> e84a8524-ff29-4e14-a533-ce74e5bf4111
+  DependentFiles:
+    []
+  ImporterSettings: !<AssetImporterSettings>
+    {}
+  CompressionSettings: !<own> 00000000-0000-0000-0000-000000000000
+- !<ScriptAssetData/e84a8524-ff29-4e14-a533-ce74e5bf4111>
+  SvgIcon: ""
+  SetupScript:
+    code: ""
+  Description: ""
+  VersionMajor: 0
+  VersionMinor: 0
+  VersionPatch: 0
+  ComponentUid: 2e8d50c1-9987-9331-4393-3192d6cffdd9
+  ExportUid: 00000000-0000-0000-0000-000000000000
+  PackagePolicy: CanBeUnpacked
+  ScriptInputsHidden:
+    advanced: false
+    maxParticles: false
+    minParticles: false
+    particles: false
+    particlesIntensity: false
+  ScriptTypesHidden:
+    {}
+  ReadMe: !<reference> 00000000-0000-0000-0000-000000000000
+  DeclarationFile: !<reference> 00000000-0000-0000-0000-000000000000
+  Tags:
+    []
+  Attachments:
+    []
+  DefaultScriptInputs:
+    - particles: !<reference.RenderMeshVisual[]>
+        []
+      particlesIntensity: 0.100000
+      advanced: false
+      minParticles: 0
+      maxParticles: 50000
+  ScriptTypes:
+    -
+      {}
