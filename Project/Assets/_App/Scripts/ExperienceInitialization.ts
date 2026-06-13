@@ -14,12 +14,13 @@ export class ExperienceInitialization extends BaseScriptComponent {
 
   onAwake(): void {
     this.createEvent("OnStartEvent").bind(() => this.onStart());
-    this.pressBreadboardRecognizer.onHoldComplete.add((setupPosition) =>
-      this.onBreadboardPressed(setupPosition),
-    );
   }
 
   onStart() {
+    this.pressBreadboardRecognizer.onHoldComplete.add((setupPosition) =>
+      this.onBreadboardPressed(setupPosition),
+    );
+
     print("Scene setup deactivaed");
     this.spaceSetup.enabled = false;
   }
