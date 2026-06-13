@@ -26,6 +26,7 @@
   ExportUid: 00000000-0000-0000-0000-000000000000
   PackagePolicy: CanBeUnpacked
   ScriptInputsHidden:
+    container: false
     primaryButton: false
     secondaryButton: false
     tertiaryButton: false
@@ -38,13 +39,15 @@
   Attachments:
     []
   DefaultScriptInputs:
-    - primaryButton: !<MappingBased.AssignableType> 00000000-0000-0000-0000-000000000000
+    - container: !<reference.SceneObject> 00000000-0000-0000-0000-000000000000
+      primaryButton: !<MappingBased.AssignableType> 00000000-0000-0000-0000-000000000000
       secondaryButton: !<MappingBased.AssignableType_1> 00000000-0000-0000-0000-000000000000
       tertiaryButton: !<MappingBased.AssignableType_2> 00000000-0000-0000-0000-000000000000
   ScriptTypes:
     -
       {}
   InputLines:
+    - // @input SceneObject container
     - // @input AssignableType primaryButton
     - // @input AssignableType_1 secondaryButton
     - // @input AssignableType_2 tertiaryButton
