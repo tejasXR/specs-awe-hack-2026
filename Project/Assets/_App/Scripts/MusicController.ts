@@ -136,11 +136,16 @@ export class MusicController extends BaseScriptComponent {
     const gain = clamp01(volume);
     const active = this._activeIndex;
     const activeDeck = this._decks[active];
-    const alreadyPlayingIt =
-      activeDeck.audioTrack === track && this._targets[active] === 1;
+    var alreadyPlayingIt: boolean;
+
+    if (activeDeck?.audioTrack == null) {
+      alreadyPlayingIt = false;
+    } else {
+      alreadyPlayingIt =
+        activeDeck.audioTrack === track && this._targets[active] === 1;
+    }
+
     if (alreadyPlayingIt) {
-      // Same track — no crossfade, but honor a new volume by easing the active
-      // deck's gain toward it (onUpdate lerps _trackGains via approach()).
       if (this._trackGainTargets[active] !== gain) {
         this._trackGainTargets[active] = gain;
         this.log("Requested track already playing — easing to new volume.");
@@ -226,15 +231,18 @@ export class MusicController extends BaseScriptComponent {
     }
   }
 
-  // ─── Helpers ──────────────────────────────────────────────────
-
-  /** Load `track` into a deck and ensure it is looping. Preserves current weight for continuity. */
   private prepareDeck(index: number, track: AudioTrackAsset): void {
     const deck = this._decks[index];
+
+    if (deck == null) {
+      return;
+    }
+
     if (deck.audioTrack !== track) {
       if (deck.isPlaying()) deck.stop(false);
       deck.audioTrack = track;
     }
+
     deck.volume = this._weights[index] * this._master * this._trackGains[index];
     if (!deck.isPlaying()) deck.play(-1);
   }
