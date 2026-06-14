@@ -615,6 +615,23 @@
     []
   Components:
     - !<own> eea9c9c1-5c39-4ad1-99a9-2a005e4d55ad
+- !<ScriptComponent/0a536040-a311-48ff-ac45-b7a6ba7b1696>
+  PrefabRemaps:
+    []
+  Name: SpaceSetupDivider
+  Enabled: true
+  ScriptAsset: !<reference> d01b0b2f-b784-4d40-8e3a-420ba1e79eda
+  ScriptInputsDefault:
+    kind: true
+  ScriptTypesDefault:
+    {}
+  ScriptInputs:
+    "":
+      kind: breadboard
+      lineAnchor: !<reference.SceneObject> ddf18226-6e9b-4506-bbf4-021ab6be1573
+  ScriptTypes:
+    "":
+      {}
 - !<ScriptComponent/0a815e97-e694-4deb-a0c0-614750246078>
   PrefabRemaps:
     []
@@ -1518,6 +1535,25 @@
     CapitalizationOverride: None
   DepthTest: false
   TwoSided: false
+- !<Image/1d47f21e-419c-4b61-835c-dfcf2eaa8a68>
+  PrefabRemaps:
+    []
+  Name: Image
+  Enabled: true
+  RenderOrder: 0
+  StretchMode: Fit
+  VerticalAlignment: Center
+  HorizontalAlignment: Center
+  MeshShadowMode: None
+  ShadowColor: {x: 1.000000, y: 1.000000, z: 1.000000, w: 1.000000}
+  ShadowDensity: 1.000000
+  Materials:
+    - !<reference> 3805ab9b-5854-4d7f-962e-427e86f7aa1c
+  FlipX: false
+  FlipY: false
+  RotationAngle: 0
+  Pivot: {x: 0.000000, y: 0.000000}
+  ExtentsTarget: !<reference> 00000000-0000-0000-0000-000000000000
 - !<SceneObject/1d4bf6f0-bc46-4fcd-a546-0d07756ee795>
   PrefabRemaps:
     []
@@ -1574,7 +1610,7 @@
   Enabled: true
   Layers: 1
   LocalTransform: !<TransformEntity>
-    Position: {x: 0.000000, y: 17.000000, z: -12.000000}
+    Position: {x: 25.000000, y: 17.000000, z: -6.000000}
     Rotation: {x: 0.000000, y: 0.000000, z: 0.000000}
     Scale: {x: 1.000000, y: 1.000000, z: 1.000000}
     HasSegmentScaleCompensation: false
@@ -1939,8 +1975,9 @@
     - !<own> a72bd330-0a3c-4483-a287-398d2d8eecbc
     - !<own> 38d335c1-2e80-4457-8619-aa97cc466113
     - !<own> 739f8523-d809-4ac4-9b5d-34670d8dc35a
+    - !<own> ca084696-4947-417c-a1e7-f156dfba6ff3
   Components:
-    []
+    - !<own> d708b420-be78-4ec9-9d6b-33be3e07d43d
 - !<Text/25fac10e-a41d-4dcd-88b4-c12607eb38b1>
   PrefabRemaps:
     []
@@ -2940,11 +2977,12 @@
   Enabled: true
   Layers: 1
   LocalTransform: !<TransformEntity>
-    Position: {x: 0.000000, y: 0.000000, z: 0.000000}
+    Position: {x: 0.000000, y: 10.084286, z: 0.000000}
     Rotation: {x: 0.000000, y: 0.000000, z: 0.000000}
     Scale: {x: 1.000000, y: 1.000000, z: 1.000000}
     HasSegmentScaleCompensation: false
   Children:
+    - !<own> d2be6aed-30ab-4090-97a3-0e1372c83322
     - !<own> 5d60e26a-3271-4f4a-b1cd-0660820a18cb
   Components:
     - !<own> 30c3a2bf-c999-4ced-a0e6-e7bc84751186
@@ -3122,6 +3160,21 @@
     - !<own> 6ced0375-2ddb-4795-9fff-4129eec09125
     - !<own> e019faef-8927-43e1-ba2d-da41640a55fe
     - !<own> e7f87cd2-8fe3-4ed7-892a-cdc43d7c9c07
+- !<SceneObject/38709429-0bce-4e87-8782-8261cfbfe4b5>
+  PrefabRemaps:
+    []
+  Name: Transistor Line Point
+  Enabled: true
+  Layers: 1
+  LocalTransform: !<TransformEntity>
+    Position: {x: 0.000000, y: 5.000000, z: -10.000000}
+    Rotation: {x: 0.000000, y: 0.000000, z: 0.000000}
+    Scale: {x: 1.000000, y: 1.000000, z: 1.000000}
+    HasSegmentScaleCompensation: false
+  Children:
+    []
+  Components:
+    []
 - !<RenderMeshVisual/38b2a75f-a2a2-4873-8af9-e1e4b1230fa5>
   PrefabRemaps:
     []
@@ -3434,8 +3487,9 @@
     - !<own> 7fb7f674-cd30-4410-8f04-bf194c0ab368
     - !<own> e89a3842-35ce-4fed-8ee9-b1e2dcc570e8
     - !<own> 53b22c82-1800-47ba-9240-2c50fa9a3584
+    - !<own> 38709429-0bce-4e87-8782-8261cfbfe4b5
   Components:
-    []
+    - !<own> 40ca4f23-513f-4a4d-b61c-a15947a91147
 - !<RenderMeshVisual/3c9cf845-fd4a-4058-96b4-665d2908ee85>
   PrefabRemaps:
     []
@@ -3555,6 +3609,23 @@
   ForceCompound: false
   Intangible: false
   ShowCollider: false
+- !<ScriptComponent/40ca4f23-513f-4a4d-b61c-a15947a91147>
+  PrefabRemaps:
+    []
+  Name: SpaceSetupDivider
+  Enabled: true
+  ScriptAsset: !<reference> d01b0b2f-b784-4d40-8e3a-420ba1e79eda
+  ScriptInputsDefault:
+    {}
+  ScriptTypesDefault:
+    {}
+  ScriptInputs:
+    "":
+      kind: transistors
+      lineAnchor: !<reference.SceneObject> 38709429-0bce-4e87-8782-8261cfbfe4b5
+  ScriptTypes:
+    "":
+      {}
 - !<ScriptComponent/40fecbe8-5813-4ead-89d3-5e7e3916706e>
   PrefabRemaps:
     []
@@ -3798,7 +3869,7 @@
   Enabled: true
   Layers: 1
   LocalTransform: !<TransformEntity>
-    Position: {x: 0.000000, y: 30.000000, z: -30.000000}
+    Position: {x: 0.000000, y: 30.000000, z: -15.000000}
     Rotation: {x: 0.000000, y: 0.000000, z: 0.000000}
     Scale: {x: 1.000000, y: 1.000000, z: 1.000000}
     HasSegmentScaleCompensation: false
@@ -3854,8 +3925,9 @@
   ScriptInputs:
     "":
       onboardingController: !<MappingBased.AssignableType> 51ce85a7-c4d8-4ed4-bbae-062a47aeaf0f
-      spaceSetup: !<MappingBased.AssignableType_1> 5a9e8d73-a99d-45b2-8ab8-ff9ddefcafd3
-      zappy: !<MappingBased.AssignableType_2> ba9b0252-db63-4aee-ba69-de0f00706d9b
+      instructionPrompt: !<MappingBased.AssignableType_1> 7e281ca4-c9d7-4453-8e28-c86df6d7c76b
+      spaceSetup: !<MappingBased.AssignableType_2> 5a9e8d73-a99d-45b2-8ab8-ff9ddefcafd3
+      zappy: !<MappingBased.AssignableType_3> ba9b0252-db63-4aee-ba69-de0f00706d9b
       zappySetupAnchor: !<reference.SceneObject> 1eddc013-881f-4095-90e8-2998ba787f46
   ScriptTypes:
     "":
@@ -4167,6 +4239,7 @@
     "":
       instructionPrompt: !<MappingBased.AssignableType> 7e281ca4-c9d7-4453-8e28-c86df6d7c76b
       menuConsole: !<MappingBased.AssignableType_1> 24ae494e-b174-48a0-8e8d-7245cff230b5
+      zappyInteractions: !<MappingBased.AssignableType_2> 9c24682f-06e2-40e6-a048-4aeb6c8b02ad
       onboardingSteps:
         - stepText: WELCOME TO
           title: Zapatory Labs
@@ -4186,7 +4259,7 @@
           description: |-
             Zappy will help you build your own electronics.
             
-            Wave at Zappy to start building
+            Pinch zappy to continue
           primaryButtonText: ""
           secondaryButtonText: back
   ScriptTypes:
@@ -4707,11 +4780,11 @@
   ScriptInputs:
     "":
       movementModal: !<reference.SceneObject> eb7c8cac-922a-4321-92e4-8caf7c80dcdf
-      componentDividers: !<reference.SceneObject[]>
-        - !<reference> b642b8a3-8009-4b3b-aea4-516faf9907e6
-        - !<reference> ad004ab3-b45f-4007-ba77-2ea597b0e7e5
-        - !<reference> 25e6441a-5fae-492b-b918-327e88c3a6f9
-        - !<reference> 3c726ca4-ba4f-44f5-9a7e-7f6b7aafc9c1
+      dividers: !<MappingBased.AssignableType[]>
+        - !<reference> 0a536040-a311-48ff-ac45-b7a6ba7b1696
+        - !<reference> ae56fd71-276a-474e-8440-ea3efa2a3a36
+        - !<reference> 40ca4f23-513f-4a4d-b61c-a15947a91147
+        - !<reference> d708b420-be78-4ec9-9d6b-33be3e07d43d
       dividerStaggerMs: !<float> 60.000000
   ScriptTypes:
     "":
@@ -5434,6 +5507,21 @@
   Layers: 1
   LocalTransform: !<TransformEntity>
     Position: {x: 0.000000, y: 3.166730, z: 0.000000}
+    Rotation: {x: 0.000000, y: 0.000000, z: 0.000000}
+    Scale: {x: 1.000000, y: 1.000000, z: 1.000000}
+    HasSegmentScaleCompensation: false
+  Children:
+    []
+  Components:
+    []
+- !<SceneObject/6df7b944-34bb-45d5-a0da-1a6dcb73e961>
+  PrefabRemaps:
+    []
+  Name: LED Line Point
+  Enabled: true
+  Layers: 1
+  LocalTransform: !<TransformEntity>
+    Position: {x: 0.000000, y: 5.000000, z: -10.000000}
     Rotation: {x: 0.000000, y: 0.000000, z: 0.000000}
     Scale: {x: 1.000000, y: 1.000000, z: 1.000000}
     HasSegmentScaleCompensation: false
@@ -6336,7 +6424,7 @@
 - !<SceneObject/7fb7f674-cd30-4410-8f04-bf194c0ab368>
   PrefabRemaps:
     []
-  Name: LED Placement Glow
+  Name: Transistor Placement Glow
   Enabled: true
   Layers: 1
   LocalTransform: !<TransformEntity>
@@ -8229,7 +8317,7 @@
   ShadowColor: {x: 1.000000, y: 1.000000, z: 1.000000, w: 1.000000}
   ShadowDensity: 1.000000
   Materials:
-    - !<reference> 02b7a549-c8c2-44f4-a31e-b31d77e781dd
+    - !<reference> f04c8e74-a775-4fb4-a63f-9b05543ae7be
   FlipX: false
   FlipY: false
   RotationAngle: 0
@@ -9158,7 +9246,7 @@
     Enabled: true
     Fill: !<TextFill>
       Mode: Solid
-      Color: {x: 1.000000, y: 0.682353, z: 0.027451, w: 1.000000}
+      Color: {x: 0.137255, y: 0.764706, z: 0.890196, w: 1.000000}
       Texture: !<reference> 00000000-0000-0000-0000-000000000000
       ColorTint: {x: 1.000000, y: 1.000000, z: 1.000000, w: 1.000000}
       TileCount: 5.000000
@@ -9334,8 +9422,9 @@
     - !<own> e4ac22a9-4b89-4fb1-be70-aa797134fcef
     - !<own> 43fd99a4-a759-4f2a-87bd-af64941a2eb2
     - !<own> d17f2ad0-2097-4a09-8d17-730cc6b660d3
+    - !<own> 6df7b944-34bb-45d5-a0da-1a6dcb73e961
   Components:
-    []
+    - !<own> ae56fd71-276a-474e-8440-ea3efa2a3a36
 - !<SceneObject/ad54ca4a-d461-4791-9ab9-7c00f62321bb>
   PrefabRemaps:
     []
@@ -9364,7 +9453,7 @@
   ShadowColor: {x: 1.000000, y: 1.000000, z: 1.000000, w: 1.000000}
   ShadowDensity: 1.000000
   Materials:
-    - !<reference> e3ec919e-d96f-4e08-84ca-3d7b88896b10
+    - !<reference> b070c216-35ca-433a-bc76-61f3b0050751
   FlipX: false
   FlipY: false
   RotationAngle: 0
@@ -9406,6 +9495,23 @@
     - !<own> 0c2e4402-156a-4adf-aa3a-7664655fe73e
   Components:
     - !<own> 7e281ca4-c9d7-4453-8e28-c86df6d7c76b
+- !<ScriptComponent/ae56fd71-276a-474e-8440-ea3efa2a3a36>
+  PrefabRemaps:
+    []
+  Name: SpaceSetupDivider
+  Enabled: true
+  ScriptAsset: !<reference> d01b0b2f-b784-4d40-8e3a-420ba1e79eda
+  ScriptInputsDefault:
+    {}
+  ScriptTypesDefault:
+    {}
+  ScriptInputs:
+    "":
+      kind: leds
+      lineAnchor: !<reference.SceneObject> 6df7b944-34bb-45d5-a0da-1a6dcb73e961
+  ScriptTypes:
+    "":
+      {}
 - !<SceneObject/aec6ba50-b3b5-4b7b-a488-6d9c94e37e65>
   PrefabRemaps:
     []
@@ -9544,6 +9650,7 @@
       trackVolume: 0.500000
       spaceSetup: !<MappingBased.AssignableType_4> 5a9e8d73-a99d-45b2-8ab8-ff9ddefcafd3
       hideSpaceSetupOnStart: true
+      skipBreadboardPress: true
   ScriptTypes:
     "":
       {}
@@ -9679,7 +9786,7 @@
     Enabled: true
     Fill: !<TextFill>
       Mode: Solid
-      Color: {x: 1.000000, y: 0.682353, z: 0.027451, w: 1.000000}
+      Color: {x: 1.000000, y: 0.301961, z: 0.125490, w: 1.000000}
       Texture: !<reference> 00000000-0000-0000-0000-000000000000
       ColorTint: {x: 1.000000, y: 1.000000, z: 1.000000, w: 1.000000}
       TileCount: 5.000000
@@ -9811,8 +9918,9 @@
     - !<own> b2c07993-246a-4d31-871a-b1e34c54a52b
     - !<own> 91ce975e-42b5-4ecc-b4b1-7f577f7e8acc
     - !<own> 328b78a4-f86b-4ff1-86ef-008de647f063
+    - !<own> ddf18226-6e9b-4506-bbf4-021ab6be1573
   Components:
-    []
+    - !<own> 0a536040-a311-48ff-ac45-b7a6ba7b1696
 - !<SceneObject/b7907906-8a99-426c-9e85-607c7f7b9738>
   PrefabRemaps:
     []
@@ -10596,6 +10704,21 @@
     CapitalizationOverride: None
   DepthTest: false
   TwoSided: false
+- !<SceneObject/ca084696-4947-417c-a1e7-f156dfba6ff3>
+  PrefabRemaps:
+    []
+  Name: Wire Line Point
+  Enabled: true
+  Layers: 1
+  LocalTransform: !<TransformEntity>
+    Position: {x: 0.000000, y: 5.000000, z: -10.000000}
+    Rotation: {x: 0.000000, y: 0.000000, z: 0.000000}
+    Scale: {x: 1.000000, y: 1.000000, z: 1.000000}
+    HasSegmentScaleCompensation: false
+  Children:
+    []
+  Components:
+    []
 - !<RenderMeshVisual/ca861d02-4aaf-4d42-aa28-20e2d809cc48>
   PrefabRemaps:
     []
@@ -11041,6 +11164,21 @@
   BlendNormals: false
   BlendShapes:
     {}
+- !<SceneObject/d2be6aed-30ab-4090-97a3-0e1372c83322>
+  PrefabRemaps:
+    []
+  Name: Speech Bubble Panel
+  Enabled: true
+  Layers: 1
+  LocalTransform: !<TransformEntity>
+    Position: {x: 0.000000, y: 0.000000, z: 0.000000}
+    Rotation: {x: 0.000000, y: 0.000000, z: 0.000000}
+    Scale: {x: 15.000000, y: 15.000000, z: 15.000000}
+    HasSegmentScaleCompensation: false
+  Children:
+    []
+  Components:
+    - !<own> 1d47f21e-419c-4b61-835c-dfcf2eaa8a68
 - !<Text/d31a7e42-28fc-4022-928e-75b96660877e>
   PrefabRemaps:
     []
@@ -11252,15 +11390,15 @@
   ShowEditingPreview: true
   TouchHandler: !<reference> 00000000-0000-0000-0000-000000000000
   SizeToFit: false
-  FontSize: 48
-  Font: !<reference> 00000000-0000-0000-0000-000000000000
+  FontSize: 40
+  Font: !<reference> 6541e1a4-c970-4bf2-a742-3368f4dfd6f3
   LayoutRect:
-    left: -7.500000
+    left: -4.500000
     bottom: -2.250000
-    right: 7.500000
+    right: 4.500000
     top: 2.250000
   OverflowVertical: Overflow
-  OverflowHorizontal: Overflow
+  OverflowHorizontal: Wrap
   Fill: !<TextFill>
     Mode: Solid
     Color: {x: 1.000000, y: 1.000000, z: 1.000000, w: 1.000000}
@@ -11466,6 +11604,23 @@
   ScriptTypes:
     "":
       {}
+- !<ScriptComponent/d708b420-be78-4ec9-9d6b-33be3e07d43d>
+  PrefabRemaps:
+    []
+  Name: SpaceSetupDivider
+  Enabled: true
+  ScriptAsset: !<reference> d01b0b2f-b784-4d40-8e3a-420ba1e79eda
+  ScriptInputsDefault:
+    {}
+  ScriptTypesDefault:
+    {}
+  ScriptInputs:
+    "":
+      kind: wires
+      lineAnchor: !<reference.SceneObject> ca084696-4947-417c-a1e7-f156dfba6ff3
+  ScriptTypes:
+    "":
+      {}
 - !<SceneObject/d783acd6-8559-4677-badc-aed5cdd8e183>
   PrefabRemaps:
     []
@@ -11635,7 +11790,7 @@
     Enabled: true
     Fill: !<TextFill>
       Mode: Solid
-      Color: {x: 1.000000, y: 0.682353, z: 0.027451, w: 1.000000}
+      Color: {x: 1.000000, y: 0.345098, z: 0.933333, w: 1.000000}
       Texture: !<reference> 00000000-0000-0000-0000-000000000000
       ColorTint: {x: 1.000000, y: 1.000000, z: 1.000000, w: 1.000000}
       TileCount: 5.000000
@@ -11756,6 +11911,21 @@
   ScriptTypes:
     "":
       {}
+- !<SceneObject/ddf18226-6e9b-4506-bbf4-021ab6be1573>
+  PrefabRemaps:
+    []
+  Name: Breadboard Line Point
+  Enabled: true
+  Layers: 1
+  LocalTransform: !<TransformEntity>
+    Position: {x: 0.000000, y: 5.000000, z: -10.000000}
+    Rotation: {x: 0.000000, y: 0.000000, z: 0.000000}
+    Scale: {x: 1.000000, y: 1.000000, z: 1.000000}
+    HasSegmentScaleCompensation: false
+  Children:
+    []
+  Components:
+    []
 - !<ScriptComponent/e019faef-8927-43e1-ba2d-da41640a55fe>
   PrefabRemaps:
     []
@@ -12329,7 +12499,7 @@
 - !<SceneObject/e89a3842-35ce-4fed-8ee9-b1e2dcc570e8>
   PrefabRemaps:
     []
-  Name: LED Placement
+  Name: Transistor Placement
   Enabled: true
   Layers: 1
   LocalTransform: !<TransformEntity>
@@ -12587,20 +12757,22 @@
   ScriptInputs:
     "":
       breadboardOrigin: !<reference.SceneObject> d1b20632-19f8-4f71-be2a-709dc137d1f3
-      instructionPrompt: !<MappingBased.AssignableType> 7e281ca4-c9d7-4453-8e28-c86df6d7c76b
+      onboardingController: !<MappingBased.AssignableType> 51ce85a7-c4d8-4ed4-bbae-062a47aeaf0f
+      instructionPrompt: !<MappingBased.AssignableType_1> 7e281ca4-c9d7-4453-8e28-c86df6d7c76b
       hoverOffsetCm: !<float> 0.000000
       instructionDefinitions:
         - title: TEST TITLE
           description: test description
+          isCheckpoint: false
           startOnRail: false
           columnStart: A
           startRail: far-plus
-          rowStart: !<float> 10.000000
-          useEndPin: true
+          rowStart: !<float> 1.000000
+          useEndPin: false
           endOnRail: false
           columnEnd: J
           endRail: ""
-          rowEnd: !<float> 10.000000
+          rowEnd: !<float> 1.000000
       autoStart: true
   ScriptTypes:
     "":
