@@ -26,13 +26,9 @@
   ExportUid: 00000000-0000-0000-0000-000000000000
   PackagePolicy: CanBeUnpacked
   ScriptInputsHidden:
-    camModule: false
-    cropBottom: false
-    cropLeft: false
-    cropRight: false
-    cropTexture: false
-    cropTop: false
+    cameraSource: false
     enableLogging: false
+    instructionsController: false
     previewImage: false
     previewPanel: false
   ScriptTypesHidden:
@@ -44,12 +40,8 @@
   Attachments:
     []
   DefaultScriptInputs:
-    - camModule: !<reference.CameraModule> 00000000-0000-0000-0000-000000000000
-      cropTexture: !<reference.Texture> 00000000-0000-0000-0000-000000000000
-      cropLeft: -0.400000
-      cropRight: 0.400000
-      cropBottom: -0.400000
-      cropTop: 0.400000
+    - instructionsController: !<MappingBased.AssignableType> 00000000-0000-0000-0000-000000000000
+      cameraSource: !<MappingBased.AssignableType_1> 00000000-0000-0000-0000-000000000000
       previewImage: !<reference.Image> 00000000-0000-0000-0000-000000000000
       previewPanel: !<reference.SceneObject> 00000000-0000-0000-0000-000000000000
       enableLogging: true
@@ -58,13 +50,11 @@
       {}
   InputLines:
     - '// @ui {"widget":"separator"}'
+    - '// @ui {"widget":"label", "label":"<span style=\"color: #60A5FA;\">Instructions</span>"}'
+    - '// @input AssignableType instructionsController {"hint":"Source of truth for the current step and the build-so-far transcript"}'
+    - '// @ui {"widget":"separator"}'
     - '// @ui {"widget":"label", "label":"<span style=\"color: #60A5FA;\">Camera Capture</span>"}'
-    - '// @input Asset.CameraModule camModule {"hint":"CameraModule from the scene for capturing frames (optional for now)"}'
-    - '// @input Asset.Texture cropTexture {"hint":"Optional: cropped texture for focused breadboard view. If not set, uses full camera frame."}'
-    - '// @input float cropLeft = -0.4 {"hint":"Crop rectangle left boundary (-1 to 1)"}'
-    - '// @input float cropRight = 0.4 {"hint":"Crop rectangle right boundary (-1 to 1)"}'
-    - '// @input float cropBottom = -0.4 {"hint":"Crop rectangle bottom boundary (-1 to 1)"}'
-    - '// @input float cropTop = 0.4 {"hint":"Crop rectangle top boundary (-1 to 1)"}'
+    - '// @input AssignableType_1 cameraSource {"hint":"Shared CameraTexture source — provides the full camera frame"}'
     - '// @ui {"widget":"separator"}'
     - '// @ui {"widget":"label", "label":"<span style=\"color: #60A5FA;\">Display</span>"}'
     - '// @input Component.Image previewImage {"hint":"Optional: Image component to show the captured frame as preview"}'

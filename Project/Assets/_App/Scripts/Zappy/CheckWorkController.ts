@@ -1,30 +1,36 @@
 /**
- * CheckWorkController -- Captures a camera frame and sends it to ZappyAI (Gemini)
- * for visual analysis of the user's breadboard work.
+ * CheckWorkController -- Captures a camera frame and sends it to Gemini for
+ * visual analysis of the user's breadboard work, then has Zappy present the
+ * verdict.
  *
  * Flow:
  *   1. User pinches "Check Work" option -> triggers capture
- *   2. CropCameraTexture grabs a cropped frame of the breadboard area
+ *   2. The shared CameraTexture provides the full camera frame
  *   3. Frame is encoded to base64
- *   4. Sent to Gemini (2.5 Flash supports vision) with step context
- *   5. Gemini analyzes the image and returns feedback via ZappyAI
+ *   4. Sent to Gemini (2.5 Flash) via GeminiService with the build-so-far
+ *   5. The parsed verdict is handed to ZappyAI to voice + emote
  *
  * Requires:
- *   - CropCameraTexture.lspkg (already in Project/Packages)
+ *   - CropCameraTexture.lspkg (provides the CameraTexture source)
  *   - RemoteServiceGateway.lspkg (installed)
- *   - A CameraModule asset in the scene
  */
 import Event, {
   PublicApi,
   unsubscribe,
 } from "SpectaclesInteractionKit.lspkg/Utils/Event";
-import { ZappyAI, ZappyResponse } from "../Zappy/ZappyAI";
-import { GameManager, StepData } from "../GameManager";
+import { ZappyAI, ZappyResponse, ZappyEmotion } from "../Zappy/ZappyAI";
+import { parseZappyResponse } from "./ZappyBrain";
+import { GeminiService } from "../Services/GeminiService";
+import { CameraTexture } from "CropCameraTexture.lspkg/Scripts/CameraTexture";
+import {
+  InstructionDefinition,
+  InstructionsController,
+} from "../Instructional/InstructionsController";
 
 // --- Types ---
 
 export interface CheckWorkResult {
-  step: StepData;
+  instruction: InstructionDefinition;
   stepIndex: number;
   response: ZappyResponse;
 }
@@ -33,39 +39,23 @@ export interface CheckWorkResult {
 
 @component
 export class CheckWorkController extends BaseScriptComponent {
-  // These are found automatically -- no Inspector wiring needed
+  // ZappyAI is still found automatically by name; the step source is now an
+  // explicit reference (single source of truth = InstructionsController).
   private zappyAI: ZappyAI;
-  private gameManager: GameManager;
+
+  @ui.separator
+  @ui.label('<span style="color: #60A5FA;">Instructions</span>')
+  @input
+  @hint("Source of truth for the current step and the build-so-far transcript")
+  @allowUndefined
+  instructionsController!: InstructionsController;
 
   @ui.separator
   @ui.label('<span style="color: #60A5FA;">Camera Capture</span>')
   @input
-  @hint("CameraModule from the scene for capturing frames (optional for now)")
+  @hint("Shared CameraTexture source — provides the full camera frame")
   @allowUndefined
-  camModule!: CameraModule;
-
-  @input
-  @hint(
-    "Optional: cropped texture for focused breadboard view. If not set, uses full camera frame.",
-  )
-  @allowUndefined
-  cropTexture!: Texture;
-
-  @input
-  @hint("Crop rectangle left boundary (-1 to 1)")
-  cropLeft: number = -0.4;
-
-  @input
-  @hint("Crop rectangle right boundary (-1 to 1)")
-  cropRight: number = 0.4;
-
-  @input
-  @hint("Crop rectangle bottom boundary (-1 to 1)")
-  cropBottom: number = -0.4;
-
-  @input
-  @hint("Crop rectangle top boundary (-1 to 1)")
-  cropTop: number = 0.4;
+  cameraSource!: CameraTexture;
 
   @ui.separator
   @ui.label('<span style="color: #60A5FA;">Display</span>')
@@ -97,8 +87,6 @@ export class CheckWorkController extends BaseScriptComponent {
 
   // --- Private State ---
 
-  private cameraTexture: Texture | null = null;
-  private cameraRequest: CameraModule.CameraRequest | null = null;
   private isBusy: boolean = false;
 
   // --- Lifecycle ---
@@ -108,7 +96,7 @@ export class CheckWorkController extends BaseScriptComponent {
   }
 
   private onStart(): void {
-    // Auto-discover ZappyAI and GameManager from the scene
+    // Auto-discover ZappyAI from the scene (presentation target for Step 2).
     const scene = global.scene;
     const zappyObj = this.findObjectByName(scene, "Zappy");
     if (zappyObj) {
@@ -121,40 +109,16 @@ export class CheckWorkController extends BaseScriptComponent {
       }
     }
 
-    const gmObj = this.findObjectByName(scene, "GameManager");
-    if (gmObj) {
-      const comps = gmObj.getComponents("Component.ScriptComponent");
-      for (let i = 0; i < comps.length; i++) {
-        const comp = comps[i];
-        if (comp.getTypeName() === "GameManager") {
-          this.gameManager = comp as unknown as GameManager;
-        }
-      }
-    }
-
-    // Also check same object
-    if (!this.gameManager) {
-      const comps = this.getSceneObject().getComponents(
-        "Component.ScriptComponent",
-      );
-      for (let i = 0; i < comps.length; i++) {
-        const comp = comps[i];
-        if (comp.getTypeName() === "GameManager") {
-          this.gameManager = comp as unknown as GameManager;
-        }
-      }
-    }
-
     if (isNull(this.zappyAI)) {
-      this.log("zappyAI not found in scene");
+      this.log("zappyAI not found -- verdict will be event-only (no voice)");
+    }
+    if (isNull(this.instructionsController)) {
+      this.log("instructionsController not assigned -- check disabled");
       return;
     }
-    if (isNull(this.gameManager)) {
-      this.log("gameManager not found in scene");
-      return;
+    if (isNull(this.cameraSource)) {
+      this.log("cameraSource not assigned -- capture disabled");
     }
-    this.log("Components resolved");
-    this.setupCamera();
     this.log("CheckWorkController ready");
   }
 
@@ -193,18 +157,23 @@ export class CheckWorkController extends BaseScriptComponent {
       return;
     }
 
-    const currentStep = this.gameManager.getCurrentStep();
-    if (!currentStep) {
+    const currentInstruction = this.instructionsController.getCurrentInstruction();
+    if (!currentInstruction) {
       this.log("No active step -- nothing to check");
+      return;
+    }
+
+    if (isNull(this.cameraSource)) {
+      this.log("No camera source assigned -- cannot capture");
       return;
     }
 
     this.isBusy = true;
     this.onCaptureStartedEvent.invoke();
-    this.log("Capturing frame for step: " + currentStep.instruction);
+    this.log("Capturing frame for step: " + currentInstruction.title);
 
-    // Get the camera texture (cropped or full)
-    const texture = this.getActiveTexture();
+    // Full camera frame from the single shared source.
+    const texture = this.cameraSource.getOriginalCameraTexture();
     if (!texture) {
       this.log("No camera texture available -- cannot capture");
       this.isBusy = false;
@@ -220,67 +189,22 @@ export class CheckWorkController extends BaseScriptComponent {
     }
 
     // Encode the texture to base64 and send to Gemini
-    this.encodeAndSend(texture, currentStep);
-  }
-
-  // --- Private: Camera Setup ---
-
-  private setupCamera(): void {
-    try {
-      if (isNull(this.camModule)) {
-        this.log("No CameraModule assigned -- capture disabled");
-        return;
-      }
-
-      this.cameraRequest = CameraModule.createCameraRequest();
-      this.cameraRequest.cameraId = CameraModule.CameraId.Default_Color;
-
-      const isEditor = global.deviceInfoSystem.isEditor();
-      this.cameraRequest.imageSmallerDimension = isEditor ? 352 : 756;
-
-      this.cameraTexture = this.camModule.requestCamera(this.cameraRequest);
-      this.log(
-        "Camera initialized (resolution: " +
-          this.cameraRequest.imageSmallerDimension +
-          ")",
-      );
-
-      // Set up crop if texture provided
-      if (!isNull(this.cropTexture)) {
-        const cropProvider = this.cropTexture.control as any;
-        if (cropProvider && cropProvider.inputTexture !== undefined) {
-          cropProvider.inputTexture = this.cameraTexture;
-          if (cropProvider.cropRect) {
-            cropProvider.cropRect.left = this.cropLeft;
-            cropProvider.cropRect.right = this.cropRight;
-            cropProvider.cropRect.bottom = this.cropBottom;
-            cropProvider.cropRect.top = this.cropTop;
-          }
-          this.log("Crop texture configured");
-        }
-      }
-    } catch (error) {
-      this.log("Camera setup failed: " + error);
-    }
-  }
-
-  private getActiveTexture(): Texture | null {
-    if (!isNull(this.cropTexture)) {
-      return this.cropTexture;
-    }
-    return this.cameraTexture;
+    this.encodeAndSend(texture, currentInstruction);
   }
 
   // --- Private: Encode & Send to Gemini ---
 
-  private encodeAndSend(texture: Texture, step: StepData): void {
+  private encodeAndSend(
+    texture: Texture,
+    instruction: InstructionDefinition,
+  ): void {
     try {
       // Use Base64.encodeTextureAsync to convert the camera frame
       Base64.encodeTextureAsync(
         texture,
         (base64Data: string) => {
           this.log("Frame encoded (" + base64Data.length + " chars)");
-          this.sendToGemini(base64Data, step);
+          this.sendToGemini(base64Data, instruction);
         },
         () => {
           this.log("Failed to encode texture to base64");
@@ -295,54 +219,73 @@ export class CheckWorkController extends BaseScriptComponent {
     }
   }
 
-  private sendToGemini(base64Image: string, step: StepData): void {
-    const stepIndex = this.gameManager.getCurrentStepIndex();
-    const totalSteps = this.gameManager.getTotalSteps();
-    const level = this.gameManager.getCurrentLevel();
-    const levelName = level ? level.name : "Unknown";
+  private sendToGemini(
+    base64Image: string,
+    instruction: InstructionDefinition,
+  ): void {
+    const stepIndex = this.instructionsController.currentIndex;
 
-    // Build a vision-capable prompt with the image
+    // Build a cumulative transcript of every step the user should have
+    // completed so far, each rendered with its cell/rail placement, so Gemini
+    // judges the whole build-to-date rather than the current step in isolation.
+    const completed = this.instructionsController.getCompletedInstructions();
+    const transcript = completed
+      .map(
+        (def, i) =>
+          i + 1 + ". " + this.instructionsController.describeInstruction(def),
+      )
+      .join("\n");
+
     const prompt =
-      "You are Zappy, an AR electronics tutor. The user is building the '" +
-      levelName +
-      "' circuit. They are on Step " +
-      (stepIndex + 1) +
-      " of " +
-      totalSteps +
-      ': "' +
-      step.instruction +
-      '" (Hint: ' +
-      step.hint +
-      "). " +
-      "I'm attaching a photo of their current breadboard. " +
-      "Analyze the image and tell the user: " +
-      "1) Is the current step done correctly? " +
-      "2) If not, what needs to be fixed? " +
+      "You are Zappy, an AR electronics tutor. A user is building a breadboard " +
+      "circuit one step at a time. These are the steps they should have " +
+      "completed so far:\n" +
+      transcript +
+      "\n\nThe most recent step is #" +
+      completed.length +
+      ". Attached is a photo of their current breadboard. Examine it and tell " +
+      "the user: " +
+      "1) Does the build match the steps above? " +
+      "2) If something is wrong or missing, what specifically needs fixing? " +
       "3) Any safety concerns? " +
       "Keep it short (2-3 sentences), encouraging, and use electricity puns. " +
       'CRITICAL: Respond in JSON: {"emotion":"happy","intensity":0.8,"speech":"Your feedback here"}';
 
-    // Use ZappyAI's activateWithImage method for vision
-    this.zappyAI.activateWithImage(prompt, base64Image, "image/jpeg");
-
-    // Listen for the response to complete the check
-    const unsub = this.zappyAI.onResponse.add((resp) => {
-      unsub(); // one-shot listener
-      this.isBusy = false;
-
-      // Hide preview
-      if (!isNull(this.previewPanel)) {
-        this.previewPanel.enabled = false;
-      }
-
-      this.onCheckCompleteEvent.invoke({
-        step,
-        stepIndex,
-        response: resp,
+    // Independent, scoped Gemini call via the shared service. This does NOT go
+    // through ZappyBrain, so it never contends with Zappy's chat busy state.
+    GeminiService.generateWithImage(prompt, base64Image, "image/jpeg")
+      .then((rawText) => {
+        const resp: ZappyResponse = parseZappyResponse(rawText) ?? {
+          emotion: ZappyEmotion.Neutral,
+          intensity: 0.5,
+          speech: rawText,
+        };
+        // Presentation only: hand the verdict to Zappy to voice + emote.
+        if (!isNull(this.zappyAI)) {
+          this.zappyAI.present(resp);
+        }
+        this.finishCheck(instruction, stepIndex, resp);
+      })
+      .catch((error) => {
+        this.log("Check failed: " + error);
+        this.isBusy = false;
+        if (!isNull(this.previewPanel)) {
+          this.previewPanel.enabled = false;
+        }
       });
+  }
 
-      this.log("Check complete -- Zappy says: " + resp.speech);
-    });
+  private finishCheck(
+    instruction: InstructionDefinition,
+    stepIndex: number,
+    resp: ZappyResponse,
+  ): void {
+    this.isBusy = false;
+    if (!isNull(this.previewPanel)) {
+      this.previewPanel.enabled = false;
+    }
+    this.onCheckCompleteEvent.invoke({ instruction, stepIndex, response: resp });
+    this.log("Check complete -- Zappy says: " + resp.speech);
   }
 
   private log(message: string): void {
