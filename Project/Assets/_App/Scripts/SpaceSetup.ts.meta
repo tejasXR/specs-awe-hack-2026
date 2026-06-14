@@ -26,8 +26,8 @@
   ExportUid: 00000000-0000-0000-0000-000000000000
   PackagePolicy: CanBeUnpacked
   ScriptInputsHidden:
-    componentDividers: false
     dividerStaggerMs: false
+    dividers: false
     movementModal: false
   ScriptTypesHidden:
     {}
@@ -39,7 +39,7 @@
     []
   DefaultScriptInputs:
     - movementModal: !<reference.SceneObject> 00000000-0000-0000-0000-000000000000
-      componentDividers: !<reference.SceneObject[]>
+      dividers: !<MappingBased.AssignableType[]>
         []
       dividerStaggerMs: !<float> 60.000000
   ScriptTypes:
@@ -47,5 +47,7 @@
       {}
   InputLines:
     - // @input SceneObject movementModal
-    - '// @input SceneObject[] componentDividers {"hint":"Scene content enabled when the space is set up"}'
+    - '// @ui {"widget":"separator"}'
+    - '// @ui {"widget":"label", "label":"Component Dividers"}'
+    - '// @input AssignableType[] dividers = {} {"hint":"The component dividers — each self-identifies via its own kind."}'
     - "// @input float dividerStaggerMs = 60 {\"hint\":\"Delay between each divider's animation, ms — staggered cascade\"}"

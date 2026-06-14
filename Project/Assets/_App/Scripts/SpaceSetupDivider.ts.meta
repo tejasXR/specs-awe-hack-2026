@@ -1,0 +1,47 @@
+- !<AssetImportMetadata/c660dc68-d6ba-41ed-8b9c-794737b5a859>
+  ImportedAssetIds:
+    TypeScriptAsset: !<reference> d01b0b2f-b784-4d40-8e3a-420ba1e79eda
+  ImporterName: TypeScriptAssetImporter
+  PrimaryAsset: !<reference> d01b0b2f-b784-4d40-8e3a-420ba1e79eda
+  PackageType: NotAPackage
+  LegacyPackagePolicy: ~
+  ExtraData:
+    {}
+  AssetDataMap:
+    TypeScriptAsset: !<own> 12b0b9e5-b88c-46af-a698-e3494e156bfd
+  DependentFiles:
+    []
+  ImporterSettings: !<AssetImporterSettings>
+    {}
+  CompressionSettings: !<own> 00000000-0000-0000-0000-000000000000
+- !<TypeScriptAssetData/12b0b9e5-b88c-46af-a698-e3494e156bfd>
+  SvgIcon: ""
+  SetupScript:
+    code: ""
+  Description: ""
+  VersionMajor: 0
+  VersionMinor: 0
+  VersionPatch: 0
+  ComponentUid: 0e2027a3-b825-405a-880c-e89d46340427
+  ExportUid: 00000000-0000-0000-0000-000000000000
+  PackagePolicy: CanBeUnpacked
+  ScriptInputsHidden:
+    kind: false
+    lineAnchor: false
+  ScriptTypesHidden:
+    {}
+  ReadMe: !<reference> 00000000-0000-0000-0000-000000000000
+  DeclarationFile: !<reference> 00000000-0000-0000-0000-000000000000
+  Tags:
+    []
+  Attachments:
+    []
+  DefaultScriptInputs:
+    - kind: breadboard
+      lineAnchor: !<reference.SceneObject> 00000000-0000-0000-0000-000000000000
+  ScriptTypes:
+    -
+      {}
+  InputLines:
+    - '// @input string kind = "breadboard" {"hint":"Which component this divider represents — how SpaceSetup addresses it", "widget":"combobox", "values":[{"label":"Breadboard", "value":"breadboard"}, {"label":"Wires", "value":"wires"}, {"label":"LEDs", "value":"leds"}, {"label":"Transistors", "value":"transistors"}]}'
+    - "// @input SceneObject lineAnchor {\"hint\":\"Line anchor for this divider's connector line — held for line-visibility control, not the show/hide target.\"}"

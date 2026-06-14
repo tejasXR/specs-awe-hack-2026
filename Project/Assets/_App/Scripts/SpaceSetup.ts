@@ -1,5 +1,3 @@
-import { MenuConsole } from "./UI/MenuConsole";
-import { MusicController } from "./MusicController";
 import { ScaleVisibilityAnimator } from "./Utils/ScaleVisibilityAnimator";
 import {
   setTimeout,
@@ -7,45 +5,63 @@ import {
   CancelToken,
 } from "SpectaclesInteractionKit.lspkg/Utils/FunctionTimingUtils";
 import WorldCameraFinderProvider from "SpectaclesInteractionKit.lspkg/Providers/CameraProvider/WorldCameraFinderProvider";
+import { SpaceSetupDivider, DividerKind } from "./SpaceSetupDivider";
 
 @component
 export class SpaceSetup extends BaseScriptComponent {
   @input
   movementModal!: SceneObject;
 
+  @ui.separator
+  @ui.label("Component Dividers")
   @input
-  @hint("Scene content enabled when the space is set up")
-  componentDividers!: SceneObject[];
+  @hint("The component dividers — each self-identifies via its own kind.")
+  dividers: SpaceSetupDivider[] = [];
 
   @input
   @hint("Delay between each divider's animation, ms — staggered cascade")
   dividerStaggerMs: number = 60;
 
   private movementModalAnimator!: ScaleVisibilityAnimator;
-  private dividerAnimators: ScaleVisibilityAnimator[] = [];
+  private dividerByKind?: Map<DividerKind, SpaceSetupDivider>;
   private staggerTokens: CancelToken[] = [];
 
   onAwake() {
-    // Built in onAwake (not onStart) so the animators exist before any other
-    // component's onStart can call show()/hide() — every onAwake runs before
-    // any onStart, but onStart ordering across components is not guaranteed.
-    this.initAnimators();
-    this.createEvent("OnDestroyEvent").bind(() => this.onDestroy());
-  }
-
-  private initAnimators() {
     this.movementModalAnimator = new ScaleVisibilityAnimator(
       this.movementModal,
     );
+
     this.movementModalAnimator.hideImmediate();
 
-    // One animator per divider, captured at its authored (visible) scale, then
-    // snapped hidden — the baseline show() animates in from.
-    this.dividerAnimators = this.componentDividers.map((divider) => {
-      const animator = new ScaleVisibilityAnimator(divider);
-      animator.hideImmediate();
-      return animator;
+    this.createEvent("OnDestroyEvent").bind(() => this.onDestroy());
+  }
+
+  private getDividerByKind(): Map<DividerKind, SpaceSetupDivider> {
+    if (this.dividerByKind === undefined) {
+      this.dividerByKind = this.indexDividers();
+    }
+    return this.dividerByKind;
+  }
+
+  private indexDividers(): Map<DividerKind, SpaceSetupDivider> {
+    const byKind = new Map<DividerKind, SpaceSetupDivider>();
+    const problems: string[] = [];
+
+    this.dividers.forEach((divider, index) => {
+      if (isNull(divider)) {
+        problems.push(`Divider slot ${index} is unwired`);
+        return;
+      }
+      const kind = divider.dividerKind;
+      if (byKind.has(kind)) {
+        problems.push(`Duplicate divider kind "${kind}" at slot ${index}`);
+        return;
+      }
+      byKind.set(kind, divider);
     });
+
+    problems.forEach((problem) => print("[SpaceSetup] " + problem));
+    return byKind;
   }
 
   private onDestroy() {
@@ -76,20 +92,32 @@ export class SpaceSetup extends BaseScriptComponent {
 
   show(): void {
     this.showMovementModal();
-    this.staggerDividers((animator) => animator.show());
+    this.staggerDividers((divider) => divider.show());
   }
 
-  hide() {
+  hide(): void {
     this.hideMovementModal();
-    this.staggerDividers((animator) => animator.hide());
+    this.staggerDividers((divider) => divider.hide());
   }
 
-  private staggerDividers(
-    action: (animator: ScaleVisibilityAnimator) => void,
-  ): void {
+  showDivider(kind: DividerKind): void {
+    this.getDividerByKind().get(kind)?.show();
+  }
+
+  hideDivider(kind: DividerKind): void {
+    this.getDividerByKind().get(kind)?.hide();
+  }
+
+  getDividerLineAnchor(kind: DividerKind): vec3 | undefined {
+    return this.getDividerByKind().get(kind)?.getLocalLineAnchorPosition();
+  }
+
+  private staggerDividers(action: (divider: SpaceSetupDivider) => void): void {
     this.cancelStagger();
-    this.staggerTokens = this.dividerAnimators.map((animator, index) =>
-      setTimeout(() => action(animator), index * this.dividerStaggerMs),
+
+    const dividers = Array.from(this.getDividerByKind().values());
+    this.staggerTokens = dividers.map((divider, index) =>
+      setTimeout(() => action(divider), index * this.dividerStaggerMs),
     );
   }
 

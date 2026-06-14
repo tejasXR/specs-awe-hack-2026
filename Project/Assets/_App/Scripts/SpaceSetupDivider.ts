@@ -1,0 +1,49 @@
+import { ScaleVisibilityAnimator } from "./Utils/ScaleVisibilityAnimator";
+
+export type DividerKind = "breadboard" | "wires" | "leds" | "transistors";
+
+@component
+export class SpaceSetupDivider extends BaseScriptComponent {
+  @input
+  @hint("Which component this divider represents — how SpaceSetup addresses it")
+  @widget(
+    new ComboBoxWidget([
+      new ComboBoxItem("Breadboard", "breadboard"),
+      new ComboBoxItem("Wires", "wires"),
+      new ComboBoxItem("LEDs", "leds"),
+      new ComboBoxItem("Transistors", "transistors"),
+    ]),
+  )
+  kind: string = "breadboard";
+
+  @input
+  @hint(
+    "Line anchor for this divider's connector line — held for line-visibility control, not the show/hide target.",
+  )
+  lineAnchor!: SceneObject;
+
+  private animator!: ScaleVisibilityAnimator;
+
+  onAwake(): void {
+    // Animate this component's own object; snap hidden so show() animates in.
+    this.animator = new ScaleVisibilityAnimator(this.getSceneObject());
+    this.animator.hideImmediate();
+  }
+
+  /** This divider's kind, narrowed from the inspector string to DividerKind. */
+  get dividerKind(): DividerKind {
+    return this.kind as DividerKind;
+  }
+
+  show(): void {
+    this.animator.show();
+  }
+
+  hide(): void {
+    this.animator.hide();
+  }
+
+  getLocalLineAnchorPosition(): vec3 {
+    return this.lineAnchor.getTransform().getLocalPosition();
+  }
+}
