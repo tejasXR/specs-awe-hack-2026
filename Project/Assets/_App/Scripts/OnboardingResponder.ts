@@ -2,6 +2,7 @@ import { unsubscribe } from "SpectaclesInteractionKit.lspkg/Utils/Event";
 import { OnboardingController } from "./OnboardingController";
 import { SpaceSetup } from "./SpaceSetup";
 import { ZappyAI } from "./Zappy/ZappyAI";
+import { InstructionPrompt } from "./Instructional/InstructionPrompt";
 
 // Using 0-based step index
 const STEP_SHOW_SPACE_SETUP = 1;
@@ -10,8 +11,10 @@ const STEP_SHOW_ZAPPY = 2;
 @component
 export class OnboardingResponder extends BaseScriptComponent {
   @input
-  @hint("Emits the onStepChanged events this responder reacts to")
   onboardingController!: OnboardingController;
+
+  @input
+  instructionPrompt!: InstructionPrompt;
 
   @input
   spaceSetup!: SpaceSetup;
@@ -46,6 +49,16 @@ export class OnboardingResponder extends BaseScriptComponent {
   private handleStepChanged(step: number): void {
     switch (step) {
       case STEP_SHOW_SPACE_SETUP:
+        const breadboardLineAnchor =
+          this.spaceSetup.getDividerLineAnchor("breadboard");
+
+        if (breadboardLineAnchor) {
+          this.instructionPrompt.setLineTargets(
+            this.spaceSetup.getSceneObject(),
+            [breadboardLineAnchor],
+          );
+        }
+
         this.zappy.hide();
         this.spaceSetup.show();
         break;

@@ -29,6 +29,7 @@
     instructionPrompt: false
     menuConsole: false
     onboardingSteps: false
+    zappyInteractions: false
   ScriptTypesHidden:
     {}
   ReadMe: !<reference> 00000000-0000-0000-0000-000000000000
@@ -40,6 +41,7 @@
   DefaultScriptInputs:
     - instructionPrompt: !<MappingBased.AssignableType> 00000000-0000-0000-0000-000000000000
       menuConsole: !<MappingBased.AssignableType_1> 00000000-0000-0000-0000-000000000000
+      zappyInteractions: !<MappingBased.AssignableType_2> 00000000-0000-0000-0000-000000000000
       onboardingSteps:
         []
   ScriptTypes:
@@ -48,6 +50,7 @@
   InputLines:
     - '// @input AssignableType instructionPrompt {"hint":"The single InstructionPrompt living in the scene"}'
     - // @input AssignableType_1 menuConsole
+    - '// @input AssignableType_2 zappyInteractions {"hint":"Pinching Zappy advances to the next onboarding step"}'
     - '// @ui {"widget":"separator"}'
     - '// @ui {"widget":"label", "label":"Sequence"}'
     - /*

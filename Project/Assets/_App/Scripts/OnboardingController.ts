@@ -4,6 +4,7 @@ import Event, {
 } from "SpectaclesInteractionKit.lspkg/Utils/Event";
 import { InstructionPrompt } from "./Instructional/InstructionPrompt";
 import { MenuConsole } from "./UI/MenuConsole";
+import { ZappyInteractionsController } from "./Zappy/ZappyInteractionsController";
 
 @typedef
 export class OnboardingStep {
@@ -35,6 +36,10 @@ export class OnboardingController extends BaseScriptComponent {
   @input
   menuConsole!: MenuConsole;
 
+  @input
+  @hint("Pinching Zappy advances to the next onboarding step")
+  zappyInteractions!: ZappyInteractionsController;
+
   @ui.separator
   @ui.label("Sequence")
   @input
@@ -64,6 +69,7 @@ export class OnboardingController extends BaseScriptComponent {
     this._inputUnsubscribers.push(
       this.menuConsole.onPrimaryPressed.add(() => this.next()),
       this.menuConsole.onSecondaryPressed.add(() => this.previous()),
+      this.zappyInteractions.onPinched.add(() => this.next()),
     );
   }
 
