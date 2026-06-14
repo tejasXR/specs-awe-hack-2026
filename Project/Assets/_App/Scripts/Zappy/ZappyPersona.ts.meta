@@ -1,0 +1,54 @@
+- !<AssetImportMetadata/a11e74b3-2090-4775-a386-fbd4ce699818>
+  ImportedAssetIds:
+    TypeScriptAsset: !<reference> 743f9d3d-06c9-4444-87a7-d80dbffb3fbc
+  ImporterName: TypeScriptAssetImporter
+  PrimaryAsset: !<reference> 743f9d3d-06c9-4444-87a7-d80dbffb3fbc
+  PackageType: NotAPackage
+  LegacyPackagePolicy: ~
+  ExtraData:
+    {}
+  AssetDataMap:
+    TypeScriptAsset: !<own> bf3dcb97-0081-4253-a451-949f82e4e151
+  DependentFiles:
+    []
+  ImporterSettings: !<AssetImporterSettings>
+    {}
+  CompressionSettings: !<own> 00000000-0000-0000-0000-000000000000
+- !<TypeScriptAssetData/bf3dcb97-0081-4253-a451-949f82e4e151>
+  SvgIcon: ""
+  SetupScript:
+    code: ""
+  Description: ""
+  VersionMajor: 0
+  VersionMinor: 0
+  VersionPatch: 0
+  ComponentUid: 48913e3e-1193-47fa-a532-fcea3b1e481b
+  ExportUid: 00000000-0000-0000-0000-000000000000
+  PackagePolicy: CanBeUnpacked
+  ScriptInputsHidden:
+    identity: false
+    instructionsController: false
+    mission: false
+  ScriptTypesHidden:
+    {}
+  ReadMe: !<reference> 00000000-0000-0000-0000-000000000000
+  DeclarationFile: !<reference> 00000000-0000-0000-0000-000000000000
+  Tags:
+    []
+  Attachments:
+    []
+  DefaultScriptInputs:
+    - identity: ""
+      mission: ""
+      instructionsController: !<MappingBased.AssignableType> 00000000-0000-0000-0000-000000000000
+  ScriptTypes:
+    -
+      {}
+  InputLines:
+    - '// @ui {"widget":"separator"}'
+    - '// @ui {"widget":"label", "label":"Identity"}'
+    - '// @input string identity {"hint":"Who Zappy is and how he speaks — register/tone", "widget":"text_area"}'
+    - "// @input string mission {\"hint\":\"Zappy's mission and domain — what he's helping with\", \"widget\":\"text_area\"}"
+    - '// @ui {"widget":"separator"}'
+    - '// @ui {"widget":"label", "label":"Context Source"}'
+    - '// @input AssignableType instructionsController {"hint":"Source of the live build state (current step + build-so-far)"}'
