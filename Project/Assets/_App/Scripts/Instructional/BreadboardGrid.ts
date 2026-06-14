@@ -61,6 +61,15 @@ export const RAIL_Z_OFFSET_CM: Record<PowerRail, number> = {
   "far-plus": 3.8,
 };
 
+// Human-readable rail names — kept beside RAIL_Z_OFFSET_CM so polarity stays a
+// single source of truth: if you swap an edge's +/− offsets, update both here.
+export const RAIL_LABEL: Record<PowerRail, string> = {
+  "near-plus": "+ power rail (near)",
+  "far-plus": "+ power rail (far)",
+  "near-minus": "− ground rail (near)",
+  "far-minus": "− ground rail (far)",
+};
+
 export function columnToIndex(column: BreadboardColumn): number {
   return BREADBOARD_COLUMNS.indexOf(column);
 }
