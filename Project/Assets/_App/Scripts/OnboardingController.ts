@@ -1,4 +1,7 @@
-import Event, { PublicApi } from "SpectaclesInteractionKit.lspkg/Utils/Event";
+import Event, {
+  PublicApi,
+  unsubscribe,
+} from "SpectaclesInteractionKit.lspkg/Utils/Event";
 import { InstructionPrompt } from "./Instructional/InstructionPrompt";
 import { MenuConsole } from "./UI/MenuConsole";
 
@@ -22,8 +25,6 @@ export class OnboardingStep {
 }
 
 const NO_STEP = -1;
-const NEXT_LABEL = "Next";
-const BACK_LABEL = "Back";
 
 @component
 export class OnboardingController extends BaseScriptComponent {
@@ -44,6 +45,8 @@ export class OnboardingController extends BaseScriptComponent {
 
   private _currentIndex: number = NO_STEP;
 
+  private _inputUnsubscribers: unsubscribe[] = [];
+
   private readonly onCompletedEvent = new Event<void>();
   readonly onCompleted: PublicApi<void> = this.onCompletedEvent.publicApi();
 
@@ -53,11 +56,18 @@ export class OnboardingController extends BaseScriptComponent {
 
   onAwake(): void {
     this.createEvent("OnStartEvent").bind(() => this.onStart());
+    this.createEvent("OnDestroyEvent").bind(() => this.onDestoy());
   }
 
   onStart() {
-    this.menuConsole.onPrimaryPressed.add(() => this.next());
-    this.menuConsole.onSecondaryPressed.add(() => this.previous());
+    this._inputUnsubscribers.push(
+      this.menuConsole.onPrimaryPressed.add(() => this.next()),
+      this.menuConsole.onSecondaryPressed.add(() => this.previous()),
+    );
+  }
+
+  onDestoy() {
+    this.teardown();
   }
 
   setup(): void {
@@ -67,12 +77,23 @@ export class OnboardingController extends BaseScriptComponent {
     this.showStep(0);
   }
 
+  teardown(): void {
+    this._inputUnsubscribers.forEach((unsub) => unsub());
+    this._inputUnsubscribers = [];
+  }
+
   private next(): void {
     if (this._currentIndex === NO_STEP) {
       return; // navigation is inert until setup() starts the sequence
     }
     if (this._currentIndex >= this.stepCount - 1) {
-      this.onCompletedEvent.invoke(); // clamp at the end + signal completion
+      // Onboarding is done — stop consuming console input before the next phase
+      // reuses the same buttons, then signal completion.
+      this.teardown();
+
+      this._currentIndex = NO_STEP;
+      this.onCompletedEvent.invoke();
+
       return;
     }
     this.showStep(this._currentIndex + 1);
@@ -96,15 +117,12 @@ export class OnboardingController extends BaseScriptComponent {
     );
 
     this.updateButtonLabels(index);
-
-    // this.instructionPrompt.show();
-
     this._currentIndex = index;
   }
 
   // Next hides only on the last of several steps; Back hides on the first. A
-  // lone step keeps Next so it can still complete. The gap behavior in
-  // changeButtonLabel keeps Back as [2] even when Next ([1]) is absent.
+  // lone step keeps Next so it can still complete. setButtonLabel disables the
+  // text element for any empty label.
   private updateButtonLabels(index: number): void {
     const onboardingStep = this.onboardingSteps[index];
 

@@ -1,8 +1,6 @@
-import { LSTween } from "LSTween.lspkg/Examples/Scripts/LSTween";
-import Easing from "LSTween.lspkg/TweenJS/Easing";
-import { Tween } from "LSTween.lspkg/TweenJS/Tween";
 import { Interactable } from "SpectaclesInteractionKit.lspkg/Components/Interaction/Interactable/Interactable";
 import Event, { PublicApi } from "SpectaclesInteractionKit.lspkg/Utils/Event";
+import { ScaleVisibilityAnimator } from "../Utils/ScaleVisibilityAnimator";
 
 @component
 export class MenuConsole extends BaseScriptComponent {
@@ -30,14 +28,19 @@ export class MenuConsole extends BaseScriptComponent {
   readonly onTertiaryPressed: PublicApi<void> =
     this.onTertiaryPressedEvent.publicApi();
 
-  private showDurationMs: number = 250;
-  private _activeTween?: Tween<{ t: number }>;
+  private _animator!: ScaleVisibilityAnimator;
 
   onAwake() {
     this.createEvent("OnStartEvent").bind(() => this.onStart());
+
+    this._animator = new ScaleVisibilityAnimator(this.container, {
+      shownScale: vec3.one(),
+    });
   }
 
   private onStart() {
+    this._animator.hideImmediate();
+
     this.primaryButton.onTriggerEnd.add(() =>
       this.onPrimaryPressedEvent.invoke(),
     );
@@ -50,29 +53,10 @@ export class MenuConsole extends BaseScriptComponent {
   }
 
   public show(): void {
-    this.stopActiveTween();
-    this.container.enabled = true;
-
-    const transform = this.container.getTransform();
-    transform.setLocalScale(vec3.zero());
-
-    this._activeTween = LSTween.scaleToLocal(
-      transform,
-      vec3.one(),
-      this.showDurationMs,
-    )
-      .easing(Easing.Back.Out)
-      .start();
+    this._animator.show();
   }
 
   public hide(): void {
-    this.stopActiveTween();
-    this.container.getTransform().setLocalScale(vec3.zero());
-    this.container.enabled = false;
-  }
-
-  private stopActiveTween(): void {
-    this._activeTween?.stop();
-    this._activeTween = undefined;
+    this._animator.hide();
   }
 }

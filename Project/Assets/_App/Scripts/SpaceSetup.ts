@@ -1,5 +1,6 @@
 import { MenuConsole } from "./UI/MenuConsole";
 import { MusicController } from "./MusicController";
+import { ScaleVisibilityAnimator } from "./Utils/ScaleVisibilityAnimator";
 
 @component
 export class SpaceSetup extends BaseScriptComponent {
@@ -8,14 +9,34 @@ export class SpaceSetup extends BaseScriptComponent {
   menuConsole!: MenuConsole;
 
   @input
+  movementModal!: SceneObject;
+
+  @input
   @hint("Scene content enabled when the space is set up")
   componentDividers!: SceneObject[];
+
+  private movementModalAnimator!: ScaleVisibilityAnimator;
 
   onAwake() {
     this.createEvent("OnStartEvent").bind(() => this.onStart());
   }
 
-  onStart() {}
+  onStart() {
+    this.movementModalAnimator = new ScaleVisibilityAnimator(
+      this.movementModal,
+    );
+    this.movementModalAnimator.hideImmediate();
+  }
+
+  /** Animate the movement modal in. */
+  showMovementModal(): void {
+    this.movementModalAnimator.show();
+  }
+
+  /** Animate the movement modal out. */
+  hideMovementModal(): void {
+    this.movementModalAnimator.hide();
+  }
 
   setup(setupPosition: vec3): void {
     this.getTransform().setWorldPosition(setupPosition);

@@ -28,6 +28,7 @@
   ScriptInputsHidden:
     componentDividers: false
     menuConsole: false
+    movementModal: false
   ScriptTypesHidden:
     {}
   ReadMe: !<reference> 00000000-0000-0000-0000-000000000000
@@ -38,6 +39,7 @@
     []
   DefaultScriptInputs:
     - menuConsole: !<MappingBased.AssignableType> 00000000-0000-0000-0000-000000000000
+      movementModal: !<reference.SceneObject> 00000000-0000-0000-0000-000000000000
       componentDividers: !<reference.SceneObject[]>
         []
   ScriptTypes:
@@ -45,4 +47,5 @@
       {}
   InputLines:
     - '// @input AssignableType menuConsole {"hint":"Menu revealed when the space is set up"}'
+    - // @input SceneObject movementModal
     - '// @input SceneObject[] componentDividers {"hint":"Scene content enabled when the space is set up"}'
