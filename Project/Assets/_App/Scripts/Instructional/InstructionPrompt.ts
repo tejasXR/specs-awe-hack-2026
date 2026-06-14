@@ -63,10 +63,15 @@ export class InstructionPrompt extends BaseScriptComponent {
     }
   }
 
-  setStepText(stepNumber: number, totalStepsInSequence: number): void {
+  // stepIndex is 0-based; presented 1-based (index + 1).
+  setStepText(stepIndex: number, totalStepsInSequence: number): void {
     if (this.stepNumberText) {
       this.stepNumberText.text =
-        this._stepStringPrefix + " " + stepNumber + "/" + totalStepsInSequence;
+        this._stepStringPrefix +
+        " " +
+        (stepIndex + 1) +
+        "/" +
+        totalStepsInSequence;
     }
   }
 
@@ -118,6 +123,29 @@ export class InstructionPrompt extends BaseScriptComponent {
     for (let i = 0; i < this._lines.length; i++) {
       this._lines[i].setEnabled(false);
     }
+  }
+
+  /**
+   * Return the prompt to a neutral state when handing off to another part of
+   * the app (e.g. onboarding → instructions): stop the line loop, drop targets,
+   * blank the text, and disable every button label. Does not toggle the
+   * prompt's SceneObject — visibility is managed externally.
+   */
+  reset(): void {
+    this.hide();
+    this._localTargets = [];
+
+    if (this.stepNumberText) {
+      this.stepNumberText.text = "";
+    }
+    if (this.titleText) {
+      this.titleText.text = "";
+    }
+    if (this.descriptionText) {
+      this.descriptionText.text = "";
+    }
+
+    this.setButtonLabel("", "", "");
   }
 
   private ensureLinePool(breadboardOrigin: SceneObject): void {
