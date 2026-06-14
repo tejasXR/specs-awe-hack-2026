@@ -8,6 +8,7 @@
     - !<own> b86cbb43-e82e-48ed-89e0-a449f10cd53e
     - !<own> 33f8fdfd-99e7-4e0f-949b-55795cdef06f
     - !<own> 9cbf7fa1-10b9-4585-bf97-4b3c760186be
+    - !<own> a829ee90-5e5f-470a-a11b-78fb4b43b62c
   layers: !<Layers/267ee9a7-aff2-4f9d-9a49-f71214747d03>
     userLayers:
       - |
@@ -4252,16 +4253,24 @@
             Use the movement points to align your digital workstation with your breadboard.
             
             When ready press CONFIRM
-          primaryButtonText: confirm
+          primaryButtonText: Confirm
           secondaryButtonText: ""
-        - stepText: Lastly
+        - stepText: Lastly...
           title: Introducing Zappy
           description: |-
             Zappy will help you build your own electronics.
             
             Pinch zappy to continue
           primaryButtonText: ""
-          secondaryButtonText: back
+          secondaryButtonText: Back
+        - stepText: are you
+          title: "Ready to go?"
+          description: |-
+            Pinching Zappy will automatically continue to the next step.
+            
+            Press continue on this console ot pinch Zappy  to start building
+          primaryButtonText: Continue
+          secondaryButtonText: Back
   ScriptTypes:
     "":
       {}
@@ -6371,7 +6380,7 @@
   Enabled: true
   ScriptAsset: !<reference> 76a0a880-fa7e-4afc-8817-049d1a0ca386
   ScriptInputsDefault:
-    {}
+    enableLogging: true
   ScriptTypesDefault:
     {}
   ScriptInputs:
@@ -6384,6 +6393,7 @@
       tertiaryButtonLabelText: !<reference.Text> 3a149ba6-ff59-477e-b1e7-edcdb18c0262
       lineMaterial: !<reference.Material> f8b7ca3d-faaf-476a-97ed-793d8d1fc7c5
       lineStart: !<reference.SceneObject> 0c2e4402-156a-4adf-aa3a-7664655fe73e
+      enableLogging: false
   ScriptTypes:
     "":
       {}
@@ -9104,6 +9114,21 @@
     []
   Components:
     - !<own> 9a08006a-df52-48bb-be70-7e2a6b4219bd
+- !<SceneObject/a829ee90-5e5f-470a-a11b-78fb4b43b62c>
+  PrefabRemaps:
+    []
+  Name: Line
+  Enabled: true
+  Layers: 1
+  LocalTransform: !<TransformEntity>
+    Position: {x: 0.000000, y: 0.000000, z: 0.000000}
+    Rotation: {x: 0.000000, y: 0.000000, z: 0.000000}
+    Scale: {x: 1.000000, y: 1.000000, z: 1.000000}
+    HasSegmentScaleCompensation: false
+  Children:
+    []
+  Components:
+    []
 - !<SceneObject/a839167c-3228-41da-9ecf-ac920002f45e>
   PrefabRemaps:
     []
@@ -12127,8 +12152,10 @@
   MeshShadowMode: None
   ShadowColor: {x: 1.000000, y: 1.000000, z: 1.000000, w: 1.000000}
   ShadowDensity: 1.000000
-  Text: |2-
-     Press [1] start your building journey 
+  Text: |-
+    Pinching Zappy will automatically continue to the next step.
+    
+    Press continue on this console ot pinch Zappy  to start building
   Editable: false
   ShowEditingPreview: true
   TouchHandler: !<reference> 00000000-0000-0000-0000-000000000000
@@ -12138,7 +12165,7 @@
   LayoutRect:
     left: -7.500000
     bottom: -2.250000
-    right: 15.500000
+    right: 12.500000
     top: 2.250000
   OverflowVertical: Overflow
   OverflowHorizontal: Wrap
@@ -12761,8 +12788,25 @@
       instructionPrompt: !<MappingBased.AssignableType_1> 7e281ca4-c9d7-4453-8e28-c86df6d7c76b
       hoverOffsetCm: !<float> 0.000000
       instructionDefinitions:
-        - title: TEST TITLE
-          description: test description
+        - title: The breadboard
+          description: |-
+            The breadboard is going to be the heart of this project.
+            
+            We attach things to the breadboard to build ciruits
+          zappyTextBox: The breadboard allows us to build ciruits
+          isCheckpoint: false
+          startOnRail: false
+          columnStart: A
+          startRail: near-plus
+          rowStart: !<float> 1.000000
+          useEndPin: false
+          endOnRail: false
+          columnEnd: ""
+          endRail: ""
+          rowEnd: !<float> 0.000000
+        - title: Meet the LED
+          description: "Looks like an LED is already attached on the breadboard, sweet!"
+          zappyTextBox: "Oh cool, an LED!"
           isCheckpoint: false
           startOnRail: false
           columnStart: A
@@ -12773,6 +12817,32 @@
           columnEnd: J
           endRail: ""
           rowEnd: !<float> 1.000000
+        - title: Power Switch
+          description: Press the power switch here to turn on power to the breadboard
+          zappyTextBox: Press the power switch
+          isCheckpoint: false
+          startOnRail: false
+          columnStart: A
+          startRail: near-plus
+          rowStart: !<float> 1.000000
+          useEndPin: false
+          endOnRail: false
+          columnEnd: ""
+          endRail: ""
+          rowEnd: !<float> 0.000000
+        - title: Route Power
+          description: "Hmm, looks like we need to route power using "
+          zappyTextBox: "Place a red wire "
+          isCheckpoint: false
+          startOnRail: false
+          columnStart: A
+          startRail: near-plus
+          rowStart: !<float> 1.000000
+          useEndPin: false
+          endOnRail: false
+          columnEnd: ""
+          endRail: ""
+          rowEnd: !<float> 0.000000
       autoStart: true
   ScriptTypes:
     "":
