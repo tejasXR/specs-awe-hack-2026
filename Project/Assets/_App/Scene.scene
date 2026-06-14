@@ -11704,7 +11704,7 @@
   Enabled: true
   Layers: 1
   LocalTransform: !<TransformEntity>
-    Position: {x: 8.207594, y: 0.569464, z: -1.462627}
+    Position: {x: 8.135905, y: 0.569464, z: -1.494377}
     Rotation: {x: 0.000000, y: 0.000000, z: 0.000000}
     Scale: {x: 1.000000, y: 1.000000, z: 1.000000}
     HasSegmentScaleCompensation: false
@@ -13413,11 +13413,13 @@
       instructionDefinitions:
         - title: TEST TITLE
           description: test description
+          startOnRail: false
           columnStart: A
+          startRail: far-plus
           rowStart: !<float> 10.000000
           useEndPin: true
           columnEnd: J
-          rowEnd: !<float> 11.000000
+          rowEnd: !<float> 10.000000
       autoStart: true
   ScriptTypes:
     "":
