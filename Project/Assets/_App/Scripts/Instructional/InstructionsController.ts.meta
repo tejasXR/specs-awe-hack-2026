@@ -26,13 +26,16 @@
   ExportUid: 00000000-0000-0000-0000-000000000000
   PackagePolicy: CanBeUnpacked
   ScriptInputsHidden:
-    autoStart: false
     breadboardOrigin: false
+    calloutStartAnchor: false
     hoverOffsetCm: false
     instructionDefinitions: false
     instructionPrompt: false
+    linePoolParent: false
+    linePrefab: false
     mainTrack: false
     mainTrackVolume: false
+    menuConsole: false
     musicController: false
     onboardingController: false
   ScriptTypesHidden:
@@ -49,23 +52,30 @@
       mainTrackVolume: !<float> 0.000000
       breadboardOrigin: !<reference.SceneObject> 00000000-0000-0000-0000-000000000000
       onboardingController: !<MappingBased.AssignableType_1> 00000000-0000-0000-0000-000000000000
-      instructionPrompt: !<MappingBased.AssignableType_2> 00000000-0000-0000-0000-000000000000
+      menuConsole: !<MappingBased.AssignableType_2> 00000000-0000-0000-0000-000000000000
+      instructionPrompt: !<MappingBased.AssignableType_3> 00000000-0000-0000-0000-000000000000
+      linePrefab: !<reference.ObjectPrefab> 00000000-0000-0000-0000-000000000000
+      linePoolParent: !<reference.SceneObject> 00000000-0000-0000-0000-000000000000
+      calloutStartAnchor: !<reference.SceneObject> 00000000-0000-0000-0000-000000000000
       hoverOffsetCm: !<float> 1.000000
       instructionDefinitions:
         []
-      autoStart: false
   ScriptTypes:
     -
       {}
   InputLines:
-    - '// @ui {"widget":"separator"}'
-    - '// @ui {"widget":"label", "label":"References"}'
     - // @input AssignableType musicController
     - // @input Asset.AudioTrackAsset mainTrack
     - // @input float mainTrackVolume
     - '// @input SceneObject breadboardOrigin {"hint":"Transform whose pivot sits at breadboard hole A1 — prompts spawn as its children"}'
     - // @input AssignableType_1 onboardingController
-    - '// @input AssignableType_2 instructionPrompt {"hint":"The single InstructionPrompt living in the scene"}'
+    - '// @input AssignableType_2 menuConsole {"hint":"Menu buttons that drive step navigation"}'
+    - '// @input AssignableType_3 instructionPrompt {"hint":"The single InstructionPrompt living in the scene"}'
+    - '// @ui {"widget":"separator"}'
+    - '// @ui {"widget":"label", "label":"Callout Lines"}'
+    - '// @input Asset.ObjectPrefab linePrefab {"hint":"Line prefab pooled for callouts (must carry a Line component)"}'
+    - '// @input SceneObject linePoolParent {"hint":"Parent for instantiated Line instances"}'
+    - '// @input SceneObject calloutStartAnchor {"hint":"World anchor every callout line starts from (the prompt panel)"}'
     - "// @input float hoverOffsetCm = 1 {\"hint\":\"Lift above the board surface so the prompt doesn't clip into it, in cm\"}"
     - '// @ui {"widget":"separator"}'
     - '// @ui {"widget":"label", "label":"Sequence"}'
@@ -80,7 +90,10 @@
     - "@property {string} tertiaryButtonText"
     - '@ui {"widget":"separator"}'
     - '@ui {"widget":"label", "label":"Lesson Settings"}'
-    - "@property {bool} isCheckpoint {\"hint\":\"A recap/'check your work' step — shows title + description, draws no callout line\"}"
+    - "@property {bool} isCheckpoint"
+    - '@ui {"widget":"separator"}'
+    - '@ui {"widget":"label", "label":"Power Switch"}'
+    - "@property {bool} pointToPower {\"hint\":\"Point this step's callout at the power switch (I-64); overrides cell/rail settings\"}"
     - '@ui {"widget":"separator"}'
     - '@ui {"widget":"label", "label":"Breadboard Cell Settings"}'
     - '@property {bool} startOnRail {"hint":"Start from a power rail instead of a grid column"}'
@@ -96,4 +109,3 @@
     - "// @input InstructionDefinition[] instructionDefinitions = {}"
     - '// @ui {"widget":"separator"}'
     - '// @ui {"widget":"label", "label":"Behavior"}'
-    - '// @input bool autoStart {"hint":"Show the first queued instruction as soon as the lens starts"}'

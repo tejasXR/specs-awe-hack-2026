@@ -10,11 +10,14 @@ import {
   isPowerRail,
   isWithinPlayground,
   PowerRail,
+  powerSwitchToLocalPosition,
   RAIL_LABEL,
   railToLocalPosition,
 } from "./BreadboardGrid";
 import { InstructionPrompt } from "./InstructionPrompt";
 import { MusicController } from "../MusicController";
+import { MenuConsole } from "../UI/MenuConsole";
+import { InstructionalLine } from "../InstructionalLine";
 
 export interface InstructionStepEvent {
   instruction: InstructionDefinition;
@@ -49,6 +52,12 @@ export class InstructionDefinition {
   @ui.label("Lesson Settings")
   @input
   isCheckpoint: boolean = false;
+
+  @ui.separator
+  @ui.label("Power Switch")
+  @input
+  @hint("Point this step's callout at the power switch (I-64); overrides cell/rail settings")
+  pointToPower: boolean = false;
 
   @ui.separator
   @ui.label("Breadboard Cell Settings")
@@ -142,19 +151,21 @@ export class InstructionDefinition {
 
 const NO_STEP = -1;
 
+// Headroom over the max endpoints a single step draws (start + optional end);
+// matches the previous MAX_LINES so behavior is unchanged.
+const LINE_POOL_SIZE = 3;
+
 /**
- * Owns an ordered queue of build instructions, each backed by its own
- * "Instruction Prompt" instance parented to the breadboard origin at its
- * cell. Navigation hides the panel being left and shows the one being moved
- * to — all presentation (tweens, text) lives in InstructionPrompt.
+ * Owns an ordered queue of build instructions. Each step updates the shared
+ * InstructionPrompt's text and drives a pool of Line callouts pointing from the
+ * panel anchor to the step's breadboard cells (text presentation lives in
+ * InstructionPrompt; line rendering/tracking lives in Line).
  *
  * Advancing is driven from the outside (Zappy, a pinch button, a future
  * placement detector) via next() / previous().
  */
 @component
 export class InstructionsController extends BaseScriptComponent {
-  @ui.separator
-  @ui.label("References")
   @input
   musicController!: MusicController;
 
@@ -174,8 +185,26 @@ export class InstructionsController extends BaseScriptComponent {
   onboardingController!: OnboardingController;
 
   @input
+  @hint("Menu buttons that drive step navigation")
+  menuConsole!: MenuConsole;
+
+  @input
   @hint("The single InstructionPrompt living in the scene")
   instructionPrompt!: InstructionPrompt;
+
+  @ui.separator
+  @ui.label("Callout Lines")
+  @input
+  @hint("Line prefab pooled for callouts (must carry a Line component)")
+  linePrefab!: ObjectPrefab;
+
+  @input
+  @hint("Parent for instantiated Line instances")
+  linePoolParent!: SceneObject;
+
+  @input
+  @hint("World anchor every callout line starts from (the prompt panel)")
+  calloutStartAnchor!: SceneObject;
 
   @input
   @hint(
@@ -190,13 +219,17 @@ export class InstructionsController extends BaseScriptComponent {
 
   @ui.separator
   @ui.label("Behavior")
-  @input
-  @hint("Show the first queued instruction as soon as the lens starts")
-  autoStart: boolean = false;
-
   private _currentIndex: number = NO_STEP;
 
+  // Pooled callout lines, lazily built on first step (so breadboardOrigin and
+  // the prefab are known). Each line's own markers are reparented to track the
+  // panel anchor (start) and the board (end) — no separate anchor objects.
+  private _linePool: InstructionalLine[] = [];
+
   private _unsubscribeFromOnboarding?: unsubscribe;
+  private _unsubscribeFromPrimary?: unsubscribe;
+  private _unsubscribeFromSecondary?: unsubscribe;
+  private _unsubscribeFromTertiary?: unsubscribe;
 
   private readonly onStepChangedEvent = new Event<InstructionStepEvent>();
 
@@ -252,6 +285,16 @@ export class InstructionsController extends BaseScriptComponent {
    * logs, e.g. "Place the resistor (from + power rail (near) @ row 10 to A12)".
    */
   describeInstruction(definition: InstructionDefinition): string {
+    // A power-switch step points at a fixed fixture, not a build cell — describe
+    // it as such so the check-work transcript/logs don't render a stale cell.
+    if (definition.pointToPower) {
+      let powerLine = definition.title + " (at the power switch)";
+      if (definition.description) {
+        powerLine += `: ${definition.description}`;
+      }
+      return powerLine;
+    }
+
     const start = definition.startOnRail
       ? this.railLabel(definition.startRail) + " @ row " + definition.rowStart
       : this.cellLabel(definition.columnStart, definition.rowStart);
@@ -309,14 +352,43 @@ export class InstructionsController extends BaseScriptComponent {
         );
     }
 
-    if (this.autoStart && this.instructionDefinitions.length > 0) {
-      this.startSequence();
+    // Menu buttons drive navigation: primary -> next, secondary -> previous.
+    if (!isNull(this.menuConsole)) {
+      this._unsubscribeFromPrimary = this.menuConsole.onPrimaryPressed.add(() =>
+        this.onMenuPrimaryPressed(),
+      );
+      this._unsubscribeFromSecondary = this.menuConsole.onSecondaryPressed.add(
+        () => this.onMenuSecondaryPressed(),
+      );
+      this._unsubscribeFromTertiary = this.menuConsole.onTertiaryPressed.add(
+        () => this.onMenuTertiaryPressed(),
+      );
     }
+
+    // if (this.autoStart && this.instructionDefinitions.length > 0) {
+    //   this.startSequence();
+    // }
   }
 
   private onDestroy(): void {
     this._unsubscribeFromOnboarding?.();
+    this._unsubscribeFromPrimary?.();
+    this._unsubscribeFromSecondary?.();
+    this._unsubscribeFromTertiary?.();
   }
+
+  /** Primary menu button: advance to the next instruction. */
+  private onMenuPrimaryPressed(): void {
+    this.nextInSequence();
+  }
+
+  /** Secondary menu button: step back to the previous instruction. */
+  private onMenuSecondaryPressed(): void {
+    this.previousInSequence();
+  }
+
+  // TEJAS: tertiary action not yet defined — placeholder for future wiring.
+  private onMenuTertiaryPressed(): void {}
 
   /** The onboarding flow finished — kick off the build instructions. */
   private onOnboardingCompleted(): void {
@@ -338,7 +410,7 @@ export class InstructionsController extends BaseScriptComponent {
       return;
     }
     if (this._currentIndex + 1 >= this.instructionDefinitions.length) {
-      this.instructionPrompt.hide();
+      this.hideAllLines();
       this._currentIndex = NO_STEP;
       this.onSequenceCompletedEvent.invoke(undefined);
       return;
@@ -353,7 +425,7 @@ export class InstructionsController extends BaseScriptComponent {
   }
 
   resetSequence(): void {
-    this.instructionPrompt.hide();
+    this.hideAllLines();
     this._currentIndex = NO_STEP;
   }
 
@@ -372,9 +444,7 @@ export class InstructionsController extends BaseScriptComponent {
       instructionDefinition.description,
     );
 
-    this.instructionPrompt.setLineTargets(this.breadboardOrigin, localTargets);
-
-    this.instructionPrompt.show();
+    this.configureLines(localTargets);
 
     this._currentIndex = index;
     this.onStepChangedEvent.invoke({
@@ -391,11 +461,18 @@ export class InstructionsController extends BaseScriptComponent {
   }
 
   /**
-   * Origin-LOCAL endpoint positions for a placement step. The prompt parents its
-   * lines to the breadboard origin, so these follow the board's position/rotation
-   * directly. Not called for checkpoints, which draw no line.
+   * Origin-LOCAL endpoint positions for a placement step. configureLines writes
+   * these onto cell anchors parented to the breadboard origin, so the callout
+   * ends follow the board's position/rotation directly. Not called for
+   * checkpoints, which draw no line.
    */
   private buildLineTargets(definition: InstructionDefinition): vec3[] {
+    // pointToPower overrides cell/rail settings: a single callout to the power
+    // switch (I-64), as a board-local target like every other endpoint.
+    if (definition.pointToPower) {
+      return [powerSwitchToLocalPosition(this.hoverOffsetCm)];
+    }
+
     const targets: vec3[] = [this.resolveStartLocal(definition)];
 
     const endLocal = this.resolveEndLocal(definition);
@@ -406,12 +483,55 @@ export class InstructionsController extends BaseScriptComponent {
     return targets;
   }
 
-  // TEJAS: Unused since we have one prompt, but still keeping in case we need it
-  private hideCurrentPrompt(): void {
-    if (this._currentIndex < 0) {
+  /**
+   * Drive the callout pool from a step's board-LOCAL endpoint targets. Each
+   * target points one line's end at that board-local position (its start was
+   * attached to the panel anchor at pool creation); extra pooled lines are
+   * hidden. Checkpoints pass an empty list, hiding every line.
+   */
+  private configureLines(localTargets: vec3[]): void {
+    this.ensureLinePool();
+
+    for (let i = 0; i < this._linePool.length; i++) {
+      if (i < localTargets.length) {
+        this._linePool[i].attachEnd(this.breadboardOrigin, localTargets[i]);
+        this._linePool[i].show();
+      } else {
+        this._linePool[i].hide();
+      }
+    }
+  }
+
+  private hideAllLines(): void {
+    for (const line of this._linePool) {
+      line.hide();
+    }
+  }
+
+  /**
+   * Lazily build the line pool. Each line's start marker is attached to the
+   * shared panel anchor once here; its end is repointed per step by
+   * configureLines.
+   */
+  private ensureLinePool(): void {
+    if (this._linePool.length > 0) {
       return;
     }
-    this.instructionPrompt.hide();
+
+    for (let i = 0; i < LINE_POOL_SIZE; i++) {
+      const lineObject = this.linePrefab.instantiate(this.linePoolParent);
+      const line = lineObject.getComponent(
+        InstructionalLine.getTypeName(),
+      ) as unknown as InstructionalLine;
+      if (isNull(line)) {
+        throw new Error(
+          "InstructionsController: linePrefab is missing an InstructionalLine component",
+        );
+      }
+      line.hide();
+      line.attachStart(this.calloutStartAnchor);
+      this._linePool.push(line);
+    }
   }
 
   /**
