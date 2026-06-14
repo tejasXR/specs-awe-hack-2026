@@ -2,16 +2,21 @@
  * MusicController — continuous background music via two crossfading decks.
  *
  * Owns two AudioComponents ("decks") and nothing else: no clip catalog. The
- * caller hands a track to crossfadeTo(); the controller blends the currently
- * playing deck out while the idle deck plays the new track in, so there is
- * never a silent gap. The decks ping-pong roles on each call.
+ * caller hands a track to play(); the controller blends the currently playing
+ * deck out while the idle deck plays the new track in, so there is never a
+ * silent gap. The decks ping-pong roles on each call.
  *
- * Volume is one product per deck:  deck.volume = weight × master
- *   • weight  — per deck, 0→1, lerped by the crossfade. One deck rises to 1
+ * Volume is one product per deck:  deck.volume = weight × master × trackGain
+ *   • weight    — per deck, 0→1, lerped by the crossfade. One deck rises to 1
  *     while the other falls to 0.
- *   • master  — one global level, normally musicVolume. While Zappy speaks it
- *     eases down to duckVolume and back, so music ducks under TTS. Crossfade
- *     and duck ride independent levers, so they compose without fighting.
+ *   • master    — one global level, normally musicVolume. While Zappy speaks it
+ *     eases down to duckVolume and back, so music ducks under TTS.
+ *   • trackGain — per deck, the volume requested for that deck's track via
+ *     play(track, volume). Set instantly when a track fades in (weight is 0
+ *     then, so it's inaudible anyway) and eased when the playing track's volume
+ *     is changed live.
+ *   Crossfade, duck, and per-track gain ride independent levers, so they
+ *   compose without fighting.
  *
  * Ducking subscribes to ZappyVoice.onSpeakingChanged. The voice surface
  * (onSpeakingChanged / isSpeaking) is shared with ZappyVoiceElevenLabs, so a
@@ -78,6 +83,8 @@ export class MusicController extends BaseScriptComponent {
   private _decks: AudioComponent[] = [];
   private _weights: number[] = [0, 0]; // current per-deck blend weight
   private _targets: number[] = [0, 0]; // weight each deck is lerping toward
+  private _trackGains: number[] = [1, 1]; // current per-deck track volume (0–1)
+  private _trackGainTargets: number[] = [1, 1]; // track gain each deck eases toward
   private _activeIndex: number = 0; // deck that owns the current track
 
   private _master: number = 0; // current global level (set from inputs onStart)
@@ -95,7 +102,7 @@ export class MusicController extends BaseScriptComponent {
   private onStart(): void {
     this._decks = [this.deckA, this.deckB];
 
-    // Start silent; the first crossfadeTo() fades a track in from nothing.
+    // Start silent; the first play() fades a track in from nothing.
     this._master = this.musicVolume;
     this._masterTarget = this.musicVolume;
     this._decks.forEach((deck) => {
@@ -119,19 +126,38 @@ export class MusicController extends BaseScriptComponent {
     this._unsubscribeFromVoice?.();
   }
 
-  play(track: AudioTrackAsset): void {
-    const activeDeck = this._decks[this._activeIndex];
+  /**
+   * Crossfade to `track`, playing it at `volume` (0–1, default full). If it's
+   * already the active track, the crossfade is skipped but a changed volume
+   * eases in live.
+   */
+  play(track: AudioTrackAsset, volume: number = 1): void {
+    const gain = clamp01(volume);
+    const active = this._activeIndex;
+    const activeDeck = this._decks[active];
     const alreadyPlayingIt =
-      activeDeck.audioTrack === track && this._targets[this._activeIndex] === 1;
+      activeDeck.audioTrack === track && this._targets[active] === 1;
     if (alreadyPlayingIt) {
-      this.log("Requested track already playing — ignoring.");
+      // Same track — no crossfade, but honor a new volume by easing the active
+      // deck's gain toward it (onUpdate lerps _trackGains via approach()).
+      if (this._trackGainTargets[active] !== gain) {
+        this._trackGainTargets[active] = gain;
+        this.log("Requested track already playing — easing to new volume.");
+        this.wake();
+      } else {
+        this.log("Requested track already playing — ignoring.");
+      }
       return;
     }
 
-    const incoming = 1 - this._activeIndex;
+    const incoming = 1 - active;
+    // Incoming deck is silent (weight 0), so set its gain instantly — the weight
+    // crossfade does the audible fade-in, already at the requested volume.
+    this._trackGains[incoming] = gain;
+    this._trackGainTargets[incoming] = gain;
     this.prepareDeck(incoming, track);
     this._targets[incoming] = 1;
-    this._targets[this._activeIndex] = 0;
+    this._targets[active] = 0;
     this._activeIndex = incoming;
 
     this.log("Crossfading to new track.");
@@ -172,6 +198,16 @@ export class MusicController extends BaseScriptComponent {
 
     this._weights[0] = approach(this._weights[0], this._targets[0], fadeStep);
     this._weights[1] = approach(this._weights[1], this._targets[1], fadeStep);
+    this._trackGains[0] = approach(
+      this._trackGains[0],
+      this._trackGainTargets[0],
+      fadeStep,
+    );
+    this._trackGains[1] = approach(
+      this._trackGains[1],
+      this._trackGainTargets[1],
+      fadeStep,
+    );
     this._master = approach(this._master, this._masterTarget, duckStep);
 
     this.applyVolumes();
@@ -184,7 +220,8 @@ export class MusicController extends BaseScriptComponent {
 
   private applyVolumes(): void {
     for (let i = 0; i < this._decks.length; i++) {
-      this._decks[i].volume = this._weights[i] * this._master;
+      this._decks[i].volume =
+        this._weights[i] * this._master * this._trackGains[i];
     }
   }
 
@@ -197,7 +234,7 @@ export class MusicController extends BaseScriptComponent {
       if (deck.isPlaying()) deck.stop(false);
       deck.audioTrack = track;
     }
-    deck.volume = this._weights[index] * this._master;
+    deck.volume = this._weights[index] * this._master * this._trackGains[index];
     if (!deck.isPlaying()) deck.play(-1);
   }
 
@@ -213,6 +250,10 @@ export class MusicController extends BaseScriptComponent {
     return (
       Math.abs(this._weights[0] - this._targets[0]) < SETTLE_EPSILON &&
       Math.abs(this._weights[1] - this._targets[1]) < SETTLE_EPSILON &&
+      Math.abs(this._trackGains[0] - this._trackGainTargets[0]) <
+        SETTLE_EPSILON &&
+      Math.abs(this._trackGains[1] - this._trackGainTargets[1]) <
+        SETTLE_EPSILON &&
       Math.abs(this._master - this._masterTarget) < SETTLE_EPSILON
     );
   }
@@ -222,6 +263,7 @@ export class MusicController extends BaseScriptComponent {
     this._master = this._masterTarget;
     for (let i = 0; i < this._decks.length; i++) {
       this._weights[i] = this._targets[i];
+      this._trackGains[i] = this._trackGainTargets[i];
       const deck = this._decks[i];
       if (this._targets[i] === 0 && deck.isPlaying()) {
         deck.stop(false);
