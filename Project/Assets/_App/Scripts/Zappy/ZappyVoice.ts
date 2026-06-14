@@ -1,17 +1,44 @@
 /**
- * ZappyVoice — everything about how Zappy sounds, in one place.
+ * ZappyVoice — the voice coordinator: one stable surface, swappable backend.
  *
- * Driven by the ZappyAI facade, which calls speak() for each line: synthesis
- * via the TextToSpeechModule, playback through the assigned AudioComponent,
- * and an optional caption Text mirror. Any system may also call speak()
+ * Driven by the ZappyAI facade, which calls speak() for each line. ZappyVoice
+ * owns everything shared across voice backends — caption mirroring, the
+ * speaking-state machine, audio playback, the onSpeakingChanged event, and
+ * staleness handling — and delegates only synthesis ("text + mood → audio
+ * track") to a swappable IVoiceProvider. Any system may also call speak()
  * directly to voice a fixed line without a Gemini round-trip.
  *
- * Reads ZappyEmotionController.currentEmotion at speak time — the extension
- * point where a future voice system derives delivery (style/pace/volume)
- * from mood. Exposes onSpeakingChanged so animation can react to playback.
+ * Two providers are wired in the Inspector (Snap TTS and ElevenLabs); the
+ * `backend` selector picks the primary. If the primary is unconfigured or its
+ * synthesis fails and fallback is enabled, ZappyVoice automatically delegates
+ * to the Snap provider so the experience never goes silent.
+ *
+ * The public surface (speak / stop / isSpeaking / onSpeakingChanged) is
+ * unchanged from earlier versions, so ZappyAI and MusicController bind to it
+ * exactly as before — swapping voices is an Inspector change, not a code one.
  */
 import Event, { PublicApi } from "SpectaclesInteractionKit.lspkg/Utils/Event";
+import { ZappyEmotion, ZappyEmotionData } from "./ZappyBrain";
 import { ZappyEmotionController } from "./ZappyEmotionController";
+import { IVoiceProvider } from "./IVoiceProvider";
+import { ZappyTTSVoiceProvider } from "./ZappySnapVoiceProvider";
+import { ZappyElevenLabsVoiceProvider } from "./ZappyElevenLabsVoiceProvider";
+
+// ─── Types ──────────────────────────────────────────────────────
+
+/** Which provider speaks by default. */
+enum VoiceBackend {
+  Snap = "snap",
+  ElevenLabs = "elevenlabs",
+}
+
+/** Mood used when no emotion controller is wired. */
+const DEFAULT_MOOD: ZappyEmotionData = {
+  emotion: ZappyEmotion.Neutral,
+  intensity: 0.5,
+};
+
+// ─── Component ──────────────────────────────────────────────────
 
 @component
 export class ZappyVoice extends BaseScriptComponent {
@@ -22,27 +49,42 @@ export class ZappyVoice extends BaseScriptComponent {
   emotionController!: ZappyEmotionController;
 
   @input
-  @hint(
-    "TextToSpeechModule asset — add via Resources > + > Text To Speech Module",
-  )
-  @allowUndefined
-  ttsModule!: TextToSpeechModule;
-
-  @input
   @hint("AudioComponent that plays the synthesized speech")
   @allowUndefined
   audioComponent!: AudioComponent;
 
   @input
-  @hint("Optional caption text — mirrors whatever Zappy says")
+  @hint("Optional caption text — mirrors whatever Zappy says (tags stripped)")
   @allowUndefined
   speechText!: Text;
 
   @ui.separator
+  @ui.label("Backends")
+  @input
+  @hint("Which backend speaks by default")
+  @widget(
+    new ComboBoxWidget([
+      new ComboBoxItem("Snap TTS", "snap"),
+      new ComboBoxItem("ElevenLabs", "elevenlabs"),
+    ]),
+  )
+  backend: string = VoiceBackend.Snap;
+
+  @input
+  @hint("Snap TextToSpeechModule provider — also the fallback voice")
+  @allowUndefined
+  snapProvider!: ZappyTTSVoiceProvider;
+
+  @input
+  @hint("ElevenLabs expressive provider")
+  @allowUndefined
+  elevenLabsProvider!: ZappyElevenLabsVoiceProvider;
+
+  @ui.separator
   @ui.label("Settings")
   @input
-  @hint("TTS voice preset name")
-  voiceName: string = "Sasha";
+  @hint("If the primary backend is unusable or errors, fall back to Snap TTS")
+  enableFallback: boolean = true;
 
   @input
   @hint("Enable debug logging")
@@ -77,49 +119,14 @@ export class ZappyVoice extends BaseScriptComponent {
   // ─── Public API ───────────────────────────────────────────────
 
   /**
-   * Voice a line: caption immediately, then synthesize and play. A newer
-   * speak() supersedes any synthesis still in flight.
+   * Voice a line: caption immediately, then synthesize via the selected
+   * backend and play. A newer speak() supersedes any synthesis still in
+   * flight, and a failed/unavailable primary falls back to Snap TTS.
    */
   speak(text: string): void {
     const generation = ++this._speechGeneration;
-
-    // Extension point: when the voice system supports delivery knobs
-    // (or is replaced), derive them from the current mood here.
-    if (!isNull(this.emotionController)) {
-      const mood = this.emotionController.currentEmotion;
-      this.log("Speaking as " + mood.emotion + " (" + mood.intensity + ")");
-    }
-
-    if (!isNull(this.speechText)) {
-      this.speechText.text = text;
-    }
-
-    if (isNull(this.ttsModule) || isNull(this.audioComponent)) {
-      this.log("TTS module or AudioComponent not assigned -- caption only");
-      return;
-    }
-
-    const options = TextToSpeech.Options.create();
-    options.voiceName = this.voiceName;
-
-    this.ttsModule.synthesize(
-      text,
-      options,
-      (audioTrack: AudioTrackAsset, wordInfo: TextToSpeech.WordInfo[]) => {
-        if (generation !== this._speechGeneration) {
-          this.log("Discarding stale TTS result");
-          return;
-        }
-        this.log("TTS audio ready (" + wordInfo.length + " words)");
-        this.audioComponent.audioTrack = audioTrack;
-        this.audioComponent.play(1);
-        this.setSpeaking(true);
-      },
-      (error: number, description: string) => {
-        this.log("TTS error " + error + ": " + description);
-        this.setSpeaking(false);
-      },
-    );
+    const primary = this.resolvePrimary();
+    this.synthesizeWith(text, primary, generation, this.enableFallback);
   }
 
   /** Cut the current line short and drop any in-flight synthesis. */
@@ -131,7 +138,91 @@ export class ZappyVoice extends BaseScriptComponent {
     this.setSpeaking(false);
   }
 
-  // ─── Private ──────────────────────────────────────────────────
+  // ─── Private — Synthesis Routing ──────────────────────────────
+
+  /**
+   * Caption, then synthesize via `provider`. On unavailability or error,
+   * route to the Snap fallback once (allowFallback guards against loops).
+   */
+  private synthesizeWith(
+    text: string,
+    provider: IVoiceProvider | null,
+    generation: number,
+    allowFallback: boolean,
+  ): void {
+    // Caption immediately, rendered the way this backend speaks the line.
+    if (!isNull(this.speechText)) {
+      this.speechText.text = provider ? provider.toCaption(text) : text;
+    }
+
+    if (!provider || !provider.isAvailable()) {
+      this.log("Primary backend unavailable");
+      this.routeFallback(text, provider, generation, allowFallback);
+      return;
+    }
+
+    const mood = !isNull(this.emotionController)
+      ? this.emotionController.currentEmotion
+      : DEFAULT_MOOD;
+
+    provider.synthesize(text, mood, {
+      onReady: (track: AudioTrackAsset) => {
+        if (generation !== this._speechGeneration) {
+          this.log("Discarding stale synthesis result");
+          return;
+        }
+        this.playTrack(track);
+      },
+      onError: (message: string) => {
+        if (generation !== this._speechGeneration) {
+          return;
+        }
+        this.log("Synthesis failed: " + message);
+        this.routeFallback(text, provider, generation, allowFallback);
+      },
+    });
+  }
+
+  /** Delegate to the Snap fallback if allowed and distinct from the primary. */
+  private routeFallback(
+    text: string,
+    failedProvider: IVoiceProvider | null,
+    generation: number,
+    allowFallback: boolean,
+  ): void {
+    const fallback = this.resolveFallback();
+    if (allowFallback && fallback && fallback !== failedProvider) {
+      this.log("Falling back to Snap TTS");
+      this.synthesizeWith(text, fallback, generation, false);
+      return;
+    }
+    this.log("No usable fallback — caption only");
+    this.setSpeaking(false);
+  }
+
+  private resolvePrimary(): IVoiceProvider | null {
+    const provider =
+      this.backend === VoiceBackend.ElevenLabs
+        ? this.elevenLabsProvider
+        : this.snapProvider;
+    return isNull(provider) ? null : provider;
+  }
+
+  private resolveFallback(): IVoiceProvider | null {
+    return isNull(this.snapProvider) ? null : this.snapProvider;
+  }
+
+  // ─── Private — Playback & State ───────────────────────────────
+
+  private playTrack(track: AudioTrackAsset): void {
+    if (isNull(this.audioComponent)) {
+      this.log("AudioComponent not assigned — caption only");
+      return;
+    }
+    this.audioComponent.audioTrack = track;
+    this.audioComponent.play(1);
+    this.setSpeaking(true);
+  }
 
   private setSpeaking(value: boolean): void {
     if (this._isSpeaking === value) {

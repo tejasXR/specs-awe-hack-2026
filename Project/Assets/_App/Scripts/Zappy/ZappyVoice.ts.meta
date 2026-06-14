@@ -27,11 +27,13 @@
   PackagePolicy: CanBeUnpacked
   ScriptInputsHidden:
     audioComponent: false
+    backend: false
+    elevenLabsProvider: false
     emotionController: false
+    enableFallback: false
     enableLogging: false
+    snapProvider: false
     speechText: false
-    ttsModule: false
-    voiceName: false
   ScriptTypesHidden:
     {}
   ReadMe: !<reference> 00000000-0000-0000-0000-000000000000
@@ -42,10 +44,12 @@
     []
   DefaultScriptInputs:
     - emotionController: !<MappingBased.AssignableType> 00000000-0000-0000-0000-000000000000
-      ttsModule: !<reference.TextToSpeechModule> 00000000-0000-0000-0000-000000000000
       audioComponent: !<reference.AudioComponent> 00000000-0000-0000-0000-000000000000
       speechText: !<reference.Text> 00000000-0000-0000-0000-000000000000
-      voiceName: Sasha
+      backend: ""
+      snapProvider: !<MappingBased.AssignableType_1> 00000000-0000-0000-0000-000000000000
+      elevenLabsProvider: !<MappingBased.AssignableType_2> 00000000-0000-0000-0000-000000000000
+      enableFallback: true
       enableLogging: false
   ScriptTypes:
     -
@@ -54,10 +58,14 @@
     - '// @ui {"widget":"separator"}'
     - '// @ui {"widget":"label", "label":"References"}'
     - // @input AssignableType emotionController
-    - '// @input Asset.TextToSpeechModule ttsModule {"hint":"TextToSpeechModule asset — add via Resources > + > Text To Speech Module"}'
     - '// @input Component.AudioComponent audioComponent {"hint":"AudioComponent that plays the synthesized speech"}'
-    - '// @input Component.Text speechText {"hint":"Optional caption text — mirrors whatever Zappy says"}'
+    - '// @input Component.Text speechText {"hint":"Optional caption text — mirrors whatever Zappy says (tags stripped)"}'
+    - '// @ui {"widget":"separator"}'
+    - '// @ui {"widget":"label", "label":"Backends"}'
+    - '// @input string backend {"hint":"Which backend speaks by default", "widget":"combobox", "values":[{"label":"Snap TTS", "value":"snap"}, {"label":"ElevenLabs", "value":"elevenlabs"}]}'
+    - '// @input AssignableType_1 snapProvider {"hint":"Snap TextToSpeechModule provider — also the fallback voice"}'
+    - '// @input AssignableType_2 elevenLabsProvider {"hint":"ElevenLabs expressive provider"}'
     - '// @ui {"widget":"separator"}'
     - '// @ui {"widget":"label", "label":"Settings"}'
-    - '// @input string voiceName = "Sasha" {"hint":"TTS voice preset name"}'
+    - '// @input bool enableFallback = true {"hint":"If the primary backend is unusable or errors, fall back to Snap TTS"}'
     - '// @input bool enableLogging {"hint":"Enable debug logging"}'
