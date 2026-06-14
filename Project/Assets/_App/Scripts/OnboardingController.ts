@@ -115,6 +115,6 @@ export class OnboardingController extends BaseScriptComponent {
       isLast && !isFirst ? "" : onboardingStep.primaryButtonText;
     const secondaryLabel = isFirst ? "" : onboardingStep.secondaryButtonText;
 
-    this.instructionPrompt.changeButtonLabel(primaryLabel, secondaryLabel);
+    this.instructionPrompt.setButtonLabel(primaryLabel, secondaryLabel);
   }
 }
