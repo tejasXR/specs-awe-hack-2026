@@ -15,9 +15,9 @@ import Event, {
 } from "SpectaclesInteractionKit.lspkg/Utils/Event";
 import WorldCameraFinderProvider from "SpectaclesInteractionKit.lspkg/Providers/CameraProvider/WorldCameraFinderProvider";
 
-import { ZappyOptionUI } from "./Zappy/ZappyOptionUI";
-import { ZappyOptionsController } from "./Zappy/ZappyOptionsController";
-import { ZappyAI, ZappyResponse } from "./Zappy/ZappyAI";
+import { ZappyOptionUI } from "../Zappy/ZappyOptionUI";
+import { ZappyOptionsController } from "../Zappy/ZappyOptionsController";
+import { ZappyAI, ZappyResponse } from "../Zappy/ZappyAI";
 import {
   GameManager,
   GameScreen,
@@ -31,7 +31,7 @@ import {
   BreadboardBleController,
   BreadboardConnectionState,
   BreadboardStatus,
-} from "./BLE/BreadboardBleController";
+} from "../BLE/BreadboardBleController";
 
 // --- Component ---
 

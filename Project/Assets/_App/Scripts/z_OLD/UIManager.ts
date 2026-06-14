@@ -21,7 +21,7 @@ import {
   StepSubmitData,
   LevelCompleteData,
   ScreenChangeData,
-} from "../GameManager";
+} from "./GameManager";
 
 @component
 export class UIManager extends BaseScriptComponent {

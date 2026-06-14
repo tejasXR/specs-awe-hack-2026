@@ -174,9 +174,12 @@ export class GameManager extends BaseScriptComponent {
           placement: "",
           voice: {
             cue: "Grab the LED. The two legs are different lengths -- that difference tells the circuit which direction to push current.",
-            ambient: "LEDs are polarized -- they only let electricity through in one direction. The legs are how you know which way to hold it.",
-            confirm: "Long leg positive, short leg negative -- that's a universal rule on every LED you'll ever use.",
-            recovery: "That's the resistor -- the LED is the one with two legs of different lengths. Try the next one.",
+            ambient:
+              "LEDs are polarized -- they only let electricity through in one direction. The legs are how you know which way to hold it.",
+            confirm:
+              "Long leg positive, short leg negative -- that's a universal rule on every LED you'll ever use.",
+            recovery:
+              "That's the resistor -- the LED is the one with two legs of different lengths. Try the next one.",
           },
         },
         {
@@ -187,9 +190,12 @@ export class GameManager extends BaseScriptComponent {
           placement: "Long leg col 10, short leg col 11, row E",
           voice: {
             cue: "Long leg in row 10, short leg in row 12. Each row connects every hole in it -- position is everything.",
-            ambient: "The LED needs to straddle two separate rows so each leg has its own independent connection.",
-            confirm: "Those two legs are in completely separate rows -- we can connect them to different parts of the circuit independently.",
-            recovery: "Flip it -- long leg row 10. Spread the legs -- they need separate rows.",
+            ambient:
+              "The LED needs to straddle two separate rows so each leg has its own independent connection.",
+            confirm:
+              "Those two legs are in completely separate rows -- we can connect them to different parts of the circuit independently.",
+            recovery:
+              "Flip it -- long leg row 10. Spread the legs -- they need separate rows.",
           },
         },
         {
@@ -200,9 +206,12 @@ export class GameManager extends BaseScriptComponent {
           placement: "Col 7 to col 10, row C",
           voice: {
             cue: "Grab the resistor. Without it, too much current hits the LED at once -- this component protects it.",
-            ambient: "See those colored bands? Each one is a number -- they encode the resistance value. It slows current down.",
-            confirm: "The resistor doesn't care which way you plug it in. Unlike the LED, it works in both directions.",
-            recovery: "That's a wire -- grab the small cylinder with the colored stripes on it.",
+            ambient:
+              "See those colored bands? Each one is a number -- they encode the resistance value. It slows current down.",
+            confirm:
+              "The resistor doesn't care which way you plug it in. Unlike the LED, it works in both directions.",
+            recovery:
+              "That's a wire -- grab the small cylinder with the colored stripes on it.",
           },
         },
         {
@@ -213,9 +222,12 @@ export class GameManager extends BaseScriptComponent {
           placement: "Red rail to col 7, row A",
           voice: {
             cue: "Red wire, top rail to row 10. The red rail is your power source -- positive current starts here.",
-            ambient: "Those long rails are power rails. Red is always positive, blue or black is always ground -- standard convention everywhere.",
-            confirm: "Power connected. Current needs a complete loop to move -- it needs somewhere to return. One more step.",
-            recovery: "Use the red rail at top. Connect to row 10 -- that's where the resistor is waiting.",
+            ambient:
+              "Those long rails are power rails. Red is always positive, blue or black is always ground -- standard convention everywhere.",
+            confirm:
+              "Power connected. Current needs a complete loop to move -- it needs somewhere to return. One more step.",
+            recovery:
+              "Use the red rail at top. Connect to row 10 -- that's where the resistor is waiting.",
           },
         },
         {
@@ -226,7 +238,8 @@ export class GameManager extends BaseScriptComponent {
           placement: "Col 11, row A to ground rail",
           voice: {
             cue: "Black wire from column 11 to the ground rail. This completes the circuit loop.",
-            confirm: "Ground connected -- the circuit now has a complete path for current to flow.",
+            confirm:
+              "Ground connected -- the circuit now has a complete path for current to flow.",
           },
         },
         {
@@ -255,8 +268,10 @@ export class GameManager extends BaseScriptComponent {
           placement: "Col 20 (+), col 21 (-), row C",
           voice: {
             cue: "Place the buzzer. The plus sign tells you which side gets power -- polarity matters here.",
-            ambient: "Buzzers are polarized just like LEDs. Wrong direction and nothing happens.",
-            confirm: "Buzzer placed -- now we need a way to control when it sounds.",
+            ambient:
+              "Buzzers are polarized just like LEDs. Wrong direction and nothing happens.",
+            confirm:
+              "Buzzer placed -- now we need a way to control when it sounds.",
           },
         },
         {
@@ -267,7 +282,8 @@ export class GameManager extends BaseScriptComponent {
           placement: "Cols 15-17, rows C and E",
           voice: {
             cue: "Button bridges the center gap. When you press it, the two sides connect and current flows through.",
-            confirm: "Button seated -- it bridges the gap between the two halves of the board.",
+            confirm:
+              "Button seated -- it bridges the gap between the two halves of the board.",
           },
         },
         {
@@ -278,7 +294,8 @@ export class GameManager extends BaseScriptComponent {
           placement: "Col 17 to col 20, row D",
           voice: {
             cue: "Wire from the button output to the buzzer. This connects the switch to the sound maker.",
-            confirm: "Signal path connected -- press the button and current reaches the buzzer.",
+            confirm:
+              "Signal path connected -- press the button and current reaches the buzzer.",
           },
         },
         {
@@ -308,7 +325,15 @@ export class GameManager extends BaseScriptComponent {
       name: "MOTION SENSOR",
       description: "Build a motion-activated LED with PIR sensor and 555 timer",
       difficulty: "Advanced",
-      components: ["PIR SENSOR", "555 TIMER", "LED", "RESISTOR", "CAPACITOR", "RED WIRE", "BLK WIRE"],
+      components: [
+        "PIR SENSOR",
+        "555 TIMER",
+        "LED",
+        "RESISTOR",
+        "CAPACITOR",
+        "RED WIRE",
+        "BLK WIRE",
+      ],
       steps: [
         {
           instruction: "Place the PIR sensor on the breadboard",
@@ -318,7 +343,8 @@ export class GameManager extends BaseScriptComponent {
           placement: "VCC, OUT, GND pins in separate rows",
           voice: {
             cue: "Power up your PIR sensor. VCC, OUT, GND -- get those pins grounded and ready for some sense-sational action!",
-            ambient: "PIR stands for Passive Infrared. It detects heat from moving objects -- like your hand.",
+            ambient:
+              "PIR stands for Passive Infrared. It detects heat from moving objects -- like your hand.",
           },
         },
         {
@@ -329,7 +355,8 @@ export class GameManager extends BaseScriptComponent {
           placement: "Straddle center gap, notch left",
           voice: {
             cue: "The 555 timer is one of the most popular chips ever made. Notch goes left, pin 1 is bottom-left.",
-            ambient: "This chip can create pulses, delays, and oscillations. We're using it as a one-shot timer.",
+            ambient:
+              "This chip can create pulses, delays, and oscillations. We're using it as a one-shot timer.",
           },
         },
         {
@@ -360,7 +387,8 @@ export class GameManager extends BaseScriptComponent {
           placement: "Resistor: pins 6-7 to VCC. Capacitor: pin 6 to GND",
           voice: {
             cue: "Add the timing components. The resistor and capacitor together determine how long the LED stays on after motion.",
-            ambient: "RC timing -- the resistor controls charge rate, the capacitor stores energy. Together they set the delay.",
+            ambient:
+              "RC timing -- the resistor controls charge rate, the capacitor stores energy. Together they set the delay.",
           },
         },
         {
@@ -390,9 +418,7 @@ export class GameManager extends BaseScriptComponent {
   // --- Lifecycle ---
 
   onAwake(): void {
-    this.log(
-      "GameManager ready -- " + this.levels.length + " levels loaded",
-    );
+    this.log("GameManager ready -- " + this.levels.length + " levels loaded");
   }
 
   // --- Public API: State Queries ---
@@ -498,8 +524,14 @@ export class GameManager extends BaseScriptComponent {
     this.goToScreen(GameScreen.InLevel);
     this.emitStep();
     this.log(
-      "Level " + levelIndex + " started: " + this.levels[levelIndex].name +
-      " (" + this.levels[levelIndex].difficulty + ") mode=" + this.mode,
+      "Level " +
+        levelIndex +
+        " started: " +
+        this.levels[levelIndex].name +
+        " (" +
+        this.levels[levelIndex].difficulty +
+        ") mode=" +
+        this.mode,
     );
   }
 
@@ -509,7 +541,9 @@ export class GameManager extends BaseScriptComponent {
     if (!step) return;
 
     this.stepResults.push(true);
-    this.log("Step " + (this.currentStepIndex + 1) + " PASSED: " + step.instruction);
+    this.log(
+      "Step " + (this.currentStepIndex + 1) + " PASSED: " + step.instruction,
+    );
 
     this.onStepSubmittedEvent.invoke({
       index: this.currentStepIndex,
@@ -528,7 +562,9 @@ export class GameManager extends BaseScriptComponent {
 
     this.stepsSkipped++;
     this.stepResults.push(false);
-    this.log("Step " + (this.currentStepIndex + 1) + " SKIPPED: " + step.instruction);
+    this.log(
+      "Step " + (this.currentStepIndex + 1) + " SKIPPED: " + step.instruction,
+    );
 
     this.onStepSubmittedEvent.invoke({
       index: this.currentStepIndex,
@@ -582,9 +618,15 @@ export class GameManager extends BaseScriptComponent {
       // Level complete
       const elapsed = this.getElapsedTime();
       this.log(
-        "Level " + this.currentLevelIndex + " COMPLETE in " +
-        Math.floor(elapsed) + "s -- skipped " + this.stepsSkipped +
-        " of " + lvl.steps.length + " steps",
+        "Level " +
+          this.currentLevelIndex +
+          " COMPLETE in " +
+          Math.floor(elapsed) +
+          "s -- skipped " +
+          this.stepsSkipped +
+          " of " +
+          lvl.steps.length +
+          " steps",
       );
       this.onLevelCompletedEvent.invoke({
         levelIndex: this.currentLevelIndex,
@@ -605,11 +647,19 @@ export class GameManager extends BaseScriptComponent {
     const step = this.getCurrentStep();
     if (step) {
       this.log(
-        "Step " + (this.currentStepIndex + 1) + "/" + this.getTotalSteps() +
-        " [" + step.phase + "]: " + step.instruction,
+        "Step " +
+          (this.currentStepIndex + 1) +
+          "/" +
+          this.getTotalSteps() +
+          " [" +
+          step.phase +
+          "]: " +
+          step.instruction,
       );
       if (step.component) {
-        this.log("  Component: " + step.component + " | Placement: " + step.placement);
+        this.log(
+          "  Component: " + step.component + " | Placement: " + step.placement,
+        );
       }
       this.onStepAdvancedEvent.invoke({
         index: this.currentStepIndex,
