@@ -3,7 +3,10 @@ import {
   BreadboardCell,
   cellToLocalPosition,
   isBreadboardColumn,
+  isPowerRail,
   isWithinPlayground,
+  PowerRail,
+  railToLocalPosition,
 } from "./BreadboardGrid";
 import { InstructionPrompt } from "./InstructionPrompt";
 
@@ -23,6 +26,11 @@ export class InstructionDefinition {
   description: string = "";
 
   @input
+  @hint("Start from a power rail instead of a grid column")
+  startOnRail: boolean = false;
+
+  @input
+  @showIf("startOnRail", false)
   @widget(
     new ComboBoxWidget([
       new ComboBoxItem("A", "A"),
@@ -40,7 +48,19 @@ export class InstructionDefinition {
   columnStart: string = "A";
 
   @input
-  @widget(new SliderWidget(10, 40, 1)) // playground rows only
+  @showIf("startOnRail", true)
+  @widget(
+    new ComboBoxWidget([
+      new ComboBoxItem("+ near", "near-plus"),
+      new ComboBoxItem("+ far", "far-plus"),
+      new ComboBoxItem("− near", "near-minus"),
+      new ComboBoxItem("− far", "far-minus"),
+    ]),
+  )
+  startRail: string = "near-plus";
+
+  @input
+  @widget(new SliderWidget(10, 40, 1)) // playground rows; also the rail X-sample
   rowStart: number = 10;
 
   @input
@@ -180,15 +200,11 @@ export class InstructionsController extends BaseScriptComponent {
 
   private moveToStep(index: number): void {
     const instructionDefinition = this.instructionDefinitions[index];
-    const cellStart = this.toBreadboardCell({
-      column: instructionDefinition.columnStart,
-      row: instructionDefinition.rowStart,
-    });
 
     // Origin-LOCAL cell positions — the prompt parents its lines to the
     // breadboard origin, so these follow the board's position/rotation directly.
     const localTargets: vec3[] = [];
-    localTargets.push(cellToLocalPosition(cellStart, this.hoverOffsetCm));
+    localTargets.push(this.resolveStartLocal(instructionDefinition));
 
     if (
       instructionDefinition.useEndPin &&
@@ -227,6 +243,36 @@ export class InstructionsController extends BaseScriptComponent {
       return;
     }
     this.instructionPrompt.hide();
+  }
+
+  /**
+   * Resolve a definition's start endpoint to an origin-local position. The
+   * startOnRail flag is the discriminator: a rail start reuses rowStart as its
+   * long-axis sample, a grid start uses columnStart + rowStart.
+   */
+  private resolveStartLocal(definition: InstructionDefinition): vec3 {
+    if (definition.startOnRail) {
+      return railToLocalPosition(
+        this.toRail(definition.startRail),
+        definition.rowStart,
+        this.hoverOffsetCm,
+      );
+    }
+
+    const cellStart = this.toBreadboardCell({
+      column: definition.columnStart,
+      row: definition.rowStart,
+    });
+    return cellToLocalPosition(cellStart, this.hoverOffsetCm);
+  }
+
+  private toRail(value: string): PowerRail {
+    if (!isPowerRail(value)) {
+      throw new Error(
+        `InstructionsController: invalid rail "${value}" — expected near/far + plus/minus`,
+      );
+    }
+    return value;
   }
 
   /**
