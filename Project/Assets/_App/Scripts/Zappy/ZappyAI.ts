@@ -20,6 +20,7 @@ import {
 } from "./ZappyBrain";
 import { ZappyEmotionController } from "./ZappyEmotionController";
 import { ZappyVoice } from "./ZappyVoice";
+import { ZappyMovement } from "./ZappyMovement";
 import { ScaleVisibilityAnimator } from "../Utils/ScaleVisibilityAnimator";
 
 // Re-export the domain types so existing `from "./ZappyAI"` imports
@@ -42,6 +43,10 @@ export class ZappyAI extends BaseScriptComponent {
   @input
   @hint("ZappyVoice — speaks Zappy's lines")
   voice!: ZappyVoice;
+
+  @input
+  @hint("ZappyMovement — Zappy's locomotion")
+  movement!: ZappyMovement;
 
   @input
   hideOnStart: boolean = false;
@@ -181,7 +186,12 @@ export class ZappyAI extends BaseScriptComponent {
   }
 
   hide(): void {
-    this._animator.hide();
+    this._animator.hide(false);
+  }
+
+  /** Send Zappy travelling to a world position (e.g. a setup spot). */
+  moveTo(position: vec3): void {
+    this.movement.moveToPosition(position);
   }
 
   private routeResponse(resp: ZappyResponse): void {

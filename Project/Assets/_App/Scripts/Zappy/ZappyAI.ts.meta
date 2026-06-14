@@ -30,6 +30,7 @@
     emotionController: false
     enableLogging: false
     hideOnStart: false
+    movement: false
     voice: false
   ScriptTypesHidden:
     {}
@@ -43,6 +44,7 @@
     - brain: !<MappingBased.AssignableType> 00000000-0000-0000-0000-000000000000
       emotionController: !<MappingBased.AssignableType_1> 00000000-0000-0000-0000-000000000000
       voice: !<MappingBased.AssignableType_2> 00000000-0000-0000-0000-000000000000
+      movement: !<MappingBased.AssignableType_3> 00000000-0000-0000-0000-000000000000
       hideOnStart: false
       enableLogging: true
   ScriptTypes:
@@ -54,6 +56,7 @@
     - '// @input AssignableType brain {"hint":"ZappyBrain — the Gemini client"}'
     - "// @input AssignableType_1 emotionController {\"hint\":\"ZappyEmotionController — holds Zappy's mood\"}"
     - "// @input AssignableType_2 voice {\"hint\":\"ZappyVoice — speaks Zappy's lines\"}"
+    - "// @input AssignableType_3 movement {\"hint\":\"ZappyMovement — Zappy's locomotion\"}"
     - // @input bool hideOnStart
     - '// @ui {"widget":"separator"}'
     - '// @ui {"widget":"label", "label":"Settings"}'
