@@ -13,10 +13,12 @@
  */
 
 export const BREADBOARD_COLUMNS = "ABCDEFGHIJ";
-
 export const HOLE_PITCH_CM: number = 0.254;
-
 export const BANK_GAP_CM: number = 0.58;
+
+const ROW_MIN = 1;
+const ROW_MAX = 64;
+const FIRST_FAR_BANK_INDEX = 5; // column F — first column past the trench
 
 export type BreadboardColumn =
   | "A"
@@ -50,9 +52,14 @@ export interface BreadboardGridConfig {
   hoverOffsetCm: number;
 }
 
-const ROW_MIN = 1;
-const ROW_MAX = 64;
-const FIRST_FAR_BANK_INDEX = 5; // column F — first column past the trench
+export type PowerRail = "near-plus" | "near-minus" | "far-plus" | "far-minus";
+
+export const RAIL_Z_OFFSET_CM: Record<PowerRail, number> = {
+  "near-minus": -1,
+  "near-plus": -1.15,
+  "far-minus": 4.05,
+  "far-plus": 3.8,
+};
 
 export function columnToIndex(column: BreadboardColumn): number {
   return BREADBOARD_COLUMNS.indexOf(column);
@@ -113,4 +120,28 @@ export function cellToWorldPosition(
 
 export function isBreadboardColumn(value: string): value is BreadboardColumn {
   return BREADBOARD_COLUMNS.indexOf(value) >= 0;
+}
+
+export function isPowerRail(value: string): value is PowerRail {
+  return value in RAIL_Z_OFFSET_CM;
+}
+
+export function railToLocalPosition(
+  rail: PowerRail,
+  row: number,
+  hoverOffset: number,
+): vec3 {
+  const rowOffset = (row - 1) * HOLE_PITCH_CM;
+  return new vec3(-rowOffset, hoverOffset, RAIL_Z_OFFSET_CM[rail]);
+}
+
+export function railToWorldPosition(
+  rail: PowerRail,
+  row: number,
+  hoverOffset: number,
+  breadboardOrigin: Transform,
+): vec3 {
+  return breadboardOrigin
+    .getWorldTransform()
+    .multiplyPoint(railToLocalPosition(rail, row, hoverOffset));
 }
