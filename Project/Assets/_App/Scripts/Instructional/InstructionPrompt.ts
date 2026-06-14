@@ -1,10 +1,20 @@
 import LineRenderer from "SpectaclesInteractionKit.lspkg/Utils/views/LineRenderer/LineRenderer";
 
 const MIN_LINE_LENGTH_CM = 0.01;
-const LINE_WIDTH_START_CM = 0.05;
-const LINE_WIDTH_END_CM = 0.05;
 const MAX_LINES = 3;
 const STEP_PREFIX = "Step";
+
+export type LineWidthPreset = "thin" | "default" | "thick";
+
+// cm widths per preset; start/end are kept separate so a preset can taper later.
+const LINE_WIDTH_PRESETS_CM: Record<
+  LineWidthPreset,
+  { start: number; end: number }
+> = {
+  thin: { start: 0.05, end: 0.05 },
+  default: { start: 0.1, end: 0.1 },
+  thick: { start: 0.2, end: 0.2 },
+};
 
 @component
 export class InstructionPrompt extends BaseScriptComponent {
@@ -42,6 +52,8 @@ export class InstructionPrompt extends BaseScriptComponent {
 
   private _lines: LineRenderer[] = [];
   private _lineRenderingEnabled: boolean = true;
+  private _lineWidthStartCm: number = LINE_WIDTH_PRESETS_CM.thin.start;
+  private _lineWidthEndCm: number = LINE_WIDTH_PRESETS_CM.thin.end;
 
   private _updateEvent!: UpdateEvent;
   private _localTargets: vec3[] = [];
@@ -130,6 +142,17 @@ export class InstructionPrompt extends BaseScriptComponent {
     }
   }
 
+  setLineWidth(preset: LineWidthPreset): void {
+    const width = LINE_WIDTH_PRESETS_CM[preset];
+    this._lineWidthStartCm = width.start;
+    this._lineWidthEndCm = width.end;
+
+    for (const line of this._lines) {
+      line.startWidth = width.start;
+      line.endWidth = width.end;
+    }
+  }
+
   reset(): void {
     this.hide();
     this._localTargets = [];
@@ -172,8 +195,8 @@ export class InstructionPrompt extends BaseScriptComponent {
     const line = new LineRenderer({
       material: this.lineMaterial,
       points: [vec3.zero(), new vec3(0, 0, 1)],
-      startWidth: LINE_WIDTH_START_CM,
-      endWidth: LINE_WIDTH_END_CM,
+      startWidth: this._lineWidthStartCm,
+      endWidth: this._lineWidthEndCm,
       lookAtCamera: true, // billboard the strip so it's visible from any angle
     });
 
