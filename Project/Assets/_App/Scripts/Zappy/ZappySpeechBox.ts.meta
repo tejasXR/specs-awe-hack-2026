@@ -1,0 +1,46 @@
+- !<AssetImportMetadata/8cc7432c-eaa1-4a08-928d-c0f2608ef55f>
+  ImportedAssetIds:
+    TypeScriptAsset: !<reference> ad5807d2-0392-480d-9e3e-3d528208b45b
+  ImporterName: TypeScriptAssetImporter
+  PrimaryAsset: !<reference> ad5807d2-0392-480d-9e3e-3d528208b45b
+  PackageType: NotAPackage
+  LegacyPackagePolicy: ~
+  ExtraData:
+    {}
+  AssetDataMap:
+    TypeScriptAsset: !<own> 9ec17a6a-90ff-4e29-b6e6-0cfa127ebf48
+  DependentFiles:
+    []
+  ImporterSettings: !<AssetImporterSettings>
+    {}
+  CompressionSettings: !<own> 00000000-0000-0000-0000-000000000000
+- !<TypeScriptAssetData/9ec17a6a-90ff-4e29-b6e6-0cfa127ebf48>
+  SvgIcon: ""
+  SetupScript:
+    code: ""
+  Description: ""
+  VersionMajor: 0
+  VersionMinor: 0
+  VersionPatch: 0
+  ComponentUid: 6e618e83-cc54-4695-9c1b-c8d14795726e
+  ExportUid: 00000000-0000-0000-0000-000000000000
+  PackagePolicy: CanBeUnpacked
+  ScriptInputsHidden:
+    speechText: false
+  ScriptTypesHidden:
+    {}
+  ReadMe: !<reference> 00000000-0000-0000-0000-000000000000
+  DeclarationFile: !<reference> 00000000-0000-0000-0000-000000000000
+  Tags:
+    []
+  Attachments:
+    []
+  DefaultScriptInputs:
+    - speechText: !<reference.Text> 00000000-0000-0000-0000-000000000000
+  ScriptTypes:
+    -
+      {}
+  InputLines:
+    - '// @ui {"widget":"separator"}'
+    - '// @ui {"widget":"label", "label":"References"}'
+    - '// @input Component.Text speechText {"hint":"Caption text that mirrors whatever Zappy says"}'

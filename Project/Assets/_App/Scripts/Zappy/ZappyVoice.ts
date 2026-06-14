@@ -2,11 +2,11 @@
  * ZappyVoice — the voice coordinator: one stable surface, swappable backend.
  *
  * Driven by the ZappyAI facade, which calls speak() for each line. ZappyVoice
- * owns everything shared across voice backends — caption mirroring, the
- * speaking-state machine, audio playback, the onSpeakingChanged event, and
- * staleness handling — and delegates only synthesis ("text + mood → audio
- * track") to a swappable IVoiceProvider. Any system may also call speak()
- * directly to voice a fixed line without a Gemini round-trip.
+ * owns everything shared across voice backends — the speaking-state machine,
+ * audio playback, the onSpeakingChanged event, and staleness handling — and
+ * delegates synthesis ("text + mood → audio track") to a swappable
+ * IVoiceProvider and caption display to a ZappySpeechBox. Any system may also
+ * call speak() directly to voice a fixed line without a Gemini round-trip.
  *
  * Two providers are wired in the Inspector (Snap TTS and ElevenLabs); the
  * `backend` selector picks the primary. If the primary is unconfigured or its
@@ -23,6 +23,7 @@ import { ZappyEmotionController } from "./ZappyEmotionController";
 import { IVoiceProvider } from "./IVoiceProvider";
 import { ZappyTTSVoiceProvider } from "./ZappyTTSVoiceProvider";
 import { ZappyElevenLabsVoiceProvider } from "./ZappyElevenLabsVoiceProvider";
+import { ZappySpeechBox } from "./ZappySpeechBox";
 
 // ─── Types ──────────────────────────────────────────────────────
 
@@ -54,9 +55,9 @@ export class ZappyVoice extends BaseScriptComponent {
   audioComponent!: AudioComponent;
 
   @input
-  @hint("Optional caption text — mirrors whatever Zappy says (tags stripped)")
+  @hint("Optional speech box — mirrors whatever Zappy says (tags stripped)")
   @allowUndefined
-  speechText!: Text;
+  speechBox!: ZappySpeechBox;
 
   @ui.separator
   @ui.label("Backends")
@@ -151,8 +152,8 @@ export class ZappyVoice extends BaseScriptComponent {
     allowFallback: boolean,
   ): void {
     // Caption immediately, rendered the way this backend speaks the line.
-    if (!isNull(this.speechText)) {
-      this.speechText.text = provider ? provider.toCaption(text) : text;
+    if (!isNull(this.speechBox)) {
+      this.speechBox.setCaption(provider ? provider.toCaption(text) : text);
     }
 
     if (!provider || !provider.isAvailable()) {
