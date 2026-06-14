@@ -20,7 +20,7 @@ import Event, {
 } from "SpectaclesInteractionKit.lspkg/Utils/Event";
 import WorldCameraFinderProvider from "SpectaclesInteractionKit.lspkg/Providers/CameraProvider/WorldCameraFinderProvider";
 import { ComponentDetector, ComponentDetectionResult } from "./ComponentDetector";
-import { DetectedComponent } from "./ComponentIdentifier";
+import { DetectedComponent, boxCenter } from "./ComponentIdentifier";
 
 // ─── Component ──────────────────────────────────────────────────
 
@@ -141,11 +141,9 @@ export class ComponentOverlay extends BaseScriptComponent {
       entry.nameText.text = comp.label;
       entry.descText.text = comp.description;
 
-      // Position in world space
-      const worldPos = this.imageToWorldPosition(
-        comp.imagePosX,
-        comp.imagePosY,
-      );
+      // Position in world space — project the box center (full-frame 0–1).
+      const center = boxCenter(comp.box);
+      const worldPos = this.imageToWorldPosition(center.x, center.y);
       entry.root.getTransform().setWorldPosition(worldPos);
 
       // Billboard: face the camera

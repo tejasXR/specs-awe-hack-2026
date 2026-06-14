@@ -26,8 +26,7 @@
   ExportUid: 00000000-0000-0000-0000-000000000000
   PackagePolicy: CanBeUnpacked
   ScriptInputsHidden:
-    brain: false
-    cameraTexture: false
+    cameraSource: false
     confidenceThreshold: false
     enableLogging: false
     scanCooldownSeconds: false
@@ -40,8 +39,7 @@
   Attachments:
     []
   DefaultScriptInputs:
-    - brain: !<MappingBased.AssignableType> 00000000-0000-0000-0000-000000000000
-      cameraTexture: !<reference.Texture> 00000000-0000-0000-0000-000000000000
+    - cameraSource: !<MappingBased.AssignableType> 00000000-0000-0000-0000-000000000000
       confidenceThreshold: 0.500000
       scanCooldownSeconds: !<float> 3.000000
       enableLogging: false
@@ -51,8 +49,7 @@
   InputLines:
     - '// @ui {"widget":"separator"}'
     - '// @ui {"widget":"label", "label":"References"}'
-    - '// @input AssignableType brain {"hint":"ZappyBrain — used for Gemini vision requests"}'
-    - '// @input Asset.Texture cameraTexture {"hint":"Texture from the device camera (CropCameraTexture or DeviceCamera)"}'
+    - '// @input AssignableType cameraSource {"hint":"Shared CameraTexture source — provides the full camera frame"}'
     - '// @ui {"widget":"separator"}'
     - '// @ui {"widget":"label", "label":"Settings"}'
     - '// @input float confidenceThreshold = 0.5 {"hint":"Minimum confidence to include a detection (0.0–1.0)", "widget":"slider", "min":0, "max":1, "step":0.05}'

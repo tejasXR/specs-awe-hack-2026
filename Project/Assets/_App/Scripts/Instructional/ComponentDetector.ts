@@ -26,10 +26,10 @@ import Event, {
 import {
   DetectedComponent,
   COMPONENT_INFO,
-  ComponentClass,
+  BoundingBox,
 } from "./ComponentIdentifier";
-import { ZappyResponse } from "../Zappy/ZappyAI";
-import { ZappyBrain } from "../Zappy/ZappyBrain";
+import { GeminiService } from "../Services/GeminiService";
+import { CameraTexture } from "CropCameraTexture.lspkg/Scripts/CameraTexture";
 
 // ─── Types ──────────────────────────────────────────────────────
 
@@ -40,6 +40,33 @@ export interface ComponentDetectionResult {
   timestamp: number;
 }
 
+/**
+ * Gemini structured-output schema for a detection scan — paired with
+ * responseMimeType "application/json" so the model returns parseable JSON
+ * (no markdown fences) with a real bounding box per component.
+ * Box format: [ymin, xmin, ymax, xmax], normalized 0–1000, top-left origin.
+ */
+const DETECTION_SCHEMA = {
+  type: "object",
+  properties: {
+    components: {
+      type: "array",
+      items: {
+        type: "object",
+        properties: {
+          classId: { type: "string" },
+          label: { type: "string" },
+          description: { type: "string" },
+          confidence: { type: "number" },
+          box: { type: "array", items: { type: "number" } },
+        },
+        required: ["classId", "label", "confidence", "box"],
+      },
+    },
+  },
+  required: ["components"],
+};
+
 // ─── Component ──────────────────────────────────────────────────
 
 @component
@@ -47,14 +74,9 @@ export class ComponentDetector extends BaseScriptComponent {
   @ui.separator
   @ui.label("References")
   @input
-  @hint("ZappyBrain — used for Gemini vision requests")
+  @hint("Shared CameraTexture source — provides the full camera frame")
   @allowUndefined
-  brain!: ZappyBrain;
-
-  @input
-  @hint("Texture from the device camera (CropCameraTexture or DeviceCamera)")
-  @allowUndefined
-  cameraTexture!: Texture;
+  cameraSource!: CameraTexture;
 
   @ui.separator
   @ui.label("Settings")
@@ -113,24 +135,9 @@ export class ComponentDetector extends BaseScriptComponent {
   }
 
   private onStart(): void {
-    if (isNull(this.brain)) {
-      this.log("brain not wired — component detection disabled");
-      return;
+    if (isNull(this.cameraSource)) {
+      this.log("camera source not wired — component detection disabled");
     }
-    // Listen for brain responses to parse component data from them.
-    // The brain is shared with ZappyAI — we listen but only process
-    // responses that match our prompt format (contain "components" array).
-    this._unsubs.push(
-      this.brain.onResponse.add((resp) => this.tryParseDetection(resp)),
-    );
-    this._unsubs.push(
-      this.brain.onRequestFailed.add((error) => {
-        if (this._isScanning) {
-          this._isScanning = false;
-          this.onScanFailedEvent.invoke(error);
-        }
-      }),
-    );
   }
 
   // ─── Public API ───────────────────────────────────────────────
@@ -152,9 +159,9 @@ export class ComponentDetector extends BaseScriptComponent {
       return false;
     }
 
-    if (isNull(this.cameraTexture)) {
-      this.log("Camera texture not assigned — cannot scan");
-      this.onScanFailedEvent.invoke("Camera texture not assigned");
+    if (isNull(this.cameraSource)) {
+      this.log("Camera source not assigned — cannot scan");
+      this.onScanFailedEvent.invoke("Camera source not assigned");
       return false;
     }
 
@@ -177,15 +184,21 @@ export class ComponentDetector extends BaseScriptComponent {
    * encoding textures (same approach as CheckWorkController).
    */
   private captureAndSend(): void {
+    const texture = this.cameraSource.getOriginalCameraTexture();
+    if (!texture) {
+      this.log("Camera source has no texture yet — cannot scan");
+      this._isScanning = false;
+      this.onScanFailedEvent.invoke("Camera texture unavailable");
+      return;
+    }
     try {
       Base64.encodeTextureAsync(
-        this.cameraTexture,
+        texture,
         (base64Data: string) => {
           this.log(
             "Frame encoded (" + Math.round(base64Data.length / 1024) + " KB)",
           );
-          const prompt = this.buildDetectionPrompt();
-          this.brain.requestWithImage(prompt, base64Data, "image/jpeg");
+          this.requestDetection(base64Data);
         },
         () => {
           this.log("Failed to encode texture to base64");
@@ -206,42 +219,60 @@ export class ComponentDetector extends BaseScriptComponent {
 
   private buildDetectionPrompt(): string {
     return (
-      "Analyze this image of electronic components on or near a breadboard. " +
-      "Identify each visible component and return a JSON object with this EXACT format:\n" +
-      '{"components":[{"classId":"resistor","label":"220Ω Resistor",' +
-      '"description":"Limits current","confidence":0.95,' +
-      '"imagePosX":0.5,"imagePosY":0.3}]}\n\n' +
+      "Detect the electronic components on or near a breadboard in this image. " +
+      "For each component, return its class, a specific label, a brief " +
+      "educational one-line description, your confidence (0.0–1.0), and a " +
+      "bounding box.\n" +
+      "Bounding box format: [ymin, xmin, ymax, xmax], each value normalized " +
+      "0–1000 with the origin at the top-left of the image.\n" +
       "Valid classId values: resistor, led_red, led_green, led_blue, " +
       "led_yellow, buzzer, capacitor, button, jumper_wire, potentiometer, " +
       "battery, unknown.\n" +
-      "imagePosX and imagePosY are normalized 0.0–1.0 from top-left.\n" +
-      "confidence is your certainty 0.0–1.0.\n" +
-      "Include a specific label (e.g. '220Ω Resistor' not just 'Resistor').\n" +
-      'If no components are visible, return {"components":[]}.\n' +
-      "RESPOND WITH ONLY THE JSON, NO OTHER TEXT."
+      "Use a specific label (e.g. '220Ω Resistor' not just 'Resistor'). " +
+      "If no components are visible, return an empty components array."
     );
   }
 
   // ─── Private — Response Parsing ───────────────────────────────
 
   /**
-   * Attempt to parse a ZappyBrain response as component detection data.
-   * Only processes responses that contain a "components" array — regular
-   * Zappy chat responses are ignored.
+   * Make the scoped, schema-constrained Gemini call for this scan. Owns its
+   * own promise — independent of Zappy chat or any other vision caller.
    */
-  private tryParseDetection(resp: ZappyResponse): void {
+  private requestDetection(base64Data: string): void {
+    const prompt = this.buildDetectionPrompt();
+    const generationConfig = {
+      responseMimeType: "application/json",
+      responseSchema: DETECTION_SCHEMA,
+    } as any;
+
+    GeminiService.generateWithImage(prompt, base64Data, "image/jpeg", {
+      generationConfig,
+    })
+      .then((rawText) => this.handleDetectionResponse(rawText))
+      .catch((error) => {
+        this.log("Detection request failed: " + error);
+        this._isScanning = false;
+        this.onScanFailedEvent.invoke("" + error);
+      });
+  }
+
+  /**
+   * Parse and publish the structured detection response. Unlike the old
+   * shared-brain path, this response belongs to us alone, so a parse failure
+   * is a real scan failure (not someone else's chat reply to ignore).
+   */
+  private handleDetectionResponse(raw: string): void {
     if (!this._isScanning) return;
 
-    const raw = resp.speech;
     const components = this.parseComponents(raw);
+    this._isScanning = false;
+
     if (!components) {
-      // Not a detection response — might be a regular Zappy reply.
-      // Don't fail the scan, just ignore.
-      this.log("Response doesn't look like detection data — ignoring");
+      this.log("Could not parse detection response");
+      this.onScanFailedEvent.invoke("Malformed detection response");
       return;
     }
-
-    this._isScanning = false;
 
     // Filter by confidence threshold
     const filtered = components.filter(
@@ -285,14 +316,15 @@ export class ComponentDetector extends BaseScriptComponent {
       const results: DetectedComponent[] = [];
       for (const item of obj.components) {
         if (!item.classId || typeof item.classId !== "string") continue;
+        const box = this.normalizeBox(item.box);
+        if (!box) continue; // a detection without a usable box can't be placed
         results.push({
           classId: item.classId,
           label: item.label || item.classId,
           description: item.description || "",
           confidence:
             typeof item.confidence === "number" ? item.confidence : 0.5,
-          imagePosX: typeof item.imagePosX === "number" ? item.imagePosX : 0.5,
-          imagePosY: typeof item.imagePosY === "number" ? item.imagePosY : 0.5,
+          box,
         });
       }
 
@@ -301,6 +333,32 @@ export class ComponentDetector extends BaseScriptComponent {
       this.log("Parse error: " + e);
       return null;
     }
+  }
+
+  /**
+   * Gemini returns boxes as [ymin, xmin, ymax, xmax] normalized 0–1000.
+   * Convert to a normalized 0–1 BoundingBox, or null if malformed.
+   */
+  private normalizeBox(raw: any): BoundingBox | null {
+    if (!Array.isArray(raw) || raw.length < 4) return null;
+    const ymin = raw[0];
+    const xmin = raw[1];
+    const ymax = raw[2];
+    const xmax = raw[3];
+    if (
+      typeof ymin !== "number" ||
+      typeof xmin !== "number" ||
+      typeof ymax !== "number" ||
+      typeof xmax !== "number"
+    ) {
+      return null;
+    }
+    return {
+      xMin: xmin / 1000,
+      yMin: ymin / 1000,
+      xMax: xmax / 1000,
+      yMax: ymax / 1000,
+    };
   }
 
   // ─── Private ──────────────────────────────────────────────────

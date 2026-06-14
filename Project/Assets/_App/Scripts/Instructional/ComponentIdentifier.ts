@@ -8,6 +8,17 @@
 
 // ─── Types ──────────────────────────────────────────────────────
 
+/**
+ * Axis-aligned bounding box in normalized image space (0–1, origin top-left).
+ * Stored normalized so it's independent of capture resolution.
+ */
+export interface BoundingBox {
+  xMin: number;
+  yMin: number;
+  xMax: number;
+  yMax: number;
+}
+
 export interface DetectedComponent {
   /** Machine-readable class name (e.g. "resistor", "led_red"). */
   classId: string;
@@ -18,11 +29,15 @@ export interface DetectedComponent {
   /** Confidence score from the detector, 0.0–1.0. */
   confidence: number;
   /**
-   * Approximate position in normalized image space (0–1 from top-left).
-   * Used to project the overlay into world space relative to the camera.
+   * True bounding box in normalized image space (0–1 from top-left). Used to
+   * project the overlay into world space and size it to the detection.
    */
-  imagePosX: number;
-  imagePosY: number;
+  box: BoundingBox;
+}
+
+/** Center of a bounding box in the same normalized 0–1 image space. */
+export function boxCenter(box: BoundingBox): { x: number; y: number } {
+  return { x: (box.xMin + box.xMax) / 2, y: (box.yMin + box.yMax) / 2 };
 }
 
 /** Well-known electronic component classes for breadboard projects. */
