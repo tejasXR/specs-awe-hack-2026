@@ -155,7 +155,9 @@
   ScriptAsset: !<reference> 76a0a880-fa7e-4afc-8817-049d1a0ca386
   ScriptInputsDefault:
     stepNumberText: true
-    buttonLabelText: true
+    primaryButtonLabelText: true
+    secondaryButtonLabelText: true
+    tertiaryButtonLabelText: true
   ScriptTypesDefault:
     {}
   ScriptInputs:
@@ -163,7 +165,9 @@
       stepNumberText: !<reference.Text> 00000000-0000-0000-0000-000000000000
       titleText: !<reference.Text> d4670ba4-89b1-4df3-adff-0f4033241fb8
       descriptionText: !<reference.Text> 58202976-c421-4eec-8d56-bed1e9ecd83c
-      buttonLabelText: !<reference.Text> 00000000-0000-0000-0000-000000000000
+      primaryButtonLabelText: !<reference.Text> 00000000-0000-0000-0000-000000000000
+      secondaryButtonLabelText: !<reference.Text> 00000000-0000-0000-0000-000000000000
+      tertiaryButtonLabelText: !<reference.Text> 00000000-0000-0000-0000-000000000000
       lineMaterial: !<reference.Material> 99f3ffb5-2d0e-4867-b3f9-a73b15f29744
       lineStart: !<reference.SceneObject> 07e9262b-6d4a-4d36-be4e-3eb509499332
   ScriptTypes:
