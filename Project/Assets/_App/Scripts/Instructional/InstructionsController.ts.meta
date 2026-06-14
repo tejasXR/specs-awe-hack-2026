@@ -64,7 +64,7 @@
     - '@property {bool} startOnRail {"hint":"Start from a power rail instead of a grid column"}'
     - '@property {string} columnStart = "A" {"widget":"combobox", "values":[{"label":"A", "value":"A"}, {"label":"B", "value":"B"}, {"label":"C", "value":"C"}, {"label":"D", "value":"D"}, {"label":"E", "value":"E"}, {"label":"F", "value":"F"}, {"label":"G", "value":"G"}, {"label":"H", "value":"H"}, {"label":"I", "value":"I"}, {"label":"J", "value":"J"}], "showIf":"startOnRail", "showIfValue":false}'
     - '@property {string} startRail = "near-plus" {"widget":"combobox", "values":[{"label":"+ near", "value":"near-plus"}, {"label":"+ far", "value":"far-plus"}, {"label":"− near", "value":"near-minus"}, {"label":"− far", "value":"far-minus"}], "showIf":"startOnRail", "showIfValue":true}'
-    - '@property {float} rowStart = 10 {"widget":"slider", "min":1, "max":32, "step":1}'
+    - '@property {float} rowStart = 1 {"widget":"slider", "min":1, "max":32, "step":1}'
     - "@property {bool} useEndPin"
     - '@property {bool} endOnRail {"hint":"End on a power rail instead of a grid column", "showIf":"useEndPin", "showIfValue":true}'
     - '@property {string} columnEnd {"widget":"combobox", "values":[{"label":"A", "value":"A"}, {"label":"B", "value":"B"}, {"label":"C", "value":"C"}, {"label":"D", "value":"D"}, {"label":"E", "value":"E"}, {"label":"F", "value":"F"}, {"label":"G", "value":"G"}, {"label":"H", "value":"H"}, {"label":"I", "value":"I"}, {"label":"J", "value":"J"}], "showIf":"endOnRail", "showIfValue":false}'
