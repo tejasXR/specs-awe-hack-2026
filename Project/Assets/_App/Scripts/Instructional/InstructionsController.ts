@@ -14,6 +14,7 @@ import {
   railToLocalPosition,
 } from "./BreadboardGrid";
 import { InstructionPrompt } from "./InstructionPrompt";
+import { MusicController } from "../MusicController";
 
 export interface InstructionStepEvent {
   instruction: InstructionDefinition;
@@ -23,6 +24,7 @@ export interface InstructionStepEvent {
 
 @typedef
 export class InstructionDefinition {
+  @ui.label("Instruction Text")
   @input
   title!: string;
 
@@ -31,11 +33,25 @@ export class InstructionDefinition {
   description: string = "";
 
   @input
-  @hint(
-    "A recap/'check your work' step — shows title + description, draws no callout line",
-  )
+  @widget(new TextAreaWidget())
+  zappyTextBox: string = "";
+
+  @input
+  primaryButtonText!: string;
+
+  @input
+  secondaryButtonText!: string;
+
+  @input
+  tertiaryButtonText!: string;
+
+  @ui.separator
+  @ui.label("Lesson Settings")
+  @input
   isCheckpoint: boolean = false;
 
+  @ui.separator
+  @ui.label("Breadboard Cell Settings")
   @input
   @hint("Start from a power rail instead of a grid column")
   startOnRail: boolean = false;
@@ -139,6 +155,15 @@ const NO_STEP = -1;
 export class InstructionsController extends BaseScriptComponent {
   @ui.separator
   @ui.label("References")
+  @input
+  musicController!: MusicController;
+
+  @input
+  mainTrack!: AudioTrackAsset;
+
+  @input
+  mainTrackVolume!: number;
+
   @input
   @hint(
     "Transform whose pivot sits at breadboard hole A1 — prompts spawn as its children",
@@ -302,6 +327,9 @@ export class InstructionsController extends BaseScriptComponent {
     if (this.instructionDefinitions.length === 0) {
       return;
     }
+
+    this.musicController.play(this.mainTrack, this.mainTrackVolume);
+
     this.moveToStep(0);
   }
 
