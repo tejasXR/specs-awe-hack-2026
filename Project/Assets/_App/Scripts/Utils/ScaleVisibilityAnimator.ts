@@ -53,7 +53,6 @@ export class ScaleVisibilityAnimator {
     this.hideDurationMs = config?.hideDurationMs ?? 180;
   }
 
-  /** Animate in: enable, then tween the current scale up to the shown scale. */
   show(): void {
     this.stopActiveTween();
     this.sceneObject.enabled = true;
@@ -67,8 +66,7 @@ export class ScaleVisibilityAnimator {
       .start();
   }
 
-  /** Animate out: tween the current scale down to zero, then disable. */
-  hide(): void {
+  hide(hideObjectAfterScale: boolean = true): void {
     this.stopActiveTween();
 
     this.activeTween = LSTween.scaleToLocal(
@@ -78,19 +76,19 @@ export class ScaleVisibilityAnimator {
     )
       .easing(Easing.Back.In)
       .onComplete(() => {
-        this.sceneObject.enabled = false;
+        if (hideObjectAfterScale) {
+          this.sceneObject.enabled = false;
+        }
       })
       .start();
   }
 
-  /** Snap to the shown scale and enable — no animation. */
   showImmediate(): void {
     this.stopActiveTween();
     this.sceneObject.enabled = true;
     this.transform.setLocalScale(this.shownScale);
   }
 
-  /** Snap to zero scale and disable — no animation. Use for initial state. */
   hideImmediate(): void {
     this.stopActiveTween();
     this.transform.setLocalScale(vec3.zero());
