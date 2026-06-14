@@ -6,6 +6,7 @@ import {
   isPowerRail,
   isWithinPlayground,
   PowerRail,
+  RAIL_LABEL,
   railToLocalPosition,
 } from "./BreadboardGrid";
 import { InstructionPrompt } from "./InstructionPrompt";
@@ -67,8 +68,16 @@ export class InstructionDefinition {
   useEndPin: boolean = false;
 
   @input
-  @allowUndefined
   @showIf("useEndPin", true)
+  @hint("End on a power rail instead of a grid column")
+  endOnRail: boolean = false;
+
+  // showIf gates on endOnRail (not useEndPin) so the rail/column pickers swap
+  // cleanly. When useEndPin is off, columnEnd may still render (endOnRail
+  // defaults false) — harmless, resolveEndLocal ignores it unless useEndPin.
+  @input
+  @allowUndefined
+  @showIf("endOnRail", false)
   @widget(
     new ComboBoxWidget([
       new ComboBoxItem("A", "A"),
@@ -87,8 +96,21 @@ export class InstructionDefinition {
 
   @input
   @allowUndefined
+  @showIf("endOnRail", true)
+  @widget(
+    new ComboBoxWidget([
+      new ComboBoxItem("+ near", "near-plus"),
+      new ComboBoxItem("+ far", "far-plus"),
+      new ComboBoxItem("− near", "near-minus"),
+      new ComboBoxItem("− far", "far-minus"),
+    ]),
+  )
+  endRail: string | undefined;
+
+  @input
+  @allowUndefined
   @showIf("useEndPin", true)
-  @widget(new SliderWidget(10, 40, 1))
+  @widget(new SliderWidget(10, 40, 1)) // playground rows; also the rail X-sample
   rowEnd: number | undefined;
 }
 
@@ -116,9 +138,6 @@ export class InstructionsController extends BaseScriptComponent {
   @input
   @hint("The single InstructionPrompt living in the scene")
   instructionPrompt!: InstructionPrompt;
-
-  @input
-  instructionPromptLocationObj!: SceneObject;
 
   @input
   @hint(
@@ -155,6 +174,76 @@ export class InstructionsController extends BaseScriptComponent {
 
   get stepCount(): number {
     return this.instructionDefinitions.length;
+  }
+
+  /** The instruction currently being shown, or null before the sequence starts. */
+  getCurrentInstruction(): InstructionDefinition | null {
+    if (
+      this._currentIndex < 0 ||
+      this._currentIndex >= this.instructionDefinitions.length
+    ) {
+      return null;
+    }
+    return this.instructionDefinitions[this._currentIndex];
+  }
+
+  /**
+   * Every instruction from the first through the current one (inclusive) — the
+   * build state a "check my work" pass should validate against. Empty before
+   * the sequence starts.
+   */
+  getCompletedInstructions(): InstructionDefinition[] {
+    if (this._currentIndex < 0) {
+      return [];
+    }
+    return this.instructionDefinitions.slice(0, this._currentIndex + 1);
+  }
+
+  /**
+   * Render an instruction as a single human/electrical line for prompts and
+   * logs, e.g. "Place the resistor (from + power rail (near) @ row 10 to A12)".
+   */
+  describeInstruction(definition: InstructionDefinition): string {
+    const start = definition.startOnRail
+      ? this.railLabel(definition.startRail) + " @ row " + definition.rowStart
+      : this.cellLabel(definition.columnStart, definition.rowStart);
+
+    let line = definition.title;
+
+    const end = this.describeEnd(definition);
+    line += end !== null ? ` (from ${start} to ${end})` : ` (at ${start})`;
+
+    if (definition.description) {
+      line += `: ${definition.description}`;
+    }
+    return line;
+  }
+
+  private describeEnd(definition: InstructionDefinition): string | null {
+    if (!definition.useEndPin) {
+      return null;
+    }
+    if (definition.endOnRail) {
+      if (definition.endRail === undefined) {
+        return null;
+      }
+      const railRow = definition.rowEnd ?? definition.rowStart;
+      return this.railLabel(definition.endRail) + " @ row " + railRow;
+    }
+    if (definition.columnEnd === undefined || definition.rowEnd === undefined) {
+      return null;
+    }
+    return this.cellLabel(definition.columnEnd, definition.rowEnd);
+  }
+
+  private cellLabel(column: string, row: number): string {
+    return `${column}${row}`;
+  }
+
+  // Valid rails resolve via the shared RAIL_LABEL map (single source of truth in
+  // BreadboardGrid); an unrecognized string echoes back, matching the old default.
+  private railLabel(rail: string): string {
+    return isPowerRail(rail) ? RAIL_LABEL[rail] : rail;
   }
 
   onAwake(): void {
@@ -206,19 +295,12 @@ export class InstructionsController extends BaseScriptComponent {
     const localTargets: vec3[] = [];
     localTargets.push(this.resolveStartLocal(instructionDefinition));
 
-    if (
-      instructionDefinition.useEndPin &&
-      instructionDefinition.columnEnd !== undefined &&
-      instructionDefinition.rowEnd !== undefined
-    ) {
-      const cellEndData = this.toBreadboardCell({
-        column: instructionDefinition.columnEnd,
-        row: instructionDefinition.rowEnd,
-      });
-      localTargets.push(cellToLocalPosition(cellEndData, this.hoverOffsetCm));
+    const endLocal = this.resolveEndLocal(instructionDefinition);
+    if (endLocal !== null) {
+      localTargets.push(endLocal);
     }
 
-    this.instructionPrompt.setStepText(this.currentIndex, this.stepCount);
+    this.instructionPrompt.setStepText(index, this.stepCount);
 
     this.instructionPrompt.setTitleAndDescription(
       instructionDefinition.title,
@@ -264,6 +346,38 @@ export class InstructionsController extends BaseScriptComponent {
       row: definition.rowStart,
     });
     return cellToLocalPosition(cellStart, this.hoverOffsetCm);
+  }
+
+  /**
+   * Resolve a definition's optional end endpoint to an origin-local position,
+   * or null when there's no end. Mirrors resolveStartLocal: endOnRail picks a
+   * rail (sampled at rowEnd, falling back to rowStart), otherwise a grid cell.
+   */
+  private resolveEndLocal(definition: InstructionDefinition): vec3 | null {
+    if (!definition.useEndPin) {
+      return null;
+    }
+
+    if (definition.endOnRail) {
+      if (definition.endRail === undefined) {
+        return null;
+      }
+      const railRow = definition.rowEnd ?? definition.rowStart;
+      return railToLocalPosition(
+        this.toRail(definition.endRail),
+        railRow,
+        this.hoverOffsetCm,
+      );
+    }
+
+    if (definition.columnEnd === undefined || definition.rowEnd === undefined) {
+      return null;
+    }
+    const cellEnd = this.toBreadboardCell({
+      column: definition.columnEnd,
+      row: definition.rowEnd,
+    });
+    return cellToLocalPosition(cellEnd, this.hoverOffsetCm);
   }
 
   private toRail(value: string): PowerRail {

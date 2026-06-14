@@ -31,7 +31,6 @@
     hoverOffsetCm: false
     instructionDefinitions: false
     instructionPrompt: false
-    instructionPromptLocationObj: false
   ScriptTypesHidden:
     {}
   ReadMe: !<reference> 00000000-0000-0000-0000-000000000000
@@ -43,7 +42,6 @@
   DefaultScriptInputs:
     - breadboardOrigin: !<reference.SceneObject> 00000000-0000-0000-0000-000000000000
       instructionPrompt: !<MappingBased.AssignableType> 00000000-0000-0000-0000-000000000000
-      instructionPromptLocationObj: !<reference.SceneObject> 00000000-0000-0000-0000-000000000000
       hoverOffsetCm: !<float> 1.000000
       instructionDefinitions:
         []
@@ -56,7 +54,6 @@
     - '// @ui {"widget":"label", "label":"References"}'
     - '// @input SceneObject breadboardOrigin {"hint":"Transform whose pivot sits at breadboard hole A1 — prompts spawn as its children"}'
     - '// @input AssignableType instructionPrompt {"hint":"The single InstructionPrompt living in the scene"}'
-    - // @input SceneObject instructionPromptLocationObj
     - "// @input float hoverOffsetCm = 1 {\"hint\":\"Lift above the board surface so the prompt doesn't clip into it, in cm\"}"
     - '// @ui {"widget":"separator"}'
     - '// @ui {"widget":"label", "label":"Sequence"}'
@@ -69,7 +66,9 @@
     - '@property {string} startRail = "near-plus" {"widget":"combobox", "values":[{"label":"+ near", "value":"near-plus"}, {"label":"+ far", "value":"far-plus"}, {"label":"− near", "value":"near-minus"}, {"label":"− far", "value":"far-minus"}], "showIf":"startOnRail", "showIfValue":true}'
     - '@property {float} rowStart = 10 {"widget":"slider", "min":10, "max":40, "step":1}'
     - "@property {bool} useEndPin"
-    - '@property {string} columnEnd {"widget":"combobox", "values":[{"label":"A", "value":"A"}, {"label":"B", "value":"B"}, {"label":"C", "value":"C"}, {"label":"D", "value":"D"}, {"label":"E", "value":"E"}, {"label":"F", "value":"F"}, {"label":"G", "value":"G"}, {"label":"H", "value":"H"}, {"label":"I", "value":"I"}, {"label":"J", "value":"J"}], "showIf":"useEndPin", "showIfValue":true}'
+    - '@property {bool} endOnRail {"hint":"End on a power rail instead of a grid column", "showIf":"useEndPin", "showIfValue":true}'
+    - '@property {string} columnEnd {"widget":"combobox", "values":[{"label":"A", "value":"A"}, {"label":"B", "value":"B"}, {"label":"C", "value":"C"}, {"label":"D", "value":"D"}, {"label":"E", "value":"E"}, {"label":"F", "value":"F"}, {"label":"G", "value":"G"}, {"label":"H", "value":"H"}, {"label":"I", "value":"I"}, {"label":"J", "value":"J"}], "showIf":"endOnRail", "showIfValue":false}'
+    - '@property {string} endRail {"widget":"combobox", "values":[{"label":"+ near", "value":"near-plus"}, {"label":"+ far", "value":"far-plus"}, {"label":"− near", "value":"near-minus"}, {"label":"− far", "value":"far-minus"}], "showIf":"endOnRail", "showIfValue":true}'
     - '@property {float} rowEnd {"widget":"slider", "min":10, "max":40, "step":1, "showIf":"useEndPin", "showIfValue":true}'
     - "*/"
     - "// @input InstructionDefinition[] instructionDefinitions = {}"
