@@ -10,6 +10,7 @@
     - !<own> b86cbb43-e82e-48ed-89e0-a449f10cd53e
     - !<own> 213426da-4382-4563-9929-b8365695cd47
     - !<own> 33f8fdfd-99e7-4e0f-949b-55795cdef06f
+    - !<own> 3d94ea28-6de0-47d1-8d38-ea13e7856ec3
     - !<own> 9cbf7fa1-10b9-4585-bf97-4b3c760186be
   layers: !<Layers/267ee9a7-aff2-4f9d-9a49-f71214747d03>
     userLayers:
@@ -1213,7 +1214,7 @@
   Volume: 1.000000
   EnableMixToSnap: false
   RecordVolume: 1.000000
-  EnableSpatialAudio: false
+  EnableSpatialAudio: true
   EnableDistanceEffect: false
   CurveType: Logarithm
   MinDistance: 0.000000
@@ -2242,6 +2243,21 @@
   BodySettingValue: 1.000000
   Damping: 0.000000
   AngularDamping: 0.000000
+- !<SceneObject/2891332d-6389-4c45-9a71-fbb7b4533582>
+  PrefabRemaps:
+    []
+  Name: Eleven Labs Voice
+  Enabled: true
+  Layers: 1
+  LocalTransform: !<TransformEntity>
+    Position: {x: 0.000000, y: 0.000000, z: 0.000000}
+    Rotation: {x: 0.000000, y: 0.000000, z: 0.000000}
+    Scale: {x: 1.000000, y: 1.000000, z: 1.000000}
+    HasSegmentScaleCompensation: false
+  Children:
+    []
+  Components:
+    - !<own> a7b33131-e03e-4ce6-b5a9-6b9515bde38b
 - !<SceneObject/28af58eb-78c3-41dd-99d3-466a91aaf34c>
   PrefabRemaps:
     []
@@ -2359,7 +2375,7 @@
   PrefabRemaps:
     []
   Name: Zappy
-  Enabled: true
+  Enabled: false
   Layers: 1
   LocalTransform: !<TransformEntity>
     Position: {x: 0.000000, y: 1.000000, z: -50.000000}
@@ -2367,9 +2383,12 @@
     Scale: {x: 1.000000, y: 1.000000, z: 1.000000}
     HasSegmentScaleCompensation: false
   Children:
+    - !<own> 61b63589-af24-4f25-8fd6-9c89ebb311ea
+    - !<own> 2891332d-6389-4c45-9a71-fbb7b4533582
     - !<own> fd5cba35-f969-49db-83be-3561516d6219
     - !<own> d0465920-bae7-46f9-9787-8b3cacc77332
     - !<own> 11195d15-f42f-403a-9995-e8529957f102
+    - !<own> 35475de3-b55f-4782-8b96-587188b15c32
   Components:
     - !<own> ba9b0252-db63-4aee-ba69-de0f00706d9b
     - !<own> 13eea8c6-3a41-42e1-86fe-1d95051270ac
@@ -2782,12 +2801,11 @@
     Scale: {x: 1.000000, y: 1.000000, z: 1.000000}
     HasSegmentScaleCompensation: false
   Children:
-    - !<own> 3d94ea28-6de0-47d1-8d38-ea13e7856ec3
+    - !<own> b5397192-990c-4068-a4e7-5b37b40d3e5e
+    - !<own> 0af33c18-ea34-4408-b8e0-dea027c17886
     - !<own> 599941be-0bce-4490-b2d6-675ce62d22f1
     - !<own> 56dfefe5-eba1-4d1a-b973-4c52513e04fe
     - !<own> 82571ce9-7591-44b5-b9ba-23552e8a6a3d
-    - !<own> 0af33c18-ea34-4408-b8e0-dea027c17886
-    - !<own> b5397192-990c-4068-a4e7-5b37b40d3e5e
   Components:
     []
 - !<SceneObject/346f10b6-02fb-49a8-aca4-ed75d71efb50>
@@ -3001,6 +3019,21 @@
     - !<own> 86222742-5a0e-4b19-843e-5c0cb272b7e5
     - !<own> 76c0ecfb-4761-4710-b2da-5758fc7ad2ae
     - !<own> 1536a41c-0569-4847-aed8-82b1a0a573d8
+  Components:
+    []
+- !<SceneObject/35475de3-b55f-4782-8b96-587188b15c32>
+  PrefabRemaps:
+    []
+  Name: Speech Bubble
+  Enabled: true
+  Layers: 1
+  LocalTransform: !<TransformEntity>
+    Position: {x: 0.000000, y: 0.000000, z: 0.000000}
+    Rotation: {x: 0.000000, y: 0.000000, z: 0.000000}
+    Scale: {x: 1.000000, y: 1.000000, z: 1.000000}
+    HasSegmentScaleCompensation: false
+  Children:
+    - !<own> 5d60e26a-3271-4f4a-b1cd-0660820a18cb
   Components:
     []
 - !<SceneObject/35660d29-e8cb-4d8f-8f24-143b10f9e58c>
@@ -3968,7 +4001,7 @@
   Layers: 1
   LocalTransform: !<TransformEntity>
     Position: {x: 0.000000, y: 0.000002, z: 0.556795}
-    Rotation: {x: -0.000000, y: -0.000005, z: -0.000005}
+    Rotation: {x: 0.000000, y: 0.000000, z: 0.000000}
     Scale: {x: 1.000000, y: 1.000000, z: 1.000000}
     HasSegmentScaleCompensation: false
   Children:
@@ -4919,14 +4952,17 @@
   Enabled: true
   ScriptAsset: !<reference> c55c1546-0738-41fa-b8d3-403f47517d0b
   ScriptInputsDefault:
-    componentDividers: true
+    {}
   ScriptTypesDefault:
     {}
   ScriptInputs:
     "":
       menuConsole: !<MappingBased.AssignableType> 24ae494e-b174-48a0-8e8d-7245cff230b5
+      movementModal: !<reference.SceneObject> eb7c8cac-922a-4321-92e4-8caf7c80dcdf
       componentDividers: !<reference.SceneObject[]>
-        []
+        - !<reference> b642b8a3-8009-4b3b-aea4-516faf9907e6
+        - !<reference> ad004ab3-b45f-4007-ba77-2ea597b0e7e5
+        - !<reference> 25e6441a-5fae-492b-b918-327e88c3a6f9
   ScriptTypes:
     "":
       {}
@@ -5023,6 +5059,21 @@
     - !<own> a18c948d-374c-48f2-884b-a17e6cc700fe
   Components:
     []
+- !<SceneObject/5d60e26a-3271-4f4a-b1cd-0660820a18cb>
+  PrefabRemaps:
+    []
+  Name: Zappy Text
+  Enabled: true
+  Layers: 1
+  LocalTransform: !<TransformEntity>
+    Position: {x: 0.000000, y: 0.000000, z: 0.000000}
+    Rotation: {x: 0.000000, y: 0.000000, z: 0.000000}
+    Scale: {x: 1.000000, y: 1.000000, z: 1.000000}
+    HasSegmentScaleCompensation: false
+  Children:
+    []
+  Components:
+    - !<own> d4882835-5cb0-4f81-bae3-72366d4c1819
 - !<SceneObject/5db2f331-cd82-49f2-98cf-ed969953a18f>
   PrefabRemaps:
     []
@@ -5221,6 +5272,21 @@
   ForceCompound: false
   Intangible: false
   ShowCollider: false
+- !<SceneObject/61b63589-af24-4f25-8fd6-9c89ebb311ea>
+  PrefabRemaps:
+    []
+  Name: TTS Voice
+  Enabled: true
+  Layers: 1
+  LocalTransform: !<TransformEntity>
+    Position: {x: 0.000000, y: 0.000000, z: 0.000000}
+    Rotation: {x: 0.000000, y: 0.000000, z: 0.000000}
+    Scale: {x: 1.000000, y: 1.000000, z: 1.000000}
+    HasSegmentScaleCompensation: false
+  Children:
+    []
+  Components:
+    - !<own> dd5eb12a-66e1-4a96-a0a3-1fdc3e48d661
 - !<SceneObject/61b8294b-224b-4519-9740-ac1baade80e6>
   PrefabRemaps:
     []
@@ -7237,21 +7303,6 @@
     - !<own> e9e9515a-e410-4a02-b184-72f407997bb4
   Components:
     []
-- !<SceneObject/878e3399-8e5a-44be-8e04-b894533c080c>
-  PrefabRemaps:
-    []
-  Name: "Rotation Point [Right]"
-  Enabled: true
-  Layers: 1
-  LocalTransform: !<TransformEntity>
-    Position: {x: 0.000000, y: 2.000000, z: 0.000000}
-    Rotation: {x: 0.000000, y: 0.000000, z: 0.000000}
-    Scale: {x: 1.000000, y: 1.000000, z: 1.000000}
-    HasSegmentScaleCompensation: false
-  Children:
-    []
-  Components:
-    []
 - !<SceneObject/8924bb31-801d-4972-8e6b-fb1a2e8feab3>
   PrefabRemaps:
     []
@@ -7264,11 +7315,10 @@
     Scale: {x: 1.000000, y: 1.000000, z: 1.000000}
     HasSegmentScaleCompensation: false
   Children:
+    - !<own> eb7c8cac-922a-4321-92e4-8caf7c80dcdf
     - !<own> b642b8a3-8009-4b3b-aea4-516faf9907e6
     - !<own> ad004ab3-b45f-4007-ba77-2ea597b0e7e5
     - !<own> 25e6441a-5fae-492b-b918-327e88c3a6f9
-    - !<own> f71c25b2-8ebe-46ac-8fd1-cc55328b5cc0
-    - !<own> eb7c8cac-922a-4321-92e4-8caf7c80dcdf
   Components:
     []
 - !<AudioComponent/8a21b74d-a39e-4e06-bd9d-655b2090b92d>
@@ -9600,6 +9650,31 @@
   ScriptTypes:
     "":
       {}
+- !<ScriptComponent/a7b33131-e03e-4ce6-b5a9-6b9515bde38b>
+  PrefabRemaps:
+    []
+  Name: ZappyElevenLabsVoiceProvider
+  Enabled: true
+  ScriptAsset: !<reference> 7b0ca224-b2d6-46a1-a835-ae7d2c40dfb9
+  ScriptInputsDefault:
+    stability: true
+    similarityBoost: true
+    styleExaggeration: true
+    enableLogging: true
+  ScriptTypesDefault:
+    {}
+  ScriptInputs:
+    "":
+      apiKey: sk_2f9e06d6cbcc9e4cf3bce2a632717f815b8ee6f687ae6af2
+      voiceId: sk_2f9e06d6cbcc9e4cf3bce2a632717f815b8ee6f687ae6af2
+      modelId: eleven_flash_v2_5
+      stability: 0.300000
+      similarityBoost: 0.750000
+      styleExaggeration: 0.400000
+      enableLogging: false
+  ScriptTypes:
+    "":
+      {}
 - !<SceneObject/a7c21d23-95fd-46ba-b339-7d583267e343>
   PrefabRemaps:
     []
@@ -10060,7 +10135,7 @@
   Enabled: true
   ScriptAsset: !<reference> 9b9ba524-38ea-4684-9630-7420ac456a29
   ScriptInputsDefault:
-    hideSpaceSetupOnStart: true
+    {}
   ScriptTypesDefault:
     {}
   ScriptInputs:
@@ -10069,7 +10144,7 @@
       musicController: !<MappingBased.AssignableType_1> 8df55664-959b-4d8a-91ed-cda0ab3af4bc
       introTrack: !<reference.AudioTrackAsset> 90518471-2c6e-4da3-826a-2907f2e4e201
       spaceSetup: !<MappingBased.AssignableType_2> 5a9e8d73-a99d-45b2-8ab8-ff9ddefcafd3
-      hideSpaceSetupOnStart: false
+      hideSpaceSetupOnStart: true
   ScriptTypes:
     "":
       {}
@@ -11317,18 +11392,19 @@
   Enabled: true
   ScriptAsset: !<reference> 48835098-7cfb-4484-91bc-3d61af11fd57
   ScriptInputsDefault:
-    speechText: true
-    voiceName: true
+    enableFallback: true
     enableLogging: true
   ScriptTypesDefault:
     {}
   ScriptInputs:
     "":
       emotionController: !<MappingBased.AssignableType> c50a6368-e171-4a94-8eef-e0f21d636b95
-      ttsModule: !<reference.TextToSpeechModule> 66611ae7-ebe5-4cd2-99c9-5b7ba67ca8b1
       audioComponent: !<reference.AudioComponent> 13eea8c6-3a41-42e1-86fe-1d95051270ac
-      speechText: !<reference.Text> 00000000-0000-0000-0000-000000000000
-      voiceName: Sasha
+      speechText: !<reference.Text> d4882835-5cb0-4f81-bae3-72366d4c1819
+      backend: elevenlabs
+      snapProvider: !<MappingBased.AssignableType_1> dd5eb12a-66e1-4a96-a0a3-1fdc3e48d661
+      elevenLabsProvider: !<MappingBased.AssignableType_2> a7b33131-e03e-4ce6-b5a9-6b9515bde38b
+      enableFallback: true
       enableLogging: false
   ScriptTypes:
     "":
@@ -11946,6 +12022,87 @@
     []
   Components:
     []
+- !<Text/d4882835-5cb0-4f81-bae3-72366d4c1819>
+  PrefabRemaps:
+    []
+  Name: Text
+  Enabled: true
+  RenderOrder: 0
+  StretchMode: Stretch
+  VerticalAlignment: Center
+  HorizontalAlignment: Center
+  MeshShadowMode: None
+  ShadowColor: {x: 1.000000, y: 1.000000, z: 1.000000, w: 1.000000}
+  ShadowDensity: 1.000000
+  Text: Zappy speech text
+  Editable: false
+  ShowEditingPreview: true
+  TouchHandler: !<reference> 00000000-0000-0000-0000-000000000000
+  SizeToFit: false
+  FontSize: 48
+  Font: !<reference> 00000000-0000-0000-0000-000000000000
+  LayoutRect:
+    left: -7.500000
+    bottom: -2.250000
+    right: 7.500000
+    top: 2.250000
+  OverflowVertical: Overflow
+  OverflowHorizontal: Overflow
+  Fill: !<TextFill>
+    Mode: Solid
+    Color: {x: 1.000000, y: 1.000000, z: 1.000000, w: 1.000000}
+    Texture: !<reference> 00000000-0000-0000-0000-000000000000
+    ColorTint: {x: 1.000000, y: 1.000000, z: 1.000000, w: 1.000000}
+    TileCount: 5.000000
+    TileZone: Rect
+    TextureStretch: FitWidth
+  BlendMode: PremultipliedAlpha
+  Outline: !<OutlineSettings>
+    Enabled: false
+    Fill: !<TextFill>
+      Mode: Solid
+      Color: {x: 0.000000, y: 0.000000, z: 0.000000, w: 1.000000}
+      Texture: !<reference> 00000000-0000-0000-0000-000000000000
+      ColorTint: {x: 1.000000, y: 1.000000, z: 1.000000, w: 1.000000}
+      TileCount: 5.000000
+      TileZone: Rect
+      TextureStretch: FitWidth
+    Size: 0.250000
+  Dropshadow: !<DropshadowSettings>
+    Enabled: false
+    Fill: !<TextFill>
+      Mode: Solid
+      Color: {x: 0.000000, y: 0.000000, z: 0.000000, w: 1.000000}
+      Texture: !<reference> 00000000-0000-0000-0000-000000000000
+      ColorTint: {x: 1.000000, y: 1.000000, z: 1.000000, w: 1.000000}
+      TileCount: 5.000000
+      TileZone: Rect
+      TextureStretch: FitWidth
+    OffsetX: 0.250000
+    OffsetY: 0.250000
+  Background: !<BackgroundSettings>
+    Enabled: false
+    Fill: !<TextFill>
+      Mode: Solid
+      Color: {x: 0.000000, y: 0.000000, z: 0.000000, w: 1.000000}
+      Texture: !<reference> 00000000-0000-0000-0000-000000000000
+      ColorTint: {x: 1.000000, y: 1.000000, z: 1.000000, w: 1.000000}
+      TileCount: 5.000000
+      TileZone: Rect
+      TextureStretch: FitWidth
+    Margins:
+      left: 0.000000
+      bottom: 0.000000
+      right: 0.000000
+      top: 0.000000
+    CornerRadius: 0.000000
+  AdvancedLayout: !<TextAdvancedLayout>
+    ExtentsTarget: !<reference> 00000000-0000-0000-0000-000000000000
+    LetterSpacing: 0.000000
+    LineSpacing: 1.000000
+    CapitalizationOverride: None
+  DepthTest: false
+  TwoSided: false
 - !<ScriptComponent/d4da50d8-2953-4b43-a832-242c8c2cdd9f>
   PrefabRemaps:
     []
@@ -12151,7 +12308,7 @@
 - !<SceneObject/d80b2331-0a3a-4e76-8e81-1aeb385dad3a>
   PrefabRemaps:
     []
-  Name: Press Breadboard
+  Name: Press Breadboard Panel
   Enabled: true
   Layers: 1
   LocalTransform: !<TransformEntity>
@@ -12334,6 +12491,25 @@
   ForceCompound: false
   Intangible: false
   ShowCollider: false
+- !<ScriptComponent/dd5eb12a-66e1-4a96-a0a3-1fdc3e48d661>
+  PrefabRemaps:
+    []
+  Name: ZappyTTSVoiceProvider
+  Enabled: true
+  ScriptAsset: !<reference> 9e1f6138-84ad-405c-9e4e-d200021a82c5
+  ScriptInputsDefault:
+    voiceName: true
+    enableLogging: true
+  ScriptTypesDefault:
+    {}
+  ScriptInputs:
+    "":
+      ttsModule: !<reference.TextToSpeechModule> 66611ae7-ebe5-4cd2-99c9-5b7ba67ca8b1
+      voiceName: Sasha
+      enableLogging: false
+  ScriptTypes:
+    "":
+      {}
 - !<ScriptComponent/e019faef-8927-43e1-ba2d-da41640a55fe>
   PrefabRemaps:
     []
@@ -13408,7 +13584,6 @@
     "":
       breadboardOrigin: !<reference.SceneObject> d1b20632-19f8-4f71-be2a-709dc137d1f3
       instructionPrompt: !<MappingBased.AssignableType> 7e281ca4-c9d7-4453-8e28-c86df6d7c76b
-      instructionPromptLocationObj: !<reference.SceneObject> fe02b5ba-64ab-4738-b1c5-de35ca740e6b
       hoverOffsetCm: !<float> 0.000000
       instructionDefinitions:
         - title: TEST TITLE
@@ -13418,7 +13593,9 @@
           startRail: far-plus
           rowStart: !<float> 10.000000
           useEndPin: true
+          endOnRail: false
           columnEnd: J
+          endRail: ""
           rowEnd: !<float> 10.000000
       autoStart: true
   ScriptTypes:
@@ -13458,7 +13635,7 @@
 - !<SceneObject/eb7c8cac-922a-4321-92e4-8caf7c80dcdf>
   PrefabRemaps:
     []
-  Name: Grab Point
+  Name: Movement Modal
   Enabled: true
   Layers: 1
   LocalTransform: !<TransformEntity>
@@ -14019,21 +14196,6 @@
     []
   Components:
     - !<own> 1365a061-aa00-4628-8f23-8953596d7181
-- !<SceneObject/f71c25b2-8ebe-46ac-8fd1-cc55328b5cc0>
-  PrefabRemaps:
-    []
-  Name: Grab Point
-  Enabled: true
-  Layers: 1
-  LocalTransform: !<TransformEntity>
-    Position: {x: 0.000000, y: 0.000000, z: 0.000000}
-    Rotation: {x: 0.000000, y: 0.000000, z: 0.000000}
-    Scale: {x: 1.000000, y: 1.000000, z: 1.000000}
-    HasSegmentScaleCompensation: false
-  Children:
-    - !<own> 878e3399-8e5a-44be-8e04-b894533c080c
-  Components:
-    []
 - !<SceneObject/f88590ec-d6a5-4d00-96f0-c097491468f8>
   PrefabRemaps:
     []
