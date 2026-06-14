@@ -28,6 +28,7 @@
   Enabled: true
   ScriptAsset: !<reference> 2efdd206-e8d1-4aa8-a4c7-bf3142bdf39c
   ScriptInputsDefault:
+    onboardingController: true
     instructionPrompt: true
     hoverOffsetCm: true
     instructionDefinitions: true
@@ -37,7 +38,8 @@
   ScriptInputs:
     "":
       breadboardOrigin: !<reference.SceneObject> 3805ce42-8b9f-4696-a624-c0b5225017c0
-      instructionPrompt: !<MappingBased.AssignableType> 00000000-0000-0000-0000-000000000000
+      onboardingController: !<MappingBased.AssignableType> 00000000-0000-0000-0000-000000000000
+      instructionPrompt: !<MappingBased.AssignableType_1> 00000000-0000-0000-0000-000000000000
       hoverOffsetCm: !<float> 1.000000
       instructionDefinitions:
         []
