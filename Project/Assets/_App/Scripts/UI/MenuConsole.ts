@@ -33,14 +33,14 @@ export class MenuConsole extends BaseScriptComponent {
   onAwake() {
     this.createEvent("OnStartEvent").bind(() => this.onStart());
 
-    this._animator = new ScaleVisibilityAnimator(this.container, {
+    this._animator = new ScaleVisibilityAnimator(this.getSceneObject(), {
+      showDurationMs: 600,
+      hideDurationMs: 300,
       shownScale: vec3.one(),
     });
   }
 
   private onStart() {
-    this._animator.hideImmediate();
-
     this.primaryButton.onTriggerEnd.add(() =>
       this.onPrimaryPressedEvent.invoke(),
     );
@@ -61,6 +61,6 @@ export class MenuConsole extends BaseScriptComponent {
   }
 
   public hide(): void {
-    this._animator.hide();
+    this._animator.hide(false);
   }
 }
