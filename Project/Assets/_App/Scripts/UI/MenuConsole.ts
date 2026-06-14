@@ -52,6 +52,10 @@ export class MenuConsole extends BaseScriptComponent {
     );
   }
 
+  public setPosition(position: vec3): void {
+    this.getTransform().setWorldPosition(position);
+  }
+
   public show(): void {
     this._animator.show();
   }
