@@ -1,6 +1,10 @@
 import LineRenderer from "SpectaclesInteractionKit.lspkg/Utils/views/LineRenderer/LineRenderer";
 
 const MIN_LINE_LENGTH_CM = 0.01;
+const LINE_WIDTH_START_CM = 0.05;
+const LINE_WIDTH_END_CM = 0.05;
+const MAX_LINES = 3;
+const STEP_PREFIX = "Step";
 
 @component
 export class InstructionPrompt extends BaseScriptComponent {
@@ -12,22 +16,22 @@ export class InstructionPrompt extends BaseScriptComponent {
 
   @input
   @allowUndefined
-  descriptionText!: Text;
+  descriptionText: Text | undefined;
 
   @input
   @allowUndefined
   @hint("Label for the primary button")
-  primaryButtonLabelText!: Text;
+  primaryButtonLabelText: Text | undefined;
 
   @input
   @allowUndefined
   @hint("Label for the secondary button")
-  secondaryButtonLabelText!: Text;
+  secondaryButtonLabelText: Text | undefined;
 
   @input
   @allowUndefined
   @hint("Label for the tertiary button")
-  tertiaryButtonLabelText!: Text;
+  tertiaryButtonLabelText: Text | undefined;
 
   @input
   @hint("Material for the callout line (LineRenderer clones it)")
@@ -37,11 +41,7 @@ export class InstructionPrompt extends BaseScriptComponent {
   lineStart!: SceneObject;
 
   private _lines: LineRenderer[] = [];
-  private _lineWidthStartCm: number = 0.05;
-  private _lineWidthEndCm: number = 0.05;
-  private _maxLines: number = 3;
-
-  private _stepStringPrefix: string = "Step ";
+  private _lineRenderingEnabled: boolean = true;
 
   private _updateEvent!: UpdateEvent;
   private _localTargets: vec3[] = [];
@@ -55,7 +55,9 @@ export class InstructionPrompt extends BaseScriptComponent {
     this._updateEvent.enabled = false;
   }
 
-  onStart() {}
+  onStart() {
+    this.reset();
+  }
 
   overrideStepText(overrideText: string) {
     if (this.stepNumberText) {
@@ -66,12 +68,7 @@ export class InstructionPrompt extends BaseScriptComponent {
   // stepIndex is 0-based; presented 1-based (index + 1).
   setStepText(stepIndex: number, totalStepsInSequence: number): void {
     if (this.stepNumberText) {
-      this.stepNumberText.text =
-        this._stepStringPrefix +
-        " " +
-        (stepIndex + 1) +
-        "/" +
-        totalStepsInSequence;
+      this.stepNumberText.text = `${STEP_PREFIX} ${stepIndex + 1}/${totalStepsInSequence}`;
     }
   }
 
@@ -101,7 +98,7 @@ export class InstructionPrompt extends BaseScriptComponent {
     this.applyButtonLabel(this.tertiaryButtonLabelText, tertiaryButtonLabel);
   }
 
-  private applyButtonLabel(textElement: Text, label: string): void {
+  private applyButtonLabel(textElement: Text | undefined, label: string): void {
     if (!textElement) {
       return;
     }
@@ -120,17 +117,19 @@ export class InstructionPrompt extends BaseScriptComponent {
 
   hide(): void {
     this._updateEvent.enabled = false;
-    for (let i = 0; i < this._lines.length; i++) {
-      this._lines[i].setEnabled(false);
+    this.setLineRenderingEnabled(false);
+  }
+
+  setLineRenderingEnabled(enabled: boolean): void {
+    this._lineRenderingEnabled = enabled;
+
+    if (!enabled) {
+      this.disableLines();
+    } else if (this._updateEvent.enabled) {
+      this.updateLinePositions(); // loop is live — reflect the change now
     }
   }
 
-  /**
-   * Return the prompt to a neutral state when handing off to another part of
-   * the app (e.g. onboarding → instructions): stop the line loop, drop targets,
-   * blank the text, and disable every button label. Does not toggle the
-   * prompt's SceneObject — visibility is managed externally.
-   */
   reset(): void {
     this.hide();
     this._localTargets = [];
@@ -146,16 +145,25 @@ export class InstructionPrompt extends BaseScriptComponent {
     }
 
     this.setButtonLabel("", "", "");
+
+    print("Instruction prompt reset");
   }
 
   private ensureLinePool(breadboardOrigin: SceneObject): void {
     if (this._lines.length > 0) {
       return; // already built — the origin is stable for the lens's lifetime
     }
-    for (let i = 0; i < this._maxLines; i++) {
+    for (let i = 0; i < MAX_LINES; i++) {
       const line = this.createLineRenderer(breadboardOrigin);
       line.setEnabled(false);
       this._lines.push(line);
+    }
+  }
+
+  private disableLines(): void {
+    for (const line of this._lines) {
+      line.setEnabled(false);
+      print("lines disabled");
     }
   }
 
@@ -164,8 +172,8 @@ export class InstructionPrompt extends BaseScriptComponent {
     const line = new LineRenderer({
       material: this.lineMaterial,
       points: [vec3.zero(), new vec3(0, 0, 1)],
-      startWidth: this._lineWidthStartCm,
-      endWidth: this._lineWidthEndCm,
+      startWidth: LINE_WIDTH_START_CM,
+      endWidth: LINE_WIDTH_END_CM,
       lookAtCamera: true, // billboard the strip so it's visible from any angle
     });
 
@@ -176,6 +184,9 @@ export class InstructionPrompt extends BaseScriptComponent {
   }
 
   private updateLinePositions(): void {
+    if (!this._lineRenderingEnabled) {
+      return; // lines already disabled by setLineRenderingEnabled()
+    }
     const startWorld = this.lineStart.getTransform().getWorldPosition();
 
     for (let i = 0; i < this._lines.length; i++) {
@@ -187,9 +198,6 @@ export class InstructionPrompt extends BaseScriptComponent {
     }
   }
 
-  // The line is parented to the breadboard origin, so its local space is the
-  // board's. endLocal (a cell position) is already in that space; the start
-  // just needs to come from world into it.
   private setLine(line: LineRenderer, startWorld: vec3, endLocal: vec3) {
     const startLocal = line
       .getTransform()
