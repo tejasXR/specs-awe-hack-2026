@@ -1,0 +1,74 @@
+- !<AssetImportMetadata/76c4b52e-9f65-4bed-bca7-21330eda4685>
+  ImportedAssetIds:
+    TypeScriptAsset: !<reference> 402b646c-e0d4-476d-b025-69792a0ffd95
+  ImporterName: TypeScriptAssetImporter
+  PrimaryAsset: !<reference> 402b646c-e0d4-476d-b025-69792a0ffd95
+  PackageType: NotAPackage
+  LegacyPackagePolicy: ~
+  ExtraData:
+    {}
+  AssetDataMap:
+    TypeScriptAsset: !<own> d364c3d2-a3bd-4300-b05c-c0167d522429
+  DependentFiles:
+    []
+  ImporterSettings: !<AssetImporterSettings>
+    {}
+  CompressionSettings: !<own> 00000000-0000-0000-0000-000000000000
+- !<TypeScriptAssetData/d364c3d2-a3bd-4300-b05c-c0167d522429>
+  SvgIcon: ""
+  SetupScript:
+    code: ""
+  Description: ""
+  VersionMajor: 0
+  VersionMinor: 0
+  VersionPatch: 0
+  ComponentUid: f348c502-18b5-46e5-8207-af12a34ad1ce
+  ExportUid: 00000000-0000-0000-0000-000000000000
+  PackagePolicy: CanBeUnpacked
+  ScriptInputsHidden:
+    bleController: false
+    brightnessTravelCm: false
+    defaultFlashHz: false
+    enableLogging: false
+    flashTravelCm: false
+    maxFlashHz: false
+    minBrightness: false
+    minFlashHz: false
+  ScriptTypesHidden:
+    {}
+  ReadMe: !<reference> 00000000-0000-0000-0000-000000000000
+  DeclarationFile: !<reference> 00000000-0000-0000-0000-000000000000
+  Tags:
+    []
+  Attachments:
+    []
+  DefaultScriptInputs:
+    - bleController: !<MappingBased.AssignableType> 00000000-0000-0000-0000-000000000000
+      minBrightness: 0.200000
+      brightnessTravelCm: !<float> 20.000000
+      defaultFlashHz: !<float> 2.000000
+      minFlashHz: !<float> 0.000000
+      maxFlashHz: !<float> 10.000000
+      flashTravelCm: !<float> 20.000000
+      enableLogging: false
+  ScriptTypes:
+    -
+      {}
+  InputLines:
+    - '// @ui {"widget":"label", "label":"<span style=\"color: #60A5FA;\">LedGestureController</span><br/><span style=\"color: #94A3B8; font-size: 11px;\">Left hand = brightness, right hand = flash. Writes to BreadboardBleController.</span>"}'
+    - '// @ui {"widget":"separator"}'
+    - '// @ui {"widget":"label", "label":"<span style=\"color: #60A5FA;\">References</span>"}'
+    - '// @input AssignableType bleController {"hint":"The BLE link this controller writes LED commands to"}'
+    - '// @ui {"widget":"separator"}'
+    - '// @ui {"widget":"label", "label":"<span style=\"color: #60A5FA;\">Left hand — brightness</span>"}'
+    - '// @input float minBrightness = 0.2 {"hint":"Lowest brightness (pinch height = floor). 0.2 = 20%"}'
+    - '// @input float brightnessTravelCm = 20 {"hint":"Vertical hand travel above pinch height for full brightness, in cm"}'
+    - '// @ui {"widget":"separator"}'
+    - '// @ui {"widget":"label", "label":"<span style=\"color: #60A5FA;\">Right hand — flash</span>"}'
+    - '// @input float defaultFlashHz = 2 {"hint":"Flash rate at pinch height, in Hz"}'
+    - '// @input float minFlashHz {"hint":"Slowest flash rate (hand fully lowered), in Hz"}'
+    - '// @input float maxFlashHz = 10 {"hint":"Fastest flash rate (hand fully raised), in Hz. Board caps at 12.7"}'
+    - '// @input float flashTravelCm = 20 {"hint":"Vertical hand travel from pinch height to a rate extreme, in cm"}'
+    - '// @ui {"widget":"separator"}'
+    - '// @ui {"widget":"label", "label":"<span style=\"color: #60A5FA;\">Logging</span>"}'
+    - '// @input bool enableLogging {"hint":"Print gesture state changes"}'
