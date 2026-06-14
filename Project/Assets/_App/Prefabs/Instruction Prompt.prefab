@@ -158,6 +158,7 @@
     primaryButtonLabelText: true
     secondaryButtonLabelText: true
     tertiaryButtonLabelText: true
+    enableLogging: true
   ScriptTypesDefault:
     {}
   ScriptInputs:
@@ -170,6 +171,7 @@
       tertiaryButtonLabelText: !<reference.Text> 00000000-0000-0000-0000-000000000000
       lineMaterial: !<reference.Material> 99f3ffb5-2d0e-4867-b3f9-a73b15f29744
       lineStart: !<reference.SceneObject> 07e9262b-6d4a-4d36-be4e-3eb509499332
+      enableLogging: false
   ScriptTypes:
     "":
       {}
