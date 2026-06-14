@@ -8,7 +8,6 @@
     - !<own> b86cbb43-e82e-48ed-89e0-a449f10cd53e
     - !<own> 33f8fdfd-99e7-4e0f-949b-55795cdef06f
     - !<own> 9cbf7fa1-10b9-4585-bf97-4b3c760186be
-    - !<own> a829ee90-5e5f-470a-a11b-78fb4b43b62c
   layers: !<Layers/267ee9a7-aff2-4f9d-9a49-f71214747d03>
     userLayers:
       - |
@@ -1913,6 +1912,7 @@
       primaryButton: !<MappingBased.AssignableType> 51e59b9e-0abc-4f24-8da4-65e05ec0a82a
       secondaryButton: !<MappingBased.AssignableType_1> 348dad36-2783-46de-84c1-ff9fee468745
       tertiaryButton: !<MappingBased.AssignableType_2> 68b435b9-9586-4592-b403-59c1096bdebb
+      zappyInteractions: !<MappingBased.AssignableType_3> 9c24682f-06e2-40e6-a048-4aeb6c8b02ad
   ScriptTypes:
     "":
       {}
@@ -3926,9 +3926,11 @@
   ScriptInputs:
     "":
       onboardingController: !<MappingBased.AssignableType> 51ce85a7-c4d8-4ed4-bbae-062a47aeaf0f
-      instructionPrompt: !<MappingBased.AssignableType_1> 7e281ca4-c9d7-4453-8e28-c86df6d7c76b
-      spaceSetup: !<MappingBased.AssignableType_2> 5a9e8d73-a99d-45b2-8ab8-ff9ddefcafd3
-      zappy: !<MappingBased.AssignableType_3> ba9b0252-db63-4aee-ba69-de0f00706d9b
+      linePrefab: !<reference.ObjectPrefab> e362da3c-55d0-465a-a0c1-94ca01b562b1
+      linePrefabParent: !<reference.SceneObject> b5397192-990c-4068-a4e7-5b37b40d3e5e
+      lineStartAnchor: !<reference.SceneObject> 0c2e4402-156a-4adf-aa3a-7664655fe73e
+      spaceSetup: !<MappingBased.AssignableType_1> 5a9e8d73-a99d-45b2-8ab8-ff9ddefcafd3
+      zappy: !<MappingBased.AssignableType_2> ba9b0252-db63-4aee-ba69-de0f00706d9b
       zappySetupAnchor: !<reference.SceneObject> 1eddc013-881f-4095-90e8-2998ba787f46
   ScriptTypes:
     "":
@@ -6391,8 +6393,6 @@
       primaryButtonLabelText: !<reference.Text> 7bd14a03-a2a5-4a68-8b8b-c1242f59f539
       secondaryButtonLabelText: !<reference.Text> 29119841-b3b8-474b-b735-b1e08e15fd49
       tertiaryButtonLabelText: !<reference.Text> 3a149ba6-ff59-477e-b1e7-edcdb18c0262
-      lineMaterial: !<reference.Material> f8b7ca3d-faaf-476a-97ed-793d8d1fc7c5
-      lineStart: !<reference.SceneObject> 0c2e4402-156a-4adf-aa3a-7664655fe73e
       enableLogging: false
   ScriptTypes:
     "":
@@ -9114,21 +9114,6 @@
     []
   Components:
     - !<own> 9a08006a-df52-48bb-be70-7e2a6b4219bd
-- !<SceneObject/a829ee90-5e5f-470a-a11b-78fb4b43b62c>
-  PrefabRemaps:
-    []
-  Name: Line
-  Enabled: true
-  Layers: 1
-  LocalTransform: !<TransformEntity>
-    Position: {x: 0.000000, y: 0.000000, z: 0.000000}
-    Rotation: {x: 0.000000, y: 0.000000, z: 0.000000}
-    Scale: {x: 1.000000, y: 1.000000, z: 1.000000}
-    HasSegmentScaleCompensation: false
-  Children:
-    []
-  Components:
-    []
 - !<SceneObject/a839167c-3228-41da-9ecf-ac920002f45e>
   PrefabRemaps:
     []
@@ -12778,14 +12763,21 @@
   Enabled: true
   ScriptAsset: !<reference> 2efdd206-e8d1-4aa8-a4c7-bf3142bdf39c
   ScriptInputsDefault:
-    {}
+    mainTrackVolume: true
   ScriptTypesDefault:
     {}
   ScriptInputs:
     "":
+      musicController: !<MappingBased.AssignableType> 8df55664-959b-4d8a-91ed-cda0ab3af4bc
+      mainTrack: !<reference.AudioTrackAsset> 63707584-d507-4108-9be2-f966f6354545
+      mainTrackVolume: !<float> 0.000000
       breadboardOrigin: !<reference.SceneObject> d1b20632-19f8-4f71-be2a-709dc137d1f3
-      onboardingController: !<MappingBased.AssignableType> 51ce85a7-c4d8-4ed4-bbae-062a47aeaf0f
-      instructionPrompt: !<MappingBased.AssignableType_1> 7e281ca4-c9d7-4453-8e28-c86df6d7c76b
+      onboardingController: !<MappingBased.AssignableType_1> 51ce85a7-c4d8-4ed4-bbae-062a47aeaf0f
+      menuConsole: !<MappingBased.AssignableType_2> 24ae494e-b174-48a0-8e8d-7245cff230b5
+      instructionPrompt: !<MappingBased.AssignableType_3> 7e281ca4-c9d7-4453-8e28-c86df6d7c76b
+      linePrefab: !<reference.ObjectPrefab> e362da3c-55d0-465a-a0c1-94ca01b562b1
+      linePoolParent: !<reference.SceneObject> 0af33c18-ea34-4408-b8e0-dea027c17886
+      calloutStartAnchor: !<reference.SceneObject> 0c2e4402-156a-4adf-aa3a-7664655fe73e
       hoverOffsetCm: !<float> 0.000000
       instructionDefinitions:
         - title: The breadboard
@@ -12794,6 +12786,9 @@
             
             We attach things to the breadboard to build ciruits
           zappyTextBox: The breadboard allows us to build ciruits
+          primaryButtonText: ""
+          secondaryButtonText: ""
+          tertiaryButtonText: ""
           isCheckpoint: false
           startOnRail: false
           columnStart: A
@@ -12807,6 +12802,9 @@
         - title: Meet the LED
           description: "Looks like an LED is already attached on the breadboard, sweet!"
           zappyTextBox: "Oh cool, an LED!"
+          primaryButtonText: ""
+          secondaryButtonText: ""
+          tertiaryButtonText: ""
           isCheckpoint: false
           startOnRail: false
           columnStart: A
@@ -12820,6 +12818,9 @@
         - title: Power Switch
           description: Press the power switch here to turn on power to the breadboard
           zappyTextBox: Press the power switch
+          primaryButtonText: ""
+          secondaryButtonText: ""
+          tertiaryButtonText: ""
           isCheckpoint: false
           startOnRail: false
           columnStart: A
@@ -12833,6 +12834,9 @@
         - title: Route Power
           description: "Hmm, looks like we need to route power using "
           zappyTextBox: "Place a red wire "
+          primaryButtonText: ""
+          secondaryButtonText: ""
+          tertiaryButtonText: ""
           isCheckpoint: false
           startOnRail: false
           columnStart: A
