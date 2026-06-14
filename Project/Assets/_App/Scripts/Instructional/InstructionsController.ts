@@ -1,4 +1,8 @@
-import Event, { PublicApi } from "SpectaclesInteractionKit.lspkg/Utils/Event";
+import Event, {
+  PublicApi,
+  unsubscribe,
+} from "SpectaclesInteractionKit.lspkg/Utils/Event";
+import { OnboardingController } from "../OnboardingController";
 import {
   BreadboardCell,
   cellToLocalPosition,
@@ -25,6 +29,12 @@ export class InstructionDefinition {
   @input
   @widget(new TextAreaWidget())
   description: string = "";
+
+  @input
+  @hint(
+    "A recap/'check your work' step — shows title + description, draws no callout line",
+  )
+  isCheckpoint: boolean = false;
 
   @input
   @hint("Start from a power rail instead of a grid column")
@@ -136,6 +146,9 @@ export class InstructionsController extends BaseScriptComponent {
   breadboardOrigin!: SceneObject;
 
   @input
+  onboardingController!: OnboardingController;
+
+  @input
   @hint("The single InstructionPrompt living in the scene")
   instructionPrompt!: InstructionPrompt;
 
@@ -158,6 +171,8 @@ export class InstructionsController extends BaseScriptComponent {
 
   private _currentIndex: number = NO_STEP;
 
+  private _unsubscribeFromOnboarding?: unsubscribe;
+
   private readonly onStepChangedEvent = new Event<InstructionStepEvent>();
 
   readonly onStepChanged: PublicApi<InstructionStepEvent> =
@@ -167,6 +182,12 @@ export class InstructionsController extends BaseScriptComponent {
 
   readonly onSequenceCompleted: PublicApi<void> =
     this.onSequenceCompletedEvent.publicApi();
+
+  private readonly onCheckpointReachedEvent = new Event<number>();
+
+  /** Fires when a checkpoint step is shown, carrying its step index. */
+  readonly onCheckpointReached: PublicApi<number> =
+    this.onCheckpointReachedEvent.publicApi();
 
   get currentIndex(): number {
     return this._currentIndex;
@@ -196,7 +217,9 @@ export class InstructionsController extends BaseScriptComponent {
     if (this._currentIndex < 0) {
       return [];
     }
-    return this.instructionDefinitions.slice(0, this._currentIndex + 1);
+    return this.instructionDefinitions
+      .slice(0, this._currentIndex + 1)
+      .filter((def) => !def.isCheckpoint);
   }
 
   /**
@@ -248,12 +271,31 @@ export class InstructionsController extends BaseScriptComponent {
 
   onAwake(): void {
     this.createEvent("OnStartEvent").bind(() => this.onStart());
+    this.createEvent("OnDestroyEvent").bind(() => this.onDestroy());
   }
 
   private onStart(): void {
+    // Consumer owns its trigger: we start ourselves when onboarding completes,
+    // so OnboardingController stays ignorant of what follows it.
+    if (!isNull(this.onboardingController)) {
+      this._unsubscribeFromOnboarding =
+        this.onboardingController.onCompleted.add(() =>
+          this.onOnboardingCompleted(),
+        );
+    }
+
     if (this.autoStart && this.instructionDefinitions.length > 0) {
       this.startSequence();
     }
+  }
+
+  private onDestroy(): void {
+    this._unsubscribeFromOnboarding?.();
+  }
+
+  /** The onboarding flow finished — kick off the build instructions. */
+  private onOnboardingCompleted(): void {
+    this.startSequence();
   }
 
   startSequence(): void {
@@ -290,15 +332,10 @@ export class InstructionsController extends BaseScriptComponent {
   private moveToStep(index: number): void {
     const instructionDefinition = this.instructionDefinitions[index];
 
-    // Origin-LOCAL cell positions — the prompt parents its lines to the
-    // breadboard origin, so these follow the board's position/rotation directly.
-    const localTargets: vec3[] = [];
-    localTargets.push(this.resolveStartLocal(instructionDefinition));
-
-    const endLocal = this.resolveEndLocal(instructionDefinition);
-    if (endLocal !== null) {
-      localTargets.push(endLocal);
-    }
+    // Checkpoints are recap steps: text only, no callout line.
+    const localTargets = instructionDefinition.isCheckpoint
+      ? []
+      : this.buildLineTargets(instructionDefinition);
 
     this.instructionPrompt.setStepText(index, this.stepCount);
 
@@ -317,6 +354,28 @@ export class InstructionsController extends BaseScriptComponent {
       currentIndex: index,
       totalCount: this.instructionDefinitions.length,
     });
+
+    // A checkpoint is still a shown step (onStepChanged fired above); this is the
+    // additional, more-specific signal for "check your work" logic.
+    if (instructionDefinition.isCheckpoint) {
+      this.onCheckpointReachedEvent.invoke(index);
+    }
+  }
+
+  /**
+   * Origin-LOCAL endpoint positions for a placement step. The prompt parents its
+   * lines to the breadboard origin, so these follow the board's position/rotation
+   * directly. Not called for checkpoints, which draw no line.
+   */
+  private buildLineTargets(definition: InstructionDefinition): vec3[] {
+    const targets: vec3[] = [this.resolveStartLocal(definition)];
+
+    const endLocal = this.resolveEndLocal(definition);
+    if (endLocal !== null) {
+      targets.push(endLocal);
+    }
+
+    return targets;
   }
 
   // TEJAS: Unused since we have one prompt, but still keeping in case we need it
