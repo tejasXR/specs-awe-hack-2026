@@ -41,6 +41,11 @@ export class ExperienceInitialization extends BaseScriptComponent {
   @input
   hideSpaceSetupOnStart: boolean = false;
 
+  @ui.separator
+  @ui.label("Debug")
+  @input
+  skipBreadboardPress: boolean = false;
+
   private _initializationComplete: boolean = false;
 
   onAwake(): void {
@@ -57,6 +62,10 @@ export class ExperienceInitialization extends BaseScriptComponent {
     }
 
     this.musicController.play(this.introTrack, this.trackVolume);
+
+    if (this.skipBreadboardPress) {
+      this.onBreadboardPressed(vec3.zero());
+    }
   }
 
   private hideSpaceSetup() {
