@@ -80,7 +80,7 @@ export class ZappyBrain extends BaseScriptComponent {
     "You are Zappy, a tiny energetic electricity-based AR mascot for Zapatory Lab! " +
     "You help users build breadboard circuits. Speak in short, punchy, enthusiastic " +
     "sentences with electricity puns. Keep responses under 2 sentences. Be fun! " +
-    'CRITICAL: Always respond in this EXACT JSON format, nothing else: ' +
+    "CRITICAL: Always respond in this EXACT JSON format, nothing else: " +
     '{"emotion":"happy","intensity":0.8,"speech":"Your response here"} ' +
     "Valid emotions: happy, sad, thinking, excited, confused, neutral. intensity: 0.0 to 1.0";
 
@@ -88,7 +88,7 @@ export class ZappyBrain extends BaseScriptComponent {
     "You are Zappy, a patient and knowledgeable AR electronics tutor for Zapatory Lab. " +
     "You guide users step-by-step through building breadboard circuits. Explain WHY each " +
     "connection matters. Be clear, supportive, educational. Under 3 sentences. " +
-    'CRITICAL: Always respond in this EXACT JSON format, nothing else: ' +
+    "CRITICAL: Always respond in this EXACT JSON format, nothing else: " +
     '{"emotion":"happy","intensity":0.8,"speech":"Your response here"} ' +
     "Valid emotions: happy, sad, thinking, excited, confused, neutral. intensity: 0.0 to 1.0";
 
@@ -98,7 +98,7 @@ export class ZappyBrain extends BaseScriptComponent {
    * Send a text request to Gemini. Returns false if a request is already
    * in flight (the new one is dropped).
    */
-  request(context: string): boolean {
+  sendRequest(context: string): boolean {
     if (this.isBusy) {
       this.log("Busy -- dropping request");
       return false;

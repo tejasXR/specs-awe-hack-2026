@@ -20,6 +20,7 @@ import {
 } from "./ZappyBrain";
 import { ZappyEmotionController } from "./ZappyEmotionController";
 import { ZappyVoice } from "./ZappyVoice";
+import { ScaleVisibilityAnimator } from "../Utils/ScaleVisibilityAnimator";
 
 // Re-export the domain types so existing `from "./ZappyAI"` imports
 // (ExperienceOrchestrator, CheckWorkController) keep compiling.
@@ -42,33 +43,37 @@ export class ZappyAI extends BaseScriptComponent {
   @hint("ZappyVoice — speaks Zappy's lines")
   voice!: ZappyVoice;
 
+  @input
+  hideOnStart: boolean = false;
+
   @ui.separator
   @ui.label("Settings")
   @input
   @hint("Enable debug logging")
   enableLogging: boolean = false;
 
-  // ─── Events (outward, for observers) ──────────────────────────
+  private _animator!: ScaleVisibilityAnimator;
 
   private readonly onResponseEvent = new Event<ZappyResponse>();
-  /** Fires with the full structured response after it has been routed. */
+
   readonly onResponse: PublicApi<ZappyResponse> =
     this.onResponseEvent.publicApi();
 
   private readonly onEmotionChangedEvent = new Event<ZappyEmotionData>();
-  /** Forwarded from ZappyEmotionController for observers wired to the facade. */
+
   readonly onEmotionChanged: PublicApi<ZappyEmotionData> =
     this.onEmotionChangedEvent.publicApi();
 
-  // ─── Private State ────────────────────────────────────────────
-
   private unsubs: unsubscribe[] = [];
 
-  // ─── Lifecycle ────────────────────────────────────────────────
-
   onAwake(): void {
-    // Policy: how Zappy feels about the brain's facts.
     this.createEvent("OnStartEvent").bind(() => this.onStart());
+
+    this._animator = new ScaleVisibilityAnimator(this.getSceneObject(), {
+      showDurationMs: 250,
+      hideDurationMs: 180,
+      shownScale: vec3.one(),
+    });
   }
 
   onStart() {
@@ -96,13 +101,15 @@ export class ZappyAI extends BaseScriptComponent {
       this.unsubs.forEach((unsub) => unsub());
       this.unsubs = [];
     });
-  }
 
-  // ─── Public API — Intents ─────────────────────────────────────
+    if (this.hideOnStart) {
+      this.hide();
+    }
+  }
 
   /** Send a freeform context message to Gemini. Safe to call frequently — drops if busy. */
   activate(context: string): void {
-    this.brain.request(context);
+    this.brain.sendRequest(context);
   }
 
   /** Send a multimodal request (text + image) to Gemini for visual analysis. */
@@ -169,7 +176,13 @@ export class ZappyAI extends BaseScriptComponent {
     return this.brain.getIsBusy();
   }
 
-  // ─── Private — Routing ────────────────────────────────────────
+  show(): void {
+    this._animator.show();
+  }
+
+  hide(): void {
+    this._animator.hide();
+  }
 
   private routeResponse(resp: ZappyResponse): void {
     this.log("Zappy says: " + resp.speech);
