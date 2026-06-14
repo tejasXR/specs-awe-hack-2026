@@ -53,6 +53,8 @@ export class OnboardingResponder extends BaseScriptComponent {
           this.spaceSetup.getDividerLineAnchor("breadboard");
 
         if (breadboardLineAnchor) {
+          print("Breadboard line anchor found");
+          this.instructionPrompt.setLineRenderingEnabled(true);
           this.instructionPrompt.setLineTargets(
             this.spaceSetup.getSceneObject(),
             [breadboardLineAnchor],

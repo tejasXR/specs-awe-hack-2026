@@ -130,13 +130,9 @@ export class OnboardingController extends BaseScriptComponent {
   private updateButtonLabels(index: number): void {
     const onboardingStep = this.onboardingSteps[index];
 
-    const isFirst = index === 0;
-    const isLast = index === this.stepCount - 1;
-
-    const primaryLabel =
-      isLast && !isFirst ? "" : onboardingStep.primaryButtonText;
-    const secondaryLabel = isFirst ? "" : onboardingStep.secondaryButtonText;
-
-    this.instructionPrompt.setButtonLabel(primaryLabel, secondaryLabel);
+    this.instructionPrompt.setButtonLabel(
+      onboardingStep.primaryButtonText,
+      onboardingStep.secondaryButtonText,
+    );
   }
 }
