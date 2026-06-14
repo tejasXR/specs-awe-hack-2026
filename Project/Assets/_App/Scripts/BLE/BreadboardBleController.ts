@@ -16,6 +16,18 @@ export interface BreadboardStatus {
 }
 
 /**
+ * A full LED command in human units. The controller encodes it into the
+ * 3-byte wire packet (see BreadboardBleData) at the write boundary.
+ */
+export interface LedCommand {
+  mode: BreadboardBleData.LedMode;
+  /** 0..1 — PWM duty while lit. */
+  brightness: number;
+  /** Flash rate in Hz; ignored when mode = Solid. */
+  flashHz: number;
+}
+
+/**
  * Owns the BLE link to the Zappy-Board ESP32 (firmware/zappy-board).
  * Scan → connect → subscribe to status notifications; exposes typed events
  * and a throttled LED write (HueEventEmitter pattern: one write in flight,
@@ -57,9 +69,9 @@ export class BreadboardBleController extends BaseScriptComponent {
   private _gatt?: Bluetooth.BluetoothGatt;
   private _ledCharacteristic?: Bluetooth.BluetoothGattCharacteristic;
 
-  // Throttle state: one BLE write in flight; latest requested level wins.
+  // Throttle state: one BLE write in flight; latest requested command wins.
   private _isWriteInFlight: boolean = false;
-  private _nextLedLevel?: number;
+  private _pendingCommand?: LedCommand;
 
   // Editor simulation
   private _simulatedHeartbeat: number = 0;
@@ -124,19 +136,32 @@ export class BreadboardBleController extends BaseScriptComponent {
     this._gatt = undefined;
     this._ledCharacteristic = undefined;
     this._isWriteInFlight = false;
-    this._nextLedLevel = undefined;
+    this._pendingCommand = undefined;
     this.setState({ kind: "idle" });
   }
 
   /**
-   * Set the breadboard LED brightness, 0..1 (0 = off). Call as often as you
-   * like (e.g. from a slider drag) — writes are throttled to one in flight.
+   * Set a solid LED brightness, 0..1 (0 = off). Thin wrapper over setCommand
+   * kept for the legacy/simple call site.
    */
   setLed(normalizedLevel: number): void {
-    const level = Math.round(MathUtils.clamp(normalizedLevel, 0, 1) * 127);
+    this.setCommand({
+      mode: BreadboardBleData.LedMode.Solid,
+      brightness: normalizedLevel,
+      flashHz: 0,
+    });
+  }
 
+  /**
+   * Send a full LED command (mode + brightness + flash rate). Call as often as
+   * you like (e.g. from a per-frame gesture) — writes are throttled to one in
+   * flight and the latest command wins once the in-flight write lands.
+   */
+  setCommand(command: LedCommand): void {
     if (this.isSimulated()) {
-      this._simulatedLedLevel = level;
+      this._simulatedLedLevel = BreadboardBleData.brightnessToByte(
+        command.brightness,
+      );
       return;
     }
     if (isNull(this._ledCharacteristic)) {
@@ -144,27 +169,33 @@ export class BreadboardBleController extends BaseScriptComponent {
     }
 
     if (this._isWriteInFlight) {
-      this._nextLedLevel = level; // latest value wins once the in-flight write lands
+      this._pendingCommand = command; // latest wins once the in-flight write lands
     } else {
       this._isWriteInFlight = true;
-      this.writeLedLevel(level);
+      this.writeCommand(command);
     }
   }
 
-  private writeLedLevel(level: number): void {
-    this._ledCharacteristic!.writeValue(new Uint8Array([level]))
+  private writeCommand(command: LedCommand): void {
+    const packet = BreadboardBleData.buildLedPacket(
+      command.mode,
+      BreadboardBleData.brightnessToByte(command.brightness),
+      BreadboardBleData.flashHzToByte(command.flashHz),
+    );
+
+    this._ledCharacteristic!.writeValue(packet)
       .then(() => {
-        if (this._nextLedLevel !== undefined) {
-          const next = this._nextLedLevel;
-          this._nextLedLevel = undefined;
-          this.writeLedLevel(next);
+        if (this._pendingCommand !== undefined) {
+          const next = this._pendingCommand;
+          this._pendingCommand = undefined;
+          this.writeCommand(next);
         } else {
           this._isWriteInFlight = false;
         }
       })
       .catch((error) => {
         this._isWriteInFlight = false;
-        this._nextLedLevel = undefined;
+        this._pendingCommand = undefined;
         this.log("LED write failed: " + error);
       });
   }
