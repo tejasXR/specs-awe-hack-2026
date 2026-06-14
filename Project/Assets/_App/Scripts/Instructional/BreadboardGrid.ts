@@ -43,6 +43,13 @@ export const PLAYGROUND_BOUNDS = {
   lastRow: 32,
 } as const;
 
+/**
+ * The power switch sits at hole I-64 — a fixed board fixture, intentionally
+ * outside the playground bounds (it's not a build cell). Resolve it directly
+ * via cellToLocalPosition rather than the playground-guarded path.
+ */
+export const POWER_SWITCH_CELL: BreadboardCell = { column: "I", row: 64 };
+
 export interface BreadboardGridConfig {
   /** Center-to-center hole spacing, in cm (standard 0.1" = 0.254 cm). */
   holePitchCm: number;
@@ -142,6 +149,14 @@ export function railToLocalPosition(
 ): vec3 {
   const rowOffset = (row - 1) * HOLE_PITCH_CM;
   return new vec3(-rowOffset, hoverOffset, RAIL_Z_OFFSET_CM[rail]);
+}
+
+/**
+ * Power switch (hole I-64) → position local to the breadboard origin. Reuses
+ * the cell math, bypassing the playground guard since I-64 is a board fixture.
+ */
+export function powerSwitchToLocalPosition(hoverOffset: number): vec3 {
+  return cellToLocalPosition(POWER_SWITCH_CELL, hoverOffset);
 }
 
 export function railToWorldPosition(
