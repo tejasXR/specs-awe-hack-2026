@@ -1,0 +1,54 @@
+- !<AssetImportMetadata/ae72fa41-784e-41cb-926b-ebcac69254f6>
+  ImportedAssetIds:
+    TypeScriptAsset: !<reference> 9e1f6138-84ad-405c-9e4e-d200021a82c5
+  ImporterName: TypeScriptAssetImporter
+  PrimaryAsset: !<reference> 9e1f6138-84ad-405c-9e4e-d200021a82c5
+  PackageType: NotAPackage
+  LegacyPackagePolicy: ~
+  ExtraData:
+    {}
+  AssetDataMap:
+    TypeScriptAsset: !<own> a4d36401-cf57-4c3d-a30d-f289257f6f0f
+  DependentFiles:
+    []
+  ImporterSettings: !<AssetImporterSettings>
+    {}
+  CompressionSettings: !<own> 00000000-0000-0000-0000-000000000000
+- !<TypeScriptAssetData/a4d36401-cf57-4c3d-a30d-f289257f6f0f>
+  SvgIcon: ""
+  SetupScript:
+    code: ""
+  Description: ""
+  VersionMajor: 0
+  VersionMinor: 0
+  VersionPatch: 0
+  ComponentUid: 1ad478f8-e22d-4366-b704-9f155470c5b9
+  ExportUid: 00000000-0000-0000-0000-000000000000
+  PackagePolicy: CanBeUnpacked
+  ScriptInputsHidden:
+    enableLogging: false
+    ttsModule: false
+    voiceName: false
+  ScriptTypesHidden:
+    {}
+  ReadMe: !<reference> 00000000-0000-0000-0000-000000000000
+  DeclarationFile: !<reference> 00000000-0000-0000-0000-000000000000
+  Tags:
+    []
+  Attachments:
+    []
+  DefaultScriptInputs:
+    - ttsModule: !<reference.TextToSpeechModule> 00000000-0000-0000-0000-000000000000
+      voiceName: Sasha
+      enableLogging: false
+  ScriptTypes:
+    -
+      {}
+  InputLines:
+    - '// @ui {"widget":"separator"}'
+    - '// @ui {"widget":"label", "label":"Snap TTS"}'
+    - '// @input Asset.TextToSpeechModule ttsModule {"hint":"TextToSpeechModule asset — add via Resources > + > Text To Speech Module"}'
+    - '// @input string voiceName = "Sasha" {"hint":"TTS voice preset name"}'
+    - '// @ui {"widget":"separator"}'
+    - '// @ui {"widget":"label", "label":"Settings"}'
+    - '// @input bool enableLogging {"hint":"Enable debug logging"}'

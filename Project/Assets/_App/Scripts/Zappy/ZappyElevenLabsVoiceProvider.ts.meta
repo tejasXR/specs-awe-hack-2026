@@ -1,20 +1,20 @@
-- !<AssetImportMetadata/e9a322cf-246c-429d-a634-c15c8354e6e0>
+- !<AssetImportMetadata/d7a5857e-7828-4846-92bc-9d9882ae4202>
   ImportedAssetIds:
-    TypeScriptAsset: !<reference> 5e974cfa-0378-4e6d-a5e2-2f2f3d083b46
+    TypeScriptAsset: !<reference> 7b0ca224-b2d6-46a1-a835-ae7d2c40dfb9
   ImporterName: TypeScriptAssetImporter
-  PrimaryAsset: !<reference> 5e974cfa-0378-4e6d-a5e2-2f2f3d083b46
+  PrimaryAsset: !<reference> 7b0ca224-b2d6-46a1-a835-ae7d2c40dfb9
   PackageType: NotAPackage
   LegacyPackagePolicy: ~
   ExtraData:
     {}
   AssetDataMap:
-    TypeScriptAsset: !<own> 2846741b-a471-4f40-b9fa-eb53df1d6e8d
+    TypeScriptAsset: !<own> cff27671-b468-4719-9b08-ef144f82cb4c
   DependentFiles:
     []
   ImporterSettings: !<AssetImporterSettings>
     {}
   CompressionSettings: !<own> 00000000-0000-0000-0000-000000000000
-- !<TypeScriptAssetData/2846741b-a471-4f40-b9fa-eb53df1d6e8d>
+- !<TypeScriptAssetData/cff27671-b468-4719-9b08-ef144f82cb4c>
   SvgIcon: ""
   SetupScript:
     code: ""
@@ -22,18 +22,14 @@
   VersionMajor: 0
   VersionMinor: 0
   VersionPatch: 0
-  ComponentUid: 692704f8-4c23-40f6-9a20-102f12164f63
+  ComponentUid: fd3bcb43-5d0b-46fc-85e3-5be8e2b138ca
   ExportUid: 00000000-0000-0000-0000-000000000000
   PackagePolicy: CanBeUnpacked
   ScriptInputsHidden:
     apiKey: false
-    audioComponent: false
-    emotionController: false
     enableLogging: false
-    fallbackVoice: false
     modelId: false
     similarityBoost: false
-    speechText: false
     stability: false
     styleExaggeration: false
     voiceId: false
@@ -46,11 +42,7 @@
   Attachments:
     []
   DefaultScriptInputs:
-    - emotionController: !<MappingBased.AssignableType> 00000000-0000-0000-0000-000000000000
-      audioComponent: !<reference.AudioComponent> 00000000-0000-0000-0000-000000000000
-      speechText: !<reference.Text> 00000000-0000-0000-0000-000000000000
-      fallbackVoice: !<MappingBased.AssignableType_1> 00000000-0000-0000-0000-000000000000
-      apiKey: ""
+    - apiKey: ""
       voiceId: ""
       modelId: ""
       stability: 0.300000
@@ -61,12 +53,6 @@
     -
       {}
   InputLines:
-    - '// @ui {"widget":"separator"}'
-    - '// @ui {"widget":"label", "label":"References"}'
-    - // @input AssignableType emotionController
-    - '// @input Component.AudioComponent audioComponent {"hint":"AudioComponent that plays the synthesized speech"}'
-    - '// @input Component.Text speechText {"hint":"Optional caption text — mirrors whatever Zappy says (tags stripped)"}'
-    - '// @input AssignableType_1 fallbackVoice {"hint":"Fallback: the built-in Snap TTS voice, used when ElevenLabs fails"}'
     - '// @ui {"widget":"separator"}'
     - '// @ui {"widget":"label", "label":"ElevenLabs Config"}'
     - '// @input string apiKey {"hint":"Your ElevenLabs API key (xi-api-key header)"}'
