@@ -39,8 +39,8 @@ export interface BreadboardCell {
 
 /** Rows reserved for the LED light-show build area. */
 export const PLAYGROUND_BOUNDS = {
-  firstRow: 10,
-  lastRow: 40,
+  firstRow: 1,
+  lastRow: 32,
 } as const;
 
 export interface BreadboardGridConfig {

@@ -61,8 +61,8 @@ export class InstructionDefinition {
   startRail: string = "near-plus";
 
   @input
-  @widget(new SliderWidget(10, 40, 1)) // playground rows; also the rail X-sample
-  rowStart: number = 10;
+  @widget(new SliderWidget(1, 32, 1)) // playground rows; also the rail X-sample
+  rowStart: number = 1;
 
   @input
   useEndPin: boolean = false;
@@ -110,7 +110,7 @@ export class InstructionDefinition {
   @input
   @allowUndefined
   @showIf("useEndPin", true)
-  @widget(new SliderWidget(10, 40, 1)) // playground rows; also the rail X-sample
+  @widget(new SliderWidget(1, 32, 1)) // playground rows; also the rail X-sample
   rowEnd: number | undefined;
 }
 
