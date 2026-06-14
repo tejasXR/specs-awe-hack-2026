@@ -26,11 +26,13 @@
   ExportUid: 00000000-0000-0000-0000-000000000000
   PackagePolicy: CanBeUnpacked
   ScriptInputsHidden:
-    buttonLabelText: false
     descriptionText: false
     lineMaterial: false
     lineStart: false
+    primaryButtonLabelText: false
+    secondaryButtonLabelText: false
     stepNumberText: false
+    tertiaryButtonLabelText: false
     titleText: false
   ScriptTypesHidden:
     {}
@@ -44,7 +46,9 @@
     - stepNumberText: !<reference.Text> 00000000-0000-0000-0000-000000000000
       titleText: !<reference.Text> 00000000-0000-0000-0000-000000000000
       descriptionText: !<reference.Text> 00000000-0000-0000-0000-000000000000
-      buttonLabelText: !<reference.Text> 00000000-0000-0000-0000-000000000000
+      primaryButtonLabelText: !<reference.Text> 00000000-0000-0000-0000-000000000000
+      secondaryButtonLabelText: !<reference.Text> 00000000-0000-0000-0000-000000000000
+      tertiaryButtonLabelText: !<reference.Text> 00000000-0000-0000-0000-000000000000
       lineMaterial: !<reference.Material> 00000000-0000-0000-0000-000000000000
       lineStart: !<reference.SceneObject> 00000000-0000-0000-0000-000000000000
   ScriptTypes:
@@ -54,6 +58,8 @@
     - // @input Component.Text stepNumberText
     - // @input Component.Text titleText
     - // @input Component.Text descriptionText
-    - // @input Component.Text buttonLabelText
+    - '// @input Component.Text primaryButtonLabelText {"hint":"Label for the primary button"}'
+    - '// @input Component.Text secondaryButtonLabelText {"hint":"Label for the secondary button"}'
+    - '// @input Component.Text tertiaryButtonLabelText {"hint":"Label for the tertiary button"}'
     - '// @input Asset.Material lineMaterial {"hint":"Material for the callout line (LineRenderer clones it)"}'
     - // @input SceneObject lineStart

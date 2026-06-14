@@ -16,7 +16,18 @@ export class InstructionPrompt extends BaseScriptComponent {
 
   @input
   @allowUndefined
-  buttonLabelText!: Text;
+  @hint("Label for the primary button")
+  primaryButtonLabelText!: Text;
+
+  @input
+  @allowUndefined
+  @hint("Label for the secondary button")
+  secondaryButtonLabelText!: Text;
+
+  @input
+  @allowUndefined
+  @hint("Label for the tertiary button")
+  tertiaryButtonLabelText!: Text;
 
   @input
   @hint("Material for the callout line (LineRenderer clones it)")
@@ -75,20 +86,26 @@ export class InstructionPrompt extends BaseScriptComponent {
     this._localTargets = localTargets;
   }
 
-  public changeButtonLabel(
+  public setButtonLabel(
     primaryButtonLabel: string,
     secondaryButtonLabel: string = "",
     tertiaryButtonLabel: string = "",
   ) {
-    const labels = [
-      primaryButtonLabel,
-      secondaryButtonLabel,
-      tertiaryButtonLabel,
-    ];
-    this.buttonLabelText.text = labels
-      .map((label, i) => (label ? `[${i + 1}] ${label}` : undefined))
-      .filter((line): line is string => line !== undefined)
-      .join("\n");
+    this.applyButtonLabel(this.primaryButtonLabelText, primaryButtonLabel);
+    this.applyButtonLabel(this.secondaryButtonLabelText, secondaryButtonLabel);
+    this.applyButtonLabel(this.tertiaryButtonLabelText, tertiaryButtonLabel);
+  }
+
+  private applyButtonLabel(textElement: Text, label: string): void {
+    if (!textElement) {
+      return;
+    }
+    if (label) {
+      textElement.text = label;
+      textElement.enabled = true;
+    } else {
+      textElement.enabled = false;
+    }
   }
 
   show(): void {
