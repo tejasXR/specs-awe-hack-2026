@@ -1,0 +1,55 @@
+- !<AssetImportMetadata/fcf6c3ea-c7a1-41c9-b37e-30d1ebcc967e>
+  ImportedAssetIds:
+    ObjectPrefab: !<reference> 7f3601db-a442-4cea-8f9f-f8e4ab897826
+  ImporterName: ObjectPrefabImporter
+  PrimaryAsset: !<reference> 7f3601db-a442-4cea-8f9f-f8e4ab897826
+  PackageType: NotAPackage
+  LegacyPackagePolicy: ~
+  ExtraData:
+    {}
+  AssetDataMap:
+    ObjectPrefab: !<own> 220bb1db-cd50-419d-b661-1711b4d66a4e
+  DependentFiles:
+    []
+  ImporterSettings: !<AssetImporterSettings>
+    {}
+  CompressionSettings: !<own> 00000000-0000-0000-0000-000000000000
+- !<ObjectPrefabAssetData/220bb1db-cd50-419d-b661-1711b4d66a4e>
+  Prototype: !<ObjectOwner/b660db03-24eb-4902-b9cc-39e4161fb10f>
+    PackagePath: ""
+    objects:
+      - !<own> f4421ef7-0a13-4f1e-4e05-73599c962c3f
+- !<Image/f101cf71-217a-4c0f-5088-bfa9c6bcf47a>
+  PrefabRemaps:
+    []
+  Name: Image
+  Enabled: true
+  RenderOrder: 0
+  StretchMode: Fit
+  VerticalAlignment: Center
+  HorizontalAlignment: Center
+  MeshShadowMode: None
+  ShadowColor: {x: 1.000000, y: 1.000000, z: 1.000000, w: 1.000000}
+  ShadowDensity: 1.000000
+  Materials:
+    - !<reference> 03b4a99f-b4bd-4b67-8853-b5f47f105182
+  FlipX: false
+  FlipY: false
+  RotationAngle: 0
+  Pivot: {x: 0.000000, y: 0.000000}
+  ExtentsTarget: !<reference> 00000000-0000-0000-0000-000000000000
+- !<SceneObject/f4421ef7-0a13-4f1e-4e05-73599c962c3f>
+  PrefabRemaps:
+    []
+  Name: ML_Frame_03
+  Enabled: true
+  Layers: 1
+  LocalTransform: !<TransformEntity>
+    Position: {x: 0.000000, y: 0.000000, z: 0.000000}
+    Rotation: {x: 0.000000, y: 0.000000, z: 0.000000}
+    Scale: {x: 18.000000, y: 17.999998, z: 17.999998}
+    HasSegmentScaleCompensation: false
+  Children:
+    []
+  Components:
+    - !<own> f101cf71-217a-4c0f-5088-bfa9c6bcf47a
