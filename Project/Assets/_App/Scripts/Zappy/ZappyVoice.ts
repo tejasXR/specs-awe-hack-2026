@@ -21,7 +21,7 @@ import Event, { PublicApi } from "SpectaclesInteractionKit.lspkg/Utils/Event";
 import { ZappyEmotion, ZappyEmotionData } from "./ZappyBrain";
 import { ZappyEmotionController } from "./ZappyEmotionController";
 import { IVoiceProvider } from "./IVoiceProvider";
-import { ZappyTTSVoiceProvider } from "./ZappySnapVoiceProvider";
+import { ZappyTTSVoiceProvider } from "./ZappyTTSVoiceProvider";
 import { ZappyElevenLabsVoiceProvider } from "./ZappyElevenLabsVoiceProvider";
 
 // ─── Types ──────────────────────────────────────────────────────
