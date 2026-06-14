@@ -1,0 +1,62 @@
+- !<AssetImportMetadata/a32a66d5-78f1-4dcf-918f-aedae237da06>
+  ImportedAssetIds:
+    TypeScriptAsset: !<reference> 6b32208a-6842-489a-a85b-845492606a1f
+  ImporterName: TypeScriptAssetImporter
+  PrimaryAsset: !<reference> 6b32208a-6842-489a-a85b-845492606a1f
+  PackageType: NotAPackage
+  LegacyPackagePolicy: ~
+  ExtraData:
+    {}
+  AssetDataMap:
+    TypeScriptAsset: !<own> d0e5c8ae-fabf-447c-a070-aeb5fa218d7c
+  DependentFiles:
+    []
+  ImporterSettings: !<AssetImporterSettings>
+    {}
+  CompressionSettings: !<own> 00000000-0000-0000-0000-000000000000
+- !<TypeScriptAssetData/d0e5c8ae-fabf-447c-a070-aeb5fa218d7c>
+  SvgIcon: ""
+  SetupScript:
+    code: ""
+  Description: ""
+  VersionMajor: 0
+  VersionMinor: 0
+  VersionPatch: 0
+  ComponentUid: dc04d5cf-e465-4897-9259-a0ee98f4d918
+  ExportUid: 00000000-0000-0000-0000-000000000000
+  PackagePolicy: CanBeUnpacked
+  ScriptInputsHidden:
+    distance: false
+    enableLogging: false
+    followSpeed: false
+    heightOffset: false
+    snapOnStart: false
+  ScriptTypesHidden:
+    {}
+  ReadMe: !<reference> 00000000-0000-0000-0000-000000000000
+  DeclarationFile: !<reference> 00000000-0000-0000-0000-000000000000
+  Tags:
+    []
+  Attachments:
+    []
+  DefaultScriptInputs:
+    - distance: !<float> 80.000000
+      heightOffset: !<float> 0.000000
+      followSpeed: !<float> 5.000000
+      snapOnStart: true
+      enableLogging: false
+  ScriptTypes:
+    -
+      {}
+  InputLines:
+    - '// @ui {"widget":"separator"}'
+    - '// @ui {"widget":"label", "label":"Placement"}'
+    - '// @input float distance = 80 {"hint":"Distance in front of the camera, in cm"}'
+    - '// @input float heightOffset {"hint":"Vertical offset from eye height, in cm (negative = below eye line)"}'
+    - '// @ui {"widget":"separator"}'
+    - '// @ui {"widget":"label", "label":"Follow"}'
+    - '// @input float followSpeed = 5 {"hint":"How quickly the panel chases your gaze — higher is snappier", "widget":"slider", "min":0.5, "max":20, "step":0.5}'
+    - '// @input bool snapOnStart = true {"hint":"Snap to position on the first frame instead of easing in from origin"}'
+    - '// @ui {"widget":"separator"}'
+    - '// @ui {"widget":"label", "label":"Settings"}'
+    - '// @input bool enableLogging {"hint":"Enable debug logging"}'
