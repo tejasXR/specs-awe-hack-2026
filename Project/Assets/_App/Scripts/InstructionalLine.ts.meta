@@ -1,0 +1,57 @@
+- !<AssetImportMetadata/03d12fb7-dc34-47be-b8cd-d755f5d1276a>
+  ImportedAssetIds:
+    TypeScriptAsset: !<reference> 51c49180-256e-4604-9407-9db89c0d721f
+  ImporterName: TypeScriptAssetImporter
+  PrimaryAsset: !<reference> 51c49180-256e-4604-9407-9db89c0d721f
+  PackageType: NotAPackage
+  LegacyPackagePolicy: ~
+  ExtraData:
+    {}
+  AssetDataMap:
+    TypeScriptAsset: !<own> c6cac01f-bf8c-400a-af4b-a93a078db6f1
+  DependentFiles:
+    []
+  ImporterSettings: !<AssetImporterSettings>
+    {}
+  CompressionSettings: !<own> 00000000-0000-0000-0000-000000000000
+- !<TypeScriptAssetData/c6cac01f-bf8c-400a-af4b-a93a078db6f1>
+  SvgIcon: ""
+  SetupScript:
+    code: ""
+  Description: ""
+  VersionMajor: 0
+  VersionMinor: 0
+  VersionPatch: 0
+  ComponentUid: 11612693-310e-43bc-898b-7d852237c8c9
+  ExportUid: 00000000-0000-0000-0000-000000000000
+  PackagePolicy: CanBeUnpacked
+  ScriptInputsHidden:
+    defaultWidthPreset: false
+    enableLogging: false
+    endPoint: false
+    lineMaterial: false
+    startPoint: false
+  ScriptTypesHidden:
+    {}
+  ReadMe: !<reference> 00000000-0000-0000-0000-000000000000
+  DeclarationFile: !<reference> 00000000-0000-0000-0000-000000000000
+  Tags:
+    []
+  Attachments:
+    []
+  DefaultScriptInputs:
+    - lineMaterial: !<reference.Material> 00000000-0000-0000-0000-000000000000
+      startPoint: !<reference.SceneObject> 00000000-0000-0000-0000-000000000000
+      endPoint: !<reference.SceneObject> 00000000-0000-0000-0000-000000000000
+      defaultWidthPreset: thin
+      enableLogging: false
+  ScriptTypes:
+    -
+      {}
+  InputLines:
+    - '// @input Asset.Material lineMaterial {"hint":"Material for the callout line (LineRenderer clones it)"}'
+    - "// @input SceneObject startPoint {\"hint\":\"Marker at the line's start; reparented under its anchor by attachStart\"}"
+    - "// @input SceneObject endPoint {\"hint\":\"Marker at the line's end; reparented under its anchor by attachEnd\"}"
+    - '// @input string defaultWidthPreset = "thin" {"widget":"combobox", "values":[{"label":"Thin", "value":"thin"}, {"label":"Default", "value":"default"}, {"label":"Thick", "value":"thick"}]}'
+    - '// @ui {"widget":"separator"}'
+    - // @input bool enableLogging
