@@ -3747,6 +3747,21 @@
   ScriptTypes:
     "":
       {}
+- !<SceneObject/48ed0b24-2907-4d37-9fda-9d75de9fe24a>
+  PrefabRemaps:
+    []
+  Name: Menu Console Position
+  Enabled: true
+  Layers: 1
+  LocalTransform: !<TransformEntity>
+    Position: {x: 0.000000, y: 30.000000, z: -30.000000}
+    Rotation: {x: 0.000000, y: 0.000000, z: 0.000000}
+    Scale: {x: 1.000000, y: 1.000000, z: 1.000000}
+    HasSegmentScaleCompensation: false
+  Children:
+    []
+  Components:
+    []
 - !<SceneObject/495eb967-901e-40d5-9761-f751ab75e038>
   PrefabRemaps:
     []
@@ -4411,16 +4426,21 @@
   Enabled: true
   ScriptAsset: !<reference> 1a97e4c3-c8c3-4407-867d-b86c9fee8bcd
   ScriptInputsDefault:
-    extendedAngle: true
-    curledAngle: true
+    stillnessRadius: true
+    holdDuration: true
+    resetGraceDuration: true
   ScriptTypesDefault:
     {}
   ScriptInputs:
     "":
-      extendedAngle: !<float> 150.000000
-      curledAngle: !<float> 80.000000
+      extendedAngle: !<float> 160.000000
+      curledAngle: !<float> 125.000000
       recognizerText: !<reference.Text> 17fcd401-c022-480a-9d06-d4058a324fcd
       debugText: !<reference.Text> c9a18585-481d-4876-8cc5-7cecdff4b692
+      stillnessRadius: !<float> 4.000000
+      holdDuration: 0.500000
+      holdCompleteDuration: !<float> 1.000000
+      resetGraceDuration: 0.300000
   ScriptTypes:
     "":
       {}
@@ -4507,7 +4527,6 @@
   ScriptAsset: !<reference> 6b32208a-6842-489a-a85b-845492606a1f
   ScriptInputsDefault:
     distance: true
-    heightOffset: true
     followSpeed: true
     snapOnStart: true
     enableLogging: true
@@ -4516,7 +4535,7 @@
   ScriptInputs:
     "":
       distance: !<float> 80.000000
-      heightOffset: !<float> 0.000000
+      heightOffset: !<float> -4.000000
       followSpeed: !<float> 5.000000
       snapOnStart: true
       enableLogging: false
@@ -4616,6 +4635,7 @@
         - !<reference> b642b8a3-8009-4b3b-aea4-516faf9907e6
         - !<reference> ad004ab3-b45f-4007-ba77-2ea597b0e7e5
         - !<reference> 25e6441a-5fae-492b-b918-327e88c3a6f9
+      menuConsoleStartPoint: !<reference.SceneObject> 48ed0b24-2907-4d37-9fda-9d75de9fe24a
   ScriptTypes:
     "":
       {}
@@ -6617,6 +6637,7 @@
     - !<own> ad004ab3-b45f-4007-ba77-2ea597b0e7e5
     - !<own> 25e6441a-5fae-492b-b918-327e88c3a6f9
     - !<own> 213426da-4382-4563-9929-b8365695cd47
+    - !<own> 48ed0b24-2907-4d37-9fda-9d75de9fe24a
   Components:
     []
 - !<AudioComponent/8a21b74d-a39e-4e06-bd9d-655b2090b92d>
@@ -9283,6 +9304,7 @@
       pressBreadboardRecognizer: !<MappingBased.AssignableType> 56a03b1a-3e9c-4956-b0c6-58793d216010
       musicController: !<MappingBased.AssignableType_1> 8df55664-959b-4d8a-91ed-cda0ab3af4bc
       introTrack: !<reference.AudioTrackAsset> 90518471-2c6e-4da3-826a-2907f2e4e201
+      introTrackVolume: 0.130000
       spaceSetup: !<MappingBased.AssignableType_2> 5a9e8d73-a99d-45b2-8ab8-ff9ddefcafd3
       hideSpaceSetupOnStart: true
   ScriptTypes:
