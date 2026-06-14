@@ -113,7 +113,10 @@ export class ZappyVoice extends BaseScriptComponent {
 
   onAwake(): void {
     if (!isNull(this.audioComponent)) {
-      this.audioComponent.setOnFinish(() => this.setSpeaking(false));
+      this.audioComponent.setOnFinish(() => {
+        this.setSpeaking(false);
+        this.hideSpeechBox();
+      });
     }
   }
 
@@ -137,6 +140,7 @@ export class ZappyVoice extends BaseScriptComponent {
       this.audioComponent.stop(false);
     }
     this.setSpeaking(false);
+    this.hideSpeechBox();
   }
 
   // ─── Private — Synthesis Routing ──────────────────────────────
@@ -151,9 +155,11 @@ export class ZappyVoice extends BaseScriptComponent {
     generation: number,
     allowFallback: boolean,
   ): void {
-    // Caption immediately, rendered the way this backend speaks the line.
+    // Caption immediately, rendered the way this backend speaks the line, and
+    // reveal the box — kept up even in the caption-only (no audio) fallback.
     if (!isNull(this.speechBox)) {
       this.speechBox.setCaption(provider ? provider.toCaption(text) : text);
+      this.speechBox.show();
     }
 
     if (!provider || !provider.isAvailable()) {
@@ -231,6 +237,12 @@ export class ZappyVoice extends BaseScriptComponent {
     }
     this._isSpeaking = value;
     this.onSpeakingChangedEvent.invoke(value);
+  }
+
+  private hideSpeechBox(): void {
+    if (!isNull(this.speechBox)) {
+      this.speechBox.hide();
+    }
   }
 
   private log(message: string): void {
