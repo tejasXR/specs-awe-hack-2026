@@ -108,8 +108,8 @@ export class SpaceSetup extends BaseScriptComponent {
     this.getDividerByKind().get(kind)?.hide();
   }
 
-  getDividerLineAnchor(kind: DividerKind): vec3 | undefined {
-    return this.getDividerByKind().get(kind)?.getLocalLineAnchorPosition();
+  getDividerLineAnchor(kind: DividerKind): SceneObject | undefined {
+    return this.getDividerByKind().get(kind)?.getLocalLineAnchor();
   }
 
   private staggerDividers(action: (divider: SpaceSetupDivider) => void): void {

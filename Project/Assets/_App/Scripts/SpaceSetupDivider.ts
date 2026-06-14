@@ -43,7 +43,7 @@ export class SpaceSetupDivider extends BaseScriptComponent {
     this.animator.hide();
   }
 
-  getLocalLineAnchorPosition(): vec3 {
-    return this.lineAnchor.getTransform().getLocalPosition();
+  getLocalLineAnchor(): SceneObject {
+    return this.lineAnchor;
   }
 }

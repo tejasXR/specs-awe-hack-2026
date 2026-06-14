@@ -88,10 +88,12 @@ export class OnboardingResponder extends BaseScriptComponent {
    * marker is reparented under the space-setup object at the divider's local
    * anchor, so it tracks that object for free as the user positions it.
    */
-  private showBreadboardCallout(localLineAnchor: vec3): void {
+  private showBreadboardCallout(linAnchorObj: SceneObject): void {
     const line = this.ensureLine();
-    line.attachEnd(this.spaceSetup.getSceneObject(), localLineAnchor);
+
+    line.attachEnd(linAnchorObj);
     line.show();
+    line.setRedrawOnUpdate(true);
   }
 
   /**

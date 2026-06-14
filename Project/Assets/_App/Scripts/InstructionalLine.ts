@@ -21,7 +21,9 @@ export class InstructionalLine extends BaseScriptComponent {
   lineMaterial!: Material;
 
   @input
-  @hint("Marker at the line's start; reparented under its anchor by attachStart")
+  @hint(
+    "Marker at the line's start; reparented under its anchor by attachStart",
+  )
   startPoint!: SceneObject;
 
   @input
@@ -44,6 +46,13 @@ export class InstructionalLine extends BaseScriptComponent {
 
   private _line!: LineRenderer;
   private _updateEvent!: UpdateEvent;
+
+  // Per-frame redraw keeps the line glued to markers whose parents move; turn
+  // it off for static lines to skip the cost (a single redraw on show()).
+  private _redrawOnUpdate: boolean = true;
+  // show()/hide() own visibility; tracked so setRedrawOnUpdate can gate the
+  // frame loop without ever drawing a hidden line.
+  private _isShown: boolean = false;
 
   onAwake(): void {
     const preset = this.toPreset(this.defaultWidthPreset);
@@ -68,17 +77,11 @@ export class InstructionalLine extends BaseScriptComponent {
     this._updateEvent.enabled = false;
   }
 
-  /**
-   * Reparent the start marker under an anchor (at an optional local offset) so
-   * the line's start tracks it. The line renders between its own start/end
-   * markers, so once attached the endpoint follows that object for free.
-   */
   attachStart(parent: SceneObject, localOffset: vec3 = vec3.zero()): void {
     this.startPoint.setParent(parent);
     this.startPoint.getTransform().setLocalPosition(localOffset);
   }
 
-  /** Reparent the end marker under an anchor; see attachStart. */
   attachEnd(parent: SceneObject, localOffset: vec3 = vec3.zero()): void {
     this.endPoint.setParent(parent);
     this.endPoint.getTransform().setLocalPosition(localOffset);
@@ -91,13 +94,23 @@ export class InstructionalLine extends BaseScriptComponent {
   }
 
   show(): void {
-    this._updateEvent.enabled = true;
-    this.redraw();
+    this._isShown = true;
+    this.redraw(); // draw once so a non-redrawing line still appears
+    this._updateEvent.enabled = this._redrawOnUpdate;
   }
 
   hide(): void {
+    this._isShown = false;
     this._updateEvent.enabled = false;
     this._line.setEnabled(false);
+  }
+
+  // Toggle the per-frame redraw loop. Safe to call before or after show():
+  // the frame loop only runs while shown, and show() always draws once so a
+  // static line (redrawOnUpdate === false) still renders.
+  setRedrawOnUpdate(redrawOnUpdate: boolean): void {
+    this._redrawOnUpdate = redrawOnUpdate;
+    this._updateEvent.enabled = redrawOnUpdate && this._isShown;
   }
 
   setEnabled(enabled: boolean): void {
