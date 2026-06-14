@@ -26,7 +26,9 @@
   ExportUid: 00000000-0000-0000-0000-000000000000
   PackagePolicy: CanBeUnpacked
   ScriptInputsHidden:
-    instructionPrompt: false
+    linePrefab: false
+    linePrefabParent: false
+    lineStartAnchor: false
     onboardingController: false
     spaceSetup: false
     zappy: false
@@ -41,16 +43,20 @@
     []
   DefaultScriptInputs:
     - onboardingController: !<MappingBased.AssignableType> 00000000-0000-0000-0000-000000000000
-      instructionPrompt: !<MappingBased.AssignableType_1> 00000000-0000-0000-0000-000000000000
-      spaceSetup: !<MappingBased.AssignableType_2> 00000000-0000-0000-0000-000000000000
-      zappy: !<MappingBased.AssignableType_3> 00000000-0000-0000-0000-000000000000
+      linePrefab: !<reference.ObjectPrefab> 00000000-0000-0000-0000-000000000000
+      linePrefabParent: !<reference.SceneObject> 00000000-0000-0000-0000-000000000000
+      lineStartAnchor: !<reference.SceneObject> 00000000-0000-0000-0000-000000000000
+      spaceSetup: !<MappingBased.AssignableType_1> 00000000-0000-0000-0000-000000000000
+      zappy: !<MappingBased.AssignableType_2> 00000000-0000-0000-0000-000000000000
       zappySetupAnchor: !<reference.SceneObject> 00000000-0000-0000-0000-000000000000
   ScriptTypes:
     -
       {}
   InputLines:
     - // @input AssignableType onboardingController
-    - // @input AssignableType_1 instructionPrompt
-    - // @input AssignableType_2 spaceSetup
-    - // @input AssignableType_3 zappy
+    - '// @input Asset.ObjectPrefab linePrefab {"hint":"Line prefab instantiated at runtime to point at the breadboard"}'
+    - '// @input SceneObject linePrefabParent {"hint":"Optional parent for the instantiated line (defaults to this object)"}'
+    - '// @input SceneObject lineStartAnchor {"hint":"World anchor the onboarding callout line starts from"}'
+    - // @input AssignableType_1 spaceSetup
+    - // @input AssignableType_2 zappy
     - '// @input SceneObject zappySetupAnchor {"hint":"World transform Zappy travels to when its step is reached"}'
