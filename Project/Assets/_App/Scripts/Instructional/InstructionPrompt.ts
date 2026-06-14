@@ -50,6 +50,10 @@ export class InstructionPrompt extends BaseScriptComponent {
   @input
   lineStart!: SceneObject;
 
+  @ui.separator
+  @input
+  enableLogging: boolean = false;
+
   private _lines: LineRenderer[] = [];
   private _lineRenderingEnabled: boolean = true;
   private _lineWidthStartCm: number = LINE_WIDTH_PRESETS_CM.thin.start;
@@ -94,9 +98,8 @@ export class InstructionPrompt extends BaseScriptComponent {
   }
 
   // Targets are origin-LOCAL cell positions
-  setLineTargets(breadboardOrigin: SceneObject, localTargets: vec3[]): void {
-    this.ensureLinePool(breadboardOrigin);
-
+  setLineTargets(originObject: SceneObject, localTargets: vec3[]): void {
+    this.ensureLinePool(originObject);
     this._localTargets = localTargets;
   }
 
@@ -140,6 +143,13 @@ export class InstructionPrompt extends BaseScriptComponent {
     } else if (this._updateEvent.enabled) {
       this.updateLinePositions(); // loop is live — reflect the change now
     }
+
+    print("Lines are enabled: " + enabled);
+    if (this.enableLogging && enabled) {
+      this._localTargets.forEach((lineLocalTarget) => {
+        print("Line local targets are " + lineLocalTarget);
+      });
+    }
   }
 
   setLineWidth(preset: LineWidthPreset): void {
@@ -169,12 +179,14 @@ export class InstructionPrompt extends BaseScriptComponent {
 
     this.setButtonLabel("", "", "");
 
-    print("Instruction prompt reset");
+    if (this.enableLogging) {
+      print("Instruction prompt reset");
+    }
   }
 
   private ensureLinePool(breadboardOrigin: SceneObject): void {
     if (this._lines.length > 0) {
-      return; // already built — the origin is stable for the lens's lifetime
+      return;
     }
     for (let i = 0; i < MAX_LINES; i++) {
       const line = this.createLineRenderer(breadboardOrigin);
@@ -186,7 +198,6 @@ export class InstructionPrompt extends BaseScriptComponent {
   private disableLines(): void {
     for (const line of this._lines) {
       line.setEnabled(false);
-      print("lines disabled");
     }
   }
 
@@ -215,6 +226,9 @@ export class InstructionPrompt extends BaseScriptComponent {
     for (let i = 0; i < this._lines.length; i++) {
       if (i < this._localTargets.length) {
         this.setLine(this._lines[i], startWorld, this._localTargets[i]);
+        if (this.enableLogging) {
+          print("line position set to " + this._localTargets[i]);
+        }
       } else {
         this._lines[i].setEnabled(false);
       }

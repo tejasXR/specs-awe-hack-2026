@@ -27,6 +27,7 @@
   PackagePolicy: CanBeUnpacked
   ScriptInputsHidden:
     descriptionText: false
+    enableLogging: false
     lineMaterial: false
     lineStart: false
     primaryButtonLabelText: false
@@ -51,6 +52,7 @@
       tertiaryButtonLabelText: !<reference.Text> 00000000-0000-0000-0000-000000000000
       lineMaterial: !<reference.Material> 00000000-0000-0000-0000-000000000000
       lineStart: !<reference.SceneObject> 00000000-0000-0000-0000-000000000000
+      enableLogging: false
   ScriptTypes:
     -
       {}
@@ -63,3 +65,5 @@
     - '// @input Component.Text tertiaryButtonLabelText {"hint":"Label for the tertiary button"}'
     - '// @input Asset.Material lineMaterial {"hint":"Material for the callout line (LineRenderer clones it)"}'
     - // @input SceneObject lineStart
+    - '// @ui {"widget":"separator"}'
+    - // @input bool enableLogging
