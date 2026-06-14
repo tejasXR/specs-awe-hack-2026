@@ -17,6 +17,10 @@ export class ExperienceInitialization extends BaseScriptComponent {
   introTrack!: AudioTrackAsset;
 
   @input
+  @widget(new SliderWidget(0, 1))
+  introTrackVolume: number = 0.5;
+
+  @input
   spaceSetup!: SpaceSetup;
 
   @input
@@ -50,18 +54,8 @@ export class ExperienceInitialization extends BaseScriptComponent {
 
     this.spaceSetup.setup(setupPosition);
 
+    this.pressBreadboardRecognizer.hide();
     this.musicController.play(this.introTrack);
-
-    const transform = this.getTransform();
-    const camera = WorldCameraFinderProvider.getInstance();
-    const toCamera = camera
-      .getWorldPosition()
-      .sub(transform.getWorldPosition())
-      .normalize();
-
-    toCamera.y = 0;
-
-    transform.setWorldRotation(quat.lookAt(toCamera.normalize(), vec3.up()));
 
     this._initializationComplete = true;
   }

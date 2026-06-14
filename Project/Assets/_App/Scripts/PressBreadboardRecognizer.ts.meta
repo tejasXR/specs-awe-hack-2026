@@ -29,6 +29,11 @@
     curledAngle: false
     debugText: false
     extendedAngle: false
+    holdCompleteDuration: false
+    holdDuration: false
+    recognizerText: false
+    resetGraceDuration: false
+    stillnessRadius: false
   ScriptTypesHidden:
     {}
   ReadMe: !<reference> 00000000-0000-0000-0000-000000000000
@@ -40,11 +45,27 @@
   DefaultScriptInputs:
     - extendedAngle: !<float> 150.000000
       curledAngle: !<float> 80.000000
+      recognizerText: !<reference.Text> 00000000-0000-0000-0000-000000000000
       debugText: !<reference.Text> 00000000-0000-0000-0000-000000000000
+      stillnessRadius: !<float> 4.000000
+      holdDuration: 0.500000
+      holdCompleteDuration: 1.500000
+      resetGraceDuration: 0.300000
   ScriptTypes:
     -
       {}
   InputLines:
-    - '// @input float extendedAngle = 150 {"hint":"Index must bend MORE than this angle (degrees) to count as extended. SIK treats 150° as flat/straight."}'
-    - '// @input float curledAngle = 80 {"hint":"A finger must bend LESS than this angle (degrees) to count as curled. SIK treats 80° as closed."}'
-    - '// @input Component.Text debugText {"hint":"Debug readout for hand-tracking / pointing-pose state."}'
+    - '// @ui {"widget":"separator"}'
+    - '// @ui {"widget":"label", "label":"Pose Thresholds"}'
+    - '// @input float extendedAngle = 135 {"hint":"Index bend angle (deg) ABOVE which it counts as extended. ~180 = straight. LOWER this to accept a more bent index (less strict).", "widget":"slider", "min":20, "max":180, "step":1}'
+    - '// @input float curledAngle = 95 {"hint":"Finger bend angle (deg) BELOW which it counts as curled. RAISE this to accept a looser curl (less strict).", "widget":"slider", "min":20, "max":180, "step":1}'
+    - '// @ui {"widget":"separator"}'
+    - '// @ui {"widget":"label", "label":"References"}'
+    - '// @input Component.Text recognizerText {"hint":"Instructional prompt shown during breadboard activation."}'
+    - '// @input Component.Text debugText {"hint":"Optional on-device readout of the pointing-pose finger logic."}'
+    - '// @ui {"widget":"separator"}'
+    - '// @ui {"widget":"label", "label":"Hold Timing"}'
+    - '// @input float stillnessRadius = 4 {"hint":"How far (cm) the fingertip may drift from where the hold began before it cancels. RAISE for a more forgiving hold.", "widget":"slider", "min":1, "max":12, "step":0.5}'
+    - '// @input float holdDuration = 0.5 {"hint":"Seconds of valid hold before onHoldStart fires (engage point).", "widget":"slider", "min":0, "max":2, "step":0.05}'
+    - '// @input float holdCompleteDuration = 1.5 {"hint":"Total seconds of valid hold before onHoldComplete fires (activation).", "widget":"slider", "min":0.2, "max":4, "step":0.05}'
+    - "// @input float resetGraceDuration = 0.3 {\"hint\":\"A pose/tracking dropout shorter than this (sec) won't cancel the hold. RAISE to ride through more jitter.\", \"widget\":\"slider\", \"min\":0, \"max\":1, \"step\":0.05}"

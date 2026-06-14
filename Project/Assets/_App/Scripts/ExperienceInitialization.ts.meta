@@ -28,6 +28,7 @@
   ScriptInputsHidden:
     hideSpaceSetupOnStart: false
     introTrack: false
+    introTrackVolume: false
     musicController: false
     pressBreadboardRecognizer: false
     spaceSetup: false
@@ -43,6 +44,7 @@
     - pressBreadboardRecognizer: !<MappingBased.AssignableType> 00000000-0000-0000-0000-000000000000
       musicController: !<MappingBased.AssignableType_1> 00000000-0000-0000-0000-000000000000
       introTrack: !<reference.AudioTrackAsset> 00000000-0000-0000-0000-000000000000
+      introTrackVolume: 0.500000
       spaceSetup: !<MappingBased.AssignableType_2> 00000000-0000-0000-0000-000000000000
       hideSpaceSetupOnStart: false
   ScriptTypes:
@@ -52,5 +54,6 @@
     - // @input AssignableType pressBreadboardRecognizer
     - '// @input AssignableType_1 musicController {"hint":"Music controller that plays the setup track"}'
     - '// @input Asset.AudioTrackAsset introTrack {"hint":"Track to play when the space is set up"}'
+    - '// @input float introTrackVolume = 0.5 {"widget":"slider", "min":0, "max":1}'
     - // @input AssignableType_2 spaceSetup
     - // @input bool hideSpaceSetupOnStart

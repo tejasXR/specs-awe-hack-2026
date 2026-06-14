@@ -2,14 +2,28 @@ import { HandInputData } from "SpectaclesInteractionKit.lspkg/Providers/HandInpu
 import { Keypoint } from "SpectaclesInteractionKit.lspkg/Providers/HandInputData/Keypoint";
 import type TrackedHand from "SpectaclesInteractionKit.lspkg/Providers/HandInputData/TrackedHand";
 import Event, { PublicApi } from "SpectaclesInteractionKit.lspkg/Utils/Event";
+import { ScaleVisibilityAnimator } from "./Utils/ScaleVisibilityAnimator";
 
 type HoldState =
   | { phase: "idle" }
   | { phase: "holding"; anchor: vec3; elapsed: number; graceElapsed: number }
   | { phase: "completed" };
 
+/** Per-finger breakdown of the pointing-pose check, for on-device debugging. */
+interface PoseEvaluation {
+  tracked: boolean;
+  index: boolean;
+  middle: boolean;
+  ring: boolean;
+  pointing: boolean;
+  /** Live bend angles (degrees) for tuning the thresholds on-device. */
+  indexAngle: number;
+  middleAngle: number;
+  ringAngle: number;
+}
+
 /**
- * Recognizes a "pointing hold": the index finger extended (all other fingers
+ * Recognizes a "pointing hold": the index finger extended (middle and ring
  * curled) and held still for a duration. Fires onHoldStart once the engage
  * threshold is crossed, and onHoldComplete (with the fingertip position) once
  * the full hold duration is reached. After completing it stays in a terminal
@@ -22,27 +36,65 @@ type HoldState =
  */
 @component
 export class PressBreadboardRecognizer extends BaseScriptComponent {
+  @ui.separator
+  @ui.label("Pose Thresholds")
   @input
   @hint(
-    "Index must bend MORE than this angle (degrees) to count as extended. SIK treats 150° as flat/straight.",
+    "Index bend angle (deg) ABOVE which it counts as extended. ~180 = straight. LOWER this to accept a more bent index (less strict).",
   )
-  extendedAngle: number = 150;
+  @widget(new SliderWidget(20, 180, 1))
+  extendedAngle: number = 135;
 
   @input
   @hint(
-    "A finger must bend LESS than this angle (degrees) to count as curled. SIK treats 80° as closed.",
+    "Finger bend angle (deg) BELOW which it counts as curled. RAISE this to accept a looser curl (less strict).",
   )
-  curledAngle: number = 80;
+  @widget(new SliderWidget(20, 180, 1))
+  curledAngle: number = 95;
+
+  @ui.separator
+  @ui.label("References")
+  @input
+  @hint("Instructional prompt shown during breadboard activation.")
+  recognizerText!: Text;
 
   @input
-  @hint("Debug readout for hand-tracking / pointing-pose state.")
+  @hint("Optional on-device readout of the pointing-pose finger logic.")
+  @allowUndefined
   debugText!: Text;
 
-  private _stillnessRadius: number = 2.0;
-  private _holdDuration: number = 0.5;
-  private _holdCompleteDuration: number = 1.5;
-  // A brief pose/stillness/tracking dropout shorter than this won't cancel the hold.
-  private _resetGraceDuration: number = 0.15;
+  @ui.separator
+  @ui.label("Hold Timing")
+  @input
+  @hint(
+    "How far (cm) the fingertip may drift from where the hold began before it cancels. RAISE for a more forgiving hold.",
+  )
+  @widget(new SliderWidget(1, 12, 0.5))
+  stillnessRadius: number = 4.0;
+
+  @input
+  @hint("Seconds of valid hold before onHoldStart fires (engage point).")
+  @widget(new SliderWidget(0, 2, 0.05))
+  holdDuration: number = 0.5;
+
+  @input
+  @hint("Total seconds of valid hold before onHoldComplete fires (activation).")
+  @widget(new SliderWidget(0.2, 4, 0.05))
+  holdCompleteDuration: number = 1.5;
+
+  @input
+  @hint(
+    "A pose/tracking dropout shorter than this (sec) won't cancel the hold. RAISE to ride through more jitter.",
+  )
+  @widget(new SliderWidget(0, 1, 0.05))
+  resetGraceDuration: number = 0.3;
+
+  private _animator!: ScaleVisibilityAnimator;
+
+  private static readonly IDLE_MESSAGE =
+    "Touch and hold the center of your breadboard to activate the experience...";
+  /** Shown while the hold is in progress. */
+  private static readonly PRESSING_MESSAGE = "Calibrating, keep holding...";
 
   private hand!: TrackedHand;
   private state: HoldState = { phase: "idle" };
@@ -54,17 +106,25 @@ export class PressBreadboardRecognizer extends BaseScriptComponent {
     this.onHoldCompleteEvent.publicApi();
 
   onAwake(): void {
+    this._animator = new ScaleVisibilityAnimator(this.getSceneObject(), {
+      showDurationMs: 250,
+      hideDurationMs: 180,
+      shownScale: vec3.one(),
+    });
+
     this.createEvent("UpdateEvent").bind(() => this.onUpdate());
 
-    // TEJAS: Won't work in LS editor...
     this.hand = HandInputData.getInstance().getDominantHand();
+
+    this.setMessage(PressBreadboardRecognizer.IDLE_MESSAGE);
   }
 
   private onUpdate() {
     if (this.state.phase === "completed") return;
 
     const dt = getDeltaTime();
-    const poseHeld = this.isPointingPose(); // false (and updates debug text) when untracked
+    const pose = this.evaluatePose();
+    const poseHeld = pose.pointing; // false when untracked
 
     switch (this.state.phase) {
       case "idle":
@@ -86,7 +146,7 @@ export class PressBreadboardRecognizer extends BaseScriptComponent {
 
         if (!gateHeld) {
           const graceElapsed = this.state.graceElapsed + dt;
-          if (graceElapsed > this._resetGraceDuration) {
+          if (graceElapsed > this.resetGraceDuration) {
             this.state = { phase: "idle" }; // sustained failure → cancel
           } else {
             // brief flicker → hold the elapsed timer steady, just track the gap
@@ -99,11 +159,11 @@ export class PressBreadboardRecognizer extends BaseScriptComponent {
         const elapsed = prev + dt;
 
         // Fire onHoldStart on the single frame the engage threshold is crossed.
-        if (prev < this._holdDuration && elapsed >= this._holdDuration) {
+        if (prev < this.holdDuration && elapsed >= this.holdDuration) {
           this.onHoldStartEvent.invoke(this.state.anchor);
         }
 
-        if (elapsed >= this._holdCompleteDuration) {
+        if (elapsed >= this.holdCompleteDuration) {
           this.state = { phase: "completed" };
           this.onHoldCompleteEvent.invoke(this.hand.indexTip.position);
         } else {
@@ -117,27 +177,64 @@ export class PressBreadboardRecognizer extends BaseScriptComponent {
         break;
       }
     }
+
+    this.updateDebugText(pose);
+
+    // Drive the prompt off the hold state, not raw pose detection, so the
+    // grace window doesn't flicker the message. Leave the text untouched once
+    // completed — the panel is animated out by its onHoldComplete listener.
+    if (this.state.phase !== "completed") {
+      this.setMessage(
+        this.state.phase === "holding"
+          ? PressBreadboardRecognizer.PRESSING_MESSAGE
+          : PressBreadboardRecognizer.IDLE_MESSAGE,
+      );
+    }
   }
 
-  /** Index extended, middle/ring/pinky curled. Thumb is ignored. */
-  private isPointingPose(): boolean {
+  /** Index extended, middle/ring curled. Thumb and pinky are ignored. */
+  private evaluatePose(): PoseEvaluation {
     if (!this.hand.isTracked()) {
-      this.debugText.text = "Hand is not tracked!";
-      return false;
+      return {
+        tracked: false,
+        index: false,
+        middle: false,
+        ring: false,
+        pointing: false,
+        indexAngle: 0,
+        middleAngle: 0,
+        ringAngle: 0,
+      };
     }
 
-    const index = this.isFingerExtended(this.hand.indexFinger);
-    const middle = this.isFingerCurled(this.hand.middleFinger);
-    const ring = this.isFingerCurled(this.hand.ringFinger);
-    const pinky = this.isFingerCurled(this.hand.pinkyFinger);
+    const indexAngle = this.fingerBendAngle(this.hand.indexFinger);
+    const middleAngle = this.fingerBendAngle(this.hand.middleFinger);
+    const ringAngle = this.fingerBendAngle(this.hand.ringFinger);
 
-    const pointing = index && middle && ring && pinky;
+    // Straighter finger → larger bend angle. Extended when above the
+    // threshold; curled when below it.
+    const index = indexAngle > this.extendedAngle;
+    const middle = middleAngle < this.curledAngle;
+    const ring = ringAngle < this.curledAngle;
 
-    this.debugText.text =
-      `Pointing pose: ${pointing}` +
-      ` (index:${index} m:${middle} r:${ring} p:${pinky})`;
+    return {
+      tracked: true,
+      index,
+      middle,
+      ring,
+      pointing: index && middle && ring,
+      indexAngle,
+      middleAngle,
+      ringAngle,
+    };
+  }
 
-    return pointing;
+  show(): void {
+    this._animator.show();
+  }
+
+  hide(): void {
+    this._animator.hide();
   }
 
   private fingerBendDot(finger: Keypoint[]): number {
@@ -151,23 +248,50 @@ export class PressBreadboardRecognizer extends BaseScriptComponent {
     return midToUpper.dot(midToKnuckle);
   }
 
-  private isFingerExtended(finger: Keypoint[]): boolean {
-    // Straight finger → arms point apart → dot below cos(extendedAngle).
-    return (
-      this.fingerBendDot(finger) <
-      Math.cos(this.extendedAngle * MathUtils.DegToRad)
-    );
-  }
-
-  private isFingerCurled(finger: Keypoint[]): boolean {
-    // Bent finger → arms swing together → dot above cos(curledAngle).
-    return (
-      this.fingerBendDot(finger) >
-      Math.cos(this.curledAngle * MathUtils.DegToRad)
-    );
+  /** Bend angle at the finger's mid joint, in degrees (~180 = straight). */
+  private fingerBendAngle(finger: Keypoint[]): number {
+    const dot = this.fingerBendDot(finger);
+    const clamped = dot < -1 ? -1 : dot > 1 ? 1 : dot;
+    return Math.acos(clamped) * MathUtils.RadToDeg;
   }
 
   private isStill(tip: vec3, anchor: vec3): boolean {
-    return tip.distance(anchor) <= this._stillnessRadius;
+    return tip.distance(anchor) <= this.stillnessRadius;
+  }
+
+  /** Set the prompt text, skipping redundant writes to avoid per-frame relayout. */
+  private setMessage(message: string): void {
+    if (!isNull(this.recognizerText) && this.recognizerText.text !== message) {
+      this.recognizerText.text = message;
+    }
+  }
+
+  /**
+   * On-device diagnostics: which finger fails its threshold (with live bend
+   * angles), plus the hold phase, elapsed time, and drift from the anchor —
+   * enough to see whether a missed trigger is the pose or the stillness.
+   */
+  private updateDebugText(pose: PoseEvaluation): void {
+    if (isNull(this.debugText)) return;
+
+    if (!pose.tracked) {
+      this.debugText.text = "Hand not tracked";
+      return;
+    }
+
+    let status = this.state.phase.toUpperCase();
+    if (this.state.phase === "holding") {
+      const drift = this.hand.indexTip.position.distance(this.state.anchor);
+      status =
+        `HOLDING ${this.state.elapsed.toFixed(2)}s` +
+        ` / ${this.holdCompleteDuration.toFixed(2)}s` +
+        `  drift ${drift.toFixed(1)}cm (max ${this.stillnessRadius.toFixed(1)})`;
+    }
+
+    this.debugText.text =
+      `${status}\n` +
+      `idx ${pose.indexAngle.toFixed(0)}° ${pose.index ? "EXT ✓" : "ext ✗"}\n` +
+      `mid ${pose.middleAngle.toFixed(0)}° ${pose.middle ? "CURL ✓" : "curl ✗"}` +
+      `   ring ${pose.ringAngle.toFixed(0)}° ${pose.ring ? "CURL ✓" : "curl ✗"}`;
   }
 }
