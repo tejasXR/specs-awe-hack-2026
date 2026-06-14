@@ -9,8 +9,7 @@
  * SETUP: Requires RemoteServiceGateway.lspkg installed via Lens Studio
  *        Asset Library + Google Token set in RemoteServiceGatewayCredentials.
  */
-import { Gemini } from "RemoteServiceGateway.lspkg/HostedExternal/Gemini";
-import { GeminiTypes } from "RemoteServiceGateway.lspkg/HostedExternal/GeminiTypes";
+import { GeminiService } from "../Services/GeminiService";
 import Event, { PublicApi } from "SpectaclesInteractionKit.lspkg/Utils/Event";
 
 // ─── Types ──────────────────────────────────────────────────────
@@ -203,24 +202,16 @@ export class ZappyBrain extends BaseScriptComponent {
   private send(contents: GeminiContent[], historyUserText: string): void {
     this.isBusy = true;
     this.onRequestStartedEvent.invoke(undefined);
-
-    const request = {
-      model: "gemini-2.5-flash",
-      type: "generateContent",
-      body: { contents: contents },
-    } as GeminiTypes.Models.GenerateContentRequest;
-
     this.log("Calling Gemini...");
 
-    Gemini.models(request)
-      .then((response) => {
-        const rawText = response.candidates[0].content.parts[0].text;
+    GeminiService.generate(contents)
+      .then((rawText) => {
         this.log("Raw: " + rawText);
 
         this.history.push({ role: "user", parts: [{ text: historyUserText }] });
         this.history.push({ role: "model", parts: [{ text: rawText }] });
 
-        const parsed = this.parseResponse(rawText);
+        const parsed = parseZappyResponse(rawText);
         if (!parsed) {
           this.log("JSON parse failed, using raw text");
         }
@@ -242,50 +233,55 @@ export class ZappyBrain extends BaseScriptComponent {
       });
   }
 
-  private parseResponse(raw: string): ZappyResponse | null {
-    try {
-      let jsonStr = raw.trim();
-
-      // Strip markdown code fences if Gemini wraps JSON in ```
-      if (jsonStr.indexOf("```") === 0) {
-        const start = jsonStr.indexOf("{");
-        const end = jsonStr.lastIndexOf("}") + 1;
-        if (start >= 0 && end > start) {
-          jsonStr = jsonStr.substring(start, end);
-        }
-      }
-
-      const obj = JSON.parse(jsonStr);
-      if (!obj.speech || typeof obj.speech !== "string") return null;
-
-      const validEmotions = [
-        "happy",
-        "sad",
-        "thinking",
-        "excited",
-        "confused",
-        "neutral",
-      ];
-      let emotion = ZappyEmotion.Neutral;
-      if (validEmotions.indexOf(obj.emotion) >= 0) {
-        emotion = obj.emotion as ZappyEmotion;
-      }
-
-      let intensity = 0.5;
-      if (typeof obj.intensity === "number") {
-        intensity = Math.max(0, Math.min(1, obj.intensity));
-      }
-
-      return { emotion, intensity, speech: obj.speech };
-    } catch (e) {
-      this.log("JSON parse error: " + e);
-      return null;
-    }
-  }
-
   private log(message: string): void {
     if (this.enableLogging) {
       print("[ZappyBrain] " + message);
     }
+  }
+}
+
+/**
+ * Parse a raw Gemini reply into a structured ZappyResponse, tolerating
+ * markdown code fences. Returns null if the text isn't the expected
+ * {emotion,intensity,speech} JSON. Shared by ZappyBrain (chat) and any other
+ * caller that prompts for the same response shape (e.g. CheckWorkController).
+ */
+export function parseZappyResponse(raw: string): ZappyResponse | null {
+  try {
+    let jsonStr = raw.trim();
+
+    // Strip markdown code fences if Gemini wraps JSON in ```
+    if (jsonStr.indexOf("```") === 0) {
+      const start = jsonStr.indexOf("{");
+      const end = jsonStr.lastIndexOf("}") + 1;
+      if (start >= 0 && end > start) {
+        jsonStr = jsonStr.substring(start, end);
+      }
+    }
+
+    const obj = JSON.parse(jsonStr);
+    if (!obj.speech || typeof obj.speech !== "string") return null;
+
+    const validEmotions = [
+      "happy",
+      "sad",
+      "thinking",
+      "excited",
+      "confused",
+      "neutral",
+    ];
+    let emotion = ZappyEmotion.Neutral;
+    if (validEmotions.indexOf(obj.emotion) >= 0) {
+      emotion = obj.emotion as ZappyEmotion;
+    }
+
+    let intensity = 0.5;
+    if (typeof obj.intensity === "number") {
+      intensity = Math.max(0, Math.min(1, obj.intensity));
+    }
+
+    return { emotion, intensity, speech: obj.speech };
+  } catch (e) {
+    return null;
   }
 }

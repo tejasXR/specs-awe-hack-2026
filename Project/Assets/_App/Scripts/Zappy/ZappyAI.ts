@@ -114,6 +114,15 @@ export class ZappyAI extends BaseScriptComponent {
     this.brain.requestWithImage(context, base64Image, mimeType);
   }
 
+  /**
+   * Present a pre-computed response — sets mood, speaks, and notifies
+   * observers, with NO Gemini round-trip. For systems that make their own
+   * scoped Gemini call (e.g. CheckWorkController) and just want Zappy to react.
+   */
+  present(resp: ZappyResponse): void {
+    this.routeResponse(resp);
+  }
+
   /** Introduce Zappy to the user. */
   greet(): void {
     this.activate("The user just activated you. Introduce yourself briefly!");
