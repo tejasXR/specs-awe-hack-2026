@@ -127,9 +127,10 @@ export class MusicController extends BaseScriptComponent {
   }
 
   /**
-   * Crossfade to `track`, playing it at `volume` (0–1, default full). If it's
-   * already the active track, the crossfade is skipped but a changed volume
-   * eases in live.
+   * Crossfade to `track`. `volume` (0–1, default 1) is a per-track gain
+   * multiplied with the global musicVolume — so the deck plays at
+   * musicVolume × volume, not volume directly. If it's already the active
+   * track, the crossfade is skipped but a changed volume eases in live.
    */
   play(track: AudioTrackAsset, volume: number = 1): void {
     const gain = clamp01(volume);
