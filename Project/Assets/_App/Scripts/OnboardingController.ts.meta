@@ -46,10 +46,8 @@
     -
       {}
   InputLines:
-    - '// @ui {"widget":"separator"}'
-    - '// @ui {"widget":"label", "label":"References"}'
     - '// @input AssignableType instructionPrompt {"hint":"The single InstructionPrompt living in the scene"}'
-    - '// @input AssignableType_1 menuConsole {"hint":"Console whose primary/secondary buttons drive next/previous"}'
+    - // @input AssignableType_1 menuConsole
     - '// @ui {"widget":"separator"}'
     - '// @ui {"widget":"label", "label":"Sequence"}'
     - /*

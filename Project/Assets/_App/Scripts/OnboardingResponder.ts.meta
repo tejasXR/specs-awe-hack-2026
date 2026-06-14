@@ -1,0 +1,53 @@
+- !<AssetImportMetadata/286c9fc4-98f1-4406-a391-dd2ec4ea3e5e>
+  ImportedAssetIds:
+    TypeScriptAsset: !<reference> ff7d4e7c-5649-41a2-88d7-9597c4276ac2
+  ImporterName: TypeScriptAssetImporter
+  PrimaryAsset: !<reference> ff7d4e7c-5649-41a2-88d7-9597c4276ac2
+  PackageType: NotAPackage
+  LegacyPackagePolicy: ~
+  ExtraData:
+    {}
+  AssetDataMap:
+    TypeScriptAsset: !<own> a4cd73e7-35de-4708-8ac7-272670b3f7c3
+  DependentFiles:
+    []
+  ImporterSettings: !<AssetImporterSettings>
+    {}
+  CompressionSettings: !<own> 00000000-0000-0000-0000-000000000000
+- !<TypeScriptAssetData/a4cd73e7-35de-4708-8ac7-272670b3f7c3>
+  SvgIcon: ""
+  SetupScript:
+    code: ""
+  Description: ""
+  VersionMajor: 0
+  VersionMinor: 0
+  VersionPatch: 0
+  ComponentUid: f1270a12-1b76-4161-8bbc-1f70ef3a18b7
+  ExportUid: 00000000-0000-0000-0000-000000000000
+  PackagePolicy: CanBeUnpacked
+  ScriptInputsHidden:
+    onboardingController: false
+    spaceSetup: false
+    zappy: false
+    zappySetupAnchor: false
+  ScriptTypesHidden:
+    {}
+  ReadMe: !<reference> 00000000-0000-0000-0000-000000000000
+  DeclarationFile: !<reference> 00000000-0000-0000-0000-000000000000
+  Tags:
+    []
+  Attachments:
+    []
+  DefaultScriptInputs:
+    - onboardingController: !<MappingBased.AssignableType> 00000000-0000-0000-0000-000000000000
+      spaceSetup: !<MappingBased.AssignableType_1> 00000000-0000-0000-0000-000000000000
+      zappy: !<MappingBased.AssignableType_2> 00000000-0000-0000-0000-000000000000
+      zappySetupAnchor: !<reference.SceneObject> 00000000-0000-0000-0000-000000000000
+  ScriptTypes:
+    -
+      {}
+  InputLines:
+    - '// @input AssignableType onboardingController {"hint":"Emits the onStepChanged events this responder reacts to"}'
+    - // @input AssignableType_1 spaceSetup
+    - // @input AssignableType_2 zappy
+    - '// @input SceneObject zappySetupAnchor {"hint":"World transform Zappy travels to when its step is reached"}'

@@ -28,14 +28,11 @@ const NO_STEP = -1;
 
 @component
 export class OnboardingController extends BaseScriptComponent {
-  @ui.separator
-  @ui.label("References")
   @input
   @hint("The single InstructionPrompt living in the scene")
   instructionPrompt!: InstructionPrompt;
 
   @input
-  @hint("Console whose primary/secondary buttons drive next/previous")
   menuConsole!: MenuConsole;
 
   @ui.separator
@@ -49,6 +46,10 @@ export class OnboardingController extends BaseScriptComponent {
 
   private readonly onCompletedEvent = new Event<void>();
   readonly onCompleted: PublicApi<void> = this.onCompletedEvent.publicApi();
+
+  private readonly onStepChangedEvent = new Event<number>();
+  readonly onStepChanged: PublicApi<number> =
+    this.onStepChangedEvent.publicApi();
 
   get stepCount(): number {
     return this.onboardingSteps.length;
@@ -84,11 +85,9 @@ export class OnboardingController extends BaseScriptComponent {
 
   private next(): void {
     if (this._currentIndex === NO_STEP) {
-      return; // navigation is inert until setup() starts the sequence
+      return;
     }
     if (this._currentIndex >= this.stepCount - 1) {
-      // Onboarding is done — stop consuming console input before the next phase
-      // reuses the same buttons, then signal completion.
       this.teardown();
 
       this._currentIndex = NO_STEP;
@@ -118,11 +117,10 @@ export class OnboardingController extends BaseScriptComponent {
 
     this.updateButtonLabels(index);
     this._currentIndex = index;
+
+    this.onStepChangedEvent.invoke(index);
   }
 
-  // Next hides only on the last of several steps; Back hides on the first. A
-  // lone step keeps Next so it can still complete. setButtonLabel disables the
-  // text element for any empty label.
   private updateButtonLabels(index: number): void {
     const onboardingStep = this.onboardingSteps[index];
 
