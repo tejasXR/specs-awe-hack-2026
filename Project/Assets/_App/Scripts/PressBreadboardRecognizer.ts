@@ -6,7 +6,13 @@ import { ScaleVisibilityAnimator } from "./Utils/ScaleVisibilityAnimator";
 
 type HoldState =
   | { phase: "idle" }
-  | { phase: "holding"; anchor: vec3; elapsed: number; graceElapsed: number }
+  | {
+      phase: "holding";
+      hand: TrackedHand;
+      anchor: vec3;
+      elapsed: number;
+      graceElapsed: number;
+    }
   | { phase: "completed" };
 
 /** Per-finger breakdown of the pointing-pose check, for on-device debugging. */
@@ -22,12 +28,22 @@ interface PoseEvaluation {
   ringAngle: number;
 }
 
+/** A hand paired with the pose it presented this frame. */
+interface HandPose {
+  hand: TrackedHand;
+  pose: PoseEvaluation;
+}
+
 /**
  * Recognizes a "pointing hold": the index finger extended (middle and ring
  * curled) and held still for a duration. Fires onHoldStart once the engage
  * threshold is crossed, and onHoldComplete (with the fingertip position) once
  * the full hold duration is reached. After completing it stays in a terminal
  * state and will not fire again.
+ *
+ * Either hand may perform the hold. While idle the recognizer scans both
+ * hands (dominant-first) for the pose; once a hold begins it commits to that
+ * hand and ignores the other until the hold ends or cancels.
  *
  * Finger extension/curl is measured the same way SIK's own `palmState` does it:
  * the cosine of the bend angle at a finger's mid joint (see
@@ -96,7 +112,8 @@ export class PressBreadboardRecognizer extends BaseScriptComponent {
   /** Shown while the hold is in progress. */
   private static readonly PRESSING_MESSAGE = "Calibrating, keep holding...";
 
-  private hand!: TrackedHand;
+  /** Both hands, dominant-first — the scan order while idle. */
+  private hands!: TrackedHand[];
   private state: HoldState = { phase: "idle" };
 
   private onHoldStartEvent = new Event<vec3>();
@@ -114,7 +131,8 @@ export class PressBreadboardRecognizer extends BaseScriptComponent {
 
     this.createEvent("UpdateEvent").bind(() => this.onUpdate());
 
-    this.hand = HandInputData.getInstance().getDominantHand();
+    const handInput = HandInputData.getInstance();
+    this.hands = [handInput.getDominantHand(), handInput.getNonDominantHand()];
 
     this.setMessage(PressBreadboardRecognizer.IDLE_MESSAGE);
   }
@@ -123,15 +141,23 @@ export class PressBreadboardRecognizer extends BaseScriptComponent {
     if (this.state.phase === "completed") return;
 
     const dt = getDeltaTime();
-    const pose = this.evaluatePose();
-    const poseHeld = pose.pointing; // false when untracked
+
+    // The hand we act on this frame and its pose. While holding we stay
+    // committed to one hand; while idle we scan both (dominant-first), so once
+    // a hold begins the other hand is ignored for its whole duration.
+    const focus: HandPose =
+      this.state.phase === "holding"
+        ? { hand: this.state.hand, pose: this.evaluatePose(this.state.hand) }
+        : this.scanForPose();
+    const poseHeld = focus.pose.pointing; // false when untracked
 
     switch (this.state.phase) {
       case "idle":
         if (poseHeld) {
           this.state = {
             phase: "holding",
-            anchor: this.hand.indexTip.position,
+            hand: focus.hand,
+            anchor: focus.hand.indexTip.position,
             elapsed: 0,
             graceElapsed: 0,
           };
@@ -139,37 +165,40 @@ export class PressBreadboardRecognizer extends BaseScriptComponent {
         break;
 
       case "holding": {
+        const holding = this.state;
+        const hand = holding.hand;
+
         // Short-circuits before reading the tip when the pose (and thus tracking) is lost.
         const gateHeld =
-          poseHeld &&
-          this.isStill(this.hand.indexTip.position, this.state.anchor);
+          poseHeld && this.isStill(hand.indexTip.position, holding.anchor);
 
         if (!gateHeld) {
-          const graceElapsed = this.state.graceElapsed + dt;
+          const graceElapsed = holding.graceElapsed + dt;
           if (graceElapsed > this.resetGraceDuration) {
             this.state = { phase: "idle" }; // sustained failure → cancel
           } else {
             // brief flicker → hold the elapsed timer steady, just track the gap
-            this.state = { ...this.state, graceElapsed };
+            this.state = { ...holding, graceElapsed };
           }
           break;
         }
 
-        const prev = this.state.elapsed;
+        const prev = holding.elapsed;
         const elapsed = prev + dt;
 
         // Fire onHoldStart on the single frame the engage threshold is crossed.
         if (prev < this.holdDuration && elapsed >= this.holdDuration) {
-          this.onHoldStartEvent.invoke(this.state.anchor);
+          this.onHoldStartEvent.invoke(holding.anchor);
         }
 
         if (elapsed >= this.holdCompleteDuration) {
           this.state = { phase: "completed" };
-          this.onHoldCompleteEvent.invoke(this.hand.indexTip.position);
+          this.onHoldCompleteEvent.invoke(hand.indexTip.position);
         } else {
           this.state = {
             phase: "holding",
-            anchor: this.state.anchor,
+            hand,
+            anchor: holding.anchor,
             elapsed,
             graceElapsed: 0,
           };
@@ -178,7 +207,7 @@ export class PressBreadboardRecognizer extends BaseScriptComponent {
       }
     }
 
-    this.updateDebugText(pose);
+    this.updateDebugText(focus.hand, focus.pose);
 
     // Drive the prompt off the hold state, not raw pose detection, so the
     // grace window doesn't flicker the message. Leave the text untouched once
@@ -192,9 +221,36 @@ export class PressBreadboardRecognizer extends BaseScriptComponent {
     }
   }
 
+  /**
+   * Pick the hand to act on this frame: the first hand presenting the pointing
+   * pose, scanning dominant-first. When neither points, returns the first
+   * tracked hand (else the dominant hand) so the debug readout still has a
+   * subject. Each hand's pose is evaluated at most once.
+   */
+  private scanForPose(): HandPose {
+    let first: HandPose | null = null;
+    let firstTracked: HandPose | null = null;
+
+    for (const hand of this.hands) {
+      const pose = this.evaluatePose(hand);
+      if (pose.pointing) {
+        return { hand, pose };
+      }
+      if (first === null) {
+        first = { hand, pose };
+      }
+      if (firstTracked === null && pose.tracked) {
+        firstTracked = { hand, pose };
+      }
+    }
+
+    // `first` is always set — `hands` holds both hands.
+    return firstTracked ?? first!;
+  }
+
   /** Index extended, middle/ring curled. Thumb and pinky are ignored. */
-  private evaluatePose(): PoseEvaluation {
-    if (!this.hand.isTracked()) {
+  private evaluatePose(hand: TrackedHand): PoseEvaluation {
+    if (!hand.isTracked()) {
       return {
         tracked: false,
         index: false,
@@ -207,9 +263,9 @@ export class PressBreadboardRecognizer extends BaseScriptComponent {
       };
     }
 
-    const indexAngle = this.fingerBendAngle(this.hand.indexFinger);
-    const middleAngle = this.fingerBendAngle(this.hand.middleFinger);
-    const ringAngle = this.fingerBendAngle(this.hand.ringFinger);
+    const indexAngle = this.fingerBendAngle(hand.indexFinger);
+    const middleAngle = this.fingerBendAngle(hand.middleFinger);
+    const ringAngle = this.fingerBendAngle(hand.ringFinger);
 
     // Straighter finger → larger bend angle. Extended when above the
     // threshold; curled when below it.
@@ -271,17 +327,19 @@ export class PressBreadboardRecognizer extends BaseScriptComponent {
    * angles), plus the hold phase, elapsed time, and drift from the anchor —
    * enough to see whether a missed trigger is the pose or the stillness.
    */
-  private updateDebugText(pose: PoseEvaluation): void {
+  private updateDebugText(hand: TrackedHand, pose: PoseEvaluation): void {
     if (isNull(this.debugText)) return;
 
+    const label = hand.handType === "left" ? "L" : "R";
+
     if (!pose.tracked) {
-      this.debugText.text = "Hand not tracked";
+      this.debugText.text = `[${label}] Hand not tracked`;
       return;
     }
 
     let status = this.state.phase.toUpperCase();
     if (this.state.phase === "holding") {
-      const drift = this.hand.indexTip.position.distance(this.state.anchor);
+      const drift = hand.indexTip.position.distance(this.state.anchor);
       status =
         `HOLDING ${this.state.elapsed.toFixed(2)}s` +
         ` / ${this.holdCompleteDuration.toFixed(2)}s` +
@@ -289,7 +347,7 @@ export class PressBreadboardRecognizer extends BaseScriptComponent {
     }
 
     this.debugText.text =
-      `${status}\n` +
+      `[${label}] ${status}\n` +
       `idx ${pose.indexAngle.toFixed(0)}° ${pose.index ? "EXT ✓" : "ext ✗"}\n` +
       `mid ${pose.middleAngle.toFixed(0)}° ${pose.middle ? "CURL ✓" : "curl ✗"}` +
       `   ring ${pose.ringAngle.toFixed(0)}° ${pose.ring ? "CURL ✓" : "curl ✗"}`;
