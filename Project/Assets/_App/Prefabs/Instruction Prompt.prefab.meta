@@ -179,8 +179,6 @@
       primaryButtonLabelText: !<reference.Text> 00000000-0000-0000-0000-000000000000
       secondaryButtonLabelText: !<reference.Text> 00000000-0000-0000-0000-000000000000
       tertiaryButtonLabelText: !<reference.Text> 00000000-0000-0000-0000-000000000000
-      lineMaterial: !<reference.Material> 99f3ffb5-2d0e-4867-b3f9-a73b15f29744
-      lineStart: !<reference.SceneObject> 07e9262b-6d4a-4d36-41b1-c14af6b66ccd
       enableLogging: false
   ScriptTypes:
     "":

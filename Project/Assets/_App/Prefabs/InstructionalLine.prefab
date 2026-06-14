@@ -1,0 +1,75 @@
+- !<ObjectPrefab/e362da3c-55d0-465a-a0c1-94ca01b562b1>
+  PackagePath: ""
+  objects:
+    - !<own> 9832fabc-cb25-4fc0-8eac-2fe63695800b
+  LazyLoading: false
+  RetainAssets: true
+- !<SceneObject/9832fabc-cb25-4fc0-8eac-2fe63695800b>
+  PrefabRemaps:
+    - 9832fabc-cb25-4fc0-8eac-2fe63695800b: 9832fabc-cb25-4fc0-7153-d019c96a7ff4
+    - abec9f57-ad49-4f19-9df8-e622c5d59c94: abec9f57-ad49-4f19-6207-19dd3a2a636b
+    - e1171f88-51e5-4000-a178-678366538a92: e1171f88-51e5-4000-5e87-987c99ac756d
+    - f31a31dd-8dcc-4e1f-8c71-b41a5a3d47a5: f31a31dd-8dcc-4e1f-738e-4be5a5c2b85a
+  Name: InstructionalLine
+  Enabled: true
+  Layers: 1
+  LocalTransform: !<TransformEntity>
+    Position: {x: 0.000000, y: 0.000000, z: 0.000000}
+    Rotation: {x: 0.000000, y: 0.000000, z: 0.000000}
+    Scale: {x: 1.000000, y: 1.000000, z: 1.000000}
+    HasSegmentScaleCompensation: false
+  Children:
+    - !<own> f31a31dd-8dcc-4e1f-8c71-b41a5a3d47a5
+    - !<own> e1171f88-51e5-4000-a178-678366538a92
+  Components:
+    - !<own> abec9f57-ad49-4f19-9df8-e622c5d59c94
+- !<ScriptComponent/abec9f57-ad49-4f19-9df8-e622c5d59c94>
+  PrefabRemaps:
+    []
+  Name: InstructionalLine
+  Enabled: true
+  ScriptAsset: !<reference> 51c49180-256e-4604-9407-9db89c0d721f
+  ScriptInputsDefault:
+    enableLogging: true
+  ScriptTypesDefault:
+    {}
+  ScriptInputs:
+    "":
+      lineMaterial: !<reference.Material> f8b7ca3d-faaf-476a-97ed-793d8d1fc7c5
+      startPoint: !<reference.SceneObject> f31a31dd-8dcc-4e1f-8c71-b41a5a3d47a5
+      endPoint: !<reference.SceneObject> e1171f88-51e5-4000-a178-678366538a92
+      defaultWidthPreset: default
+      enableLogging: false
+  ScriptTypes:
+    "":
+      {}
+- !<SceneObject/e1171f88-51e5-4000-a178-678366538a92>
+  PrefabRemaps:
+    []
+  Name: End Point
+  Enabled: true
+  Layers: 1
+  LocalTransform: !<TransformEntity>
+    Position: {x: 0.000000, y: 0.000000, z: 0.000000}
+    Rotation: {x: 0.000000, y: 0.000000, z: 0.000000}
+    Scale: {x: 1.000000, y: 1.000000, z: 1.000000}
+    HasSegmentScaleCompensation: false
+  Children:
+    []
+  Components:
+    []
+- !<SceneObject/f31a31dd-8dcc-4e1f-8c71-b41a5a3d47a5>
+  PrefabRemaps:
+    []
+  Name: Start Point
+  Enabled: true
+  Layers: 1
+  LocalTransform: !<TransformEntity>
+    Position: {x: 0.000000, y: 0.000000, z: 0.000000}
+    Rotation: {x: 0.000000, y: 0.000000, z: 0.000000}
+    Scale: {x: 1.000000, y: 1.000000, z: 1.000000}
+    HasSegmentScaleCompensation: false
+  Children:
+    []
+  Components:
+    []
