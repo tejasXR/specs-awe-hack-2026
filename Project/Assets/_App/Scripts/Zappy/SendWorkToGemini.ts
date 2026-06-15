@@ -198,9 +198,9 @@ export class SendWorkToGemini extends BaseScriptComponent {
   }
 
   private send(base64Image: string): Promise<string> {
-    // The numbered build-so-far list is the SAME ordering the controller maps
-    // back from (repeatCompletedStep), so the number Gemini returns resolves to
-    // the right step. Identity, mission, and tone come from the persona; the
+    // The numbered build-so-far list labels each step with its true position,
+    // so the number Gemini returns is already the step index (goToStep maps it
+    // directly). Identity, mission, and tone come from the persona; the
     // check-work contract replaces the default response contract so the schema
     // and the prose agree on the 4-field shape.
     const task =
