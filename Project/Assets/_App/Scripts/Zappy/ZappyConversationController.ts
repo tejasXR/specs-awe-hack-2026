@@ -118,7 +118,7 @@ export class ZappyConversationController extends BaseScriptComponent {
     }
 
     this.log("Asking Zappy: " + query.substring(0, 40));
-    this.zappyAI.activate(query);
+    this.zappyAI.converse(query);
   }
 
   private onRequestFailed(): void {

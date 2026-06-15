@@ -1,5 +1,5 @@
 /**
- * ZappySnapVoiceProvider — Snap TextToSpeechModule backend for ZappyVoice.
+ * ZappyTTSVoiceProvider — Snap TextToSpeechModule backend for ZappyVoice.
  *
  * The built-in, offline-friendly voice: synthesizes via the on-device
  * TextToSpeechModule and hands the resulting AudioTrackAsset back to the
@@ -81,7 +81,7 @@ export class ZappyTTSVoiceProvider
 
   private log(message: string): void {
     if (this.enableLogging) {
-      print("[ZappySnapVoiceProvider] " + message);
+      print("[ZappyTTSVoiceProvider] " + message);
     }
   }
 }

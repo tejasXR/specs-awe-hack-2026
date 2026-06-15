@@ -173,22 +173,40 @@ export class ZappyVoice extends BaseScriptComponent {
       ? this.emotionController.currentEmotion
       : DEFAULT_MOOD;
 
-    provider.synthesize(text, mood, {
-      onReady: (track: AudioTrackAsset) => {
-        if (generation !== this._speechGeneration) {
-          this.log("Discarding stale synthesis result");
-          return;
-        }
-        this.playTrack(track);
-      },
-      onError: (message: string) => {
-        if (generation !== this._speechGeneration) {
-          return;
-        }
-        this.log("Synthesis failed: " + message);
-        this.routeFallback(text, provider, generation, allowFallback);
-      },
-    });
+    // A provider must report exactly once. We enforce that here so a
+    // misbehaving backend can't double-play, slip past staleness, or — by
+    // throwing synchronously instead of calling onError — defeat fallback.
+    let settled = false;
+
+    try {
+      provider.synthesize(text, mood, {
+        onReady: (track: AudioTrackAsset) => {
+          if (settled) return;
+          settled = true;
+          if (generation !== this._speechGeneration) {
+            this.log("Discarding stale synthesis result");
+            return;
+          }
+          this.playTrack(track);
+        },
+        onError: (message: string) => {
+          if (settled) return;
+          settled = true;
+          if (generation !== this._speechGeneration) {
+            return;
+          }
+          this.log("Synthesis failed: " + message);
+          this.routeFallback(text, provider, generation, allowFallback);
+        },
+      });
+    } catch (e) {
+      // The provider threw rather than reporting via onError — treat it as a
+      // reported failure so fallback still runs and the experience stays alive.
+      if (settled) return;
+      settled = true;
+      this.log("Provider threw synchronously: " + e);
+      this.routeFallback(text, provider, generation, allowFallback);
+    }
   }
 
   /** Delegate to the Snap fallback if allowed and distinct from the primary. */

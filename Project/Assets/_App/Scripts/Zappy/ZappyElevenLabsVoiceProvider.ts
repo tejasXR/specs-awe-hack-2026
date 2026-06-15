@@ -11,6 +11,13 @@
  * Because captions should stay clean, toCaption() strips the audio tags the
  * voice actually speaks.
  *
+ * STATUS: disabled stub. On-device there's no way to turn an HTTP audio
+ * response into an AudioTrackAsset, and the clean remote-audio path is GET-only
+ * (can't carry ElevenLabs' POST + key). So `RELAY_READY` is false and ZappyVoice
+ * uses Snap TTS. To enable: stand up a GET relay that returns the mp3, switch
+ * synthesize() to makeResourceFromUrl → loadResourceAsAudioTrackAsset, and flip
+ * RELAY_READY. The SETUP below applies once the relay exists.
+ *
  * SETUP:
  *   1. Set your ElevenLabs API key and voice ID (get these from Sasha).
  *   2. The InternetModule must be added to the scene via
@@ -36,6 +43,16 @@ enum ElevenLabsModel {
 
 /** Audio output format — mp3 is universally supported. */
 const OUTPUT_FORMAT = "mp3_44100_128";
+
+/**
+ * Master switch for the expressive backend. Stays `false` until the binary-audio
+ * relay is built (a GET endpoint returning the mp3 →
+ * RemoteMediaModule.loadResourceAsAudioTrackAsset; see decodeAndReturn). While
+ * false, isAvailable() reports unavailable so ZappyVoice never selects this
+ * backend or wastes a request — the experience uses Snap TTS. Flip to `true`
+ * once the relay path lands.
+ */
+const RELAY_READY = false;
 
 // ─── Component ──────────────────────────────────────────────────
 
@@ -85,10 +102,26 @@ export class ZappyElevenLabsVoiceProvider
   @hint("Enable debug logging")
   enableLogging: boolean = false;
 
+  // ─── Dependencies ─────────────────────────────────────────────
+
+  /** HTTP transport. `fetch` is a method on this module, not a global. */
+  private internetModule: InternetModule = require("LensStudio:InternetModule");
+
   // ─── IVoiceProvider ───────────────────────────────────────────
 
+  /**
+   * False while RELAY_READY is off: the binary-audio path isn't implemented, so
+   * this backend genuinely can't produce a track — reporting unavailable keeps
+   * ZappyVoice on Snap TTS with no doomed per-line request. Once the relay
+   * exists, the config + transport checks become the real gate.
+   */
   isAvailable(): boolean {
-    return this.apiKey !== "" && this.voiceId !== "";
+    return (
+      RELAY_READY &&
+      this.apiKey !== "" &&
+      this.voiceId !== "" &&
+      !isNull(this.internetModule)
+    );
   }
 
   /** The spoken line carries audio tags — strip them for the caption. */
@@ -147,15 +180,19 @@ export class ZappyElevenLabsVoiceProvider
       body: body,
     });
 
-    // @ts-ignore — Lens Studio InternetModule global fetch
-    fetch(request)
+    this.internetModule
+      .fetch(request)
       .then((response: Response) => {
         if (!response.ok) {
           callbacks.onError("ElevenLabs HTTP " + response.status);
           return undefined;
         }
-        // @ts-ignore — arrayBuffer may not be in the type declarations, but
-        // the runtime may support it; the catch below handles absence.
+        // KNOWN GAP (deferred): Spectacles' Response supports text()/json()/
+        // bytes() only — arrayBuffer() is unsupported, so this rejects into the
+        // catch below and routes to fallback. The real binary-audio path
+        // (relay GET → makeResourceFromUrl → loadResourceAsAudioTrackAsset, or
+        // streaming) is the open relay-track work; see decodeAndReturn().
+        // @ts-ignore — arrayBuffer is intentionally not on the LS Response type.
         return response.arrayBuffer();
       })
       .then((audioData: ArrayBuffer | undefined) => {
@@ -175,17 +212,22 @@ export class ZappyElevenLabsVoiceProvider
   // ─── Private ──────────────────────────────────────────────────
 
   /**
-   * Decode the raw mp3 bytes into an AudioTrackAsset and report it. If the
-   * runtime doesn't expose AudioTrackAsset.createFromBuffer yet, this fails
-   * via onError so the coordinator can fall back to Snap TTS.
+   * Decode the raw mp3 bytes into an AudioTrackAsset and report it.
+   *
+   * KNOWN GAP (deferred, relay track): there is no on-device API to build an
+   * AudioTrackAsset from raw bytes — `AudioTrackAsset.createFromBuffer` does not
+   * exist. Remote audio must come through RemoteMediaModule
+   * .loadResourceAsAudioTrackAsset(internetModule.makeResourceFromUrl(url)),
+   * which is GET-only/no-headers and so can't carry ElevenLabs' POST + xi-api-key.
+   * Until the relay (a GET endpoint that returns the mp3) or a streaming path is
+   * built, this reports onError and the coordinator falls back to Snap TTS.
    */
   private decodeAndReturn(
     data: ArrayBuffer,
     callbacks: VoiceSynthesisCallbacks,
   ): void {
     try {
-      // Lens Studio 5.9+ supports creating audio tracks from raw data.
-      // @ts-ignore — API may not be in the type declarations yet
+      // @ts-ignore — createFromBuffer does not exist; throws, handled below.
       const track = AudioTrackAsset.createFromBuffer(data, "audio/mpeg");
       callbacks.onReady(track);
     } catch (e) {

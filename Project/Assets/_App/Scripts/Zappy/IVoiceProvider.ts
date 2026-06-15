@@ -8,7 +8,7 @@
  * ZappyVoice can pick between or fall back across without duplicating the
  * shared machinery.
  *
- * Implemented by ZappySnapVoiceProvider and ZappyElevenLabsVoiceProvider —
+ * Implemented by ZappyTTSVoiceProvider and ZappyElevenLabsVoiceProvider —
  * both @component classes, so they're wired into ZappyVoice in the Inspector.
  */
 import { ZappyEmotionData } from "./ZappyResponse";
@@ -28,6 +28,11 @@ export interface IVoiceProvider {
    * `callbacks`. Implementations must call exactly one of onReady/onError.
    * Staleness (a newer line superseding this one) is the coordinator's
    * concern — providers always report; the coordinator decides what to keep.
+   *
+   * Defense in depth: the coordinator also treats a synchronous throw, and any
+   * repeat callback, as a single reported failure — so a buggy backend degrades
+   * to fallback instead of breaking playback. Report cleanly anyway; don't rely
+   * on this.
    */
   synthesize(
     text: string,

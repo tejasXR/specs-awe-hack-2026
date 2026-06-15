@@ -82,18 +82,29 @@ export class ZappyPersona extends BaseScriptComponent {
    * adaptive tone + the response contract + the live build situation. Callers
    * pass this into Gemini's systemInstruction field and supply the user's task
    * as the turn content.
+   *
+   * Pass `directive` to append a per-call instruction (e.g. a conversational
+   * reply-length cap) after the situation, so it reads as the most specific,
+   * last-stated rule. Orthogonal to contractOverride, which swaps the JSON shape.
    */
-  systemInstruction(): string {
-    return `${this.systemPrompt()}\n\n${this.situation()}`;
+  systemInstruction(contractOverride?: string, directive?: string): string {
+    const base = `${this.systemPrompt(contractOverride)}\n\n${this.situation()}`;
+    const trimmed = directive?.trim();
+    return trimmed ? `${base}\n\n${trimmed}` : base;
   }
 
-  /** The stable identity layers: identity + mission + tone + output contract. */
-  systemPrompt(): string {
+  /**
+   * The stable identity layers: identity + mission + tone + output contract.
+   * Pass contractOverride to swap the default response contract for a
+   * caller-specific one (e.g. the check-work contract, which adds a field) so
+   * the prose and that caller's responseSchema agree.
+   */
+  systemPrompt(contractOverride?: string): string {
     return [
       this.identity.trim(),
       this.mission.trim(),
       TONE_SNIPPET[this.tone()],
-      RESPONSE_CONTRACT,
+      contractOverride ?? RESPONSE_CONTRACT,
     ]
       .filter((part) => part.length > 0)
       .join("\n\n");
