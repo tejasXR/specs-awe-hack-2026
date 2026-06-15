@@ -1,0 +1,65 @@
+- !<AssetImportMetadata/e8c125cd-ea91-400c-95d3-41d8ff5c71f2>
+  ImportedAssetIds:
+    TypeScriptAsset: !<reference> b8e46ec9-a29d-4fec-9d06-f011e3fe82ca
+  ImporterName: TypeScriptAssetImporter
+  PrimaryAsset: !<reference> b8e46ec9-a29d-4fec-9d06-f011e3fe82ca
+  PackageType: NotAPackage
+  LegacyPackagePolicy: ~
+  ExtraData:
+    {}
+  AssetDataMap:
+    TypeScriptAsset: !<own> fdc05529-2de1-418e-8eb4-ce8b828095a5
+  DependentFiles:
+    []
+  ImporterSettings: !<AssetImporterSettings>
+    {}
+  CompressionSettings: !<own> 00000000-0000-0000-0000-000000000000
+- !<TypeScriptAssetData/fdc05529-2de1-418e-8eb4-ce8b828095a5>
+  SvgIcon: ""
+  SetupScript:
+    code: ""
+  Description: ""
+  VersionMajor: 0
+  VersionMinor: 0
+  VersionPatch: 0
+  ComponentUid: 3b6835c8-4cdc-41a0-90eb-72878596e3b8
+  ExportUid: 00000000-0000-0000-0000-000000000000
+  PackagePolicy: CanBeUnpacked
+  ScriptInputsHidden:
+    cameraSource: false
+    enableLogging: false
+    instructionsController: false
+    persona: false
+    previewImage: false
+    previewPanel: false
+  ScriptTypesHidden:
+    {}
+  ReadMe: !<reference> 00000000-0000-0000-0000-000000000000
+  DeclarationFile: !<reference> 00000000-0000-0000-0000-000000000000
+  Tags:
+    []
+  Attachments:
+    []
+  DefaultScriptInputs:
+    - instructionsController: !<MappingBased.AssignableType> 00000000-0000-0000-0000-000000000000
+      persona: !<MappingBased.AssignableType_1> 00000000-0000-0000-0000-000000000000
+      cameraSource: !<MappingBased.AssignableType_2> 00000000-0000-0000-0000-000000000000
+      previewImage: !<reference.Image> 00000000-0000-0000-0000-000000000000
+      previewPanel: !<reference.SceneObject> 00000000-0000-0000-0000-000000000000
+      enableLogging: true
+  ScriptTypes:
+    -
+      {}
+  InputLines:
+    - '// @ui {"widget":"separator"}'
+    - '// @ui {"widget":"label", "label":"<span style=\"color: #60A5FA;\">Instructions</span>"}'
+    - '// @input AssignableType instructionsController {"hint":"Source of truth for the current step and the build-so-far transcript"}'
+    - '// @input AssignableType_1 persona {"hint":"Persona — supplies the standing system instruction + build context"}'
+    - '// @ui {"widget":"separator"}'
+    - '// @ui {"widget":"label", "label":"<span style=\"color: #60A5FA;\">Camera Capture</span>"}'
+    - '// @input AssignableType_2 cameraSource {"hint":"Shared CameraTexture source — provides the full camera frame"}'
+    - '// @ui {"widget":"separator"}'
+    - '// @ui {"widget":"label", "label":"<span style=\"color: #60A5FA;\">Display</span>"}'
+    - '// @input Component.Image previewImage {"hint":"Optional: Image component to show the captured frame as preview"}'
+    - '// @input SceneObject previewPanel {"hint":"Optional: SceneObject to show/hide as a capture preview panel"}'
+    - '// @input bool enableLogging = true {"hint":"Enable debug logging"}'
