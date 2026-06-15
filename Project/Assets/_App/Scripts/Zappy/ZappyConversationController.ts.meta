@@ -1,0 +1,58 @@
+- !<AssetImportMetadata/83a576a8-4cde-4f50-8a4a-1734516b85b0>
+  ImportedAssetIds:
+    TypeScriptAsset: !<reference> f5da2223-4403-4157-bafa-47b589e78202
+  ImporterName: TypeScriptAssetImporter
+  PrimaryAsset: !<reference> f5da2223-4403-4157-bafa-47b589e78202
+  PackageType: NotAPackage
+  LegacyPackagePolicy: ~
+  ExtraData:
+    {}
+  AssetDataMap:
+    TypeScriptAsset: !<own> 5b6b0ca0-b3ed-4f19-abc9-483bda550e37
+  DependentFiles:
+    []
+  ImporterSettings: !<AssetImporterSettings>
+    {}
+  CompressionSettings: !<own> 00000000-0000-0000-0000-000000000000
+- !<TypeScriptAssetData/5b6b0ca0-b3ed-4f19-abc9-483bda550e37>
+  SvgIcon: ""
+  SetupScript:
+    code: ""
+  Description: ""
+  VersionMajor: 0
+  VersionMinor: 0
+  VersionPatch: 0
+  ComponentUid: 0ee7b34f-dd90-4c52-a148-f1009d63319f
+  ExportUid: 00000000-0000-0000-0000-000000000000
+  PackagePolicy: CanBeUnpacked
+  ScriptInputsHidden:
+    enableLogging: false
+    interactions: false
+    listening: false
+    speechController: false
+    zappyAI: false
+  ScriptTypesHidden:
+    {}
+  ReadMe: !<reference> 00000000-0000-0000-0000-000000000000
+  DeclarationFile: !<reference> 00000000-0000-0000-0000-000000000000
+  Tags:
+    []
+  Attachments:
+    []
+  DefaultScriptInputs:
+    - interactions: !<MappingBased.AssignableType> 00000000-0000-0000-0000-000000000000
+      listening: !<MappingBased.AssignableType_1> 00000000-0000-0000-0000-000000000000
+      zappyAI: !<MappingBased.AssignableType_2> 00000000-0000-0000-0000-000000000000
+      speechController: !<MappingBased.AssignableType_3> 00000000-0000-0000-0000-000000000000
+      enableLogging: false
+  ScriptTypes:
+    -
+      {}
+  InputLines:
+    - '// @ui {"widget":"separator"}'
+    - '// @ui {"widget":"label", "label":"References"}'
+    - '// @input AssignableType interactions {"hint":"Tap/hold classifier on Zappy — provides onHoldStart / onHoldEnd"}'
+    - '// @input AssignableType_1 listening {"hint":"ASR session owner — captures the spoken query"}'
+    - '// @input AssignableType_2 zappyAI {"hint":"Zappy facade — answers via Gemini and voices the reply"}'
+    - '// @input AssignableType_3 speechController {"hint":"Speech controller — shows the live transcript while listening"}'
+    - '// @input bool enableLogging {"hint":"Enable debug logging"}'
