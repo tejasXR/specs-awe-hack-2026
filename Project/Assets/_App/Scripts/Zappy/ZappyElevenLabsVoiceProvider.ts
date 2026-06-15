@@ -17,7 +17,7 @@
  *      Resources > + > Internet Module.
  *   3. Wire this component into ZappyVoice's "ElevenLabs Provider" slot.
  */
-import { ZappyEmotionData } from "./ZappyBrain";
+import { ZappyEmotionData } from "./ZappyResponse";
 import { IVoiceProvider, VoiceSynthesisCallbacks } from "./IVoiceProvider";
 import {
   tagSpeechWithEmotion,

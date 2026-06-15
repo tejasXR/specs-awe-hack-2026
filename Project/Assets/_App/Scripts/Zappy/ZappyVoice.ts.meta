@@ -33,7 +33,7 @@
     enableFallback: false
     enableLogging: false
     snapProvider: false
-    speechBox: false
+    speechController: false
   ScriptTypesHidden:
     {}
   ReadMe: !<reference> 00000000-0000-0000-0000-000000000000
@@ -45,7 +45,7 @@
   DefaultScriptInputs:
     - emotionController: !<MappingBased.AssignableType> 00000000-0000-0000-0000-000000000000
       audioComponent: !<reference.AudioComponent> 00000000-0000-0000-0000-000000000000
-      speechBox: !<MappingBased.AssignableType_1> 00000000-0000-0000-0000-000000000000
+      speechController: !<MappingBased.AssignableType_1> 00000000-0000-0000-0000-000000000000
       backend: ""
       snapProvider: !<MappingBased.AssignableType_2> 00000000-0000-0000-0000-000000000000
       elevenLabsProvider: !<MappingBased.AssignableType_3> 00000000-0000-0000-0000-000000000000
@@ -59,7 +59,7 @@
     - '// @ui {"widget":"label", "label":"References"}'
     - // @input AssignableType emotionController
     - '// @input Component.AudioComponent audioComponent {"hint":"AudioComponent that plays the synthesized speech"}'
-    - '// @input AssignableType_1 speechBox {"hint":"Optional speech box — mirrors whatever Zappy says (tags stripped)"}'
+    - '// @input AssignableType_1 speechController {"hint":"Speech controller — Zappy routes his captions through it (tags stripped)"}'
     - '// @ui {"widget":"separator"}'
     - '// @ui {"widget":"label", "label":"Backends"}'
     - '// @input string backend {"hint":"Which backend speaks by default", "widget":"combobox", "values":[{"label":"Snap TTS", "value":"snap"}, {"label":"ElevenLabs", "value":"elevenlabs"}]}'

@@ -11,7 +11,7 @@
  * reused by other systems (captions, animation cues), and swapped
  * independently of the network layer.
  */
-import { ZappyEmotion, ZappyEmotionData } from "./ZappyBrain";
+import { ZappyEmotion, ZappyEmotionData } from "./ZappyResponse";
 
 // ─── Types ──────────────────────────────────────────────────────
 

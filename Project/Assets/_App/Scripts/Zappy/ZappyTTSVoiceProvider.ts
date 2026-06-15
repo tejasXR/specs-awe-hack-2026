@@ -9,7 +9,7 @@
  * also ZappyVoice's default fallback when an expressive backend (ElevenLabs)
  * is unconfigured or fails — so the experience never goes silent.
  */
-import { ZappyEmotionData } from "./ZappyBrain";
+import { ZappyEmotionData } from "./ZappyResponse";
 import { IVoiceProvider, VoiceSynthesisCallbacks } from "./IVoiceProvider";
 
 @component

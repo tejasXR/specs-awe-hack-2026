@@ -7,7 +7,7 @@
  * consumers (voice, animation, poses) can react without deduplicating.
  */
 import Event, { PublicApi } from "SpectaclesInteractionKit.lspkg/Utils/Event";
-import { ZappyEmotion, ZappyEmotionData } from "./ZappyBrain";
+import { ZappyEmotion, ZappyEmotionData } from "./ZappyResponse";
 
 /** Intensity moves smaller than this don't count as a state change. */
 const INTENSITY_EPSILON = 0.001;

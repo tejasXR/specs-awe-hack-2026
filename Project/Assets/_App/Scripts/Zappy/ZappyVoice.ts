@@ -5,8 +5,9 @@
  * owns everything shared across voice backends — the speaking-state machine,
  * audio playback, the onSpeakingChanged event, and staleness handling — and
  * delegates synthesis ("text + mood → audio track") to a swappable
- * IVoiceProvider and caption display to a ZappySpeechBox. Any system may also
- * call speak() directly to voice a fixed line without a Gemini round-trip.
+ * IVoiceProvider and caption display to a ZappySpeechController (the single
+ * box authority). Any system may also call speak() directly to voice a fixed
+ * line without a Gemini round-trip.
  *
  * Two providers are wired in the Inspector (Snap TTS and ElevenLabs); the
  * `backend` selector picks the primary. If the primary is unconfigured or its
@@ -18,12 +19,12 @@
  * exactly as before — swapping voices is an Inspector change, not a code one.
  */
 import Event, { PublicApi } from "SpectaclesInteractionKit.lspkg/Utils/Event";
-import { ZappyEmotion, ZappyEmotionData } from "./ZappyBrain";
+import { ZappyEmotion, ZappyEmotionData } from "./ZappyResponse";
 import { ZappyEmotionController } from "./ZappyEmotionController";
 import { IVoiceProvider } from "./IVoiceProvider";
 import { ZappyTTSVoiceProvider } from "./ZappyTTSVoiceProvider";
 import { ZappyElevenLabsVoiceProvider } from "./ZappyElevenLabsVoiceProvider";
-import { ZappySpeechBox } from "./ZappySpeechBox";
+import { ZappySpeechController } from "./ZappySpeechController";
 
 // ─── Types ──────────────────────────────────────────────────────
 
@@ -55,9 +56,9 @@ export class ZappyVoice extends BaseScriptComponent {
   audioComponent!: AudioComponent;
 
   @input
-  @hint("Optional speech box — mirrors whatever Zappy says (tags stripped)")
+  @hint("Speech controller — Zappy routes his captions through it (tags stripped)")
   @allowUndefined
-  speechBox!: ZappySpeechBox;
+  speechController!: ZappySpeechController;
 
   @ui.separator
   @ui.label("Backends")
@@ -115,7 +116,7 @@ export class ZappyVoice extends BaseScriptComponent {
     if (!isNull(this.audioComponent)) {
       this.audioComponent.setOnFinish(() => {
         this.setSpeaking(false);
-        this.hideSpeechBox();
+        this.endZappyCaption();
       });
     }
   }
@@ -140,7 +141,7 @@ export class ZappyVoice extends BaseScriptComponent {
       this.audioComponent.stop(false);
     }
     this.setSpeaking(false);
-    this.hideSpeechBox();
+    this.endZappyCaption();
   }
 
   // ─── Private — Synthesis Routing ──────────────────────────────
@@ -155,11 +156,11 @@ export class ZappyVoice extends BaseScriptComponent {
     generation: number,
     allowFallback: boolean,
   ): void {
-    // Caption immediately, rendered the way this backend speaks the line, and
-    // reveal the box — kept up even in the caption-only (no audio) fallback.
-    if (!isNull(this.speechBox)) {
-      this.speechBox.setCaption(provider ? provider.toCaption(text) : text);
-      this.speechBox.show();
+    // Caption immediately, rendered the way this backend speaks the line — the
+    // speech controller reveals the box, kept up even in the caption-only (no
+    // audio) fallback.
+    if (!isNull(this.speechController)) {
+      this.speechController.showZappy(provider ? provider.toCaption(text) : text);
     }
 
     if (!provider || !provider.isAvailable()) {
@@ -239,9 +240,9 @@ export class ZappyVoice extends BaseScriptComponent {
     this.onSpeakingChangedEvent.invoke(value);
   }
 
-  private hideSpeechBox(): void {
-    if (!isNull(this.speechBox)) {
-      this.speechBox.hide();
+  private endZappyCaption(): void {
+    if (!isNull(this.speechController)) {
+      this.speechController.endZappy();
     }
   }
 
