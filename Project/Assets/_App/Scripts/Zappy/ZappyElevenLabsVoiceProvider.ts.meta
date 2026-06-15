@@ -57,7 +57,7 @@
     - '// @ui {"widget":"label", "label":"ElevenLabs Config"}'
     - '// @input string apiKey {"hint":"Your ElevenLabs API key (xi-api-key header)"}'
     - '// @input string voiceId {"hint":"ElevenLabs voice ID — find this in the ElevenLabs dashboard"}'
-    - '// @input string modelId {"hint":"Use V3 for max expression (~1-2s) or Flash for low latency (~300ms)", "widget":"combobox", "values":[{"label":"V3 (Max Expression)", "value":"eleven_v3"}, {"label":"Flash v2.5 (Low Latency)", "value":"eleven_flash_v2_5"}]}'
+    - '// @input string modelId = "eleven_flash_v2_5" {"hint":"Use V3 for max expression (~1-2s) or Flash for low latency (~300ms)", "widget":"combobox", "values":[{"label":"V3 (Max Expression)", "value":"eleven_v3"}, {"label":"Flash v2.5 (Low Latency)", "value":"eleven_flash_v2_5"}]}'
     - '// @ui {"widget":"separator"}'
     - '// @ui {"widget":"label", "label":"Settings"}'
     - '// @input float stability = 0.3 {"hint":"Stability (0.0 = variable/expressive, 1.0 = stable/consistent)", "widget":"slider", "min":0, "max":1, "step":0.05}'

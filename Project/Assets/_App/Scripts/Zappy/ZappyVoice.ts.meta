@@ -62,7 +62,7 @@
     - '// @input AssignableType_1 speechController {"hint":"Speech controller — Zappy routes his captions through it (tags stripped)"}'
     - '// @ui {"widget":"separator"}'
     - '// @ui {"widget":"label", "label":"Backends"}'
-    - '// @input string backend {"hint":"Which backend speaks by default", "widget":"combobox", "values":[{"label":"Snap TTS", "value":"snap"}, {"label":"ElevenLabs", "value":"elevenlabs"}]}'
+    - '// @input string backend = "snap" {"hint":"Which backend speaks by default", "widget":"combobox", "values":[{"label":"Snap TTS", "value":"snap"}, {"label":"ElevenLabs", "value":"elevenlabs"}]}'
     - '// @input AssignableType_2 snapProvider {"hint":"Snap TextToSpeechModule provider — also the fallback voice"}'
     - '// @input AssignableType_3 elevenLabsProvider {"hint":"ElevenLabs expressive provider"}'
     - '// @ui {"widget":"separator"}'

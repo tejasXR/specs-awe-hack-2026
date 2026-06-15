@@ -84,10 +84,8 @@
     - '// @ui {"widget":"label", "label":"Sequence"}'
     - /*
     - "@typedef InstructionDefinition"
-    - '@ui {"widget":"group_start", "label":"Instruction Text"}'
-    - '@ui {"widget":"label", "label":"Instruction Text"}'
     - "@property {string} title"
-    - '@ui {"widget":"group_end"}'
+    - '@ui {"widget":"group_start", "label":"Instruction Data"}'
     - '@property {string} description {"widget":"text_area"}'
     - "@property {string} primaryButtonText"
     - "@property {string} secondaryButtonText"
@@ -96,7 +94,7 @@
     - "@property {bool} isCheckpoint"
     - "@property {bool} pointToPower {\"hint\":\"Point this step's callout at the power switch (I-64); overrides cell/rail settings\"}"
     - "@property {bool} pointToDivider {\"hint\":\"Point this step's callout at a Space Setup divider; overrides power/cell/rail settings\"}"
-    - '@property {string} dividerKind = "breadboard" {"widget":"combobox", "values":[{"label":"Breadboard", "value":"breadboard"}, {"label":"Wires", "value":"wires"}, {"label":"LEDs", "value":"leds"}, {"label":"Transistors", "value":"transistors"}], "showIf":"pointToDivider", "showIfValue":true}'
+    - '@property {string} dividerKind = "breadboard" {"widget":"combobox", "values":[{"label":"Breadboard", "value":"breadboard"}, {"label":"Wires", "value":"wires"}, {"label":"LEDs", "value":"leds"}, {"label":"Resistor", "value":"resistors"}], "showIf":"pointToDivider", "showIfValue":true}'
     - '@ui {"widget":"label", "label":"Breadboard Cell Settings"}'
     - '@property {bool} startOnRail {"hint":"Start from a power rail instead of a grid column"}'
     - '@property {string} columnStart = "A" {"widget":"combobox", "values":[{"label":"A", "value":"A"}, {"label":"B", "value":"B"}, {"label":"C", "value":"C"}, {"label":"D", "value":"D"}, {"label":"E", "value":"E"}, {"label":"F", "value":"F"}, {"label":"G", "value":"G"}, {"label":"H", "value":"H"}, {"label":"I", "value":"I"}, {"label":"J", "value":"J"}], "showIf":"startOnRail", "showIfValue":false}'
@@ -107,6 +105,7 @@
     - '@property {string} columnEnd {"widget":"combobox", "values":[{"label":"A", "value":"A"}, {"label":"B", "value":"B"}, {"label":"C", "value":"C"}, {"label":"D", "value":"D"}, {"label":"E", "value":"E"}, {"label":"F", "value":"F"}, {"label":"G", "value":"G"}, {"label":"H", "value":"H"}, {"label":"I", "value":"I"}, {"label":"J", "value":"J"}], "showIf":"endOnRail", "showIfValue":false}'
     - '@property {string} endRail {"widget":"combobox", "values":[{"label":"+ near", "value":"near-plus"}, {"label":"+ far", "value":"far-plus"}, {"label":"− near", "value":"near-minus"}, {"label":"− far", "value":"far-minus"}], "showIf":"endOnRail", "showIfValue":true}'
     - '@property {float} rowEnd {"widget":"slider", "min":1, "max":32, "step":1, "showIf":"useEndPin", "showIfValue":true}'
+    - '@ui {"widget":"group_end"}'
     - "*/"
     - "// @input InstructionDefinition[] instructionDefinitions = {}"
     - '// @ui {"widget":"separator"}'

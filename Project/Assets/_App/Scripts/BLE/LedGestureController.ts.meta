@@ -26,6 +26,7 @@
   ExportUid: 00000000-0000-0000-0000-000000000000
   PackagePolicy: CanBeUnpacked
   ScriptInputsHidden:
+    activateOnStart: false
     bleController: false
     brightnessTravelCm: false
     defaultFlashHz: false
@@ -44,6 +45,7 @@
     []
   DefaultScriptInputs:
     - bleController: !<MappingBased.AssignableType> 00000000-0000-0000-0000-000000000000
+      activateOnStart: false
       minBrightness: 0.200000
       brightnessTravelCm: !<float> 20.000000
       defaultFlashHz: !<float> 2.000000
@@ -59,6 +61,9 @@
     - '// @ui {"widget":"separator"}'
     - '// @ui {"widget":"label", "label":"<span style=\"color: #60A5FA;\">References</span>"}'
     - '// @input AssignableType bleController {"hint":"The BLE link this controller writes LED commands to"}'
+    - '// @ui {"widget":"separator"}'
+    - '// @ui {"widget":"label", "label":"<span style=\"color: #60A5FA;\">Activation</span>"}'
+    - '// @input bool activateOnStart {"hint":"Respond to gestures immediately. Off = stay idle until activate() is called (e.g. when the final instruction step is entered)"}'
     - '// @ui {"widget":"separator"}'
     - '// @ui {"widget":"label", "label":"<span style=\"color: #60A5FA;\">Left hand — brightness</span>"}'
     - '// @input float minBrightness = 0.2 {"hint":"Lowest brightness (pinch height = floor). 0.2 = 20%"}'

@@ -30,12 +30,10 @@ export interface InstructionStepEvent {
 
 @typedef
 export class InstructionDefinition {
-  @ui.group_start("Instruction Text")
-  @ui.label("Instruction Text")
   @input
+  @ui.group_start("Instruction Data")
   title!: string;
 
-  @ui.group_end
   @input
   @widget(new TextAreaWidget())
   description: string = "";
@@ -72,7 +70,7 @@ export class InstructionDefinition {
       new ComboBoxItem("Breadboard", "breadboard"),
       new ComboBoxItem("Wires", "wires"),
       new ComboBoxItem("LEDs", "leds"),
-      new ComboBoxItem("Transistors", "transistors"),
+      new ComboBoxItem("Resistor", "resistors"),
     ]),
   )
   dividerKind: string = "breadboard";
@@ -163,6 +161,7 @@ export class InstructionDefinition {
   @allowUndefined
   @showIf("useEndPin", true)
   @widget(new SliderWidget(1, 32, 1)) // playground rows; also the rail X-sample
+  @ui.group_end
   rowEnd: number | undefined;
 }
 

@@ -28,6 +28,7 @@
   ScriptInputsHidden:
     brain: false
     checkWorkLocation: false
+    conversationReplyDirective: false
     defaultLocation: false
     emotionController: false
     enableLogging: false
@@ -50,6 +51,7 @@
       defaultLocation: !<reference.SceneObject> 00000000-0000-0000-0000-000000000000
       checkWorkLocation: !<reference.SceneObject> 00000000-0000-0000-0000-000000000000
       hideOnStart: false
+      conversationReplyDirective: Reply in a single sentence whenever possible. Never use more than two sentences.
       enableLogging: true
   ScriptTypes:
     -
@@ -66,4 +68,7 @@
     - // @input SceneObject defaultLocation
     - // @input SceneObject checkWorkLocation
     - // @input bool hideOnStart
+    - '// @ui {"widget":"separator"}'
+    - '// @ui {"widget":"label", "label":"Conversation"}'
+    - '// @input string conversationReplyDirective = "Reply in a single sentence whenever possible. Never use more than two sentences." {"hint":"Reply-length cap appended to the system prompt for pinch-to-hold conversational turns only — not greet/celebrate/check-work", "widget":"text_area"}'
     - // @input bool enableLogging
