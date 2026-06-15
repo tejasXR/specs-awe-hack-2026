@@ -1476,6 +1476,37 @@
     - !<own> 3acd1a5c-a5be-4e74-9cb5-2cd48d6c0396
     - !<own> f36eb75b-b31b-4b16-b51c-0b595960ae20
     - !<own> 67c9770c-6034-4f2e-b883-68026e794b4f
+- !<ScriptComponent/1cd88feb-a004-499a-8ebe-3aaabb39b1e3>
+  PrefabRemaps:
+    []
+  Name: LedGestureController
+  Enabled: true
+  ScriptAsset: !<reference> 402b646c-e0d4-476d-b025-69792a0ffd95
+  ScriptInputsDefault:
+    activateOnStart: true
+    minBrightness: true
+    brightnessTravelCm: true
+    defaultFlashHz: true
+    minFlashHz: true
+    maxFlashHz: true
+    flashTravelCm: true
+    enableLogging: true
+  ScriptTypesDefault:
+    {}
+  ScriptInputs:
+    "":
+      bleController: !<MappingBased.AssignableType> 308e2967-8a99-4664-8725-9245ceb8e794
+      activateOnStart: false
+      minBrightness: 0.200000
+      brightnessTravelCm: !<float> 20.000000
+      defaultFlashHz: !<float> 2.000000
+      minFlashHz: !<float> 0.000000
+      maxFlashHz: !<float> 10.000000
+      flashTravelCm: !<float> 20.000000
+      enableLogging: false
+  ScriptTypes:
+    "":
+      {}
 - !<Text/1d2ac680-ba01-40e6-9c0d-6079b93d5a39>
   PrefabRemaps:
     []
@@ -4337,12 +4368,19 @@
   Enabled: true
   ScriptAsset: !<reference> 4d260d28-3aab-4c6c-bae6-48e4771ca394
   ScriptInputsDefault:
-    {}
+    ledTrackVolume: true
+    enableLogging: true
   ScriptTypesDefault:
     {}
   ScriptInputs:
     "":
-      {}
+      instructionsController: !<MappingBased.AssignableType> eaf037a4-91ae-4102-8701-9cc2f28c5a80
+      bleController: !<MappingBased.AssignableType_1> 308e2967-8a99-4664-8725-9245ceb8e794
+      gestureController: !<MappingBased.AssignableType_2> 1cd88feb-a004-499a-8ebe-3aaabb39b1e3
+      musicController: !<MappingBased.AssignableType_3> 8df55664-959b-4d8a-91ed-cda0ab3af4bc
+      ledTrack: !<reference.AudioTrackAsset> 21f6778d-4b99-4da8-825c-d931e322f4b8
+      ledTrackVolume: 0.700000
+      enableLogging: false
   ScriptTypes:
     "":
       {}
@@ -4863,6 +4901,7 @@
     - !<own> 027749f2-15b4-4532-b928-989d7267c706
   Components:
     - !<own> 38d7d1f5-0060-4db0-9e14-11e21571d445
+    - !<own> 1cd88feb-a004-499a-8ebe-3aaabb39b1e3
 - !<RenderMeshVisual/59ebac8d-5cfb-4ea1-b696-2aee3eeb59f8>
   PrefabRemaps:
     []
@@ -10318,6 +10357,7 @@
   Enabled: true
   ScriptAsset: !<reference> 45c7f51a-2723-4832-a2fa-7cfcae0b8c41
   ScriptInputsDefault:
+    conversationReplyDirective: true
     enableLogging: true
   ScriptTypesDefault:
     {}
@@ -10330,6 +10370,7 @@
       defaultLocation: !<reference.SceneObject> 1eddc013-881f-4095-90e8-2998ba787f46
       checkWorkLocation: !<reference.SceneObject> 5b4020c3-c6b6-41d1-a41e-0ab39c83363b
       hideOnStart: true
+      conversationReplyDirective: Reply in a single sentence whenever possible. Never use more than two sentences.
       enableLogging: true
   ScriptTypes:
     "":
@@ -13189,9 +13230,126 @@
           columnEnd: ""
           endRail: ""
           rowEnd: !<float> 0.000000
-        - title: Route Power
-          description: "Hmm, looks like we need to route power using  wire, grab a RED wire and then let's continue"
+        - title: Power Rails
+          description: |-
+            Hmm, looks like the LED isn't powered because power runs through the side rails on the breadboard.
+            
+            These blue lines indicate power
           primaryButtonText: ""
+          secondaryButtonText: ""
+          tertiaryButtonText: ""
+          isCheckpoint: false
+          pointToPower: false
+          pointToDivider: false
+          dividerKind: breadboard
+          startOnRail: false
+          columnStart: A
+          startRail: near-plus
+          rowStart: !<float> 1.000000
+          useEndPin: false
+          endOnRail: false
+          columnEnd: ""
+          endRail: ""
+          rowEnd: !<float> 0.000000
+        - title: Wires
+          description: |-
+            We can use a wire the route power from the power rails to the LED.
+            
+            Pick up a RED WIRE and press CONTINUE 
+          primaryButtonText: Contnue
+          secondaryButtonText: Back
+          tertiaryButtonText: ""
+          isCheckpoint: false
+          pointToPower: false
+          pointToDivider: true
+          dividerKind: wires
+          startOnRail: false
+          columnStart: A
+          startRail: near-plus
+          rowStart: !<float> 1.000000
+          useEndPin: false
+          endOnRail: false
+          columnEnd: ""
+          endRail: ""
+          rowEnd: !<float> 0.000000
+        - title: Place Wire
+          description: "Place one side of the RED WIRE on the (+) side of the power rail here, and the other side in cell E10."
+          primaryButtonText: Continue
+          secondaryButtonText: Back
+          tertiaryButtonText: ""
+          isCheckpoint: false
+          pointToPower: false
+          pointToDivider: false
+          dividerKind: breadboard
+          startOnRail: true
+          columnStart: A
+          startRail: near-plus
+          rowStart: !<float> 4.000000
+          useEndPin: true
+          endOnRail: false
+          columnEnd: E
+          endRail: ""
+          rowEnd: !<float> 10.000000
+        - title: Power Direction
+          description: "Even though we placed a RED WIRE near our LED, power only moves horizontally across the breadboard, not up or down."
+          primaryButtonText: Continue
+          secondaryButtonText: Back
+          tertiaryButtonText: ""
+          isCheckpoint: false
+          pointToPower: false
+          pointToDivider: false
+          dividerKind: breadboard
+          startOnRail: false
+          columnStart: A
+          startRail: near-plus
+          rowStart: !<float> 1.000000
+          useEndPin: false
+          endOnRail: false
+          columnEnd: ""
+          endRail: ""
+          rowEnd: !<float> 0.000000
+        - title: Resistors
+          description: "We can safely re-route power on a breadboard using a RESISTOR. Pick one up and let's continue"
+          primaryButtonText: Continue
+          secondaryButtonText: Back
+          tertiaryButtonText: ""
+          isCheckpoint: false
+          pointToPower: false
+          pointToDivider: true
+          dividerKind: resistors
+          startOnRail: false
+          columnStart: A
+          startRail: near-plus
+          rowStart: !<float> 1.000000
+          useEndPin: false
+          endOnRail: false
+          columnEnd: ""
+          endRail: ""
+          rowEnd: !<float> 0.000000
+        - title: Resistor
+          description: Place this RESISTOR between C10 and C5
+          primaryButtonText: ""
+          secondaryButtonText: ""
+          tertiaryButtonText: ""
+          isCheckpoint: false
+          pointToPower: false
+          pointToDivider: false
+          dividerKind: breadboard
+          startOnRail: false
+          columnStart: C
+          startRail: near-plus
+          rowStart: !<float> 10.000000
+          useEndPin: true
+          endOnRail: false
+          columnEnd: C
+          endRail: ""
+          rowEnd: !<float> 5.000000
+        - title: Ground the Current
+          description: |-
+            Almost there! We need to ground the current to close the electrical loop.
+            
+            Pick up a BLACK WIRE to continue
+          primaryButtonText: Continue
           secondaryButtonText: ""
           tertiaryButtonText: ""
           isCheckpoint: false
