@@ -26,6 +26,7 @@
   ExportUid: 00000000-0000-0000-0000-000000000000
   PackagePolicy: CanBeUnpacked
   ScriptInputsHidden:
+    holdThreshold: false
     interactable: false
   ScriptTypesHidden:
     {}
@@ -37,8 +38,10 @@
     []
   DefaultScriptInputs:
     - interactable: !<MappingBased.AssignableType> 00000000-0000-0000-0000-000000000000
+      holdThreshold: 0.850000
   ScriptTypes:
     -
       {}
   InputLines:
     - "// @input AssignableType interactable {\"hint\":\"The Interactable on the character's pinch target (needs a collider)\"}"
+    - "// @input float holdThreshold = 0.85 {\"hint\":\"Seconds to hold Zappy before it becomes a talk gesture (else it's a tap)\", \"widget\":\"slider\", \"min\":0.2, \"max\":2, \"step\":0.05}"
