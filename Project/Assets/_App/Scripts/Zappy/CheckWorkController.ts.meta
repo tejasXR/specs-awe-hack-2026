@@ -26,12 +26,11 @@
   ExportUid: 00000000-0000-0000-0000-000000000000
   PackagePolicy: CanBeUnpacked
   ScriptInputsHidden:
-    cameraSource: false
+    angleThresholdDegrees: false
     enableLogging: false
+    gazeTarget: false
     instructionsController: false
-    persona: false
-    previewImage: false
-    previewPanel: false
+    sendWorkToGemini: false
     zappyAI: false
   ScriptTypesHidden:
     {}
@@ -43,28 +42,22 @@
     []
   DefaultScriptInputs:
     - zappyAI: !<MappingBased.AssignableType> 00000000-0000-0000-0000-000000000000
-      persona: !<MappingBased.AssignableType_1> 00000000-0000-0000-0000-000000000000
+      sendWorkToGemini: !<MappingBased.AssignableType_1> 00000000-0000-0000-0000-000000000000
       instructionsController: !<MappingBased.AssignableType_2> 00000000-0000-0000-0000-000000000000
-      cameraSource: !<MappingBased.AssignableType_3> 00000000-0000-0000-0000-000000000000
-      previewImage: !<reference.Image> 00000000-0000-0000-0000-000000000000
-      previewPanel: !<reference.SceneObject> 00000000-0000-0000-0000-000000000000
+      gazeTarget: !<reference.SceneObject> 00000000-0000-0000-0000-000000000000
+      angleThresholdDegrees: !<float> 20.000000
       enableLogging: true
   ScriptTypes:
     -
       {}
   InputLines:
     - '// @ui {"widget":"separator"}'
-    - '// @ui {"widget":"label", "label":"<span style=\"color: #60A5FA;\">Zappy</span>"}'
-    - '// @input AssignableType zappyAI {"hint":"Zappy facade — voices and emotes the verdict"}'
-    - '// @input AssignableType_1 persona {"hint":"Persona — supplies the standing system instruction + build context"}'
+    - '// @ui {"widget":"label", "label":"<span style=\"color: #60A5FA;\">References</span>"}'
+    - '// @input AssignableType zappyAI {"hint":"Zappy facade — movement, voice, emotion, presentation"}'
+    - '// @input AssignableType_1 sendWorkToGemini {"hint":"Pure capture + Gemini unit this controller drives"}'
+    - '// @input AssignableType_2 instructionsController {"hint":"Drives the check kickoff (onCheckRequested) and step navigation"}'
     - '// @ui {"widget":"separator"}'
-    - '// @ui {"widget":"label", "label":"<span style=\"color: #60A5FA;\">Instructions</span>"}'
-    - '// @input AssignableType_2 instructionsController {"hint":"Source of truth for the current step and the build-so-far transcript"}'
-    - '// @ui {"widget":"separator"}'
-    - '// @ui {"widget":"label", "label":"<span style=\"color: #60A5FA;\">Camera Capture</span>"}'
-    - '// @input AssignableType_3 cameraSource {"hint":"Shared CameraTexture source — provides the full camera frame"}'
-    - '// @ui {"widget":"separator"}'
-    - '// @ui {"widget":"label", "label":"<span style=\"color: #60A5FA;\">Display</span>"}'
-    - '// @input Component.Image previewImage {"hint":"Optional: Image component to show the captured frame as preview"}'
-    - '// @input SceneObject previewPanel {"hint":"Optional: SceneObject to show/hide as a capture preview panel"}'
-    - '// @input bool enableLogging = true {"hint":"Enable debug logging"}'
+    - '// @ui {"widget":"label", "label":"<span style=\"color: #60A5FA;\">Gaze Gate</span>"}'
+    - "// @input SceneObject gazeTarget {\"hint\":\"What the user should look at — Zappy's head/root SceneObject\"}"
+    - "// @input float angleThresholdDegrees = 20 {\"hint\":\"How close the user's gaze must be to Zappy, in degrees\", \"widget\":\"slider\", \"min\":5, \"max\":60, \"step\":1}"
+    - '// @input bool enableLogging {"hint":"Enable debug logging"}'
