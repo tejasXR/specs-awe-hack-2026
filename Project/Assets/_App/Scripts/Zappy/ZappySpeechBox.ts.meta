@@ -26,6 +26,7 @@
   ExportUid: 00000000-0000-0000-0000-000000000000
   PackagePolicy: CanBeUnpacked
   ScriptInputsHidden:
+    speakerLabel: false
     speechText: false
   ScriptTypesHidden:
     {}
@@ -37,10 +38,10 @@
     []
   DefaultScriptInputs:
     - speechText: !<reference.Text> 00000000-0000-0000-0000-000000000000
+      speakerLabel: !<reference.Text> 00000000-0000-0000-0000-000000000000
   ScriptTypes:
     -
       {}
   InputLines:
-    - '// @ui {"widget":"separator"}'
-    - '// @ui {"widget":"label", "label":"References"}'
     - '// @input Component.Text speechText {"hint":"Caption text that mirrors whatever Zappy says"}'
+    - '// @input Component.Text speakerLabel {"hint":"Optional label naming the current speaker (e.g. You / Zappy)"}'

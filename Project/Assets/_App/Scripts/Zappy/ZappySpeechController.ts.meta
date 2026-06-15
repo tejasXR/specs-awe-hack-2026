@@ -1,0 +1,49 @@
+- !<AssetImportMetadata/42ef117a-f8ef-416d-b892-3b3cf7ae1266>
+  ImportedAssetIds:
+    TypeScriptAsset: !<reference> 0147b90f-3349-4f91-a999-bfaddc57a98e
+  ImporterName: TypeScriptAssetImporter
+  PrimaryAsset: !<reference> 0147b90f-3349-4f91-a999-bfaddc57a98e
+  PackageType: NotAPackage
+  LegacyPackagePolicy: ~
+  ExtraData:
+    {}
+  AssetDataMap:
+    TypeScriptAsset: !<own> 0d8f1563-5a9a-46ce-ac75-7bc6324beac7
+  DependentFiles:
+    []
+  ImporterSettings: !<AssetImporterSettings>
+    {}
+  CompressionSettings: !<own> 00000000-0000-0000-0000-000000000000
+- !<TypeScriptAssetData/0d8f1563-5a9a-46ce-ac75-7bc6324beac7>
+  SvgIcon: ""
+  SetupScript:
+    code: ""
+  Description: ""
+  VersionMajor: 0
+  VersionMinor: 0
+  VersionPatch: 0
+  ComponentUid: a6664699-723b-4221-9a3f-4f69088fbba1
+  ExportUid: 00000000-0000-0000-0000-000000000000
+  PackagePolicy: CanBeUnpacked
+  ScriptInputsHidden:
+    enableLogging: false
+    speechBox: false
+  ScriptTypesHidden:
+    {}
+  ReadMe: !<reference> 00000000-0000-0000-0000-000000000000
+  DeclarationFile: !<reference> 00000000-0000-0000-0000-000000000000
+  Tags:
+    []
+  Attachments:
+    []
+  DefaultScriptInputs:
+    - speechBox: !<MappingBased.AssignableType> 00000000-0000-0000-0000-000000000000
+      enableLogging: false
+  ScriptTypes:
+    -
+      {}
+  InputLines:
+    - '// @ui {"widget":"separator"}'
+    - '// @ui {"widget":"label", "label":"References"}'
+    - '// @input AssignableType speechBox {"hint":"The speech box this controller exclusively owns"}'
+    - '// @input bool enableLogging {"hint":"Enable debug logging"}'
