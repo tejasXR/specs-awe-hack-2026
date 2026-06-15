@@ -22,7 +22,9 @@ import { LedGestureController } from "./LedGestureController";
  */
 @component
 export class LedControlActivator extends BaseScriptComponent {
-  @ui.label('<span style="color: #60A5FA;">LedControlActivator</span><br/><span style="color: #94A3B8; font-size: 11px;">Connects BLE + enables LED gestures when the final instruction step is entered.</span>')
+  @ui.label(
+    '<span style="color: #60A5FA;">LedControlActivator</span><br/><span style="color: #94A3B8; font-size: 11px;">Connects BLE + enables LED gestures when the final instruction step is entered.</span>',
+  )
   @ui.separator
   @ui.label('<span style="color: #60A5FA;">References</span>')
   @input
@@ -41,13 +43,11 @@ export class LedControlActivator extends BaseScriptComponent {
   @ui.label('<span style="color: #60A5FA;">Music</span>')
   @input
   @hint("Music controller to crossfade a track on handoff (optional)")
-  @allowUndefined
-  musicController?: MusicController;
+  musicController!: MusicController;
 
   @input
   @hint("Track to crossfade to when the LED feature activates (optional)")
-  @allowUndefined
-  ledTrack?: AudioTrackAsset;
+  ledTrack!: AudioTrackAsset;
 
   @input
   @hint("Per-track volume for the LED track (0–1)")
