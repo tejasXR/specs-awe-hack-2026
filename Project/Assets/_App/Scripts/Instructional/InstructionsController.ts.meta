@@ -38,6 +38,7 @@
     menuConsole: false
     musicController: false
     onboardingController: false
+    spaceSetup: false
   ScriptTypesHidden:
     {}
   ReadMe: !<reference> 00000000-0000-0000-0000-000000000000
@@ -52,8 +53,9 @@
       mainTrackVolume: !<float> 0.000000
       breadboardOrigin: !<reference.SceneObject> 00000000-0000-0000-0000-000000000000
       onboardingController: !<MappingBased.AssignableType_1> 00000000-0000-0000-0000-000000000000
-      menuConsole: !<MappingBased.AssignableType_2> 00000000-0000-0000-0000-000000000000
-      instructionPrompt: !<MappingBased.AssignableType_3> 00000000-0000-0000-0000-000000000000
+      spaceSetup: !<MappingBased.AssignableType_2> 00000000-0000-0000-0000-000000000000
+      menuConsole: !<MappingBased.AssignableType_3> 00000000-0000-0000-0000-000000000000
+      instructionPrompt: !<MappingBased.AssignableType_4> 00000000-0000-0000-0000-000000000000
       linePrefab: !<reference.ObjectPrefab> 00000000-0000-0000-0000-000000000000
       linePoolParent: !<reference.SceneObject> 00000000-0000-0000-0000-000000000000
       calloutStartAnchor: !<reference.SceneObject> 00000000-0000-0000-0000-000000000000
@@ -69,8 +71,9 @@
     - // @input float mainTrackVolume
     - '// @input SceneObject breadboardOrigin {"hint":"Transform whose pivot sits at breadboard hole A1 — prompts spawn as its children"}'
     - // @input AssignableType_1 onboardingController
-    - '// @input AssignableType_2 menuConsole {"hint":"Menu buttons that drive step navigation"}'
-    - '// @input AssignableType_3 instructionPrompt {"hint":"The single InstructionPrompt living in the scene"}'
+    - '// @input AssignableType_2 spaceSetup {"hint":"Drives the Space Setup dividers a step can point at"}'
+    - '// @input AssignableType_3 menuConsole {"hint":"Menu buttons that drive step navigation"}'
+    - '// @input AssignableType_4 instructionPrompt {"hint":"The single InstructionPrompt living in the scene"}'
     - '// @ui {"widget":"separator"}'
     - '// @ui {"widget":"label", "label":"Callout Lines"}'
     - '// @input Asset.ObjectPrefab linePrefab {"hint":"Line prefab pooled for callouts (must carry a Line component)"}'
@@ -81,20 +84,19 @@
     - '// @ui {"widget":"label", "label":"Sequence"}'
     - /*
     - "@typedef InstructionDefinition"
+    - '@ui {"widget":"group_start", "label":"Instruction Text"}'
     - '@ui {"widget":"label", "label":"Instruction Text"}'
     - "@property {string} title"
+    - '@ui {"widget":"group_end"}'
     - '@property {string} description {"widget":"text_area"}'
-    - '@property {string} zappyTextBox {"widget":"text_area"}'
     - "@property {string} primaryButtonText"
     - "@property {string} secondaryButtonText"
     - "@property {string} tertiaryButtonText"
-    - '@ui {"widget":"separator"}'
-    - '@ui {"widget":"label", "label":"Lesson Settings"}'
+    - '@ui {"widget":"label", "label":"Overwriting Behavior"}'
     - "@property {bool} isCheckpoint"
-    - '@ui {"widget":"separator"}'
-    - '@ui {"widget":"label", "label":"Power Switch"}'
     - "@property {bool} pointToPower {\"hint\":\"Point this step's callout at the power switch (I-64); overrides cell/rail settings\"}"
-    - '@ui {"widget":"separator"}'
+    - "@property {bool} pointToDivider {\"hint\":\"Point this step's callout at a Space Setup divider; overrides power/cell/rail settings\"}"
+    - '@property {string} dividerKind = "breadboard" {"widget":"combobox", "values":[{"label":"Breadboard", "value":"breadboard"}, {"label":"Wires", "value":"wires"}, {"label":"LEDs", "value":"leds"}, {"label":"Transistors", "value":"transistors"}], "showIf":"pointToDivider", "showIfValue":true}'
     - '@ui {"widget":"label", "label":"Breadboard Cell Settings"}'
     - '@property {bool} startOnRail {"hint":"Start from a power rail instead of a grid column"}'
     - '@property {string} columnStart = "A" {"widget":"combobox", "values":[{"label":"A", "value":"A"}, {"label":"B", "value":"B"}, {"label":"C", "value":"C"}, {"label":"D", "value":"D"}, {"label":"E", "value":"E"}, {"label":"F", "value":"F"}, {"label":"G", "value":"G"}, {"label":"H", "value":"H"}, {"label":"I", "value":"I"}, {"label":"J", "value":"J"}], "showIf":"startOnRail", "showIfValue":false}'
