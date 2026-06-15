@@ -27,6 +27,8 @@
   PackagePolicy: CanBeUnpacked
   ScriptInputsHidden:
     brain: false
+    checkWorkLocation: false
+    defaultLocation: false
     emotionController: false
     enableLogging: false
     hideOnStart: false
@@ -45,6 +47,8 @@
       emotionController: !<MappingBased.AssignableType_1> 00000000-0000-0000-0000-000000000000
       voice: !<MappingBased.AssignableType_2> 00000000-0000-0000-0000-000000000000
       movement: !<MappingBased.AssignableType_3> 00000000-0000-0000-0000-000000000000
+      defaultLocation: !<reference.SceneObject> 00000000-0000-0000-0000-000000000000
+      checkWorkLocation: !<reference.SceneObject> 00000000-0000-0000-0000-000000000000
       hideOnStart: false
       enableLogging: true
   ScriptTypes:
@@ -57,5 +61,9 @@
     - "// @input AssignableType_1 emotionController {\"hint\":\"ZappyEmotionController — holds Zappy's mood\"}"
     - "// @input AssignableType_2 voice {\"hint\":\"ZappyVoice — speaks Zappy's lines\"}"
     - "// @input AssignableType_3 movement {\"hint\":\"ZappyMovement — Zappy's locomotion\"}"
+    - '// @ui {"widget":"separator"}'
+    - '// @ui {"widget":"label", "label":"Locations"}'
+    - // @input SceneObject defaultLocation
+    - // @input SceneObject checkWorkLocation
     - // @input bool hideOnStart
     - // @input bool enableLogging

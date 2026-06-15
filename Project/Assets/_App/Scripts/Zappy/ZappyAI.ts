@@ -47,8 +47,27 @@ export class ZappyAI extends BaseScriptComponent {
   @hint("ZappyMovement — Zappy's locomotion")
   movement!: ZappyMovement;
 
+  @ui.separator
+  @ui.label("Locations")
+  @input
+  defaultLocation!: SceneObject;
+
+  @input
+  checkWorkLocation!: SceneObject;
+
   @input
   hideOnStart: boolean = false;
+
+  @ui.separator
+  @ui.label("Conversation")
+  @input
+  @widget(new TextAreaWidget())
+  @hint(
+    "Reply-length cap appended to the system prompt for pinch-to-hold " +
+      "conversational turns only — not greet/celebrate/check-work",
+  )
+  conversationReplyDirective: string =
+    "Reply in a single sentence whenever possible. Never use more than two sentences.";
 
   @input
   enableLogging: boolean = false;
@@ -69,6 +88,14 @@ export class ZappyAI extends BaseScriptComponent {
   /** Forwarded from the brain — a Gemini request failed (no spoken reply). */
   readonly onRequestFailed: PublicApi<string> =
     this.onRequestFailedEvent.publicApi();
+
+  get onArrived(): PublicApi<void> {
+    return this.movement.onArrived;
+  }
+
+  get onSpeakingChanged(): PublicApi<boolean> {
+    return this.voice.onSpeakingChanged;
+  }
 
   private unsubs: unsubscribe[] = [];
 
@@ -117,6 +144,16 @@ export class ZappyAI extends BaseScriptComponent {
   /** Send a freeform context message to Gemini. Safe to call frequently — drops if busy. */
   activate(context: string): void {
     this.brain.sendRequest(context);
+  }
+
+  /**
+   * Voice a free-form conversational turn — the pinch-to-hold path. Same as
+   * activate(), but applies the conversational reply-length cap so spoken
+   * answers stay short (aim one sentence, max two). Scripted intents
+   * (greet/celebrate/askAboutStep/handleMistake) keep using activate() uncapped.
+   */
+  converse(query: string): void {
+    this.brain.sendRequest(query, this.conversationReplyDirective);
   }
 
   /** Send a multimodal request (text + image) to Gemini for visual analysis. */
@@ -194,6 +231,38 @@ export class ZappyAI extends BaseScriptComponent {
   /** Send Zappy travelling to a world position (e.g. a setup spot). */
   moveTo(position: vec3): void {
     this.movement.moveToPosition(position);
+  }
+
+  /** Send Zappy to his default resting location (no-op if unwired). */
+  moveZappyToDefaultLocation(): void {
+    if (isNull(this.defaultLocation)) {
+      this.log("defaultLocation not assigned — cannot move home");
+      return;
+    }
+    this.movement.moveToPosition(
+      this.defaultLocation.getTransform().getWorldPosition(),
+    );
+  }
+
+  /** Send Zappy to his check-work inspection location (no-op if unwired). */
+  moveZappyToCheckWorkLocation(): void {
+    if (isNull(this.checkWorkLocation)) {
+      this.log("checkWorkLocation not assigned — cannot move to check spot");
+      return;
+    }
+    this.movement.moveToPosition(
+      this.checkWorkLocation.getTransform().getWorldPosition(),
+    );
+  }
+
+  /** Voice a fixed line with an optional mood — no Gemini round-trip. */
+  say(
+    text: string,
+    emotion: ZappyEmotion = ZappyEmotion.Neutral,
+    intensity: number = 0.6,
+  ): void {
+    this.emotionController.setEmotion(emotion, intensity);
+    this.voice.speak(text);
   }
 
   private routeResponse(resp: ZappyResponse): void {

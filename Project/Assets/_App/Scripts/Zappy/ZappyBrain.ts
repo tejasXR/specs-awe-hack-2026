@@ -83,8 +83,11 @@ export class ZappyBrain extends BaseScriptComponent {
   /**
    * Send a text request to Gemini. Returns false if a request is already
    * in flight (the new one is dropped).
+   *
+   * `directive` is an optional per-call instruction appended to the system
+   * instruction for this turn only (e.g. a conversational reply-length cap).
    */
-  sendRequest(context: string): boolean {
+  sendRequest(context: string, directive?: string): boolean {
     if (this.isBusy) {
       this.log("Busy -- dropping request");
       return false;
@@ -94,7 +97,7 @@ export class ZappyBrain extends BaseScriptComponent {
     const contents = this.buildContents(8);
     contents.push({ role: "user", parts: [{ text: context }] });
 
-    this.send(contents, context);
+    this.send(contents, context, directive);
     return true;
   }
 
@@ -156,13 +159,17 @@ export class ZappyBrain extends BaseScriptComponent {
     return contents;
   }
 
-  private send(contents: GeminiContent[], historyUserText: string): void {
+  private send(
+    contents: GeminiContent[],
+    historyUserText: string,
+    directive?: string,
+  ): void {
     this.isBusy = true;
     this.onRequestStartedEvent.invoke(undefined);
     this.log("Calling Gemini...");
 
     GeminiService.generate(contents, {
-      systemInstruction: this.resolveSystemInstruction(),
+      systemInstruction: this.resolveSystemInstruction(directive),
       generationConfig: JSON_GENERATION_CONFIG,
     })
       .then((rawText) => {
@@ -194,12 +201,12 @@ export class ZappyBrain extends BaseScriptComponent {
   }
 
   /** Persona-composed standing context, or undefined if the persona is unwired. */
-  private resolveSystemInstruction(): string | undefined {
+  private resolveSystemInstruction(directive?: string): string | undefined {
     if (isNull(this.persona)) {
       this.log("Persona not assigned -- sending without system instruction");
       return undefined;
     }
-    return this.persona.systemInstruction();
+    return this.persona.systemInstruction(undefined, directive);
   }
 
   private log(message: string): void {
