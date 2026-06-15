@@ -10345,6 +10345,7 @@
   Enabled: true
   ScriptAsset: !<reference> 45c7f51a-2723-4832-a2fa-7cfcae0b8c41
   ScriptInputsDefault:
+    hideOnStart: true
     conversationReplyDirective: true
     enableLogging: true
   ScriptTypesDefault:
@@ -10357,7 +10358,7 @@
       movement: !<MappingBased.AssignableType_3> 5e98edc9-1ea4-411b-801a-283a17001bea
       defaultLocation: !<reference.SceneObject> 1eddc013-881f-4095-90e8-2998ba787f46
       checkWorkLocation: !<reference.SceneObject> 5b4020c3-c6b6-41d1-a41e-0ab39c83363b
-      hideOnStart: true
+      hideOnStart: false
       conversationReplyDirective: Reply in a single sentence whenever possible. Never use more than two sentences.
       enableLogging: true
   ScriptTypes:
