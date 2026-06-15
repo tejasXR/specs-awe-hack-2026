@@ -29,8 +29,10 @@
     cameraSource: false
     enableLogging: false
     instructionsController: false
+    persona: false
     previewImage: false
     previewPanel: false
+    zappyAI: false
   ScriptTypesHidden:
     {}
   ReadMe: !<reference> 00000000-0000-0000-0000-000000000000
@@ -40,8 +42,10 @@
   Attachments:
     []
   DefaultScriptInputs:
-    - instructionsController: !<MappingBased.AssignableType> 00000000-0000-0000-0000-000000000000
-      cameraSource: !<MappingBased.AssignableType_1> 00000000-0000-0000-0000-000000000000
+    - zappyAI: !<MappingBased.AssignableType> 00000000-0000-0000-0000-000000000000
+      persona: !<MappingBased.AssignableType_1> 00000000-0000-0000-0000-000000000000
+      instructionsController: !<MappingBased.AssignableType_2> 00000000-0000-0000-0000-000000000000
+      cameraSource: !<MappingBased.AssignableType_3> 00000000-0000-0000-0000-000000000000
       previewImage: !<reference.Image> 00000000-0000-0000-0000-000000000000
       previewPanel: !<reference.SceneObject> 00000000-0000-0000-0000-000000000000
       enableLogging: true
@@ -50,11 +54,15 @@
       {}
   InputLines:
     - '// @ui {"widget":"separator"}'
+    - '// @ui {"widget":"label", "label":"<span style=\"color: #60A5FA;\">Zappy</span>"}'
+    - '// @input AssignableType zappyAI {"hint":"Zappy facade — voices and emotes the verdict"}'
+    - '// @input AssignableType_1 persona {"hint":"Persona — supplies the standing system instruction + build context"}'
+    - '// @ui {"widget":"separator"}'
     - '// @ui {"widget":"label", "label":"<span style=\"color: #60A5FA;\">Instructions</span>"}'
-    - '// @input AssignableType instructionsController {"hint":"Source of truth for the current step and the build-so-far transcript"}'
+    - '// @input AssignableType_2 instructionsController {"hint":"Source of truth for the current step and the build-so-far transcript"}'
     - '// @ui {"widget":"separator"}'
     - '// @ui {"widget":"label", "label":"<span style=\"color: #60A5FA;\">Camera Capture</span>"}'
-    - '// @input AssignableType_1 cameraSource {"hint":"Shared CameraTexture source — provides the full camera frame"}'
+    - '// @input AssignableType_3 cameraSource {"hint":"Shared CameraTexture source — provides the full camera frame"}'
     - '// @ui {"widget":"separator"}'
     - '// @ui {"widget":"label", "label":"<span style=\"color: #60A5FA;\">Display</span>"}'
     - '// @input Component.Image previewImage {"hint":"Optional: Image component to show the captured frame as preview"}'

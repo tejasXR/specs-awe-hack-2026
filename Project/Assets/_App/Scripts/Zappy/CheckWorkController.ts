@@ -19,7 +19,8 @@ import Event, {
   unsubscribe,
 } from "SpectaclesInteractionKit.lspkg/Utils/Event";
 import { ZappyAI, ZappyResponse, ZappyEmotion } from "../Zappy/ZappyAI";
-import { parseZappyResponse } from "./ZappyBrain";
+import { parseZappyResponse, RESPONSE_SCHEMA } from "./ZappyBrain";
+import { ZappyPersona } from "./ZappyPersona";
 import { GeminiService } from "../Services/GeminiService";
 import { CameraTexture } from "CropCameraTexture.lspkg/Scripts/CameraTexture";
 import {
@@ -39,22 +40,26 @@ export interface CheckWorkResult {
 
 @component
 export class CheckWorkController extends BaseScriptComponent {
-  // ZappyAI is still found automatically by name; the step source is now an
-  // explicit reference (single source of truth = InstructionsController).
-  private zappyAI: ZappyAI;
+  @ui.separator
+  @ui.label('<span style="color: #60A5FA;">Zappy</span>')
+  @input
+  @hint("Zappy facade — voices and emotes the verdict")
+  zappyAI!: ZappyAI;
+
+  @input
+  @hint("Persona — supplies the standing system instruction + build context")
+  persona!: ZappyPersona;
 
   @ui.separator
   @ui.label('<span style="color: #60A5FA;">Instructions</span>')
   @input
   @hint("Source of truth for the current step and the build-so-far transcript")
-  @allowUndefined
   instructionsController!: InstructionsController;
 
   @ui.separator
   @ui.label('<span style="color: #60A5FA;">Camera Capture</span>')
   @input
   @hint("Shared CameraTexture source — provides the full camera frame")
-  @allowUndefined
   cameraSource!: CameraTexture;
 
   @ui.separator
@@ -96,53 +101,13 @@ export class CheckWorkController extends BaseScriptComponent {
   }
 
   private onStart(): void {
-    // Auto-discover ZappyAI from the scene (presentation target for Step 2).
-    const scene = global.scene;
-    const zappyObj = this.findObjectByName(scene, "Zappy");
-    if (zappyObj) {
-      const comps = zappyObj.getComponents("Component.ScriptComponent");
-      for (let i = 0; i < comps.length; i++) {
-        const comp = comps[i];
-        if (comp.getTypeName() === "ZappyAI") {
-          this.zappyAI = comp as unknown as ZappyAI;
-        }
-      }
-    }
-
     if (isNull(this.zappyAI)) {
-      this.log("zappyAI not found -- verdict will be event-only (no voice)");
+      this.log("zappyAI not assigned -- verdict will be event-only (no voice)");
     }
-    if (isNull(this.instructionsController)) {
-      this.log("instructionsController not assigned -- check disabled");
-      return;
-    }
-    if (isNull(this.cameraSource)) {
-      this.log("cameraSource not assigned -- capture disabled");
+    if (isNull(this.persona)) {
+      this.log("persona not assigned -- check will run without build context");
     }
     this.log("CheckWorkController ready");
-  }
-
-  // --- Scene Traversal Helpers ---
-
-  private findObjectByName(
-    scene: ScriptScene,
-    name: string,
-  ): SceneObject | null {
-    const rootCount = scene.getRootObjectsCount();
-    for (let i = 0; i < rootCount; i++) {
-      const found = this.searchTree(scene.getRootObject(i), name);
-      if (found) return found;
-    }
-    return null;
-  }
-
-  private searchTree(obj: SceneObject, name: string): SceneObject | null {
-    if (obj.name === name) return obj;
-    for (let i = 0; i < obj.getChildrenCount(); i++) {
-      const found = this.searchTree(obj.getChild(i), name);
-      if (found) return found;
-    }
-    return null;
   }
 
   // --- Public API ---
@@ -157,7 +122,8 @@ export class CheckWorkController extends BaseScriptComponent {
       return;
     }
 
-    const currentInstruction = this.instructionsController.getCurrentInstruction();
+    const currentInstruction =
+      this.instructionsController.getCurrentInstruction();
     if (!currentInstruction) {
       this.log("No active step -- nothing to check");
       return;
@@ -225,35 +191,28 @@ export class CheckWorkController extends BaseScriptComponent {
   ): void {
     const stepIndex = this.instructionsController.currentIndex;
 
-    // Build a cumulative transcript of every step the user should have
-    // completed so far, each rendered with its cell/rail placement, so Gemini
-    // judges the whole build-to-date rather than the current step in isolation.
-    const completed = this.instructionsController.getCompletedInstructions();
-    const transcript = completed
-      .map(
-        (def, i) =>
-          i + 1 + ". " + this.instructionsController.describeInstruction(def),
-      )
-      .join("\n");
+    // The build-so-far transcript, current step, identity, and JSON contract all
+    // come from the persona's system instruction (single source of truth), so
+    // this turn carries only the examination task plus the photo.
+    const task =
+      "Look at the attached photo of the user's breadboard and compare it to the " +
+      "steps they should have completed so far. Tell them: does the build match? " +
+      "If something is wrong or missing, what specifically needs fixing? Are there " +
+      "any safety concerns?";
 
-    const prompt =
-      "You are Zappy, an AR electronics tutor. A user is building a breadboard " +
-      "circuit one step at a time. These are the steps they should have " +
-      "completed so far:\n" +
-      transcript +
-      "\n\nThe most recent step is #" +
-      completed.length +
-      ". Attached is a photo of their current breadboard. Examine it and tell " +
-      "the user: " +
-      "1) Does the build match the steps above? " +
-      "2) If something is wrong or missing, what specifically needs fixing? " +
-      "3) Any safety concerns? " +
-      "Keep it short (2-3 sentences), encouraging, and use electricity puns. " +
-      'CRITICAL: Respond in JSON: {"emotion":"happy","intensity":0.8,"speech":"Your feedback here"}';
+    const options = {
+      systemInstruction: isNull(this.persona)
+        ? undefined
+        : this.persona.systemInstruction(),
+      generationConfig: {
+        responseMimeType: "application/json",
+        responseSchema: RESPONSE_SCHEMA,
+      },
+    };
 
     // Independent, scoped Gemini call via the shared service. This does NOT go
     // through ZappyBrain, so it never contends with Zappy's chat busy state.
-    GeminiService.generateWithImage(prompt, base64Image, "image/jpeg")
+    GeminiService.generateWithImage(task, base64Image, "image/jpeg", options)
       .then((rawText) => {
         const resp: ZappyResponse = parseZappyResponse(rawText) ?? {
           emotion: ZappyEmotion.Neutral,
@@ -284,7 +243,11 @@ export class CheckWorkController extends BaseScriptComponent {
     if (!isNull(this.previewPanel)) {
       this.previewPanel.enabled = false;
     }
-    this.onCheckCompleteEvent.invoke({ instruction, stepIndex, response: resp });
+    this.onCheckCompleteEvent.invoke({
+      instruction,
+      stepIndex,
+      response: resp,
+    });
     this.log("Check complete -- Zappy says: " + resp.speech);
   }
 
