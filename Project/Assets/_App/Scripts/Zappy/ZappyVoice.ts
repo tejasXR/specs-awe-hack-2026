@@ -56,7 +56,9 @@ export class ZappyVoice extends BaseScriptComponent {
   audioComponent!: AudioComponent;
 
   @input
-  @hint("Speech controller — Zappy routes his captions through it (tags stripped)")
+  @hint(
+    "Speech controller — Zappy routes his captions through it (tags stripped)",
+  )
   @allowUndefined
   speechController!: ZappySpeechController;
 
@@ -70,7 +72,7 @@ export class ZappyVoice extends BaseScriptComponent {
       new ComboBoxItem("ElevenLabs", "elevenlabs"),
     ]),
   )
-  backend: string = VoiceBackend.Snap;
+  backend: string = "snap";
 
   @input
   @hint("Snap TextToSpeechModule provider — also the fallback voice")
@@ -160,7 +162,9 @@ export class ZappyVoice extends BaseScriptComponent {
     // speech controller reveals the box, kept up even in the caption-only (no
     // audio) fallback.
     if (!isNull(this.speechController)) {
-      this.speechController.showZappy(provider ? provider.toCaption(text) : text);
+      this.speechController.showZappy(
+        provider ? provider.toCaption(text) : text,
+      );
     }
 
     if (!provider || !provider.isAvailable()) {

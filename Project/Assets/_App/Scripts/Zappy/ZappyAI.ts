@@ -62,10 +62,7 @@ export class ZappyAI extends BaseScriptComponent {
   @ui.label("Conversation")
   @input
   @widget(new TextAreaWidget())
-  @hint(
-    "Reply-length cap appended to the system prompt for pinch-to-hold " +
-      "conversational turns only — not greet/celebrate/check-work",
-  )
+  @hint("Reply-length cap appended to the system prompt for pinch-to-hold conversational turns only — not greet/celebrate/check-work")
   conversationReplyDirective: string =
     "Reply in a single sentence whenever possible. Never use more than two sentences.";
 

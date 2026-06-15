@@ -26,10 +26,7 @@
  */
 import { ZappyEmotionData } from "./ZappyResponse";
 import { IVoiceProvider, VoiceSynthesisCallbacks } from "./IVoiceProvider";
-import {
-  tagSpeechWithEmotion,
-  stripAudioTags,
-} from "./ZappyEmotionToSpeech";
+import { tagSpeechWithEmotion, stripAudioTags } from "./ZappyEmotionToSpeech";
 
 // ─── Types ──────────────────────────────────────────────────────
 
@@ -79,7 +76,7 @@ export class ZappyElevenLabsVoiceProvider
       new ComboBoxItem("Flash v2.5 (Low Latency)", "eleven_flash_v2_5"),
     ]),
   )
-  modelId: string = ElevenLabsModel.FlashV2_5;
+  modelId: string = "eleven_flash_v2_5";
 
   @ui.separator
   @ui.label("Settings")
@@ -198,9 +195,7 @@ export class ZappyElevenLabsVoiceProvider
       .then((audioData: ArrayBuffer | undefined) => {
         if (!audioData) return;
         this.log(
-          "Audio received (" +
-            Math.round(audioData.byteLength / 1024) +
-            " KB)",
+          "Audio received (" + Math.round(audioData.byteLength / 1024) + " KB)",
         );
         this.decodeAndReturn(audioData, callbacks);
       })
