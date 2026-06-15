@@ -27,7 +27,9 @@ const clamp = (value: number, min: number, max: number): number =>
  */
 @component
 export class LedGestureController extends BaseScriptComponent {
-  @ui.label('<span style="color: #60A5FA;">LedGestureController</span><br/><span style="color: #94A3B8; font-size: 11px;">Left hand = brightness, right hand = flash. Writes to BreadboardBleController.</span>')
+  @ui.label(
+    '<span style="color: #60A5FA;">LedGestureController</span><br/><span style="color: #94A3B8; font-size: 11px;">Left hand = brightness, right hand = flash. Writes to BreadboardBleController.</span>',
+  )
   @ui.separator
   @ui.label('<span style="color: #60A5FA;">References</span>')
   @input
@@ -42,7 +44,7 @@ export class LedGestureController extends BaseScriptComponent {
 
   @input
   @hint("Vertical hand travel above pinch height for full brightness, in cm")
-  brightnessTravelCm: number = 20;
+  brightnessTravelCm: number = 10;
 
   @ui.separator
   @ui.label('<span style="color: #60A5FA;">Right hand — flash</span>')
@@ -60,7 +62,7 @@ export class LedGestureController extends BaseScriptComponent {
 
   @input
   @hint("Vertical hand travel from pinch height to a rate extreme, in cm")
-  flashTravelCm: number = 20;
+  flashTravelCm: number = 10;
 
   @ui.separator
   @ui.label('<span style="color: #60A5FA;">Logging</span>')
@@ -93,7 +95,8 @@ export class LedGestureController extends BaseScriptComponent {
   private flashHz: number = 0;
 
   // Change-detection so we only write when something actually moved
-  private _lastMode: BreadboardBleData.LedMode = BreadboardBleData.LedMode.Solid;
+  private _lastMode: BreadboardBleData.LedMode =
+    BreadboardBleData.LedMode.Solid;
   private _lastBrightness: number = -1;
   private _lastFlashHz: number = -1;
 
@@ -103,7 +106,9 @@ export class LedGestureController extends BaseScriptComponent {
 
   private onStart(): void {
     if (isNull(this.bleController)) {
-      this.log("'bleController' input is not wired — gestures will do nothing.");
+      this.log(
+        "'bleController' input is not wired — gestures will do nothing.",
+      );
       return;
     }
 
