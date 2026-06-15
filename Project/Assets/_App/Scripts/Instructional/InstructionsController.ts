@@ -18,7 +18,7 @@ import {
 import { InstructionPrompt } from "./InstructionPrompt";
 import { MusicController } from "../MusicController";
 import { MenuConsole } from "../UI/MenuConsole";
-import { InstructionalLine } from "../InstructionalLine";
+import { InstructionalLine, LineWidthPreset } from "../InstructionalLine";
 import { SpaceSetup } from "../SpaceSetup";
 import { DividerKind } from "../SpaceSetupDivider";
 import { ZappyAI } from "../Zappy/ZappyAI";
@@ -37,6 +37,93 @@ export interface InstructionStepEvent {
 // inspector-decorator parser only reads string literals, not identifiers, so the
 // widget can't reference this constant directly.
 const COLUMN_NONE = "None";
+
+/**
+ * One wire drawn directly on the board between two breadboard positions
+ * (cell or power rail), independent of the step's panel callout. Both ends are
+ * required — a wire needs two holes — so unlike InstructionDefinition's optional
+ * end pin, every field has a concrete default and no "None" opt-out.
+ */
+@typedef
+export class PowerSegment {
+  @input
+  @ui.group_start("Power Segment")
+  @hint("Start this wire on a power rail instead of a grid column")
+  startOnRail: boolean = false;
+
+  @input
+  @showIf("startOnRail", false)
+  @widget(
+    new ComboBoxWidget([
+      new ComboBoxItem("A", "A"),
+      new ComboBoxItem("B", "B"),
+      new ComboBoxItem("C", "C"),
+      new ComboBoxItem("D", "D"),
+      new ComboBoxItem("E", "E"),
+      new ComboBoxItem("F", "F"),
+      new ComboBoxItem("G", "G"),
+      new ComboBoxItem("H", "H"),
+      new ComboBoxItem("I", "I"),
+      new ComboBoxItem("J", "J"),
+    ]),
+  )
+  columnStart: string = "A";
+
+  @input
+  @showIf("startOnRail", true)
+  @widget(
+    new ComboBoxWidget([
+      new ComboBoxItem("+ near", "near-plus"),
+      new ComboBoxItem("+ far", "far-plus"),
+      new ComboBoxItem("− near", "near-minus"),
+      new ComboBoxItem("− far", "far-minus"),
+    ]),
+  )
+  startRail: string = "near-plus";
+
+  @input
+  @widget(new SliderWidget(1, 32, 1)) // playground rows; also the rail X-sample
+  rowStart: number = 1;
+
+  @input
+  @hint("End this wire on a power rail instead of a grid column")
+  endOnRail: boolean = false;
+
+  @input
+  @showIf("endOnRail", false)
+  @widget(
+    new ComboBoxWidget([
+      new ComboBoxItem("A", "A"),
+      new ComboBoxItem("B", "B"),
+      new ComboBoxItem("C", "C"),
+      new ComboBoxItem("D", "D"),
+      new ComboBoxItem("E", "E"),
+      new ComboBoxItem("F", "F"),
+      new ComboBoxItem("G", "G"),
+      new ComboBoxItem("H", "H"),
+      new ComboBoxItem("I", "I"),
+      new ComboBoxItem("J", "J"),
+    ]),
+  )
+  columnEnd: string = "A";
+
+  @input
+  @showIf("endOnRail", true)
+  @widget(
+    new ComboBoxWidget([
+      new ComboBoxItem("+ near", "near-plus"),
+      new ComboBoxItem("+ far", "far-plus"),
+      new ComboBoxItem("− near", "near-minus"),
+      new ComboBoxItem("− far", "far-minus"),
+    ]),
+  )
+  endRail: string = "near-plus";
+
+  @input
+  @widget(new SliderWidget(1, 32, 1)) // playground rows; also the rail X-sample
+  @ui.group_end
+  rowEnd: number = 1;
+}
 
 @typedef
 export class InstructionDefinition {
@@ -174,23 +261,50 @@ export class InstructionDefinition {
   @widget(new SliderWidget(1, 32, 1)) // playground rows; also the rail X-sample
   @ui.group_end
   rowEnd: number | undefined;
+
+  @ui.label("Power Segments")
+  @input
+  @hint(
+    "Wires drawn directly on the board (cell/rail → cell/rail), in addition to this step's callout",
+  )
+  powerSegments: PowerSegment[] = [];
 }
 
 const NO_STEP = -1;
 
-// Headroom over the max endpoints a single step draws (start + optional end);
-// matches the previous MAX_LINES so behavior is unchanged.
-const LINE_POOL_SIZE = 3;
+// A single step can now draw a panel callout (start + optional end) plus a set
+// of on-board power segments, so the pool needs real headroom. 10 covers a
+// generous wiring step; configureLines warns (and draws the first 10) beyond it.
+const LINE_POOL_SIZE = 10;
 
-// A callout endpoint resolves to one of two parents: a board-LOCAL offset under
-// breadboardOrigin (cells/rails/power), or a live SceneObject anchor on a Space
-// Setup divider. The union keeps the two attach paths type-distinct.
-type LineTarget =
+// Where one end of a line attaches:
+//  - panelAnchor: the shared prompt-panel anchor (a callout's start point)
+//  - boardLocal:  an offset under breadboardOrigin (cells/rails/power switch)
+//  - anchor:      a live SceneObject on a Space Setup divider
+// Unlike the old end-only LineTarget, both ends of a line are now expressed, so
+// a power segment can run board-local → board-local with no panel anchor at all.
+type LineEndpoint =
+  | { kind: "panelAnchor" }
   | { kind: "boardLocal"; position: vec3 }
   | { kind: "anchor"; anchor: SceneObject };
 
+// Optional per-line styling. A power segment carries one; a plain callout leaves
+// it undefined and the line resets to its authored default (see applySpec).
+interface LineStyle {
+  color: vec4;
+  widthPreset: LineWidthPreset;
+}
+
+// A full line: both endpoints and an optional style. The pool is driven from a
+// list of these each step.
+interface LineSpec {
+  start: LineEndpoint;
+  end: LineEndpoint;
+  style?: LineStyle;
+}
+
 const assertNever = (value: never): never => {
-  throw new Error(`Unhandled LineTarget: ${JSON.stringify(value)}`);
+  throw new Error(`Unhandled LineEndpoint: ${JSON.stringify(value)}`);
 };
 
 /**
@@ -267,6 +381,21 @@ export class InstructionsController
     "Lift above the board surface so the prompt doesn't clip into it, in cm",
   )
   hoverOffsetCm: number = 1.0;
+
+  @input
+  @hint("Color of on-board power-segment wires (distinguishes them from callouts)")
+  powerSegmentColor: vec4 = new vec4(1, 0, 0, 1);
+
+  @input
+  @widget(
+    new ComboBoxWidget([
+      new ComboBoxItem("Thin", "thin"),
+      new ComboBoxItem("Default", "default"),
+      new ComboBoxItem("Thick", "thick"),
+    ]),
+  )
+  @hint("Width preset for on-board power-segment wires")
+  powerSegmentWidth: string = "default";
 
   @ui.separator
   @ui.label("Sequence")
@@ -531,8 +660,18 @@ export class InstructionsController
     this.previousInSequence();
   }
 
-  // TEJAS: tertiary action not yet defined — placeholder for future wiring.
-  private onMenuTertiaryPressed(): void {}
+  /**
+   * Tertiary menu button. On a checkpoint this means "skip the check" — advance
+   * past the checkpoint immediately, without firing onCheckRequested or the
+   * Gemini check-work round-trip (the same forward move a passing check makes).
+   * No-op on non-checkpoint steps.
+   */
+  private onMenuTertiaryPressed(): void {
+    const current = this.getCurrentInstruction();
+    if (current !== null && current.isCheckpoint) {
+      this.nextInSequence();
+    }
+  }
 
   /** The onboarding flow finished — kick off the build instructions. */
   private onOnboardingCompleted(): void {
@@ -580,15 +719,49 @@ export class InstructionsController
     this._currentIndex = NO_STEP;
   }
 
+  /**
+   * Step progress shown to the user, counted within the current checkpoint
+   * segment rather than the whole sequence: numbering resets after each
+   * checkpoint, and the segment's closing checkpoint is its final number.
+   * A trailing segment with no checkpoint counts through the last step.
+   */
+  private getStepProgress(index: number): { current: number; total: number } {
+    // Segment starts just after the previous checkpoint (or at 0).
+    let segmentStart = 0;
+    for (let i = index - 1; i >= 0; i--) {
+      if (this.instructionDefinitions[i].isCheckpoint) {
+        segmentStart = i + 1;
+        break;
+      }
+    }
+
+    // Segment ends at the next checkpoint at/after index (inclusive), else the
+    // last step in the sequence.
+    let segmentEnd = this.instructionDefinitions.length - 1;
+    for (let i = index; i < this.instructionDefinitions.length; i++) {
+      if (this.instructionDefinitions[i].isCheckpoint) {
+        segmentEnd = i;
+        break;
+      }
+    }
+
+    return {
+      current: index - segmentStart + 1,
+      total: segmentEnd - segmentStart + 1,
+    };
+  }
+
   private moveToStep(index: number): void {
     const instructionDefinition = this.instructionDefinitions[index];
 
-    // Checkpoints are recap steps: text only, no callout line.
-    const lineTargets: LineTarget[] = instructionDefinition.isCheckpoint
+    // Checkpoints are recap steps: text only, no callout and no power segments
+    // (segments are only built inside buildLineSpecs, which a checkpoint skips).
+    const lineSpecs: LineSpec[] = instructionDefinition.isCheckpoint
       ? []
-      : this.buildLineTargets(instructionDefinition);
+      : this.buildLineSpecs(instructionDefinition);
 
-    this.instructionPrompt.setStepText(index, this.stepCount);
+    const progress = this.getStepProgress(index);
+    this.instructionPrompt.setStepText(progress.current, progress.total);
 
     this.instructionPrompt.setTitleAndDescription(
       instructionDefinition.title,
@@ -603,7 +776,7 @@ export class InstructionsController
       instructionDefinition.tertiaryButtonText,
     );
 
-    this.configureLines(lineTargets);
+    this.configureLines(lineSpecs);
     this.setActiveDivider(this.resolveStepDividerKind(instructionDefinition));
 
     this._currentIndex = index;
@@ -647,46 +820,102 @@ export class InstructionsController
   }
 
   /**
-   * Endpoint targets for a placement step: board-local offsets (cells/rails/
-   * power) parented to the breadboard origin so the callout ends follow the
-   * board, or a divider anchor the callout tracks directly. Not called for
-   * checkpoints, which draw no line.
+   * Every line a placement step draws: its panel callout(s) plus any on-board
+   * power segments, appended as an independent layer. Not called for
+   * checkpoints, which draw nothing.
    */
-  private buildLineTargets(definition: InstructionDefinition): LineTarget[] {
-    // pointToDivider overrides everything: a single callout to the Space Setup
-    // divider's live anchor (tracked, since the divider animates in/out).
+  private buildLineSpecs(definition: InstructionDefinition): LineSpec[] {
+    const specs = this.buildCalloutSpecs(definition);
+    for (const segment of definition.powerSegments) {
+      specs.push(this.buildSegmentSpec(segment));
+    }
+    return specs;
+  }
+
+  /**
+   * The step's panel callout lines — each starting at the prompt-panel anchor
+   * and ending at a board-local position or a divider anchor. The divider,
+   * power-switch, and lineless modes are mutually exclusive among themselves; an
+   * empty result (lineless, or an unresolved divider) is normal: "no callout".
+   */
+  private buildCalloutSpecs(definition: InstructionDefinition): LineSpec[] {
+    // pointToDivider overrides the other callout settings: a single callout to
+    // the Space Setup divider's live anchor (tracked, since it animates in/out).
     if (definition.pointToDivider) {
       const anchor = this.resolveDividerAnchor(definition);
-      return anchor !== null ? [{ kind: "anchor", anchor }] : [];
+      return anchor !== null
+        ? [{ start: { kind: "panelAnchor" }, end: { kind: "anchor", anchor } }]
+        : [];
     }
 
     // pointToPower overrides cell/rail settings: a single callout to the power
-    // switch (I-64), as a board-local target like every other endpoint.
+    // switch (I-64), as a board-local endpoint like every other.
     if (definition.pointToPower) {
       return [
         {
-          kind: "boardLocal",
-          position: powerSwitchToLocalPosition(this.hoverOffsetCm),
+          start: { kind: "panelAnchor" },
+          end: {
+            kind: "boardLocal",
+            position: powerSwitchToLocalPosition(this.hoverOffsetCm),
+          },
         },
       ];
     }
 
-    // A "None" start column opts the step out of a callout entirely — a
-    // text-only step draws no line (and ignores any end pin).
+    // A "None" start column opts the step out of a callout entirely (it may
+    // still carry power segments — those are appended by buildLineSpecs).
     if (this.isLinelessColumnStep(definition)) {
       return [];
     }
 
-    const targets: LineTarget[] = [
-      { kind: "boardLocal", position: this.resolveStartLocal(definition) },
+    const specs: LineSpec[] = [
+      {
+        start: { kind: "panelAnchor" },
+        end: { kind: "boardLocal", position: this.resolveStartLocal(definition) },
+      },
     ];
 
     const endLocal = this.resolveEndLocal(definition);
     if (endLocal !== null) {
-      targets.push({ kind: "boardLocal", position: endLocal });
+      specs.push({
+        start: { kind: "panelAnchor" },
+        end: { kind: "boardLocal", position: endLocal },
+      });
     }
 
-    return targets;
+    return specs;
+  }
+
+  /**
+   * One power segment → a board-local → board-local line, styled so it reads
+   * distinctly from the panel callouts. Both endpoints are required, so this
+   * resolves them directly (no optional-end null path).
+   */
+  private buildSegmentSpec(segment: PowerSegment): LineSpec {
+    return {
+      start: {
+        kind: "boardLocal",
+        position: this.resolveEndpointLocal(
+          segment.startOnRail,
+          segment.startRail,
+          segment.columnStart,
+          segment.rowStart,
+        ),
+      },
+      end: {
+        kind: "boardLocal",
+        position: this.resolveEndpointLocal(
+          segment.endOnRail,
+          segment.endRail,
+          segment.columnEnd,
+          segment.rowEnd,
+        ),
+      },
+      style: {
+        color: this.powerSegmentColor,
+        widthPreset: this.toWidthPreset(this.powerSegmentWidth),
+      },
+    };
   }
 
   /**
@@ -714,18 +943,23 @@ export class InstructionsController
   }
 
   /**
-   * Drive the callout pool from a step's endpoint targets. Each target points
-   * one line's end at a board-local position or a divider anchor (its start was
-   * attached to the panel anchor at pool creation); extra pooled lines are
-   * hidden. Checkpoints pass an empty list, hiding every line.
+   * Drive the pool from a step's line specs: configure one line per spec, hide
+   * the rest. A step that needs more lines than the pool holds draws the first
+   * LINE_POOL_SIZE and warns. Checkpoints pass an empty list, hiding every line.
    */
-  private configureLines(targets: LineTarget[]): void {
+  private configureLines(specs: LineSpec[]): void {
     this.ensureLinePool();
+
+    if (specs.length > this._linePool.length) {
+      print(
+        `[InstructionsController] step needs ${specs.length} lines but pool is ${this._linePool.length}; extra lines won't draw`,
+      );
+    }
 
     for (let i = 0; i < this._linePool.length; i++) {
       const line = this._linePool[i];
-      if (i < targets.length) {
-        this.applyTarget(line, targets[i]);
+      if (i < specs.length) {
+        this.applySpec(line, specs[i]);
         line.show();
       } else {
         line.hide();
@@ -734,23 +968,57 @@ export class InstructionsController
   }
 
   /**
-   * Point one pooled line's end at a target. Board-local targets attach under
-   * breadboardOrigin; anchor targets attach directly to a divider's anchor
-   * object. Both redraw per frame: the board can be repositioned and dividers
-   * animate, so the endpoint must track live.
+   * Configure one pooled line from a spec: attach both endpoints and apply its
+   * style (or reset to the default for a plain callout). Lines redraw per frame
+   * so they track live — the board can be repositioned and dividers animate.
    */
-  private applyTarget(line: InstructionalLine, target: LineTarget): void {
-    switch (target.kind) {
+  private applySpec(line: InstructionalLine, spec: LineSpec): void {
+    this.attachEndpoint(line, "start", spec.start);
+    this.attachEndpoint(line, "end", spec.end);
+
+    if (spec.style !== undefined) {
+      line.setColor(spec.style.color);
+      line.setWidth(spec.style.widthPreset);
+    } else {
+      // Reset, since the pool recycles lines between styled segments and plain
+      // callouts — otherwise this line keeps a previous step's color/width.
+      line.resetStyle();
+    }
+
+    line.setRedrawOnUpdate(true);
+  }
+
+  /**
+   * Attach one end (start or end) of a line to its endpoint. panelAnchor → the
+   * shared prompt anchor; boardLocal → an offset under breadboardOrigin; anchor
+   * → a divider's live SceneObject.
+   */
+  private attachEndpoint(
+    line: InstructionalLine,
+    which: "start" | "end",
+    endpoint: LineEndpoint,
+  ): void {
+    const attach = (parent: SceneObject, offset?: vec3): void => {
+      if (which === "start") {
+        line.attachStart(parent, offset);
+      } else {
+        line.attachEnd(parent, offset);
+      }
+    };
+
+    switch (endpoint.kind) {
+      case "panelAnchor":
+        attach(this.calloutStartAnchor);
+        break;
       case "boardLocal":
-        line.attachEnd(this.breadboardOrigin, target.position);
+        attach(this.breadboardOrigin, endpoint.position);
         break;
       case "anchor":
-        line.attachEnd(target.anchor);
+        attach(endpoint.anchor);
         break;
       default:
-        assertNever(target);
+        assertNever(endpoint);
     }
-    line.setRedrawOnUpdate(true);
   }
 
   private hideAllLines(): void {
@@ -761,9 +1029,9 @@ export class InstructionsController
   }
 
   /**
-   * Lazily build the line pool. Each line's start marker is attached to the
-   * shared panel anchor once here; its end is repointed per step by
-   * configureLines.
+   * Lazily build the line pool. Both endpoints are repointed per step by
+   * configureLines (a line may run panel→board for a callout or board→board for
+   * a power segment), so nothing is attached here beyond instantiation.
    */
   private ensureLinePool(): void {
     if (this._linePool.length > 0) {
@@ -781,36 +1049,47 @@ export class InstructionsController
         );
       }
       line.hide();
-      line.attachStart(this.calloutStartAnchor);
       this._linePool.push(line);
     }
   }
 
   /**
-   * Resolve a definition's start endpoint to an origin-local position. The
-   * startOnRail flag is the discriminator: a rail start reuses rowStart as its
-   * long-axis sample, a grid start uses columnStart + rowStart.
+   * Resolve a cell-or-rail endpoint to an origin-local position. onRail is the
+   * discriminator: a rail samples its long axis at row (column is ignored), a
+   * grid cell uses column + row (rail is ignored). Shared by the step's start/
+   * end pins and every power segment endpoint.
+   */
+  private resolveEndpointLocal(
+    onRail: boolean,
+    rail: string,
+    column: string,
+    row: number,
+  ): vec3 {
+    if (onRail) {
+      return railToLocalPosition(this.toRail(rail), row, this.hoverOffsetCm);
+    }
+    const cell = this.toBreadboardCell({ column, row });
+    return cellToLocalPosition(cell, this.hoverOffsetCm);
+  }
+
+  /**
+   * Resolve a definition's start endpoint to an origin-local position. A rail
+   * start reuses rowStart as its long-axis sample, a grid start uses
+   * columnStart + rowStart.
    */
   private resolveStartLocal(definition: InstructionDefinition): vec3 {
-    if (definition.startOnRail) {
-      return railToLocalPosition(
-        this.toRail(definition.startRail),
-        definition.rowStart,
-        this.hoverOffsetCm,
-      );
-    }
-
-    const cellStart = this.toBreadboardCell({
-      column: definition.columnStart,
-      row: definition.rowStart,
-    });
-    return cellToLocalPosition(cellStart, this.hoverOffsetCm);
+    return this.resolveEndpointLocal(
+      definition.startOnRail,
+      definition.startRail,
+      definition.columnStart,
+      definition.rowStart,
+    );
   }
 
   /**
    * Resolve a definition's optional end endpoint to an origin-local position,
-   * or null when there's no end. Mirrors resolveStartLocal: endOnRail picks a
-   * rail (sampled at rowEnd, falling back to rowStart), otherwise a grid cell.
+   * or null when there's no end. endOnRail picks a rail (sampled at rowEnd,
+   * falling back to rowStart), otherwise a grid cell.
    */
   private resolveEndLocal(definition: InstructionDefinition): vec3 | null {
     if (!definition.useEndPin) {
@@ -822,21 +1101,23 @@ export class InstructionsController
         return null;
       }
       const railRow = definition.rowEnd ?? definition.rowStart;
-      return railToLocalPosition(
-        this.toRail(definition.endRail),
+      return this.resolveEndpointLocal(
+        true,
+        definition.endRail,
+        definition.columnStart,
         railRow,
-        this.hoverOffsetCm,
       );
     }
 
     if (definition.columnEnd === undefined || definition.rowEnd === undefined) {
       return null;
     }
-    const cellEnd = this.toBreadboardCell({
-      column: definition.columnEnd,
-      row: definition.rowEnd,
-    });
-    return cellToLocalPosition(cellEnd, this.hoverOffsetCm);
+    return this.resolveEndpointLocal(
+      false,
+      definition.startRail,
+      definition.columnEnd,
+      definition.rowEnd,
+    );
   }
 
   private toRail(value: string): PowerRail {
@@ -846,6 +1127,15 @@ export class InstructionsController
       );
     }
     return value;
+  }
+
+  // Inspector combo constrains the width, so an unexpected value means a
+  // misconfigured definition — fall back to "default" rather than throw.
+  private toWidthPreset(value: string): LineWidthPreset {
+    if (value === "thin" || value === "default" || value === "thick") {
+      return value;
+    }
+    return "default";
   }
 
   // Inspector combo constrains dividerKind, so an unexpected value means a

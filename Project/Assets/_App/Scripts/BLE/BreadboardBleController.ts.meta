@@ -26,7 +26,6 @@
   ExportUid: 00000000-0000-0000-0000-000000000000
   PackagePolicy: CanBeUnpacked
   ScriptInputsHidden:
-    autoConnectOnStart: false
     bluetoothModule: false
     scanTimeoutSeconds: false
     simulateInEditor: false
@@ -40,7 +39,6 @@
     []
   DefaultScriptInputs:
     - bluetoothModule: !<reference.BluetoothCentralModule> 00000000-0000-0000-0000-000000000000
-      autoConnectOnStart: true
       scanTimeoutSeconds: !<float> 15.000000
       simulateInEditor: true
   ScriptTypes:
@@ -48,6 +46,5 @@
       {}
   InputLines:
     - "// @input Asset.BluetoothCentralModule bluetoothModule {\"hint\":\"BluetoothCentralModule asset from the project's Modules folder\"}"
-    - '// @input bool autoConnectOnStart = true {"hint":"Start scanning for the board as soon as the lens starts"}'
     - '// @input float scanTimeoutSeconds = 15 {"hint":"Seconds to scan before giving up"}'
     - '// @input bool simulateInEditor = true {"hint":"Fake the connection + heartbeat in the editor / without hardware"}'

@@ -54,8 +54,15 @@ export class InstructionalLine extends BaseScriptComponent {
   // frame loop without ever drawing a hidden line.
   private _isShown: boolean = false;
 
+  // The authored color/width captured at construction, so a pooled line styled
+  // for one step (e.g. a colored power segment) can be reset to its default
+  // appearance when recycled for a plain callout. See resetStyle().
+  private _defaultColor!: vec4;
+  private _defaultWidthPreset!: LineWidthPreset;
+
   onAwake(): void {
     const preset = this.toPreset(this.defaultWidthPreset);
+    this._defaultWidthPreset = preset;
     const width = LINE_WIDTH_PRESETS_CM[preset];
 
     // The two points here are placeholders: redraw() overwrites them.
@@ -69,6 +76,9 @@ export class InstructionalLine extends BaseScriptComponent {
     // Render in this prefab's space; redraw() converts world points into it.
     this._line.attachToScene(this.getSceneObject());
     this._line.setEnabled(false);
+
+    // Snapshot the renderer's default color now so resetStyle() can restore it.
+    this._defaultColor = this._line.startColor;
 
     // Frame loop redraws between the markers (which track their parents),
     // disabled until the line is shown.
@@ -91,6 +101,22 @@ export class InstructionalLine extends BaseScriptComponent {
     const width = LINE_WIDTH_PRESETS_CM[preset];
     this._line.startWidth = width.start;
     this._line.endWidth = width.end;
+  }
+
+  /** Override the line with a single solid color (e.g. to mark a power segment). */
+  setColor(color: vec4): void {
+    this._line.setSolidColor(color);
+  }
+
+  /**
+   * Restore the line's authored default color and width. The pool recycles a
+   * single set of lines across both plain callouts and styled power segments,
+   * so a line must be reset before it's reused as a plain callout — otherwise
+   * it carries the previous step's color/width.
+   */
+  resetStyle(): void {
+    this._line.setSolidColor(this._defaultColor);
+    this.setWidth(this._defaultWidthPreset);
   }
 
   show(): void {

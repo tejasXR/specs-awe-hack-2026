@@ -43,10 +43,6 @@ export class BreadboardBleController extends BaseScriptComponent {
   bluetoothModule!: Bluetooth.BluetoothCentralModule;
 
   @input
-  @hint("Start scanning for the board as soon as the lens starts")
-  autoConnectOnStart: boolean = true;
-
-  @input
   @hint("Seconds to scan before giving up")
   scanTimeoutSeconds: number = 15;
 
@@ -78,16 +74,6 @@ export class BreadboardBleController extends BaseScriptComponent {
 
   get state(): BreadboardConnectionState {
     return this._state;
-  }
-
-  onAwake(): void {
-    this.createEvent("OnStartEvent").bind(() => this.onStart());
-  }
-
-  private onStart(): void {
-    if (this.autoConnectOnStart) {
-      this.connect();
-    }
   }
 
   /** Scan for the board by advertised name and connect. Safe to call again after "failed". */

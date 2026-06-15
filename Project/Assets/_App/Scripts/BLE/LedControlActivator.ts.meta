@@ -27,6 +27,7 @@
   PackagePolicy: CanBeUnpacked
   ScriptInputsHidden:
     bleController: false
+    debugActivateOnStart: false
     enableLogging: false
     gestureController: false
     instructionsController: false
@@ -49,6 +50,7 @@
       ledTrack: !<reference.AudioTrackAsset> 00000000-0000-0000-0000-000000000000
       ledTrackVolume: 0.700000
       enableLogging: false
+      debugActivateOnStart: false
   ScriptTypes:
     -
       {}
@@ -57,8 +59,8 @@
     - '// @ui {"widget":"separator"}'
     - '// @ui {"widget":"label", "label":"<span style=\"color: #60A5FA;\">References</span>"}'
     - '// @input AssignableType instructionsController {"hint":"Fires onFinalStepEntered when the last build step is shown"}'
-    - '// @input AssignableType_1 bleController {"hint":"BLE link to connect on handoff (set its autoConnectOnStart = false)"}'
-    - '// @input AssignableType_2 gestureController {"hint":"Gesture controls to activate on handoff (set activateOnStart = false)"}'
+    - '// @input AssignableType_1 bleController {"hint":"BLE link to connect on handoff"}'
+    - '// @input AssignableType_2 gestureController {"hint":"Gesture controls to activate on handoff"}'
     - '// @ui {"widget":"separator"}'
     - '// @ui {"widget":"label", "label":"<span style=\"color: #60A5FA;\">Music</span>"}'
     - '// @input AssignableType_3 musicController {"hint":"Music controller to crossfade a track on handoff (optional)"}'
@@ -67,3 +69,6 @@
     - '// @ui {"widget":"separator"}'
     - '// @ui {"widget":"label", "label":"<span style=\"color: #60A5FA;\">Logging</span>"}'
     - '// @input bool enableLogging {"hint":"Print the handoff"}'
+    - '// @ui {"widget":"separator"}'
+    - '// @ui {"widget":"label", "label":"<span style=\"color: #60A5FA;\">Debug</span>"}'
+    - '// @input bool debugActivateOnStart {"hint":"Bring the LED layer online immediately on start (BLE + gestures + music) — bypasses the final-step handoff for testing"}'

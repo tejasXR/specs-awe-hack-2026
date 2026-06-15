@@ -15,8 +15,10 @@ import { LedGestureController } from "./LedGestureController";
  * InstructionsController.onFinalStepEntered, which fires on *entering* the last
  * step — not on advancing past it — so the board is live while the step shows.
  *
- * Set BreadboardBleController.autoConnectOnStart = false and
- * LedGestureController.activateOnStart = false so this is the single trigger.
+ * This is the single trigger for the LED layer: the BLE link and gesture
+ * controls stay idle until this activator calls them (they have no on-start
+ * activation of their own). For testing, debugActivateOnStart brings the layer
+ * online immediately, bypassing the instruction sequence.
  */
 @component
 export class LedControlActivator extends BaseScriptComponent {
@@ -28,11 +30,11 @@ export class LedControlActivator extends BaseScriptComponent {
   instructionsController!: InstructionsController;
 
   @input
-  @hint("BLE link to connect on handoff (set its autoConnectOnStart = false)")
+  @hint("BLE link to connect on handoff")
   bleController!: BreadboardBleController;
 
   @input
-  @hint("Gesture controls to activate on handoff (set activateOnStart = false)")
+  @hint("Gesture controls to activate on handoff")
   gestureController!: LedGestureController;
 
   @ui.separator
@@ -58,6 +60,14 @@ export class LedControlActivator extends BaseScriptComponent {
   @hint("Print the handoff")
   enableLogging: boolean = false;
 
+  @ui.separator
+  @ui.label('<span style="color: #60A5FA;">Debug</span>')
+  @input
+  @hint(
+    "Bring the LED layer online immediately on start (BLE + gestures + music) — bypasses the final-step handoff for testing",
+  )
+  debugActivateOnStart: boolean = false;
+
   // The final step can be re-entered (back-then-forward, or a check-work pass);
   // the handoff should run once.
   private _handedOff: boolean = false;
@@ -70,8 +80,17 @@ export class LedControlActivator extends BaseScriptComponent {
   }
 
   private onStart(): void {
+    // Debug bypass: bring the LED layer online now, independent of the
+    // instruction sequence (and of whether instructionsController is wired).
+    // Safe to call directly here — the gesture/BLE components carry no on-start
+    // activation that could clobber this, and _handedOff keeps it idempotent.
+    if (this.debugActivateOnStart) {
+      this.log("debug: activating LED layer on start");
+      this.bringLedLayerOnline();
+    }
+
     if (isNull(this.instructionsController)) {
-      this.log("instructionsController unwired — no handoff will occur.");
+      this.log("instructionsController unwired — no final-step handoff.");
       return;
     }
     this._unsubscribeFromFinalStep =
@@ -84,13 +103,22 @@ export class LedControlActivator extends BaseScriptComponent {
     this._unsubscribeFromFinalStep?.();
   }
 
-  /** Last build step is on screen — bring the LED layer online, once. */
+  /** Last build step is on screen — bring the LED layer online. */
   private onFinalStepEntered(): void {
+    this.bringLedLayerOnline();
+  }
+
+  /**
+   * Bring the LED layer online once: connect the BLE link, enable the hand
+   * gestures, and crossfade to the LED track. Idempotent via _handedOff, so the
+   * debug-on-start path and the final-step trigger can't double-fire it.
+   */
+  private bringLedLayerOnline(): void {
     if (this._handedOff) {
       return;
     }
     this._handedOff = true;
-    this.log("final step entered — connecting BLE and activating gestures");
+    this.log("bringing LED layer online — BLE connect + gestures + music");
 
     if (!isNull(this.bleController)) {
       this.bleController.connect(); // idempotent; no-op if already connected

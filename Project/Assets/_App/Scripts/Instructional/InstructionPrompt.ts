@@ -50,10 +50,10 @@ export class InstructionPrompt extends BaseScriptComponent {
     }
   }
 
-  // stepIndex is 0-based; presented 1-based (index + 1).
-  setStepText(stepIndex: number, totalStepsInSequence: number): void {
+  // current is 1-based; total is the step count of the current checkpoint segment.
+  setStepText(current: number, totalStepsInSegment: number): void {
     if (this.stepNumberText) {
-      this.stepNumberText.text = `${STEP_PREFIX} ${stepIndex + 1}/${totalStepsInSequence}`;
+      this.stepNumberText.text = `${STEP_PREFIX} ${current}/${totalStepsInSegment}`;
     }
   }
 

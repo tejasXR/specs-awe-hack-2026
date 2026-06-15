@@ -1459,7 +1459,6 @@
   Enabled: true
   ScriptAsset: !<reference> 402b646c-e0d4-476d-b025-69792a0ffd95
   ScriptInputsDefault:
-    activateOnStart: true
     minBrightness: true
     brightnessTravelCm: true
     defaultFlashHz: true
@@ -1472,7 +1471,6 @@
   ScriptInputs:
     "":
       bleController: !<MappingBased.AssignableType> 308e2967-8a99-4664-8725-9245ceb8e794
-      activateOnStart: false
       minBrightness: 0.200000
       brightnessTravelCm: !<float> 20.000000
       defaultFlashHz: !<float> 2.000000
@@ -1619,7 +1617,7 @@
   PrefabRemaps:
     []
   Name: Image
-  Enabled: true
+  Enabled: false
   RenderOrder: 10
   StretchMode: Fit
   VerticalAlignment: Center
@@ -2223,6 +2221,30 @@
   BodySettingValue: 1.000000
   Damping: 0.000000
   AngularDamping: 0.000000
+- !<ScriptComponent/285fea52-4f33-4cd9-8001-8c1067f09fc2>
+  PrefabRemaps:
+    []
+  Name: InteractableAudioFeedback
+  Enabled: true
+  ScriptAsset: !<reference> 1ad7da86-2c32-418c-bdf1-b7150c07c912
+  ScriptInputsDefault:
+    _playAudioOnHover: true
+    _hoverAudioTrack: true
+    _playAudioOnTriggerStart: true
+    _triggerEndAudioTrack: true
+  ScriptTypesDefault:
+    {}
+  ScriptInputs:
+    "":
+      _playAudioOnHover: false
+      _hoverAudioTrack: !<reference.AudioTrackAsset> 97bf97ae-b2da-47d7-bde6-003f597fe888
+      _playAudioOnTriggerStart: true
+      _triggerStartAudioTrack: !<reference.AudioTrackAsset> c72432bd-3918-4a15-95f4-597e82538a8d
+      _playAudioOnTriggerEnd: false
+      _triggerEndAudioTrack: !<reference.AudioTrackAsset> 82028831-1631-4d7b-b548-ff6be4e0a2ba
+  ScriptTypes:
+    "":
+      {}
 - !<SceneObject/2891332d-6389-4c45-9a71-fbb7b4533582>
   PrefabRemaps:
     []
@@ -2676,14 +2698,12 @@
   Enabled: true
   ScriptAsset: !<reference> 46e63a35-ce7e-4666-8de6-1217efe6aef3
   ScriptInputsDefault:
-    autoConnectOnStart: true
     scanTimeoutSeconds: true
   ScriptTypesDefault:
     {}
   ScriptInputs:
     "":
       bluetoothModule: !<reference.BluetoothCentralModule> 9808fbcb-4156-4a98-94a8-9f7ba3247f24
-      autoConnectOnStart: true
       scanTimeoutSeconds: !<float> 15.000000
       simulateInEditor: false
   ScriptTypes:
@@ -4343,6 +4363,7 @@
   ScriptInputsDefault:
     ledTrackVolume: true
     enableLogging: true
+    debugActivateOnStart: true
   ScriptTypesDefault:
     {}
   ScriptInputs:
@@ -4354,6 +4375,7 @@
       ledTrack: !<reference.AudioTrackAsset> 21f6778d-4b99-4da8-825c-d931e322f4b8
       ledTrackVolume: 0.700000
       enableLogging: false
+      debugActivateOnStart: false
   ScriptTypes:
     "":
       {}
@@ -7143,8 +7165,6 @@
     _playAudioOnHover: true
     _hoverAudioTrack: true
     _playAudioOnTriggerStart: true
-    _triggerStartAudioTrack: true
-    _playAudioOnTriggerEnd: true
     _triggerEndAudioTrack: true
   ScriptTypesDefault:
     {}
@@ -7153,8 +7173,8 @@
       _playAudioOnHover: false
       _hoverAudioTrack: !<reference.AudioTrackAsset> 97bf97ae-b2da-47d7-bde6-003f597fe888
       _playAudioOnTriggerStart: true
-      _triggerStartAudioTrack: !<reference.AudioTrackAsset> edad7d53-55da-40b1-9025-fad0e7207862
-      _playAudioOnTriggerEnd: true
+      _triggerStartAudioTrack: !<reference.AudioTrackAsset> 5ddd7225-c30a-49e9-91db-1f1ee1cebd73
+      _playAudioOnTriggerEnd: false
       _triggerEndAudioTrack: !<reference.AudioTrackAsset> 82028831-1631-4d7b-b548-ff6be4e0a2ba
   ScriptTypes:
     "":
@@ -8843,8 +8863,6 @@
     _playAudioOnHover: true
     _hoverAudioTrack: true
     _playAudioOnTriggerStart: true
-    _triggerStartAudioTrack: true
-    _playAudioOnTriggerEnd: true
     _triggerEndAudioTrack: true
   ScriptTypesDefault:
     {}
@@ -8853,8 +8871,8 @@
       _playAudioOnHover: false
       _hoverAudioTrack: !<reference.AudioTrackAsset> 97bf97ae-b2da-47d7-bde6-003f597fe888
       _playAudioOnTriggerStart: true
-      _triggerStartAudioTrack: !<reference.AudioTrackAsset> edad7d53-55da-40b1-9025-fad0e7207862
-      _playAudioOnTriggerEnd: true
+      _triggerStartAudioTrack: !<reference.AudioTrackAsset> 5ddd7225-c30a-49e9-91db-1f1ee1cebd73
+      _playAudioOnTriggerEnd: false
       _triggerEndAudioTrack: !<reference.AudioTrackAsset> 82028831-1631-4d7b-b548-ff6be4e0a2ba
   ScriptTypes:
     "":
@@ -10345,7 +10363,6 @@
   Enabled: true
   ScriptAsset: !<reference> 45c7f51a-2723-4832-a2fa-7cfcae0b8c41
   ScriptInputsDefault:
-    hideOnStart: true
     conversationReplyDirective: true
     enableLogging: true
   ScriptTypesDefault:
@@ -10358,7 +10375,7 @@
       movement: !<MappingBased.AssignableType_3> 5e98edc9-1ea4-411b-801a-283a17001bea
       defaultLocation: !<reference.SceneObject> 1eddc013-881f-4095-90e8-2998ba787f46
       checkWorkLocation: !<reference.SceneObject> 5b4020c3-c6b6-41d1-a41e-0ab39c83363b
-      hideOnStart: false
+      hideOnStart: true
       conversationReplyDirective: Reply in a single sentence whenever possible. Never use more than two sentences.
       enableLogging: true
   ScriptTypes:
@@ -12767,8 +12784,6 @@
     _playAudioOnHover: true
     _hoverAudioTrack: true
     _playAudioOnTriggerStart: true
-    _triggerStartAudioTrack: true
-    _playAudioOnTriggerEnd: true
     _triggerEndAudioTrack: true
   ScriptTypesDefault:
     {}
@@ -12777,8 +12792,8 @@
       _playAudioOnHover: false
       _hoverAudioTrack: !<reference.AudioTrackAsset> 97bf97ae-b2da-47d7-bde6-003f597fe888
       _playAudioOnTriggerStart: true
-      _triggerStartAudioTrack: !<reference.AudioTrackAsset> edad7d53-55da-40b1-9025-fad0e7207862
-      _playAudioOnTriggerEnd: true
+      _triggerStartAudioTrack: !<reference.AudioTrackAsset> 5ddd7225-c30a-49e9-91db-1f1ee1cebd73
+      _playAudioOnTriggerEnd: false
       _triggerEndAudioTrack: !<reference.AudioTrackAsset> 82028831-1631-4d7b-b548-ff6be4e0a2ba
   ScriptTypes:
     "":
@@ -13166,6 +13181,8 @@
   ScriptInputsDefault:
     mainTrackVolume: true
     voiceDescriptions: true
+    powerSegmentColor: true
+    powerSegmentWidth: true
   ScriptTypesDefault:
     {}
   ScriptInputs:
@@ -13184,6 +13201,8 @@
       linePoolParent: !<reference.SceneObject> 0af33c18-ea34-4408-b8e0-dea027c17886
       calloutStartAnchor: !<reference.SceneObject> 0c2e4402-156a-4adf-aa3a-7664655fe73e
       hoverOffsetCm: !<float> 0.000000
+      powerSegmentColor: !<Vec4> {x: 1.000000, y: 0.000000, z: 0.000000, w: 1.000000}
+      powerSegmentWidth: default
       instructionDefinitions:
         - title: The breadboard
           description: |-
@@ -13206,6 +13225,8 @@
           columnEnd: ""
           endRail: ""
           rowEnd: !<float> 0.000000
+          powerSegments:
+            []
         - title: Meet the LED
           description: |-
             Looks like an LED is already attached on the breadboard, sweet!
@@ -13227,6 +13248,8 @@
           columnEnd: J
           endRail: ""
           rowEnd: !<float> 1.000000
+          powerSegments:
+            []
         - title: Power Switch
           description: Press the power switch here to turn on power to the breadboard
           primaryButtonText: Continue
@@ -13245,6 +13268,8 @@
           columnEnd: ""
           endRail: ""
           rowEnd: !<float> 0.000000
+          powerSegments:
+            []
         - title: Power Rails
           description: |-
             Hmm, power runs through the side of the breadboard, there's no power to the LED!
@@ -13266,6 +13291,23 @@
           columnEnd: ""
           endRail: ""
           rowEnd: !<float> 0.000000
+          powerSegments:
+            - startOnRail: true
+              columnStart: A
+              startRail: near-plus
+              rowStart: !<float> 1.000000
+              endOnRail: true
+              columnEnd: A
+              endRail: near-plus
+              rowEnd: !<float> 32.000000
+            - startOnRail: true
+              columnStart: A
+              startRail: near-minus
+              rowStart: !<float> 1.000000
+              endOnRail: true
+              columnEnd: A
+              endRail: near-minus
+              rowEnd: !<float> 32.000000
         - title: Wires
           description: |-
             We can use a wire the route power from the power rails to the LED.
@@ -13287,6 +13329,8 @@
           columnEnd: ""
           endRail: ""
           rowEnd: !<float> 0.000000
+          powerSegments:
+            []
         - title: Place Wire
           description: "Place one side of the RED WIRE on the (+) side of the power rail here, and the other side in cell [E10]."
           primaryButtonText: Continue
@@ -13305,6 +13349,8 @@
           columnEnd: E
           endRail: ""
           rowEnd: !<float> 10.000000
+          powerSegments:
+            []
         - title: Power Direction
           description: "We placed a RED WIRE near our LED, but power only moves horizontally across the breadboard, not up or down."
           primaryButtonText: Continue
@@ -13323,6 +13369,15 @@
           columnEnd: ""
           endRail: ""
           rowEnd: !<float> 0.000000
+          powerSegments:
+            - startOnRail: false
+              columnStart: A
+              startRail: near-plus
+              rowStart: !<float> 10.000000
+              endOnRail: false
+              columnEnd: E
+              endRail: near-plus
+              rowEnd: !<float> 10.000000
         - title: Resistors
           description: We can safely re-route power on a breadboard using a RESISTOR. Pick one up and CONTINUE
           primaryButtonText: Continue
@@ -13341,6 +13396,8 @@
           columnEnd: ""
           endRail: ""
           rowEnd: !<float> 0.000000
+          powerSegments:
+            []
         - title: Resistor
           description: "Place this RESISTOR between [C5] and [C10]"
           primaryButtonText: Continue
@@ -13359,6 +13416,8 @@
           columnEnd: C
           endRail: ""
           rowEnd: !<float> 5.000000
+          powerSegments:
+            []
         - title: Ground the Current
           description: |-
             Almost there! We need to ground the current to close the electrical loop.
@@ -13380,6 +13439,8 @@
           columnEnd: ""
           endRail: ""
           rowEnd: !<float> 0.000000
+          powerSegments:
+            []
         - title: Ground Wire
           description: "Place one side of the BLACK WIRE on the (-) side of the power rail here, and the other side in [A4]."
           primaryButtonText: Continue
@@ -13398,6 +13459,8 @@
           columnEnd: A
           endRail: ""
           rowEnd: !<float> 4.000000
+          powerSegments:
+            []
         - title: Check Work
           description: "Great job so far! Before moving on, let's have Zappy check your work! Just pinch Zappy!"
           primaryButtonText: Check work
@@ -13416,6 +13479,8 @@
           columnEnd: ""
           endRail: ""
           rowEnd: !<float> 0.000000
+          powerSegments:
+            []
         - title: Adding More Color
           description: "Let's make our breadboard more colorful. Pick up a LED and CONTINUE"
           primaryButtonText: Continue
@@ -13434,6 +13499,8 @@
           columnEnd: ""
           endRail: ""
           rowEnd: !<float> 0.000000
+          powerSegments:
+            []
         - title: LED Orientation
           description: |-
             A LED's long is it's ANODE (+). This is where a power current should flow in.
@@ -13455,6 +13522,8 @@
           columnEnd: ""
           endRail: ""
           rowEnd: !<float> 0.000000
+          powerSegments:
+            []
         - title: PLACE LED
           description: "Place the ANODE (+) of the LED in [F19], and the CATHODE (-) of the LED in [F20]"
           primaryButtonText: Continue
@@ -13473,6 +13542,8 @@
           columnEnd: F
           endRail: ""
           rowEnd: !<float> 19.000000
+          powerSegments:
+            []
         - title: POWER WIRE
           description: "Place one side of a RED WIRE on the (+) side of the power rail here, and the other side in [J15]"
           primaryButtonText: Continue
@@ -13491,6 +13562,8 @@
           columnEnd: J
           endRail: ""
           rowEnd: !<float> 15.000000
+          powerSegments:
+            []
         - title: Place RESISTOR
           description: "To move the current to the LED, place a RESISTOR from [H15] to [H19]"
           primaryButtonText: ""
@@ -13509,6 +13582,8 @@
           columnEnd: H
           endRail: ""
           rowEnd: !<float> 19.000000
+          powerSegments:
+            []
         - title: GROUND WIRE
           description: |-
             From what we learned about closing the electric loop, where should we place a BLACK WIRE?
@@ -13530,6 +13605,8 @@
           columnEnd: ""
           endRail: ""
           rowEnd: !<float> 0.000000
+          powerSegments:
+            []
         - title: CHECK WORK
           description: "Before we use the power switch, let's check our work!"
           primaryButtonText: Check Work
@@ -13548,6 +13625,8 @@
           columnEnd: ""
           endRail: ""
           rowEnd: !<float> 0.000000
+          powerSegments:
+            []
         - title: FINAL LED
           description: |-
             There's a LED at [J30] that need some power!
@@ -13569,6 +13648,8 @@
           columnEnd: ""
           endRail: ""
           rowEnd: !<float> 0.000000
+          powerSegments:
+            []
         - title: FIX POWER WIRE
           description: "Look at the power cable inserted at [J38], where should this be placed  near our LED to make it light up?"
           primaryButtonText: ""
@@ -13587,6 +13668,8 @@
           columnEnd: ""
           endRail: ""
           rowEnd: !<float> 0.000000
+          powerSegments:
+            []
         - title: Magic LED
           description: This is no ordinary LED!  Go ahead and pinch & hold with either hand to magically control this light!
           primaryButtonText: ""
@@ -13605,6 +13688,8 @@
           columnEnd: ""
           endRail: ""
           rowEnd: !<float> 0.000000
+          powerSegments:
+            []
   ScriptTypes:
     "":
       {}
@@ -14322,7 +14407,7 @@
 - !<SceneObject/fd5cba35-f969-49db-83be-3561516d6219>
   PrefabRemaps:
     []
-  Name: Zappy Controller
+  Name: Zappy Interactions Controller
   Enabled: true
   Layers: 1
   LocalTransform: !<TransformEntity>
@@ -14337,6 +14422,7 @@
     - !<own> 28483858-cf1c-48f4-b85e-6fc1a7d27494
     - !<own> a6ce47e7-a516-43ae-b9c9-b727cd9d3f39
     - !<own> 252fc71d-8d64-4180-a678-58ad5c34972b
+    - !<own> 285fea52-4f33-4cd9-8001-8c1067f09fc2
     - !<own> c8707b66-9160-445e-ad72-4668294f5837
 - !<Image/fd689511-7c45-4214-8ad9-a902a6159643>
   PrefabRemaps:

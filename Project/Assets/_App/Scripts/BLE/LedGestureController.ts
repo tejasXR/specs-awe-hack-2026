@@ -35,14 +35,6 @@ export class LedGestureController extends BaseScriptComponent {
   bleController!: BreadboardBleController;
 
   @ui.separator
-  @ui.label('<span style="color: #60A5FA;">Activation</span>')
-  @input
-  @hint(
-    "Respond to gestures immediately. Off = stay idle until activate() is called (e.g. when the final instruction step is entered)",
-  )
-  activateOnStart: boolean = false;
-
-  @ui.separator
   @ui.label('<span style="color: #60A5FA;">Left hand — brightness</span>')
   @input
   @hint("Lowest brightness (pinch height = floor). 0.2 = 20%")
@@ -85,8 +77,9 @@ export class LedGestureController extends BaseScriptComponent {
   private rightHand!: TrackedHand;
   private updateEvent!: UpdateEvent;
 
-  // Gated until activate() (or activateOnStart). Pinch-down is the only entry
-  // into a gesture, so guarding it there keeps every downstream path idle.
+  // Gated until activate() (driven by LedControlActivator). Pinch-down is the
+  // only entry into a gesture, so guarding it there keeps every downstream path
+  // idle until then.
   private _active: boolean = false;
 
   // Per-hand gesture state
@@ -127,8 +120,6 @@ export class LedGestureController extends BaseScriptComponent {
     this.updateEvent = this.createEvent("UpdateEvent");
     this.updateEvent.bind(() => this.onUpdate());
     this.updateEvent.enabled = false;
-
-    this._active = this.activateOnStart;
   }
 
   // ---- Activation -----------------------------------------------------------
