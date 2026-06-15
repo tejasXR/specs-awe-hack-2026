@@ -71,5 +71,5 @@
       value: 0
     baseColorFactor:
       typeIdx: 5
-      value: {x: 0.992157, y: 0.678431, z: 0.027451, w: 1.000000}
+      value: {x: 0.964706, y: 0.682353, z: 0.027451, w: 1.000000}
   Pass: !<reference> 6876f960-a985-4d13-9383-03e1f82fbc06

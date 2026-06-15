@@ -28,6 +28,15 @@ export interface InstructionStepEvent {
   totalCount: number;
 }
 
+// Sentinel columnStart value: the step shows its title/description but draws no
+// callout line. Lets a designer author a text-only step (an intro/explainer)
+// without it pointing at a breadboard cell.
+//
+// MUST match the literal in the columnStart ComboBoxItem below — Lens Studio's
+// inspector-decorator parser only reads string literals, not identifiers, so the
+// widget can't reference this constant directly.
+const COLUMN_NONE = "None";
+
 @typedef
 export class InstructionDefinition {
   @input
@@ -84,6 +93,7 @@ export class InstructionDefinition {
   @showIf("startOnRail", false)
   @widget(
     new ComboBoxWidget([
+      new ComboBoxItem("None (no line)", "None"), // value MUST equal COLUMN_NONE
       new ComboBoxItem("A", "A"),
       new ComboBoxItem("B", "B"),
       new ComboBoxItem("C", "C"),
@@ -399,6 +409,16 @@ export class InstructionsController
       return powerLine;
     }
 
+    // A "None" start column draws no callout — describe it by title/description
+    // alone, with no cell/rail location clause to render a phantom "None1".
+    if (this.isLinelessColumnStep(definition)) {
+      let linelessLine = definition.title;
+      if (definition.description) {
+        linelessLine += `: ${definition.description}`;
+      }
+      return linelessLine;
+    }
+
     const start = definition.startOnRail
       ? this.railLabel(definition.startRail) + " @ row " + definition.rowStart
       : this.cellLabel(definition.columnStart, definition.rowStart);
@@ -439,6 +459,15 @@ export class InstructionsController
   // BreadboardGrid); an unrecognized string echoes back, matching the old default.
   private railLabel(rail: string): string {
     return isPowerRail(rail) ? RAIL_LABEL[rail] : rail;
+  }
+
+  /**
+   * A grid-column step whose start is "None": it draws no callout line and has
+   * no location to describe. Only meaningful in the cell path — rail starts and
+   * the pointToDivider/pointToPower overrides are resolved before this is asked.
+   */
+  private isLinelessColumnStep(definition: InstructionDefinition): boolean {
+    return !definition.startOnRail && definition.columnStart === COLUMN_NONE;
   }
 
   onAwake(): void {
@@ -554,6 +583,12 @@ export class InstructionsController
       instructionDefinition.description,
     );
 
+    this.instructionPrompt.setButtonLabel(
+      instructionDefinition.primaryButtonText,
+      instructionDefinition.secondaryButtonText,
+      instructionDefinition.tertiaryButtonText,
+    );
+
     this.configureLines(lineTargets);
     this.setActiveDivider(this.resolveStepDividerKind(instructionDefinition));
 
@@ -601,6 +636,12 @@ export class InstructionsController
           position: powerSwitchToLocalPosition(this.hoverOffsetCm),
         },
       ];
+    }
+
+    // A "None" start column opts the step out of a callout entirely — a
+    // text-only step draws no line (and ignores any end pin).
+    if (this.isLinelessColumnStep(definition)) {
+      return [];
     }
 
     const targets: LineTarget[] = [

@@ -632,9 +632,9 @@
   Enabled: true
   Layers: 1
   LocalTransform: !<TransformEntity>
-    Position: {x: 7.905058, y: 0.000002, z: 0.000001}
+    Position: {x: 7.840672, y: -0.180466, z: -0.000003}
     Rotation: {x: -180.000000, y: 180.000000, z: -180.000000}
-    Scale: {x: 19.599998, y: 19.600000, z: 19.599998}
+    Scale: {x: 19.000000, y: 19.000000, z: 19.000000}
     HasSegmentScaleCompensation: false
   Children:
     []
@@ -1603,7 +1603,7 @@
   ShadowColor: {x: 1.000000, y: 1.000000, z: 1.000000, w: 1.000000}
   ShadowDensity: 1.000000
   Materials:
-    - !<reference> 3805ab9b-5854-4d7f-962e-427e86f7aa1c
+    - !<reference> bc38f082-a095-45fc-a287-d1915581c5d1
   FlipX: false
   FlipY: false
   RotationAngle: 0
@@ -2208,7 +2208,6 @@
   Enabled: true
   ScriptAsset: !<reference> 74eafc23-e98b-4073-ab18-82ca532994e3
   ScriptInputsDefault:
-    _xAxisEnabled: true
     _yAxisEnabled: true
     _zAxisEnabled: true
     _axisBufferDegrees: true
@@ -2217,7 +2216,7 @@
     {}
   ScriptInputs:
     "":
-      _xAxisEnabled: false
+      _xAxisEnabled: true
       _yAxisEnabled: true
       _zAxisEnabled: false
       _axisBufferDegrees: !<Vec3> {x: 0.000000, y: 0.000000, z: 0.000000}
@@ -2879,9 +2878,7 @@
     keepHoverOnTrigger: true
     enableInstantDrag: true
     isScrollable: true
-    enablePokeDirectionality: true
     acceptableYDirections: true
-    useFilteredPinch: true
   ScriptTypesDefault:
     {}
   ScriptInputs:
@@ -2893,11 +2890,11 @@
       enableInstantDrag: false
       isScrollable: false
       allowMultipleInteractors: false
-      enablePokeDirectionality: false
+      enablePokeDirectionality: true
       acceptableXDirections: !<float> 1.000000
       acceptableYDirections: !<float> 0.000000
       acceptableZDirections: !<float> 0.000000
-      useFilteredPinch: false
+      useFilteredPinch: true
   ScriptTypes:
     "":
       {}
@@ -4003,7 +4000,7 @@
   Enabled: true
   Layers: 1
   LocalTransform: !<TransformEntity>
-    Position: {x: 0.000000, y: 30.000000, z: -15.000000}
+    Position: {x: 0.000000, y: 25.000000, z: -15.000000}
     Rotation: {x: 0.000000, y: 0.000000, z: 0.000000}
     Scale: {x: 1.000000, y: 1.000000, z: 1.000000}
     HasSegmentScaleCompensation: false
@@ -4418,7 +4415,7 @@
           description: |-
             Zappy will help you build your own electronics.
             
-            Practice pinching zappy to continue
+            Practice pinching zappy now
           primaryButtonText: Continue
           secondaryButtonText: Back
         - stepText: When stuck...
@@ -4428,7 +4425,7 @@
           secondaryButtonText: ""
         - stepText: are you
           title: "Ready to go?"
-          description: Pinch Zappy or press continue to start building!
+          description: Pinch Zappy or press CONTINUE to start building!
           primaryButtonText: Continue
           secondaryButtonText: ""
   ScriptTypes:
@@ -4445,9 +4442,7 @@
     keepHoverOnTrigger: true
     enableInstantDrag: true
     isScrollable: true
-    enablePokeDirectionality: true
     acceptableYDirections: true
-    useFilteredPinch: true
   ScriptTypesDefault:
     {}
   ScriptInputs:
@@ -4459,11 +4454,11 @@
       enableInstantDrag: false
       isScrollable: false
       allowMultipleInteractors: false
-      enablePokeDirectionality: false
+      enablePokeDirectionality: true
       acceptableXDirections: !<float> 1.000000
       acceptableYDirections: !<float> 0.000000
       acceptableZDirections: !<float> 0.000000
-      useFilteredPinch: false
+      useFilteredPinch: true
   ScriptTypes:
     "":
       {}
@@ -4752,11 +4747,11 @@
     {}
   ScriptInputs:
     "":
-      extendedAngle: !<float> 160.000000
-      curledAngle: !<float> 125.000000
+      extendedAngle: !<float> 140.000000
+      curledAngle: !<float> 140.000000
       recognizerText: !<reference.Text> 17fcd401-c022-480a-9d06-d4058a324fcd
       debugText: !<reference.Text> c9a18585-481d-4876-8cc5-7cecdff4b692
-      stillnessRadius: !<float> 2.000000
+      stillnessRadius: 3.500000
       holdDuration: 0.500000
       holdCompleteDuration: !<float> 1.000000
       resetGraceDuration: 0.300000
@@ -4854,7 +4849,7 @@
   ScriptInputs:
     "":
       distance: !<float> 80.000000
-      heightOffset: !<float> -4.000000
+      heightOffset: !<float> -30.000000
       followSpeed: !<float> 5.000000
       snapOnStart: true
       enableLogging: false
@@ -5525,9 +5520,7 @@
     keepHoverOnTrigger: true
     enableInstantDrag: true
     isScrollable: true
-    enablePokeDirectionality: true
     acceptableYDirections: true
-    useFilteredPinch: true
   ScriptTypesDefault:
     {}
   ScriptInputs:
@@ -5539,11 +5532,11 @@
       enableInstantDrag: false
       isScrollable: false
       allowMultipleInteractors: false
-      enablePokeDirectionality: false
+      enablePokeDirectionality: true
       acceptableXDirections: !<float> 1.000000
       acceptableYDirections: !<float> 0.000000
       acceptableZDirections: !<float> 0.000000
-      useFilteredPinch: false
+      useFilteredPinch: true
   ScriptTypes:
     "":
       {}
@@ -6872,7 +6865,7 @@
   Enabled: true
   Layers: 1
   LocalTransform: !<TransformEntity>
-    Position: {x: 5.500000, y: 2.700000, z: 0.000861}
+    Position: {x: 5.500000, y: 3.000000, z: 0.000861}
     Rotation: {x: -0.000000, y: 0.019773, z: -0.000000}
     Scale: {x: 0.700000, y: 0.700000, z: 0.700000}
     HasSegmentScaleCompensation: false
@@ -8736,7 +8729,7 @@
   PrefabRemaps:
     []
   Name: Scenes
-  Enabled: false
+  Enabled: true
   Layers: 1
   LocalTransform: !<TransformEntity>
     Position: {x: 0.000000, y: 0.500000, z: 0.000000}
@@ -9274,7 +9267,7 @@
   ShadowColor: {x: 1.000000, y: 1.000000, z: 1.000000, w: 1.000000}
   ShadowDensity: 1.000000
   Materials:
-    - !<reference> 3805ab9b-5854-4d7f-962e-427e86f7aa1c
+    - !<reference> 89d43d47-bf08-4d40-bca0-94405b169b1f
   FlipX: false
   FlipY: false
   RotationAngle: 0
@@ -9756,7 +9749,7 @@
   PrefabRemaps:
     []
   Name: LP_breadboard_0
-  Enabled: true
+  Enabled: false
   Layers: 1
   LocalTransform: !<TransformEntity>
     Position: {x: 0.000000, y: 0.000000, z: 0.000000}
@@ -9999,6 +9992,7 @@
   ScriptAsset: !<reference> 9b9ba524-38ea-4684-9630-7420ac456a29
   ScriptInputsDefault:
     trackVolume: true
+    skipBreadboardPress: true
   ScriptTypesDefault:
     {}
   ScriptInputs:
@@ -10013,7 +10007,7 @@
       trackVolume: 0.500000
       spaceSetup: !<MappingBased.AssignableType_4> 5a9e8d73-a99d-45b2-8ab8-ff9ddefcafd3
       hideSpaceSetupOnStart: true
-      skipBreadboardPress: true
+      skipBreadboardPress: false
   ScriptTypes:
     "":
       {}
@@ -10379,7 +10373,7 @@
   PrefabRemaps:
     []
   Name: Step
-  Enabled: true
+  Enabled: false
   Layers: 1
   LocalTransform: !<TransformEntity>
     Position: {x: 5.500000, y: 4.000000, z: 0.000865}
@@ -11138,6 +11132,30 @@
     []
   Components:
     - !<own> 10c9b503-a089-4c49-8ef0-090775584f52
+- !<ScriptComponent/cb450f97-f3dd-46a5-b584-bfe17c86f603>
+  PrefabRemaps:
+    []
+  Name: Billboard
+  Enabled: true
+  ScriptAsset: !<reference> 74eafc23-e98b-4073-ab18-82ca532994e3
+  ScriptInputsDefault:
+    _xAxisEnabled: true
+    _yAxisEnabled: true
+    _zAxisEnabled: true
+    _axisBufferDegrees: true
+    _axisEasing: true
+  ScriptTypesDefault:
+    {}
+  ScriptInputs:
+    "":
+      _xAxisEnabled: false
+      _yAxisEnabled: true
+      _zAxisEnabled: false
+      _axisBufferDegrees: !<Vec3> {x: 0.000000, y: 0.000000, z: 0.000000}
+      _axisEasing: !<Vec3> {x: 1.000000, y: 1.000000, z: 1.000000}
+  ScriptTypes:
+    "":
+      {}
 - !<ColliderComponent/cb794a02-71e9-4ae4-ab48-7e62097b9653>
   PrefabRemaps:
     []
@@ -11258,7 +11276,7 @@
   Enabled: true
   Shape: !<Box>
     FitVisual: false
-    Size: {x: 3.500000, y: 2.100000, z: 4.800000}
+    Size: {x: 5.500000, y: 2.100000, z: 4.800000}
   Matter: !<reference> 00000000-0000-0000-0000-000000000000
   Filter: !<reference> 00000000-0000-0000-0000-000000000000
   OverlapFilter: !<reference> 00000000-0000-0000-0000-000000000000
@@ -11539,6 +11557,7 @@
     []
   Components:
     - !<own> 1d47f21e-419c-4b61-835c-dfcf2eaa8a68
+    - !<own> cb450f97-f3dd-46a5-b584-bfe17c86f603
 - !<Text/d31a7e42-28fc-4022-928e-75b96660877e>
   PrefabRemaps:
     []
@@ -12241,7 +12260,7 @@
   Enabled: true
   Shape: !<Box>
     FitVisual: false
-    Size: {x: 3.500000, y: 2.100000, z: 4.800000}
+    Size: {x: 5.500000, y: 2.100000, z: 4.800000}
   Matter: !<reference> 00000000-0000-0000-0000-000000000000
   Filter: !<reference> 00000000-0000-0000-0000-000000000000
   OverlapFilter: !<reference> 00000000-0000-0000-0000-000000000000
@@ -13071,7 +13090,7 @@
   Enabled: true
   Layers: 1
   LocalTransform: !<TransformEntity>
-    Position: {x: 5.500000, y: 0.250000, z: -0.000000}
+    Position: {x: 5.500000, y: 0.500000, z: -0.000000}
     Rotation: {x: -0.000000, y: 0.019773, z: -0.000000}
     Scale: {x: 0.700000, y: 0.700000, z: 0.700000}
     HasSegmentScaleCompensation: false
@@ -13174,13 +13193,13 @@
           description: |-
             The breadboard is the heart of your project.
             
-            We attach things to the breadboard to build ciruits.
+            We attach things to CELLS, which are labeled by a letter and a number
           primaryButtonText: Continue
-          secondaryButtonText: ""
+          secondaryButtonText: Back
           tertiaryButtonText: ""
           isCheckpoint: false
           pointToPower: false
-          pointToDivider: false
+          pointToDivider: true
           dividerKind: breadboard
           startOnRail: false
           columnStart: A
@@ -13195,18 +13214,18 @@
           description: |-
             Looks like an LED is already attached on the breadboard, sweet!
             
-            Let's try to power it up
+            Let's try to power it up!
           primaryButtonText: Continue
-          secondaryButtonText: ""
+          secondaryButtonText: Back
           tertiaryButtonText: ""
           isCheckpoint: false
           pointToPower: false
           pointToDivider: false
           dividerKind: breadboard
           startOnRail: false
-          columnStart: A
+          columnStart: E
           startRail: far-plus
-          rowStart: !<float> 1.000000
+          rowStart: !<float> 5.000000
           useEndPin: false
           endOnRail: false
           columnEnd: J
@@ -13214,8 +13233,8 @@
           rowEnd: !<float> 1.000000
         - title: Power Switch
           description: Press the power switch here to turn on power to the breadboard
-          primaryButtonText: ""
-          secondaryButtonText: ""
+          primaryButtonText: Continue
+          secondaryButtonText: Back
           tertiaryButtonText: ""
           isCheckpoint: false
           pointToPower: true
@@ -13232,18 +13251,18 @@
           rowEnd: !<float> 0.000000
         - title: Power Rails
           description: |-
-            Hmm, looks like the LED isn't powered because power runs through the side rails on the breadboard.
+            Hmm, power runs through the side of the breadboard, there's no power to the LED!
             
             These blue lines indicate power
-          primaryButtonText: ""
-          secondaryButtonText: ""
+          primaryButtonText: Continue
+          secondaryButtonText: Back
           tertiaryButtonText: ""
           isCheckpoint: false
           pointToPower: false
           pointToDivider: false
           dividerKind: breadboard
           startOnRail: false
-          columnStart: A
+          columnStart: None
           startRail: near-plus
           rowStart: !<float> 1.000000
           useEndPin: false
@@ -13273,7 +13292,7 @@
           endRail: ""
           rowEnd: !<float> 0.000000
         - title: Place Wire
-          description: "Place one side of the RED WIRE on the (+) side of the power rail here, and the other side in cell E10."
+          description: "Place one side of the RED WIRE on the (+) side of the power rail here, and the other side in cell [E10]."
           primaryButtonText: Continue
           secondaryButtonText: Back
           tertiaryButtonText: ""
@@ -13291,7 +13310,7 @@
           endRail: ""
           rowEnd: !<float> 10.000000
         - title: Power Direction
-          description: "Even though we placed a RED WIRE near our LED, power only moves horizontally across the breadboard, not up or down."
+          description: "We placed a RED WIRE near our LED, but power only moves horizontally across the breadboard, not up or down."
           primaryButtonText: Continue
           secondaryButtonText: Back
           tertiaryButtonText: ""
@@ -13309,7 +13328,7 @@
           endRail: ""
           rowEnd: !<float> 0.000000
         - title: Resistors
-          description: "We can safely re-route power on a breadboard using a RESISTOR. Pick one up and let's continue"
+          description: We can safely re-route power on a breadboard using a RESISTOR. Pick one up and CONTINUE
           primaryButtonText: Continue
           secondaryButtonText: Back
           tertiaryButtonText: ""
@@ -13327,9 +13346,9 @@
           endRail: ""
           rowEnd: !<float> 0.000000
         - title: Resistor
-          description: Place this RESISTOR between C10 and C5
-          primaryButtonText: ""
-          secondaryButtonText: ""
+          description: "Place this RESISTOR between [C5] and [C10]"
+          primaryButtonText: Continue
+          secondaryButtonText: Back
           tertiaryButtonText: ""
           isCheckpoint: false
           pointToPower: false
@@ -13348,14 +13367,14 @@
           description: |-
             Almost there! We need to ground the current to close the electrical loop.
             
-            Pick up a BLACK WIRE to continue
+            Pick up a BLACK WIRE and CONTINUE
           primaryButtonText: Continue
-          secondaryButtonText: ""
+          secondaryButtonText: Back
           tertiaryButtonText: ""
           isCheckpoint: false
           pointToPower: false
-          pointToDivider: false
-          dividerKind: breadboard
+          pointToDivider: true
+          dividerKind: wires
           startOnRail: false
           columnStart: A
           startRail: near-plus
@@ -13365,10 +13384,217 @@
           columnEnd: ""
           endRail: ""
           rowEnd: !<float> 0.000000
+        - title: Ground Wire
+          description: "Place one side of the BLACK WIRE on the (-) side of the power rail here, and the other side in [A4]."
+          primaryButtonText: Continue
+          secondaryButtonText: Back
+          tertiaryButtonText: ""
+          isCheckpoint: false
+          pointToPower: false
+          pointToDivider: false
+          dividerKind: breadboard
+          startOnRail: true
+          columnStart: A
+          startRail: near-minus
+          rowStart: !<float> 4.000000
+          useEndPin: true
+          endOnRail: false
+          columnEnd: A
+          endRail: ""
+          rowEnd: !<float> 4.000000
         - title: Check Work
-          description: "Before moving on, let's check your work so far!"
+          description: "Great job so far! Before moving on, let's have Zappy check your work!"
+          primaryButtonText: Check work
+          secondaryButtonText: Back
+          tertiaryButtonText: Skip
+          isCheckpoint: true
+          pointToPower: false
+          pointToDivider: false
+          dividerKind: breadboard
+          startOnRail: false
+          columnStart: None
+          startRail: near-plus
+          rowStart: !<float> 1.000000
+          useEndPin: false
+          endOnRail: false
+          columnEnd: ""
+          endRail: ""
+          rowEnd: !<float> 0.000000
+        - title: Adding More Color
+          description: "Let's make our breadboard more colorful. Pick up a LED and CONTINUE"
+          primaryButtonText: Continue
+          secondaryButtonText: ""
+          tertiaryButtonText: ""
+          isCheckpoint: false
+          pointToPower: false
+          pointToDivider: true
+          dividerKind: leds
+          startOnRail: false
+          columnStart: A
+          startRail: near-plus
+          rowStart: !<float> 1.000000
+          useEndPin: false
+          endOnRail: false
+          columnEnd: ""
+          endRail: ""
+          rowEnd: !<float> 0.000000
+        - title: LED Orientation
+          description: |-
+            A LED's long is it's ANODE (+). This is where a power current should flow in.
+            
+            The the shorter end is the CATHODE (-), where current should flow out
+          primaryButtonText: Continue
+          secondaryButtonText: Back
+          tertiaryButtonText: ""
+          isCheckpoint: false
+          pointToPower: false
+          pointToDivider: false
+          dividerKind: breadboard
+          startOnRail: false
+          columnStart: None
+          startRail: near-plus
+          rowStart: !<float> 1.000000
+          useEndPin: false
+          endOnRail: false
+          columnEnd: ""
+          endRail: ""
+          rowEnd: !<float> 0.000000
+        - title: PLACE LED
+          description: "Place the ANODE (+) of the LED in [F19], and the CATHODE (-) of the LED in [F20]"
+          primaryButtonText: Continue
+          secondaryButtonText: Back
+          tertiaryButtonText: ""
+          isCheckpoint: false
+          pointToPower: false
+          pointToDivider: false
+          dividerKind: breadboard
+          startOnRail: false
+          columnStart: F
+          startRail: near-plus
+          rowStart: !<float> 20.000000
+          useEndPin: true
+          endOnRail: false
+          columnEnd: F
+          endRail: ""
+          rowEnd: !<float> 19.000000
+        - title: POWER WIRE
+          description: "Place one side of a RED WIRE on the (+) side of the power rail here, and the other side in [J15]"
+          primaryButtonText: Continue
+          secondaryButtonText: Back
+          tertiaryButtonText: ""
+          isCheckpoint: false
+          pointToPower: false
+          pointToDivider: false
+          dividerKind: breadboard
+          startOnRail: true
+          columnStart: A
+          startRail: far-plus
+          rowStart: !<float> 10.000000
+          useEndPin: true
+          endOnRail: false
+          columnEnd: J
+          endRail: ""
+          rowEnd: !<float> 15.000000
+        - title: Place RESISTOR
+          description: "To move the current to the LED, place a RESISTOR from [H15] to [H19]"
+          primaryButtonText: ""
+          secondaryButtonText: ""
+          tertiaryButtonText: ""
+          isCheckpoint: false
+          pointToPower: false
+          pointToDivider: false
+          dividerKind: breadboard
+          startOnRail: false
+          columnStart: H
+          startRail: near-plus
+          rowStart: !<float> 15.000000
+          useEndPin: true
+          endOnRail: false
+          columnEnd: H
+          endRail: ""
+          rowEnd: !<float> 19.000000
+        - title: GROUND WIRE
+          description: |-
+            From what we learned about closing the electric loop, where should we place a BLACK WIRE?
+            
+            Ask Zappy if you're stuck!
+          primaryButtonText: Continue
+          secondaryButtonText: Back
+          tertiaryButtonText: ""
+          isCheckpoint: false
+          pointToPower: false
+          pointToDivider: false
+          dividerKind: breadboard
+          startOnRail: false
+          columnStart: None
+          startRail: near-plus
+          rowStart: !<float> 1.000000
+          useEndPin: false
+          endOnRail: false
+          columnEnd: ""
+          endRail: ""
+          rowEnd: !<float> 0.000000
+        - title: CHECK WORK
+          description: "Before we use the power switch, let's check our work!"
           primaryButtonText: Check Work
           secondaryButtonText: Back
+          tertiaryButtonText: Skip
+          isCheckpoint: true
+          pointToPower: false
+          pointToDivider: false
+          dividerKind: breadboard
+          startOnRail: false
+          columnStart: None
+          startRail: near-plus
+          rowStart: !<float> 1.000000
+          useEndPin: false
+          endOnRail: false
+          columnEnd: ""
+          endRail: ""
+          rowEnd: !<float> 0.000000
+        - title: FINAL LED
+          description: |-
+            There's a LED at [J30] that need some power!
+            
+            I wonder if a power cable got loose!
+          primaryButtonText: ""
+          secondaryButtonText: ""
+          tertiaryButtonText: ""
+          isCheckpoint: false
+          pointToPower: false
+          pointToDivider: false
+          dividerKind: breadboard
+          startOnRail: false
+          columnStart: J
+          startRail: near-plus
+          rowStart: !<float> 30.000000
+          useEndPin: false
+          endOnRail: false
+          columnEnd: ""
+          endRail: ""
+          rowEnd: !<float> 0.000000
+        - title: FIX POWER WIRE
+          description: "Look at the power cable inserted at [J38], where should this be placed  near our LED to make it light up?"
+          primaryButtonText: ""
+          secondaryButtonText: ""
+          tertiaryButtonText: ""
+          isCheckpoint: false
+          pointToPower: false
+          pointToDivider: false
+          dividerKind: breadboard
+          startOnRail: false
+          columnStart: None
+          startRail: near-plus
+          rowStart: !<float> 29.000000
+          useEndPin: false
+          endOnRail: false
+          columnEnd: ""
+          endRail: ""
+          rowEnd: !<float> 0.000000
+        - title: Magic LED
+          description: This is no ordinary LED!  Go ahead and pinch & hold with either hand to magically control this light!
+          primaryButtonText: ""
+          secondaryButtonText: ""
           tertiaryButtonText: Skip
           isCheckpoint: true
           pointToPower: false
@@ -13834,7 +14060,7 @@
   Enabled: true
   Shape: !<Box>
     FitVisual: false
-    Size: {x: 3.500000, y: 2.100000, z: 4.800000}
+    Size: {x: 5.500000, y: 2.100000, z: 4.800000}
   Matter: !<reference> 00000000-0000-0000-0000-000000000000
   Filter: !<reference> 00000000-0000-0000-0000-000000000000
   OverlapFilter: !<reference> 00000000-0000-0000-0000-000000000000
