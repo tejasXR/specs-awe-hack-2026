@@ -94,9 +94,7 @@ export class CheckWorkController extends BaseScriptComponent {
   }
 
   private onStart(): void {
-    this._cosThreshold = Math.cos(
-      (this.angleThresholdDegrees * Math.PI) / 180,
-    );
+    this._cosThreshold = Math.cos((this.angleThresholdDegrees * Math.PI) / 180);
 
     if (!isNull(this.instructionsController)) {
       this._unsubscribeFromCheckRequest =
@@ -196,7 +194,8 @@ export class CheckWorkController extends BaseScriptComponent {
   private onCheckError(error: string): void {
     this.log("Check error: " + error);
     this.zappyAI.say(
-      "Whoops — my circuits fizzled. Let's try that check again in a moment.",
+      //"Whoops — my circuits fizzled. Let's try that check again in a moment.",
+      "Check error: " + error,
       ZappyEmotion.Sad,
       0.6,
     );

@@ -18,7 +18,7 @@ import {
   ZappyResponse,
 } from "./ZappyBrain";
 import { ZappyEmotionController } from "./ZappyEmotionController";
-import { ZappyVoice } from "./ZappyVoice";
+import { ZappyVoice, SpeakOptions } from "./ZappyVoice";
 import { ZappyMovement } from "./ZappyMovement";
 import { ScaleVisibilityAnimator } from "../Utils/ScaleVisibilityAnimator";
 
@@ -257,9 +257,10 @@ export class ZappyAI extends BaseScriptComponent {
     text: string,
     emotion: ZappyEmotion = ZappyEmotion.Neutral,
     intensity: number = 0.6,
+    options?: SpeakOptions,
   ): void {
     this.emotionController.setEmotion(emotion, intensity);
-    this.voice.speak(text);
+    this.voice.speak(text, options);
   }
 
   private routeResponse(resp: ZappyResponse): void {

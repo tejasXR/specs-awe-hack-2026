@@ -1,0 +1,14 @@
+input_vec3 worldNormal;
+input_vec3 worldPos;
+input_vec3 cameraPos;
+input_float fresnelPower;
+input_vec4 glowColor;
+output_vec4 result;
+
+void main() {
+    vec3 N = normalize(worldNormal);
+    vec3 V = normalize(cameraPos - worldPos);
+    float NdotV = max(dot(N, V), 0.0);
+    float fresnel = pow(1.0 - NdotV, fresnelPower);
+    result = vec4(glowColor.rgb * fresnel, fresnel);
+}

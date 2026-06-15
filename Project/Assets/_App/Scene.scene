@@ -2678,7 +2678,6 @@
   ScriptInputsDefault:
     autoConnectOnStart: true
     scanTimeoutSeconds: true
-    simulateInEditor: true
   ScriptTypesDefault:
     {}
   ScriptInputs:
@@ -2686,7 +2685,7 @@
       bluetoothModule: !<reference.BluetoothCentralModule> 9808fbcb-4156-4a98-94a8-9f7ba3247f24
       autoConnectOnStart: true
       scanTimeoutSeconds: !<float> 15.000000
-      simulateInEditor: true
+      simulateInEditor: false
   ScriptTypes:
     "":
       {}
@@ -3092,7 +3091,7 @@
   PrefabRemaps:
     []
   Name: Text
-  Enabled: true
+  Enabled: false
   Layers: 1
   LocalTransform: !<TransformEntity>
     Position: {x: 0.000000, y: 15.000000, z: 0.000000}
@@ -4013,7 +4012,7 @@
   ShadowColor: {x: 1.000000, y: 1.000000, z: 1.000000, w: 1.000000}
   ShadowDensity: 1.000000
   Materials:
-    - !<reference> d44061c5-5283-4be5-8967-10f911bf047c
+    - !<reference> fdf46f4b-2e78-4697-95c4-ef48e1d4d760
   Mesh: !<reference> f3cc8afc-cb20-4193-bb1a-39f896f0cd9a
   Skin: !<reference> 00000000-0000-0000-0000-000000000000
   BlendShapesEnabled: true
@@ -10312,7 +10311,7 @@
     - acbd78e4-a682-4782-b971-8be5310677fe: 9f62cd63-ddb4-4a3a-4774-e727ee22b12e
     - b86cbb43-e82e-48ed-89e0-a449f10cd53e: 978d015e-936a-48d0-6d1b-cb3d2ad5ee89
   Name: Cropped Camera Texture
-  Enabled: false
+  Enabled: true
   Layers: 1
   LocalTransform: !<TransformEntity>
     Position: {x: 0.000000, y: 0.000000, z: -50.000000}
@@ -12376,7 +12375,7 @@
   Enabled: true
   ScriptAsset: !<reference> 8eb2b0ed-6698-4fcf-a8f8-7a1a04ecdd16
   ScriptInputsDefault:
-    angleThresholdDegrees: true
+    {}
   ScriptTypesDefault:
     {}
   ScriptInputs:
@@ -12385,7 +12384,7 @@
       sendWorkToGemini: !<MappingBased.AssignableType_1> a6a5cb1b-8210-4b20-8b57-364c8470fd3c
       instructionsController: !<MappingBased.AssignableType_2> eaf037a4-91ae-4102-8701-9cc2f28c5a80
       gazeTarget: !<reference.SceneObject> 29fcc15e-7002-459f-86d6-ba5aef66d5e5
-      angleThresholdDegrees: !<float> 20.000000
+      angleThresholdDegrees: !<float> 10.000000
       enableLogging: false
   ScriptTypes:
     "":

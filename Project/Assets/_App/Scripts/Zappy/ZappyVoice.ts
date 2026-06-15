@@ -40,6 +40,12 @@ const DEFAULT_MOOD: ZappyEmotionData = {
   intensity: 0.5,
 };
 
+/** Per-line speak options. */
+export interface SpeakOptions {
+  /** Show the caption in the speech box. Defaults to true. */
+  showCaption?: boolean;
+}
+
 // ─── Component ──────────────────────────────────────────────────
 
 @component
@@ -130,10 +136,17 @@ export class ZappyVoice extends BaseScriptComponent {
    * backend and play. A newer speak() supersedes any synthesis still in
    * flight, and a failed/unavailable primary falls back to Snap TTS.
    */
-  speak(text: string): void {
+  speak(text: string, options?: SpeakOptions): void {
+    const showCaption = options?.showCaption ?? true;
     const generation = ++this._speechGeneration;
     const primary = this.resolvePrimary();
-    this.synthesizeWith(text, primary, generation, this.enableFallback);
+    this.synthesizeWith(
+      text,
+      primary,
+      generation,
+      this.enableFallback,
+      showCaption,
+    );
   }
 
   /** Cut the current line short and drop any in-flight synthesis. */
@@ -157,11 +170,12 @@ export class ZappyVoice extends BaseScriptComponent {
     provider: IVoiceProvider | null,
     generation: number,
     allowFallback: boolean,
+    showCaption: boolean,
   ): void {
-    // Caption immediately, rendered the way this backend speaks the line — the
-    // speech controller reveals the box, kept up even in the caption-only (no
-    // audio) fallback.
-    if (!isNull(this.speechController)) {
+    // Caption immediately (unless suppressed), rendered the way this backend
+    // speaks the line — the speech controller reveals the box, kept up even in
+    // the caption-only (no audio) fallback.
+    if (showCaption && !isNull(this.speechController)) {
       this.speechController.showZappy(
         provider ? provider.toCaption(text) : text,
       );
@@ -169,7 +183,7 @@ export class ZappyVoice extends BaseScriptComponent {
 
     if (!provider || !provider.isAvailable()) {
       this.log("Primary backend unavailable");
-      this.routeFallback(text, provider, generation, allowFallback);
+      this.routeFallback(text, provider, generation, allowFallback, showCaption);
       return;
     }
 
@@ -200,7 +214,13 @@ export class ZappyVoice extends BaseScriptComponent {
             return;
           }
           this.log("Synthesis failed: " + message);
-          this.routeFallback(text, provider, generation, allowFallback);
+          this.routeFallback(
+            text,
+            provider,
+            generation,
+            allowFallback,
+            showCaption,
+          );
         },
       });
     } catch (e) {
@@ -209,7 +229,7 @@ export class ZappyVoice extends BaseScriptComponent {
       if (settled) return;
       settled = true;
       this.log("Provider threw synchronously: " + e);
-      this.routeFallback(text, provider, generation, allowFallback);
+      this.routeFallback(text, provider, generation, allowFallback, showCaption);
     }
   }
 
@@ -219,11 +239,12 @@ export class ZappyVoice extends BaseScriptComponent {
     failedProvider: IVoiceProvider | null,
     generation: number,
     allowFallback: boolean,
+    showCaption: boolean,
   ): void {
     const fallback = this.resolveFallback();
     if (allowFallback && fallback && fallback !== failedProvider) {
       this.log("Falling back to Snap TTS");
-      this.synthesizeWith(text, fallback, generation, false);
+      this.synthesizeWith(text, fallback, generation, false, showCaption);
       return;
     }
     this.log("No usable fallback — caption only");

@@ -641,7 +641,9 @@ export class InstructionsController
     if (!description) {
       return;
     }
-    this.zappy.say(description);
+    // The panel already renders the description, so suppress the redundant
+    // caption — Zappy voices it without echoing the text in the speech box.
+    this.zappy.say(description, undefined, undefined, { showCaption: false });
   }
 
   /**
