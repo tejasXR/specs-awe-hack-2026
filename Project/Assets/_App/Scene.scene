@@ -922,7 +922,6 @@
     HasSegmentScaleCompensation: false
   Children:
     - !<own> d80b2331-0a3a-4e76-8e81-1aeb385dad3a
-    - !<own> f5f02b61-8057-4cea-b3c8-fd678bb177d1
   Components:
     - !<own> b2dfd595-5c79-4a1f-8dd1-1a5f805b2ccc
 - !<RenderMeshVisual/10c9b503-a089-4c49-8ef0-090775584f52>
@@ -1631,7 +1630,7 @@
 - !<SceneObject/1eddc013-881f-4095-90e8-2998ba787f46>
   PrefabRemaps:
     []
-  Name: Zappy Intro Position
+  Name: Zappy Default Position
   Enabled: true
   Layers: 1
   LocalTransform: !<TransformEntity>
@@ -3941,6 +3940,7 @@
     []
   Components:
     - !<own> e0323afc-5224-40fd-b75a-2206992db41f
+    - !<own> a6a5cb1b-8210-4b20-8b57-364c8470fd3c
 - !<ScriptComponent/47db9a57-09d8-4854-8470-4f77c05991bc>
   PrefabRemaps:
     []
@@ -4330,6 +4330,22 @@
     []
   Components:
     - !<own> 8bdd93b7-8cce-4295-b9d1-2b7a20127b16
+- !<ScriptComponent/5082599e-cb45-42b4-a6db-3e44758ac799>
+  PrefabRemaps:
+    []
+  Name: LedControlActivator
+  Enabled: true
+  ScriptAsset: !<reference> 4d260d28-3aab-4c6c-bae6-48e4771ca394
+  ScriptInputsDefault:
+    {}
+  ScriptTypesDefault:
+    {}
+  ScriptInputs:
+    "":
+      {}
+  ScriptTypes:
+    "":
+      {}
 - !<ScriptComponent/51ce85a7-c4d8-4ed4-bbae-062a47aeaf0f>
   PrefabRemaps:
     []
@@ -4354,27 +4370,29 @@
         - stepText: First Up
           title: Confirm Setup
           description: |-
-            Use the movement points to align your digital workstation with your breadboard.
+            Align your digital workstation with your breadboard.
             
             When ready press CONFIRM
           primaryButtonText: Confirm
           secondaryButtonText: ""
         - stepText: Lastly...
-          title: Introducing Zappy
+          title: Zappy!
           description: |-
             Zappy will help you build your own electronics.
             
-            Pinch zappy to continue
-          primaryButtonText: ""
-          secondaryButtonText: Back
-        - stepText: are you
-          title: "Ready to go?"
-          description: |-
-            Pinching Zappy will automatically continue to the next step.
-            
-            Press continue on this console ot pinch Zappy  to start building
+            Practice pinching zappy to continue
           primaryButtonText: Continue
           secondaryButtonText: Back
+        - stepText: When stuck...
+          title: Talk To Zappy
+          description: Press & hold Zappy to ask questions or if you get stuck. Zappy is here to help!
+          primaryButtonText: Continue
+          secondaryButtonText: ""
+        - stepText: are you
+          title: "Ready to go?"
+          description: Pinch Zappy or press continue to start building!
+          primaryButtonText: Continue
+          secondaryButtonText: ""
   ScriptTypes:
     "":
       {}
@@ -8399,8 +8417,10 @@
     HasSegmentScaleCompensation: false
   Children:
     - !<own> 10a66619-c985-46d7-9fa5-c795a4dfa20e
+    - !<own> f5f02b61-8057-4cea-b3c8-fd678bb177d1
     - !<own> 00994c0d-7189-4d57-8af2-bceb57d511de
     - !<own> 29fcc15e-7002-459f-86d6-ba5aef66d5e5
+    - !<own> f405ed6a-a6dc-4dad-a6b7-5b106711133e
   Components:
     []
 - !<RenderMeshVisual/9dba28d6-40ab-49d4-bc77-a4b6c59dbb0f>
@@ -9142,6 +9162,29 @@
     - !<own> 55516e21-048f-40f9-b02d-fd3326c2565e
   Components:
     []
+- !<ScriptComponent/a6a5cb1b-8210-4b20-8b57-364c8470fd3c>
+  PrefabRemaps:
+    []
+  Name: SendWorkToGemini
+  Enabled: true
+  ScriptAsset: !<reference> b8e46ec9-a29d-4fec-9d06-f011e3fe82ca
+  ScriptInputsDefault:
+    previewImage: true
+    previewPanel: true
+    enableLogging: true
+  ScriptTypesDefault:
+    {}
+  ScriptInputs:
+    "":
+      instructionsController: !<MappingBased.AssignableType> eaf037a4-91ae-4102-8701-9cc2f28c5a80
+      persona: !<MappingBased.AssignableType_1> 41b897ec-bf38-464e-9021-fb94c7559bb1
+      cameraSource: !<MappingBased.AssignableType_2> 8aef77b7-cee7-46a5-bf28-432bdceaa790
+      previewImage: !<reference.Image> 00000000-0000-0000-0000-000000000000
+      previewPanel: !<reference.SceneObject> 00000000-0000-0000-0000-000000000000
+      enableLogging: true
+  ScriptTypes:
+    "":
+      {}
 - !<ScriptComponent/a6ce47e7-a516-43ae-b9c9-b727cd9d3f39>
   PrefabRemaps:
     []
@@ -9229,7 +9272,7 @@
   ScriptInputs:
     "":
       apiKey: sk_2f9e06d6cbcc9e4cf3bce2a632717f815b8ee6f687ae6af2
-      voiceId: sk_2f9e06d6cbcc9e4cf3bce2a632717f815b8ee6f687ae6af2
+      voiceId: zQzvQBubVkDWYuqJYMFn
       modelId: eleven_flash_v2_5
       stability: 0.300000
       similarityBoost: 0.750000
@@ -10284,6 +10327,8 @@
       emotionController: !<MappingBased.AssignableType_1> c5b49bf1-f548-43b7-bec2-8d3ea3d3b675
       voice: !<MappingBased.AssignableType_2> 29c772a1-9a3f-4d2b-9058-6c2093db6d09
       movement: !<MappingBased.AssignableType_3> 5e98edc9-1ea4-411b-801a-283a17001bea
+      defaultLocation: !<reference.SceneObject> 1eddc013-881f-4095-90e8-2998ba787f46
+      checkWorkLocation: !<reference.SceneObject> 5b4020c3-c6b6-41d1-a41e-0ab39c83363b
       hideOnStart: true
       enableLogging: true
   ScriptTypes:
@@ -12278,17 +12323,16 @@
   Enabled: true
   ScriptAsset: !<reference> 8eb2b0ed-6698-4fcf-a8f8-7a1a04ecdd16
   ScriptInputsDefault:
-    previewPanel: true
+    angleThresholdDegrees: true
   ScriptTypesDefault:
     {}
   ScriptInputs:
     "":
       zappyAI: !<MappingBased.AssignableType> ba9b0252-db63-4aee-ba69-de0f00706d9b
-      persona: !<MappingBased.AssignableType_1> 41b897ec-bf38-464e-9021-fb94c7559bb1
+      sendWorkToGemini: !<MappingBased.AssignableType_1> a6a5cb1b-8210-4b20-8b57-364c8470fd3c
       instructionsController: !<MappingBased.AssignableType_2> eaf037a4-91ae-4102-8701-9cc2f28c5a80
-      cameraSource: !<MappingBased.AssignableType_3> 8aef77b7-cee7-46a5-bf28-432bdceaa790
-      previewImage: !<reference.Image> 1e37424d-e9c2-4aa3-9cb8-1ce2f2e7f942
-      previewPanel: !<reference.SceneObject> 00000000-0000-0000-0000-000000000000
+      gazeTarget: !<reference.SceneObject> 29fcc15e-7002-459f-86d6-ba5aef66d5e5
+      angleThresholdDegrees: !<float> 20.000000
       enableLogging: false
   ScriptTypes:
     "":
@@ -13163,12 +13207,12 @@
           columnEnd: ""
           endRail: ""
           rowEnd: !<float> 0.000000
-        - title: Place red wire
-          description: ""
-          primaryButtonText: ""
-          secondaryButtonText: ""
-          tertiaryButtonText: ""
-          isCheckpoint: false
+        - title: Check Work
+          description: "Before moving on, let's check your work so far!"
+          primaryButtonText: Check Work
+          secondaryButtonText: Back
+          tertiaryButtonText: Skip
+          isCheckpoint: true
           pointToPower: false
           pointToDivider: false
           dividerKind: breadboard
@@ -13610,6 +13654,21 @@
   BlendNormals: false
   BlendShapes:
     {}
+- !<SceneObject/f405ed6a-a6dc-4dad-a6b7-5b106711133e>
+  PrefabRemaps:
+    []
+  Name: LEDControlActivator
+  Enabled: true
+  Layers: 1
+  LocalTransform: !<TransformEntity>
+    Position: {x: 0.000000, y: 0.000000, z: 0.000000}
+    Rotation: {x: 0.000000, y: 0.000000, z: 0.000000}
+    Scale: {x: 1.000000, y: 1.000000, z: 1.000000}
+    HasSegmentScaleCompensation: false
+  Children:
+    []
+  Components:
+    - !<own> 5082599e-cb45-42b4-a6db-3e44758ac799
 - !<ColliderComponent/f4666cef-e4d7-4744-b745-79dd2b8e3cdf>
   PrefabRemaps:
     []
