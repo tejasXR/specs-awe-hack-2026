@@ -35,6 +35,14 @@ export class LedGestureController extends BaseScriptComponent {
   bleController!: BreadboardBleController;
 
   @ui.separator
+  @ui.label('<span style="color: #60A5FA;">Activation</span>')
+  @input
+  @hint(
+    "Respond to gestures immediately. Off = stay idle until activate() is called (e.g. when the final instruction step is entered)",
+  )
+  activateOnStart: boolean = false;
+
+  @ui.separator
   @ui.label('<span style="color: #60A5FA;">Left hand — brightness</span>')
   @input
   @hint("Lowest brightness (pinch height = floor). 0.2 = 20%")
@@ -77,6 +85,10 @@ export class LedGestureController extends BaseScriptComponent {
   private rightHand!: TrackedHand;
   private updateEvent!: UpdateEvent;
 
+  // Gated until activate() (or activateOnStart). Pinch-down is the only entry
+  // into a gesture, so guarding it there keeps every downstream path idle.
+  private _active: boolean = false;
+
   // Per-hand gesture state
   private leftPinching: boolean = false;
   private rightPinching: boolean = false;
@@ -115,11 +127,31 @@ export class LedGestureController extends BaseScriptComponent {
     this.updateEvent = this.createEvent("UpdateEvent");
     this.updateEvent.bind(() => this.onUpdate());
     this.updateEvent.enabled = false;
+
+    this._active = this.activateOnStart;
+  }
+
+  // ---- Activation -----------------------------------------------------------
+
+  /** Begin responding to LED gestures. Idempotent. */
+  activate(): void {
+    this._active = true;
+    this.log("activated");
+  }
+
+  /** Stop responding; clears any in-progress pinch so nothing sticks. */
+  deactivate(): void {
+    this._active = false;
+    this.leftPinching = false;
+    this.rightPinching = false;
+    this.syncUpdateEnabled();
+    this.log("deactivated");
   }
 
   // ---- Pinch transitions ----------------------------------------------------
 
   private onLeftPinchDown(): void {
+    if (!this._active) return;
     this.leftPinching = true;
     this.leftBaselineY = this.leftHand.indexTip.position.y;
     this.updateBrightnessFromHand();
@@ -135,6 +167,7 @@ export class LedGestureController extends BaseScriptComponent {
   }
 
   private onRightPinchDown(): void {
+    if (!this._active) return;
     this.rightPinching = true;
     this.rightBaselineY = this.rightHand.indexTip.position.y;
     this.flashHz = this.defaultFlashHz;
