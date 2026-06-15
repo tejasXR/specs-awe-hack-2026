@@ -86,5 +86,5 @@
       value: 0.100000
     visualStyle:
       typeIdx: 0
-      value: 3
+      value: 0
   Pass: !<reference> 719a076d-4225-4fe9-9c0b-5d36443d3091

@@ -39,6 +39,8 @@
     musicController: false
     onboardingController: false
     spaceSetup: false
+    voiceDescriptions: false
+    zappy: false
   ScriptTypesHidden:
     {}
   ReadMe: !<reference> 00000000-0000-0000-0000-000000000000
@@ -56,6 +58,8 @@
       spaceSetup: !<MappingBased.AssignableType_2> 00000000-0000-0000-0000-000000000000
       menuConsole: !<MappingBased.AssignableType_3> 00000000-0000-0000-0000-000000000000
       instructionPrompt: !<MappingBased.AssignableType_4> 00000000-0000-0000-0000-000000000000
+      zappy: !<MappingBased.AssignableType_5> 00000000-0000-0000-0000-000000000000
+      voiceDescriptions: true
       linePrefab: !<reference.ObjectPrefab> 00000000-0000-0000-0000-000000000000
       linePoolParent: !<reference.SceneObject> 00000000-0000-0000-0000-000000000000
       calloutStartAnchor: !<reference.SceneObject> 00000000-0000-0000-0000-000000000000
@@ -74,6 +78,10 @@
     - '// @input AssignableType_2 spaceSetup {"hint":"Drives the Space Setup dividers a step can point at"}'
     - '// @input AssignableType_3 menuConsole {"hint":"Menu buttons that drive step navigation"}'
     - '// @input AssignableType_4 instructionPrompt {"hint":"The single InstructionPrompt living in the scene"}'
+    - '// @ui {"widget":"separator"}'
+    - '// @ui {"widget":"label", "label":"Voice"}'
+    - "// @input AssignableType_5 zappy {\"hint\":\"Zappy speaks each step's description aloud as it's shown (optional)\"}"
+    - '// @input bool voiceDescriptions = true {"hint":"Voice step descriptions through Zappy on step change"}'
     - '// @ui {"widget":"separator"}'
     - '// @ui {"widget":"label", "label":"Callout Lines"}'
     - '// @input Asset.ObjectPrefab linePrefab {"hint":"Line prefab pooled for callouts (must carry a Line component)"}'

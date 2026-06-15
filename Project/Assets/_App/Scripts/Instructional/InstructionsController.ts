@@ -21,6 +21,7 @@ import { MenuConsole } from "../UI/MenuConsole";
 import { InstructionalLine } from "../InstructionalLine";
 import { SpaceSetup } from "../SpaceSetup";
 import { DividerKind } from "../SpaceSetupDivider";
+import { ZappyAI } from "../Zappy/ZappyAI";
 
 export interface InstructionStepEvent {
   instruction: InstructionDefinition;
@@ -235,6 +236,17 @@ export class InstructionsController
   @input
   @hint("The single InstructionPrompt living in the scene")
   instructionPrompt!: InstructionPrompt;
+
+  @ui.separator
+  @ui.label("Voice")
+  @input
+  @allowUndefined
+  @hint("Zappy speaks each step's description aloud as it's shown (optional)")
+  zappy?: ZappyAI;
+
+  @input
+  @hint("Voice step descriptions through Zappy on step change")
+  voiceDescriptions: boolean = true;
 
   @ui.separator
   @ui.label("Callout Lines")
@@ -583,6 +595,8 @@ export class InstructionsController
       instructionDefinition.description,
     );
 
+    this.speakDescription(instructionDefinition);
+
     this.instructionPrompt.setButtonLabel(
       instructionDefinition.primaryButtonText,
       instructionDefinition.secondaryButtonText,
@@ -611,6 +625,23 @@ export class InstructionsController
     if (index === this.instructionDefinitions.length - 1) {
       this.onFinalStepEnteredEvent.invoke(undefined);
     }
+  }
+
+  /**
+   * Voice the step's description through Zappy on entry. Optional and
+   * self-guarding: no-ops when voicing is off, Zappy is unwired, or the
+   * description is empty. Step changes naturally barge in on a prior line
+   * (ZappyVoice supersedes in-flight synthesis), so no explicit stop is needed.
+   */
+  private speakDescription(definition: InstructionDefinition): void {
+    if (!this.voiceDescriptions || isNull(this.zappy)) {
+      return;
+    }
+    const description = definition.description?.trim();
+    if (!description) {
+      return;
+    }
+    this.zappy.say(description);
   }
 
   /**

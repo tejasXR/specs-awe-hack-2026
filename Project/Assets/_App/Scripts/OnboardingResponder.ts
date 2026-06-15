@@ -5,8 +5,8 @@ import { ZappyAI } from "./Zappy/ZappyAI";
 import { InstructionalLine } from "./InstructionalLine";
 
 // Using 0-based step index
-const STEP_SHOW_SPACE_SETUP = 1;
-const STEP_SHOW_ZAPPY = 2;
+const STEP_SHOW_SPACE_SETUP = 0;
+const STEP_SHOW_ZAPPY = 1;
 
 @component
 export class OnboardingResponder extends BaseScriptComponent {

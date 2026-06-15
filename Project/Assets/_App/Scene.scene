@@ -8,6 +8,7 @@
     - !<own> b86cbb43-e82e-48ed-89e0-a449f10cd53e
     - !<own> 33f8fdfd-99e7-4e0f-949b-55795cdef06f
     - !<own> 9cbf7fa1-10b9-4585-bf97-4b3c760186be
+    - !<own> 9fc38f6b-d897-468d-ac9c-a109f76a0811
   layers: !<Layers/267ee9a7-aff2-4f9d-9a49-f71214747d03>
     userLayers:
       - |
@@ -327,31 +328,6 @@
     []
   Components:
     - !<own> c0fa5ba3-d28f-47a1-9b72-31a416cf7648
-- !<ScriptComponent/02952d09-ed3b-4e35-b9a8-c0b3c0d5fdad>
-  PrefabRemaps:
-    []
-  Name: ZappyVoice
-  Enabled: true
-  ScriptAsset: !<reference> 48835098-7cfb-4484-91bc-3d61af11fd57
-  ScriptInputsDefault:
-    speechController: true
-    enableFallback: true
-    enableLogging: true
-  ScriptTypesDefault:
-    {}
-  ScriptInputs:
-    "":
-      emotionController: !<MappingBased.AssignableType> c50a6368-e171-4a94-8eef-e0f21d636b95
-      audioComponent: !<reference.AudioComponent> 13eea8c6-3a41-42e1-86fe-1d95051270ac
-      speechController: !<MappingBased.AssignableType_1> 00000000-0000-0000-0000-000000000000
-      backend: elevenlabs
-      snapProvider: !<MappingBased.AssignableType_2> dd5eb12a-66e1-4a96-a0a3-1fdc3e48d661
-      elevenLabsProvider: !<MappingBased.AssignableType_3> a7b33131-e03e-4ce6-b5a9-6b9515bde38b
-      enableFallback: true
-      enableLogging: false
-  ScriptTypes:
-    "":
-      {}
 - !<SceneObject/03ae706e-a478-4345-9d75-1333918c8d1a>
   PrefabRemaps:
     []
@@ -1665,7 +1641,7 @@
   Enabled: true
   Layers: 1
   LocalTransform: !<TransformEntity>
-    Position: {x: 25.000000, y: 17.000000, z: -6.000000}
+    Position: {x: 15.000000, y: 17.000000, z: -6.000000}
     Rotation: {x: 0.000000, y: 0.000000, z: 0.000000}
     Scale: {x: 1.000000, y: 1.000000, z: 1.000000}
     HasSegmentScaleCompensation: false
@@ -2241,7 +2217,7 @@
   RotationTension: 30.000000
   ForceCompound: false
   Intangible: false
-  ShowCollider: true
+  ShowCollider: false
   Dynamic: false
   BodySetting: Density
   BodySettingValue: 1.000000
@@ -3066,6 +3042,7 @@
   Components:
     - !<own> dedb9c3e-396f-4438-b6b9-bbd5ba606eaf
     - !<own> 30c3a2bf-c999-4ced-a0e6-e7bc84751186
+    - !<own> cada478f-ffed-49cd-9629-cdd740e413a3
 - !<SceneObject/35660d29-e8cb-4d8f-8f24-143b10f9e58c>
   PrefabRemaps:
     []
@@ -3247,7 +3224,7 @@
   Enabled: true
   Layers: 1
   LocalTransform: !<TransformEntity>
-    Position: {x: 0.000000, y: 5.000000, z: -10.000000}
+    Position: {x: 0.000000, y: 1.500000, z: -6.000000}
     Rotation: {x: 0.000000, y: 0.000000, z: 0.000000}
     Scale: {x: 1.000000, y: 1.000000, z: 1.000000}
     HasSegmentScaleCompensation: false
@@ -4399,35 +4376,14 @@
       onboardingSteps:
         - stepText: WELCOME TO
           title: Zapatory Labs
-          description: Press START to kick off your building journey
-          primaryButtonText: start
+          description: "First, confirm your work setup"
+          primaryButtonText: CONFIRM
           secondaryButtonText: ""
-        - stepText: First Up
-          title: Confirm Setup
-          description: |-
-            Align your digital workstation with your breadboard.
-            
-            When ready press CONFIRM
-          primaryButtonText: Confirm
-          secondaryButtonText: ""
-        - stepText: Lastly...
+        - stepText: THIS IS
           title: Zappy!
-          description: |-
-            Zappy will help you build your own electronics.
-            
-            Practice pinching zappy now
-          primaryButtonText: Continue
-          secondaryButtonText: Back
-        - stepText: When stuck...
-          title: Talk To Zappy
           description: Press & hold Zappy to ask questions or if you get stuck. Zappy is here to help!
           primaryButtonText: Continue
-          secondaryButtonText: ""
-        - stepText: are you
-          title: "Ready to go?"
-          description: Pinch Zappy or press CONTINUE to start building!
-          primaryButtonText: Continue
-          secondaryButtonText: ""
+          secondaryButtonText: Back
   ScriptTypes:
     "":
       {}
@@ -5677,6 +5633,26 @@
   ScriptTypes:
     "":
       {}
+- !<ScriptComponent/6d0957d6-ac42-4c28-bc7c-dfbbc960cfab>
+  PrefabRemaps:
+    []
+  Name: InstructionalLine
+  Enabled: true
+  ScriptAsset: !<reference> 51c49180-256e-4604-9407-9db89c0d721f
+  ScriptInputsDefault:
+    enableLogging: true
+  ScriptTypesDefault:
+    {}
+  ScriptInputs:
+    "":
+      lineMaterial: !<reference.Material> f8b7ca3d-faaf-476a-97ed-793d8d1fc7c5
+      startPoint: !<reference.SceneObject> fd822ed0-382b-41b6-a0e7-f7bdfb1a3722
+      endPoint: !<reference.SceneObject> eec38f41-1ec3-490e-a7ca-4152ea185477
+      defaultWidthPreset: default
+      enableLogging: false
+  ScriptTypes:
+    "":
+      {}
 - !<SceneObject/6dcd3eec-601e-47de-8513-5d31b7d2bd13>
   PrefabRemaps:
     []
@@ -5699,7 +5675,7 @@
   Enabled: true
   Layers: 1
   LocalTransform: !<TransformEntity>
-    Position: {x: 0.000000, y: 5.000000, z: -10.000000}
+    Position: {x: 0.000000, y: 1.500000, z: -6.000000}
     Rotation: {x: 0.000000, y: 0.000000, z: 0.000000}
     Scale: {x: 1.000000, y: 1.000000, z: 1.000000}
     HasSegmentScaleCompensation: false
@@ -7399,7 +7375,7 @@
     "":
       deckA: !<reference.AudioComponent> 8a21b74d-a39e-4e06-bd9d-655b2090b92d
       deckB: !<reference.AudioComponent> eb9b2bfd-f00e-48ee-aaf2-3499f299aa21
-      voice: !<MappingBased.AssignableType> cca2d5c1-ea66-4515-818c-977305c8f7a6
+      voice: !<MappingBased.AssignableType> 29c772a1-9a3f-4d2b-9058-6c2093db6d09
       musicVolume: 0.700000
       crossfadeSeconds: 1.500000
       enableDucking: true
@@ -8539,6 +8515,25 @@
   RotationAngle: 0
   Pivot: {x: 0.000000, y: 0.000000}
   ExtentsTarget: !<reference> 00000000-0000-0000-0000-000000000000
+- !<SceneObject/9fc38f6b-d897-468d-ac9c-a109f76a0811>
+  PrefabRemaps:
+    - 6d0957d6-ac42-4c28-bc7c-dfbbc960cfab: abec9f57-ad49-4f19-6207-19dd3a2a636b
+    - 9fc38f6b-d897-468d-ac9c-a109f76a0811: 9832fabc-cb25-4fc0-7153-d019c96a7ff4
+    - eec38f41-1ec3-490e-a7ca-4152ea185477: e1171f88-51e5-4000-5e87-987c99ac756d
+    - fd822ed0-382b-41b6-a0e7-f7bdfb1a3722: f31a31dd-8dcc-4e1f-738e-4be5a5c2b85a
+  Name: InstructionalLine
+  Enabled: true
+  Layers: 1
+  LocalTransform: !<TransformEntity>
+    Position: {x: 0.000000, y: 0.000000, z: 0.000000}
+    Rotation: {x: 0.000000, y: 0.000000, z: 0.000000}
+    Scale: {x: 1.000000, y: 1.000000, z: 1.000000}
+    HasSegmentScaleCompensation: false
+  Children:
+    - !<own> fd822ed0-382b-41b6-a0e7-f7bdfb1a3722
+    - !<own> eec38f41-1ec3-490e-a7ca-4152ea185477
+  Components:
+    - !<own> 6d0957d6-ac42-4c28-bc7c-dfbbc960cfab
 - !<SceneObject/a0c56e2a-29bf-4033-810d-4ffbad3af2a5>
   PrefabRemaps:
     []
@@ -10373,7 +10368,7 @@
   PrefabRemaps:
     []
   Name: Step
-  Enabled: false
+  Enabled: true
   Layers: 1
   LocalTransform: !<TransformEntity>
     Position: {x: 5.500000, y: 4.000000, z: 0.000865}
@@ -10622,7 +10617,7 @@
   PrefabRemaps:
     []
   Name: Debug Text
-  Enabled: true
+  Enabled: false
   Layers: 1
   LocalTransform: !<TransformEntity>
     Position: {x: 0.000000, y: -8.500000, z: 0.000000}
@@ -10935,7 +10930,6 @@
   Children:
     []
   Components:
-    - !<own> 02952d09-ed3b-4e35-b9a8-c0b3c0d5fdad
     - !<own> 8793e624-8a88-49b8-8bbb-14a77fc169fb
     - !<own> b1b04764-ef1d-4093-90c4-3e0a150c3ec0
 - !<SceneObject/c78431a6-e915-4691-90a6-c10ed3c362ce>
@@ -11089,7 +11083,7 @@
   Enabled: true
   Layers: 1
   LocalTransform: !<TransformEntity>
-    Position: {x: 0.000000, y: 5.000000, z: -10.000000}
+    Position: {x: 0.000000, y: 1.500000, z: -5.292575}
     Rotation: {x: 0.000000, y: 0.000000, z: 0.000000}
     Scale: {x: 1.000000, y: 1.000000, z: 1.000000}
     HasSegmentScaleCompensation: false
@@ -11117,22 +11111,7 @@
   BlendNormals: false
   BlendShapes:
     {}
-- !<SceneObject/cb28b1da-f0a5-474e-8a0f-5c488f5f4d91>
-  PrefabRemaps:
-    []
-  Name: LeftHandMeshIndexThumb
-  Enabled: true
-  Layers: 1
-  LocalTransform: !<TransformEntity>
-    Position: {x: 0.000000, y: 0.000000, z: 0.000000}
-    Rotation: {x: -90.000000, y: 0.000000, z: 0.000000}
-    Scale: {x: 1.000000, y: 1.000000, z: 1.000000}
-    HasSegmentScaleCompensation: false
-  Children:
-    []
-  Components:
-    - !<own> 10c9b503-a089-4c49-8ef0-090775584f52
-- !<ScriptComponent/cb450f97-f3dd-46a5-b584-bfe17c86f603>
+- !<ScriptComponent/cada478f-ffed-49cd-9629-cdd740e413a3>
   PrefabRemaps:
     []
   Name: Billboard
@@ -11156,6 +11135,21 @@
   ScriptTypes:
     "":
       {}
+- !<SceneObject/cb28b1da-f0a5-474e-8a0f-5c488f5f4d91>
+  PrefabRemaps:
+    []
+  Name: LeftHandMeshIndexThumb
+  Enabled: true
+  Layers: 1
+  LocalTransform: !<TransformEntity>
+    Position: {x: 0.000000, y: 0.000000, z: 0.000000}
+    Rotation: {x: -90.000000, y: 0.000000, z: 0.000000}
+    Scale: {x: 1.000000, y: 1.000000, z: 1.000000}
+    HasSegmentScaleCompensation: false
+  Children:
+    []
+  Components:
+    - !<own> 10c9b503-a089-4c49-8ef0-090775584f52
 - !<ColliderComponent/cb794a02-71e9-4ae4-ab48-7e62097b9653>
   PrefabRemaps:
     []
@@ -11557,7 +11551,6 @@
     []
   Components:
     - !<own> 1d47f21e-419c-4b61-835c-dfcf2eaa8a68
-    - !<own> cb450f97-f3dd-46a5-b584-bfe17c86f603
 - !<Text/d31a7e42-28fc-4022-928e-75b96660877e>
   PrefabRemaps:
     []
@@ -12297,7 +12290,7 @@
   Enabled: true
   Layers: 1
   LocalTransform: !<TransformEntity>
-    Position: {x: 0.000000, y: 5.000000, z: -10.000000}
+    Position: {x: 0.000000, y: 1.500000, z: -6.000000}
     Rotation: {x: 0.000000, y: 0.000000, z: 0.000000}
     Scale: {x: 1.000000, y: 1.000000, z: 1.000000}
     HasSegmentScaleCompensation: false
@@ -13172,6 +13165,7 @@
   ScriptAsset: !<reference> 2efdd206-e8d1-4aa8-a4c7-bf3142bdf39c
   ScriptInputsDefault:
     mainTrackVolume: true
+    voiceDescriptions: true
   ScriptTypesDefault:
     {}
   ScriptInputs:
@@ -13184,6 +13178,8 @@
       spaceSetup: !<MappingBased.AssignableType_2> 5a9e8d73-a99d-45b2-8ab8-ff9ddefcafd3
       menuConsole: !<MappingBased.AssignableType_3> 24ae494e-b174-48a0-8e8d-7245cff230b5
       instructionPrompt: !<MappingBased.AssignableType_4> 7e281ca4-c9d7-4453-8e28-c86df6d7c76b
+      zappy: !<MappingBased.AssignableType_5> ba9b0252-db63-4aee-ba69-de0f00706d9b
+      voiceDescriptions: true
       linePrefab: !<reference.ObjectPrefab> e362da3c-55d0-465a-a0c1-94ca01b562b1
       linePoolParent: !<reference.SceneObject> 0af33c18-ea34-4408-b8e0-dea027c17886
       calloutStartAnchor: !<reference.SceneObject> 0c2e4402-156a-4adf-aa3a-7664655fe73e
@@ -13319,7 +13315,7 @@
           pointToDivider: false
           dividerKind: breadboard
           startOnRail: false
-          columnStart: A
+          columnStart: None
           startRail: near-plus
           rowStart: !<float> 1.000000
           useEndPin: false
@@ -13337,7 +13333,7 @@
           pointToDivider: true
           dividerKind: resistors
           startOnRail: false
-          columnStart: A
+          columnStart: None
           startRail: near-plus
           rowStart: !<float> 1.000000
           useEndPin: false
@@ -13403,7 +13399,7 @@
           endRail: ""
           rowEnd: !<float> 4.000000
         - title: Check Work
-          description: "Great job so far! Before moving on, let's have Zappy check your work!"
+          description: "Great job so far! Before moving on, let's have Zappy check your work! Just pinch Zappy!"
           primaryButtonText: Check work
           secondaryButtonText: Back
           tertiaryButtonText: Skip
@@ -13781,6 +13777,21 @@
   BlendNormals: false
   BlendShapes:
     {}
+- !<SceneObject/eec38f41-1ec3-490e-a7ca-4152ea185477>
+  PrefabRemaps:
+    []
+  Name: End Point
+  Enabled: true
+  Layers: 1
+  LocalTransform: !<TransformEntity>
+    Position: {x: 0.000000, y: 0.000000, z: 0.000000}
+    Rotation: {x: 0.000000, y: 0.000000, z: 0.000000}
+    Scale: {x: 1.000000, y: 1.000000, z: 1.000000}
+    HasSegmentScaleCompensation: false
+  Children:
+    []
+  Components:
+    []
 - !<ScriptComponent/f095966d-62d4-45ec-a437-09b4ac264bcb>
   PrefabRemaps:
     []
@@ -14346,6 +14357,21 @@
   RotationAngle: 0
   Pivot: {x: 0.000000, y: 0.000000}
   ExtentsTarget: !<reference> 00000000-0000-0000-0000-000000000000
+- !<SceneObject/fd822ed0-382b-41b6-a0e7-f7bdfb1a3722>
+  PrefabRemaps:
+    []
+  Name: Start Point
+  Enabled: true
+  Layers: 1
+  LocalTransform: !<TransformEntity>
+    Position: {x: 0.000000, y: 0.000000, z: 0.000000}
+    Rotation: {x: 0.000000, y: 0.000000, z: 0.000000}
+    Scale: {x: 1.000000, y: 1.000000, z: 1.000000}
+    HasSegmentScaleCompensation: false
+  Children:
+    []
+  Components:
+    []
 - !<SceneObject/fd97ae7f-7aae-4fb3-9727-4a67501d4f08>
   PrefabRemaps:
     []

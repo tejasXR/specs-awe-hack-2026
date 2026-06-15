@@ -48,6 +48,8 @@
     spaceSetup: true
     menuConsole: true
     instructionPrompt: true
+    zappy: true
+    voiceDescriptions: true
     linePrefab: true
     linePoolParent: true
     calloutStartAnchor: true
@@ -65,6 +67,8 @@
       spaceSetup: !<MappingBased.AssignableType_2> 00000000-0000-0000-0000-000000000000
       menuConsole: !<MappingBased.AssignableType_3> 00000000-0000-0000-0000-000000000000
       instructionPrompt: !<MappingBased.AssignableType_4> 00000000-0000-0000-0000-000000000000
+      zappy: !<MappingBased.AssignableType_5> 00000000-0000-0000-0000-000000000000
+      voiceDescriptions: true
       linePrefab: !<reference.ObjectPrefab> 00000000-0000-0000-0000-000000000000
       linePoolParent: !<reference.SceneObject> 00000000-0000-0000-0000-000000000000
       calloutStartAnchor: !<reference.SceneObject> 00000000-0000-0000-0000-000000000000
