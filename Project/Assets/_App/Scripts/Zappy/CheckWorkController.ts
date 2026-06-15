@@ -177,11 +177,11 @@ export class CheckWorkController extends BaseScriptComponent {
 
     const target = result.response.targetStepNumber;
     if (target > 0) {
-      // Send the user back to the earliest failed step to repeat it.
-      const moved = this.instructionsController.repeatCompletedStep(target);
+      // targetStepNumber is the step's true position; goToStep is 0-based.
+      const moved = this.instructionsController.goToStep(target - 1);
       this.log(
         moved
-          ? "Sending user back to completed step " + target
+          ? "Sending user back to step " + target
           : "Could not resolve target step " + target + " — staying put",
       );
     } else {

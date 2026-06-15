@@ -39,10 +39,11 @@ export const CHECK_WORK_CONTRACT =
   "Always respond as ONLY a single JSON object in this exact shape, with no " +
   'other text: {"emotion":"happy","intensity":0.8,"speech":"...","targetStepNumber":0}. ' +
   "Valid emotions: happy, sad, thinking, excited, confused, neutral. intensity " +
-  "is a number from 0.0 to 1.0. targetStepNumber refers to the numbered list of " +
-  "completed steps in the user message: set it to the number of the EARLIEST " +
-  "step that is wrong, missing, or incomplete so the user can repeat it. If the " +
-  "build matches every completed step, set targetStepNumber to 0.";
+  "is a number from 0.0 to 1.0. targetStepNumber must be a step number taken " +
+  "EXACTLY as shown in the numbered completed-steps list in the user message: " +
+  "set it to the number of the earliest step that is wrong, missing, or " +
+  "incomplete so the user can repeat it. If the build matches every completed " +
+  "step, set targetStepNumber to 0.";
 
 /** Schema form — RESPONSE_SCHEMA plus the targetStepNumber field. */
 export const CHECK_WORK_SCHEMA: GeminiTypes.Common.Schema = {
