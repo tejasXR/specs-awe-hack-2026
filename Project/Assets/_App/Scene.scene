@@ -327,6 +327,31 @@
     []
   Components:
     - !<own> c0fa5ba3-d28f-47a1-9b72-31a416cf7648
+- !<ScriptComponent/02952d09-ed3b-4e35-b9a8-c0b3c0d5fdad>
+  PrefabRemaps:
+    []
+  Name: ZappyVoice
+  Enabled: true
+  ScriptAsset: !<reference> 48835098-7cfb-4484-91bc-3d61af11fd57
+  ScriptInputsDefault:
+    speechController: true
+    enableFallback: true
+    enableLogging: true
+  ScriptTypesDefault:
+    {}
+  ScriptInputs:
+    "":
+      emotionController: !<MappingBased.AssignableType> c50a6368-e171-4a94-8eef-e0f21d636b95
+      audioComponent: !<reference.AudioComponent> 13eea8c6-3a41-42e1-86fe-1d95051270ac
+      speechController: !<MappingBased.AssignableType_1> 00000000-0000-0000-0000-000000000000
+      backend: elevenlabs
+      snapProvider: !<MappingBased.AssignableType_2> dd5eb12a-66e1-4a96-a0a3-1fdc3e48d661
+      elevenLabsProvider: !<MappingBased.AssignableType_3> a7b33131-e03e-4ce6-b5a9-6b9515bde38b
+      enableFallback: true
+      enableLogging: false
+  ScriptTypes:
+    "":
+      {}
 - !<SceneObject/03ae706e-a478-4345-9d75-1333918c8d1a>
   PrefabRemaps:
     []
@@ -728,7 +753,7 @@
   Enabled: true
   Layers: 1
   LocalTransform: !<TransformEntity>
-    Position: {x: 0.000000, y: -10.842398, z: -0.000002}
+    Position: {x: 2.000000, y: -10.842397, z: -0.000006}
     Rotation: {x: 0.000000, y: 0.000000, z: 0.000000}
     Scale: {x: 1.000000, y: 1.000000, z: 1.000000}
     HasSegmentScaleCompensation: false
@@ -2304,6 +2329,30 @@
     - !<own> 6e80c70d-072f-4b48-8ce3-3abdfd95b0dc
   Components:
     []
+- !<ScriptComponent/29c772a1-9a3f-4d2b-9058-6c2093db6d09>
+  PrefabRemaps:
+    []
+  Name: ZappyVoice
+  Enabled: true
+  ScriptAsset: !<reference> 48835098-7cfb-4484-91bc-3d61af11fd57
+  ScriptInputsDefault:
+    enableFallback: true
+    enableLogging: true
+  ScriptTypesDefault:
+    {}
+  ScriptInputs:
+    "":
+      emotionController: !<MappingBased.AssignableType> c5b49bf1-f548-43b7-bec2-8d3ea3d3b675
+      audioComponent: !<reference.AudioComponent> 13eea8c6-3a41-42e1-86fe-1d95051270ac
+      speechController: !<MappingBased.AssignableType_1> dedb9c3e-396f-4438-b6b9-bbd5ba606eaf
+      backend: elevenlabs
+      snapProvider: !<MappingBased.AssignableType_2> dd5eb12a-66e1-4a96-a0a3-1fdc3e48d661
+      elevenLabsProvider: !<MappingBased.AssignableType_3> a7b33131-e03e-4ce6-b5a9-6b9515bde38b
+      enableFallback: true
+      enableLogging: false
+  ScriptTypes:
+    "":
+      {}
 - !<SceneObject/29fcc15e-7002-459f-86d6-ba5aef66d5e5>
   PrefabRemaps:
     []
@@ -2316,18 +2365,17 @@
     Scale: {x: 1.000000, y: 1.000000, z: 1.000000}
     HasSegmentScaleCompensation: false
   Children:
-    - !<own> 61b63589-af24-4f25-8fd6-9c89ebb311ea
-    - !<own> 2891332d-6389-4c45-9a71-fbb7b4533582
+    - !<own> ad76283e-c8ef-40c4-bef3-a04710f3c43f
+    - !<own> c7228415-7e39-4dba-b797-b07f59d3026d
+    - !<own> 3932bbf9-34c9-42fb-a762-b7f9a0f62ff7
+    - !<own> 35475de3-b55f-4782-8b96-587188b15c32
     - !<own> fd5cba35-f969-49db-83be-3561516d6219
     - !<own> d0465920-bae7-46f9-9787-8b3cacc77332
     - !<own> 11195d15-f42f-403a-9995-e8529957f102
-    - !<own> 35475de3-b55f-4782-8b96-587188b15c32
   Components:
     - !<own> ba9b0252-db63-4aee-ba69-de0f00706d9b
     - !<own> 13eea8c6-3a41-42e1-86fe-1d95051270ac
     - !<own> e6305008-0fd4-431d-ada3-90d29c567823
-    - !<own> c50a6368-e171-4a94-8eef-e0f21d636b95
-    - !<own> cca2d5c1-ea66-4515-818c-977305c8f7a6
     - !<own> 5e98edc9-1ea4-411b-801a-283a17001bea
 - !<SceneObject/2a6609dc-434f-498e-823a-fddfb602c190>
   PrefabRemaps:
@@ -2650,6 +2698,7 @@
   ScriptInputs:
     "":
       speechText: !<reference.Text> d4882835-5cb0-4f81-bae3-72366d4c1819
+      speakerLabel: !<reference.Text> ab9e8906-a3a7-4454-8fdc-b477b5a83889
   ScriptTypes:
     "":
       {}
@@ -2756,6 +2805,7 @@
     - !<own> 56dfefe5-eba1-4d1a-b973-4c52513e04fe
     - !<own> 82571ce9-7591-44b5-b9ba-23552e8a6a3d
     - !<own> 3d94ea28-6de0-47d1-8d38-ea13e7856ec3
+    - !<own> 471dcecc-3403-4c55-b2c9-7e70578512b0
   Components:
     []
 - !<SceneObject/346f10b6-02fb-49a8-aca4-ed75d71efb50>
@@ -2985,7 +3035,9 @@
   Children:
     - !<own> d2be6aed-30ab-4090-97a3-0e1372c83322
     - !<own> 5d60e26a-3271-4f4a-b1cd-0660820a18cb
+    - !<own> 805d9052-9881-4054-80e2-a809556573d8
   Components:
+    - !<own> dedb9c3e-396f-4438-b6b9-bbd5ba606eaf
     - !<own> 30c3a2bf-c999-4ced-a0e6-e7bc84751186
 - !<SceneObject/35660d29-e8cb-4d8f-8f24-143b10f9e58c>
   PrefabRemaps:
@@ -3242,6 +3294,22 @@
     []
   Components:
     - !<own> d33f48e9-dea1-48dd-8cd2-ab34649707df
+- !<SceneObject/3932bbf9-34c9-42fb-a762-b7f9a0f62ff7>
+  PrefabRemaps:
+    []
+  Name: Zappy Personality
+  Enabled: true
+  Layers: 1
+  LocalTransform: !<TransformEntity>
+    Position: {x: 0.000000, y: 0.000000, z: 0.000000}
+    Rotation: {x: 0.000000, y: 0.000000, z: 0.000000}
+    Scale: {x: 1.000000, y: 1.000000, z: 1.000000}
+    HasSegmentScaleCompensation: false
+  Children:
+    []
+  Components:
+    - !<own> 41b897ec-bf38-464e-9021-fb94c7559bb1
+    - !<own> c5b49bf1-f548-43b7-bec2-8d3ea3d3b675
 - !<RenderMeshVisual/39a94520-d6a6-44a7-87d0-53245c914f72>
   PrefabRemaps:
     []
@@ -3677,6 +3745,25 @@
     []
   Components:
     - !<own> be2c43bf-a06c-49f8-8765-e34675f5b0f4
+- !<ScriptComponent/41b897ec-bf38-464e-9021-fb94c7559bb1>
+  PrefabRemaps:
+    []
+  Name: ZappyPersona
+  Enabled: true
+  ScriptAsset: !<reference> 743f9d3d-06c9-4444-87a7-d80dbffb3fbc
+  ScriptInputsDefault:
+    identity: true
+    mission: true
+  ScriptTypesDefault:
+    {}
+  ScriptInputs:
+    "":
+      identity: ""
+      mission: ""
+      instructionsController: !<MappingBased.AssignableType> eaf037a4-91ae-4102-8701-9cc2f28c5a80
+  ScriptTypes:
+    "":
+      {}
 - !<SceneObject/429eb4a0-ee1d-4a7b-929a-e602ef8cbfde>
   PrefabRemaps:
     []
@@ -3839,6 +3926,21 @@
     - !<own> a4b72b9f-8bc7-4552-927f-e7edd163f9a4
   Components:
     []
+- !<SceneObject/471dcecc-3403-4c55-b2c9-7e70578512b0>
+  PrefabRemaps:
+    []
+  Name: CheckWorkController
+  Enabled: true
+  Layers: 1
+  LocalTransform: !<TransformEntity>
+    Position: {x: 0.000000, y: 0.000000, z: 0.000000}
+    Rotation: {x: 0.000000, y: 0.000000, z: 0.000000}
+    Scale: {x: 1.000000, y: 1.000000, z: 1.000000}
+    HasSegmentScaleCompensation: false
+  Children:
+    []
+  Components:
+    - !<own> e0323afc-5224-40fd-b75a-2206992db41f
 - !<ScriptComponent/47db9a57-09d8-4854-8470-4f77c05991bc>
   PrefabRemaps:
     []
@@ -4815,6 +4917,21 @@
     - !<own> cda22840-4a15-4fdb-b8e9-e97b98c76201
   Components:
     []
+- !<SceneObject/5b4020c3-c6b6-41d1-a41e-0ab39c83363b>
+  PrefabRemaps:
+    []
+  Name: Zappy Check Work Position
+  Enabled: true
+  Layers: 1
+  LocalTransform: !<TransformEntity>
+    Position: {x: 0.000000, y: 7.872897, z: -4.048510}
+    Rotation: {x: 0.000000, y: 0.000000, z: 0.000000}
+    Scale: {x: 1.000000, y: 1.000000, z: 1.000000}
+    HasSegmentScaleCompensation: false
+  Children:
+    []
+  Components:
+    []
 - !<ScriptComponent/5c136b8d-4d51-41ab-b826-82a5cbb1181e>
   PrefabRemaps:
     []
@@ -4865,7 +4982,7 @@
   Enabled: true
   Layers: 1
   LocalTransform: !<TransformEntity>
-    Position: {x: 0.000000, y: 0.000000, z: 0.000000}
+    Position: {x: 0.000000, y: -0.334510, z: 0.000000}
     Rotation: {x: 0.000000, y: 0.000000, z: 0.000000}
     Scale: {x: 1.000000, y: 1.000000, z: 1.000000}
     HasSegmentScaleCompensation: false
@@ -6446,6 +6563,21 @@
     []
   Components:
     - !<own> 9ea05b75-ae37-44c4-a3b1-82cb8d29bbfa
+- !<SceneObject/805d9052-9881-4054-80e2-a809556573d8>
+  PrefabRemaps:
+    []
+  Name: Zappy Speaker Label
+  Enabled: true
+  Layers: 1
+  LocalTransform: !<TransformEntity>
+    Position: {x: 0.000000, y: 3.892550, z: 0.000000}
+    Rotation: {x: 0.000000, y: 0.000000, z: 0.000000}
+    Scale: {x: 1.000000, y: 1.000000, z: 1.000000}
+    HasSegmentScaleCompensation: false
+  Children:
+    []
+  Components:
+    - !<own> ab9e8906-a3a7-4454-8fdc-b477b5a83889
 - !<SceneObject/807d8d65-7915-42fd-9f20-d24a452366fa>
   PrefabRemaps:
     []
@@ -6810,6 +6942,26 @@
     - !<own> e9e9515a-e410-4a02-b184-72f407997bb4
   Components:
     []
+- !<ScriptComponent/8793e624-8a88-49b8-8bbb-14a77fc169fb>
+  PrefabRemaps:
+    []
+  Name: ZappyConversationController
+  Enabled: true
+  ScriptAsset: !<reference> f5da2223-4403-4157-bafa-47b589e78202
+  ScriptInputsDefault:
+    enableLogging: true
+  ScriptTypesDefault:
+    {}
+  ScriptInputs:
+    "":
+      interactions: !<MappingBased.AssignableType> 9c24682f-06e2-40e6-a048-4aeb6c8b02ad
+      listening: !<MappingBased.AssignableType_1> b1b04764-ef1d-4093-90c4-3e0a150c3ec0
+      zappyAI: !<MappingBased.AssignableType_2> ba9b0252-db63-4aee-ba69-de0f00706d9b
+      speechController: !<MappingBased.AssignableType_3> dedb9c3e-396f-4438-b6b9-bbd5ba606eaf
+      enableLogging: false
+  ScriptTypes:
+    "":
+      {}
 - !<SceneObject/8924bb31-801d-4972-8e6b-fb1a2e8feab3>
   PrefabRemaps:
     []
@@ -6830,6 +6982,7 @@
     - !<own> 213426da-4382-4563-9929-b8365695cd47
     - !<own> 48ed0b24-2907-4d37-9fda-9d75de9fe24a
     - !<own> 1eddc013-881f-4095-90e8-2998ba787f46
+    - !<own> 5b4020c3-c6b6-41d1-a41e-0ab39c83363b
   Components:
     []
 - !<AudioComponent/8a21b74d-a39e-4e06-bd9d-655b2090b92d>
@@ -8208,12 +8361,13 @@
   Enabled: true
   ScriptAsset: !<reference> 32297ed6-b679-489e-8f67-472408f9e41a
   ScriptInputsDefault:
-    {}
+    holdThreshold: true
   ScriptTypesDefault:
     {}
   ScriptInputs:
     "":
       interactable: !<MappingBased.AssignableType> a6ce47e7-a516-43ae-b9c9-b727cd9d3f39
+      holdThreshold: 0.850000
   ScriptTypes:
     "":
       {}
@@ -9275,6 +9429,87 @@
     CapitalizationOverride: None
   DepthTest: false
   TwoSided: false
+- !<Text/ab9e8906-a3a7-4454-8fdc-b477b5a83889>
+  PrefabRemaps:
+    []
+  Name: Text
+  Enabled: true
+  RenderOrder: 0
+  StretchMode: Stretch
+  VerticalAlignment: Center
+  HorizontalAlignment: Center
+  MeshShadowMode: None
+  ShadowColor: {x: 1.000000, y: 1.000000, z: 1.000000, w: 1.000000}
+  ShadowDensity: 1.000000
+  Text: Zappy speech label
+  Editable: false
+  ShowEditingPreview: true
+  TouchHandler: !<reference> 00000000-0000-0000-0000-000000000000
+  SizeToFit: false
+  FontSize: 28
+  Font: !<reference> 6541e1a4-c970-4bf2-a742-3368f4dfd6f3
+  LayoutRect:
+    left: -4.500000
+    bottom: -2.250000
+    right: 4.500000
+    top: 2.250000
+  OverflowVertical: Overflow
+  OverflowHorizontal: Wrap
+  Fill: !<TextFill>
+    Mode: Solid
+    Color: {x: 1.000000, y: 1.000000, z: 1.000000, w: 1.000000}
+    Texture: !<reference> 00000000-0000-0000-0000-000000000000
+    ColorTint: {x: 1.000000, y: 1.000000, z: 1.000000, w: 1.000000}
+    TileCount: 5.000000
+    TileZone: Rect
+    TextureStretch: FitWidth
+  BlendMode: PremultipliedAlpha
+  Outline: !<OutlineSettings>
+    Enabled: false
+    Fill: !<TextFill>
+      Mode: Solid
+      Color: {x: 0.000000, y: 0.000000, z: 0.000000, w: 1.000000}
+      Texture: !<reference> 00000000-0000-0000-0000-000000000000
+      ColorTint: {x: 1.000000, y: 1.000000, z: 1.000000, w: 1.000000}
+      TileCount: 5.000000
+      TileZone: Rect
+      TextureStretch: FitWidth
+    Size: 0.250000
+  Dropshadow: !<DropshadowSettings>
+    Enabled: false
+    Fill: !<TextFill>
+      Mode: Solid
+      Color: {x: 0.000000, y: 0.000000, z: 0.000000, w: 1.000000}
+      Texture: !<reference> 00000000-0000-0000-0000-000000000000
+      ColorTint: {x: 1.000000, y: 1.000000, z: 1.000000, w: 1.000000}
+      TileCount: 5.000000
+      TileZone: Rect
+      TextureStretch: FitWidth
+    OffsetX: 0.250000
+    OffsetY: 0.250000
+  Background: !<BackgroundSettings>
+    Enabled: false
+    Fill: !<TextFill>
+      Mode: Solid
+      Color: {x: 0.000000, y: 0.000000, z: 0.000000, w: 1.000000}
+      Texture: !<reference> 00000000-0000-0000-0000-000000000000
+      ColorTint: {x: 1.000000, y: 1.000000, z: 1.000000, w: 1.000000}
+      TileCount: 5.000000
+      TileZone: Rect
+      TextureStretch: FitWidth
+    Margins:
+      left: 0.000000
+      bottom: 0.000000
+      right: 0.000000
+      top: 0.000000
+    CornerRadius: 0.000000
+  AdvancedLayout: !<TextAdvancedLayout>
+    ExtentsTarget: !<reference> 00000000-0000-0000-0000-000000000000
+    LetterSpacing: 0.000000
+    LineSpacing: 1.000000
+    CapitalizationOverride: AllUpper
+  DepthTest: false
+  TwoSided: false
 - !<ScriptComponent/ac17f07a-db47-4f8c-b1be-34e66aefbf0e>
   PrefabRemaps:
     []
@@ -9450,6 +9685,22 @@
     []
   Components:
     - !<own> b365a996-0ecd-499a-9856-0bc180f264ba
+- !<SceneObject/ad76283e-c8ef-40c4-bef3-a04710f3c43f>
+  PrefabRemaps:
+    []
+  Name: Zappy Voice
+  Enabled: true
+  Layers: 1
+  LocalTransform: !<TransformEntity>
+    Position: {x: 0.000000, y: 0.000000, z: 0.000000}
+    Rotation: {x: 0.000000, y: 0.000000, z: 0.000000}
+    Scale: {x: 1.000000, y: 1.000000, z: 1.000000}
+    HasSegmentScaleCompensation: false
+  Children:
+    - !<own> 61b63589-af24-4f25-8fd6-9c89ebb311ea
+    - !<own> 2891332d-6389-4c45-9a71-fbb7b4533582
+  Components:
+    - !<own> 29c772a1-9a3f-4d2b-9058-6c2093db6d09
 - !<Image/adb3f7e5-6518-4670-b125-34b84ef2075a>
   PrefabRemaps:
     []
@@ -9583,6 +9834,26 @@
     []
   Components:
     - !<own> 561323ea-6156-4396-971a-97abc209448c
+- !<ScriptComponent/b1b04764-ef1d-4093-90c4-3e0a150c3ec0>
+  PrefabRemaps:
+    []
+  Name: ZappyListeningController
+  Enabled: true
+  ScriptAsset: !<reference> c0d87dd3-5a82-42aa-b709-5346f8110654
+  ScriptInputsDefault:
+    activityIndicator: true
+    debugUtterance: true
+    enableLogging: true
+  ScriptTypesDefault:
+    {}
+  ScriptInputs:
+    "":
+      activityIndicator: !<reference.SceneObject> 00000000-0000-0000-0000-000000000000
+      debugUtterance: "How do I wire up this LED?"
+      enableLogging: false
+  ScriptTypes:
+    "":
+      {}
 - !<RenderMeshVisual/b1b56840-0553-4a9c-a544-534df92dd9f9>
   PrefabRemaps:
     []
@@ -10010,8 +10281,8 @@
   ScriptInputs:
     "":
       brain: !<MappingBased.AssignableType> e6305008-0fd4-431d-ada3-90d29c567823
-      emotionController: !<MappingBased.AssignableType_1> c50a6368-e171-4a94-8eef-e0f21d636b95
-      voice: !<MappingBased.AssignableType_2> cca2d5c1-ea66-4515-818c-977305c8f7a6
+      emotionController: !<MappingBased.AssignableType_1> c5b49bf1-f548-43b7-bec2-8d3ea3d3b675
+      voice: !<MappingBased.AssignableType_2> 29c772a1-9a3f-4d2b-9058-6c2093db6d09
       movement: !<MappingBased.AssignableType_3> 5e98edc9-1ea4-411b-801a-283a17001bea
       hideOnStart: true
       enableLogging: true
@@ -10450,22 +10721,6 @@
     - !<own> 575637b2-cafb-4de5-a771-1a302757b5ea
   Components:
     []
-- !<ScriptComponent/c50a6368-e171-4a94-8eef-e0f21d636b95>
-  PrefabRemaps:
-    []
-  Name: ZappyEmotionController
-  Enabled: true
-  ScriptAsset: !<reference> bb8be629-d32c-4bf7-81fa-5735d4c65f77
-  ScriptInputsDefault:
-    enableLogging: true
-  ScriptTypesDefault:
-    {}
-  ScriptInputs:
-    "":
-      enableLogging: false
-  ScriptTypes:
-    "":
-      {}
 - !<ScriptComponent/c5160bef-08c8-483f-b655-7e33186bea5b>
   PrefabRemaps:
     []
@@ -10570,6 +10825,39 @@
     index-2: !<reference> 6e80c70d-072f-4b48-8ce3-3abdfd95b0dc
     thumb-3_end_end_end_end: !<reference> 52688278-ae21-48b3-b616-056792b39ecb
     wrist_to_pinky: !<reference> a4b72b9f-8bc7-4552-927f-e7edd163f9a4
+- !<ScriptComponent/c5b49bf1-f548-43b7-bec2-8d3ea3d3b675>
+  PrefabRemaps:
+    []
+  Name: ZappyEmotionController
+  Enabled: true
+  ScriptAsset: !<reference> bb8be629-d32c-4bf7-81fa-5735d4c65f77
+  ScriptInputsDefault:
+    enableLogging: true
+  ScriptTypesDefault:
+    {}
+  ScriptInputs:
+    "":
+      enableLogging: false
+  ScriptTypes:
+    "":
+      {}
+- !<SceneObject/c7228415-7e39-4dba-b797-b07f59d3026d>
+  PrefabRemaps:
+    []
+  Name: Zappy Converser
+  Enabled: true
+  Layers: 1
+  LocalTransform: !<TransformEntity>
+    Position: {x: 0.000000, y: 0.000000, z: 0.000000}
+    Rotation: {x: 0.000000, y: 0.000000, z: 0.000000}
+    Scale: {x: 1.000000, y: 1.000000, z: 1.000000}
+    HasSegmentScaleCompensation: false
+  Children:
+    []
+  Components:
+    - !<own> 02952d09-ed3b-4e35-b9a8-c0b3c0d5fdad
+    - !<own> 8793e624-8a88-49b8-8bbb-14a77fc169fb
+    - !<own> b1b04764-ef1d-4093-90c4-3e0a150c3ec0
 - !<SceneObject/c78431a6-e915-4691-90a6-c10ed3c362ce>
   PrefabRemaps:
     []
@@ -10782,30 +11070,6 @@
   ForceCompound: false
   Intangible: false
   ShowCollider: false
-- !<ScriptComponent/cca2d5c1-ea66-4515-818c-977305c8f7a6>
-  PrefabRemaps:
-    []
-  Name: ZappyVoice
-  Enabled: true
-  ScriptAsset: !<reference> 48835098-7cfb-4484-91bc-3d61af11fd57
-  ScriptInputsDefault:
-    enableFallback: true
-    enableLogging: true
-  ScriptTypesDefault:
-    {}
-  ScriptInputs:
-    "":
-      emotionController: !<MappingBased.AssignableType> c50a6368-e171-4a94-8eef-e0f21d636b95
-      audioComponent: !<reference.AudioComponent> 13eea8c6-3a41-42e1-86fe-1d95051270ac
-      speechBox: !<MappingBased.AssignableType_1> 30c3a2bf-c999-4ced-a0e6-e7bc84751186
-      backend: elevenlabs
-      snapProvider: !<MappingBased.AssignableType_2> dd5eb12a-66e1-4a96-a0a3-1fdc3e48d661
-      elevenLabsProvider: !<MappingBased.AssignableType_3> a7b33131-e03e-4ce6-b5a9-6b9515bde38b
-      enableFallback: true
-      enableLogging: false
-  ScriptTypes:
-    "":
-      {}
 - !<SceneObject/ccd96a6c-ed73-46de-900c-79b5fd3cfa02>
   PrefabRemaps:
     []
@@ -11183,7 +11447,7 @@
   LocalTransform: !<TransformEntity>
     Position: {x: 0.000000, y: 0.000000, z: 0.000000}
     Rotation: {x: 0.000000, y: 0.000000, z: 0.000000}
-    Scale: {x: 15.000000, y: 15.000000, z: 15.000000}
+    Scale: {x: 19.000000, y: 17.000000, z: 15.000000}
     HasSegmentScaleCompensation: false
   Children:
     []
@@ -11395,17 +11659,17 @@
   MeshShadowMode: None
   ShadowColor: {x: 1.000000, y: 1.000000, z: 1.000000, w: 1.000000}
   ShadowDensity: 1.000000
-  Text: Zappy speech text
+  Text: Zappy is saying something...listen up!
   Editable: false
   ShowEditingPreview: true
   TouchHandler: !<reference> 00000000-0000-0000-0000-000000000000
   SizeToFit: false
-  FontSize: 40
+  FontSize: 38
   Font: !<reference> 6541e1a4-c970-4bf2-a742-3368f4dfd6f3
   LayoutRect:
-    left: -4.500000
+    left: -8.000000
     bottom: -2.250000
-    right: 4.500000
+    right: 8.000000
     top: 2.250000
   OverflowVertical: Overflow
   OverflowHorizontal: Wrap
@@ -11936,6 +12200,23 @@
     []
   Components:
     []
+- !<ScriptComponent/dedb9c3e-396f-4438-b6b9-bbd5ba606eaf>
+  PrefabRemaps:
+    []
+  Name: ZappySpeechController
+  Enabled: true
+  ScriptAsset: !<reference> 0147b90f-3349-4f91-a999-bfaddc57a98e
+  ScriptInputsDefault:
+    enableLogging: true
+  ScriptTypesDefault:
+    {}
+  ScriptInputs:
+    "":
+      speechBox: !<MappingBased.AssignableType> 30c3a2bf-c999-4ced-a0e6-e7bc84751186
+      enableLogging: false
+  ScriptTypes:
+    "":
+      {}
 - !<ScriptComponent/e019faef-8927-43e1-ba2d-da41640a55fe>
   PrefabRemaps:
     []
@@ -11987,6 +12268,28 @@
       persistentPinchedState: false
       defaultIcon: !<reference.Texture> 00000000-0000-0000-0000-000000000000
       onIcon: !<reference.Texture> 00000000-0000-0000-0000-000000000000
+  ScriptTypes:
+    "":
+      {}
+- !<ScriptComponent/e0323afc-5224-40fd-b75a-2206992db41f>
+  PrefabRemaps:
+    []
+  Name: CheckWorkController
+  Enabled: true
+  ScriptAsset: !<reference> 8eb2b0ed-6698-4fcf-a8f8-7a1a04ecdd16
+  ScriptInputsDefault:
+    previewPanel: true
+  ScriptTypesDefault:
+    {}
+  ScriptInputs:
+    "":
+      zappyAI: !<MappingBased.AssignableType> ba9b0252-db63-4aee-ba69-de0f00706d9b
+      persona: !<MappingBased.AssignableType_1> 41b897ec-bf38-464e-9021-fb94c7559bb1
+      instructionsController: !<MappingBased.AssignableType_2> eaf037a4-91ae-4102-8701-9cc2f28c5a80
+      cameraSource: !<MappingBased.AssignableType_3> 8aef77b7-cee7-46a5-bf28-432bdceaa790
+      previewImage: !<reference.Image> 1e37424d-e9c2-4aa3-9cb8-1ce2f2e7f942
+      previewPanel: !<reference.SceneObject> 00000000-0000-0000-0000-000000000000
+      enableLogging: false
   ScriptTypes:
     "":
       {}
@@ -12405,6 +12708,7 @@
     {}
   ScriptInputs:
     "":
+      persona: !<MappingBased.AssignableType> 41b897ec-bf38-464e-9021-fb94c7559bb1
       enableLogging: false
   ScriptTypes:
     "":
@@ -12773,8 +13077,9 @@
       mainTrackVolume: !<float> 0.000000
       breadboardOrigin: !<reference.SceneObject> d1b20632-19f8-4f71-be2a-709dc137d1f3
       onboardingController: !<MappingBased.AssignableType_1> 51ce85a7-c4d8-4ed4-bbae-062a47aeaf0f
-      menuConsole: !<MappingBased.AssignableType_2> 24ae494e-b174-48a0-8e8d-7245cff230b5
-      instructionPrompt: !<MappingBased.AssignableType_3> 7e281ca4-c9d7-4453-8e28-c86df6d7c76b
+      spaceSetup: !<MappingBased.AssignableType_2> 5a9e8d73-a99d-45b2-8ab8-ff9ddefcafd3
+      menuConsole: !<MappingBased.AssignableType_3> 24ae494e-b174-48a0-8e8d-7245cff230b5
+      instructionPrompt: !<MappingBased.AssignableType_4> 7e281ca4-c9d7-4453-8e28-c86df6d7c76b
       linePrefab: !<reference.ObjectPrefab> e362da3c-55d0-465a-a0c1-94ca01b562b1
       linePoolParent: !<reference.SceneObject> 0af33c18-ea34-4408-b8e0-dea027c17886
       calloutStartAnchor: !<reference.SceneObject> 0c2e4402-156a-4adf-aa3a-7664655fe73e
@@ -12782,14 +13087,16 @@
       instructionDefinitions:
         - title: The breadboard
           description: |-
-            The breadboard is going to be the heart of this project.
+            The breadboard is the heart of your project.
             
-            We attach things to the breadboard to build ciruits
-          zappyTextBox: The breadboard allows us to build ciruits
-          primaryButtonText: ""
+            We attach things to the breadboard to build ciruits.
+          primaryButtonText: Continue
           secondaryButtonText: ""
           tertiaryButtonText: ""
           isCheckpoint: false
+          pointToPower: false
+          pointToDivider: false
+          dividerKind: breadboard
           startOnRail: false
           columnStart: A
           startRail: near-plus
@@ -12800,12 +13107,17 @@
           endRail: ""
           rowEnd: !<float> 0.000000
         - title: Meet the LED
-          description: "Looks like an LED is already attached on the breadboard, sweet!"
-          zappyTextBox: "Oh cool, an LED!"
-          primaryButtonText: ""
+          description: |-
+            Looks like an LED is already attached on the breadboard, sweet!
+            
+            Let's try to power it up
+          primaryButtonText: Continue
           secondaryButtonText: ""
           tertiaryButtonText: ""
           isCheckpoint: false
+          pointToPower: false
+          pointToDivider: false
+          dividerKind: breadboard
           startOnRail: false
           columnStart: A
           startRail: far-plus
@@ -12817,11 +13129,13 @@
           rowEnd: !<float> 1.000000
         - title: Power Switch
           description: Press the power switch here to turn on power to the breadboard
-          zappyTextBox: Press the power switch
           primaryButtonText: ""
           secondaryButtonText: ""
           tertiaryButtonText: ""
           isCheckpoint: false
+          pointToPower: true
+          pointToDivider: false
+          dividerKind: breadboard
           startOnRail: false
           columnStart: A
           startRail: near-plus
@@ -12832,12 +13146,14 @@
           endRail: ""
           rowEnd: !<float> 0.000000
         - title: Route Power
-          description: "Hmm, looks like we need to route power using "
-          zappyTextBox: "Place a red wire "
+          description: "Hmm, looks like we need to route power using  wire, grab a RED wire and then let's continue"
           primaryButtonText: ""
           secondaryButtonText: ""
           tertiaryButtonText: ""
           isCheckpoint: false
+          pointToPower: false
+          pointToDivider: false
+          dividerKind: breadboard
           startOnRail: false
           columnStart: A
           startRail: near-plus
@@ -12847,7 +13163,24 @@
           columnEnd: ""
           endRail: ""
           rowEnd: !<float> 0.000000
-      autoStart: true
+        - title: Place red wire
+          description: ""
+          primaryButtonText: ""
+          secondaryButtonText: ""
+          tertiaryButtonText: ""
+          isCheckpoint: false
+          pointToPower: false
+          pointToDivider: false
+          dividerKind: breadboard
+          startOnRail: false
+          columnStart: A
+          startRail: near-plus
+          rowStart: !<float> 1.000000
+          useEndPin: false
+          endOnRail: false
+          columnEnd: ""
+          endRail: ""
+          rowEnd: !<float> 0.000000
   ScriptTypes:
     "":
       {}
@@ -13535,7 +13868,7 @@
 - !<SceneObject/fd5cba35-f969-49db-83be-3561516d6219>
   PrefabRemaps:
     []
-  Name: Interactions Controller
+  Name: Zappy Controller
   Enabled: true
   Layers: 1
   LocalTransform: !<TransformEntity>
