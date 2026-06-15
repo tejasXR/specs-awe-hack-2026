@@ -1,6 +1,6 @@
 import { ScaleVisibilityAnimator } from "./Utils/ScaleVisibilityAnimator";
 
-export type DividerKind = "breadboard" | "wires" | "leds" | "transistors";
+export type DividerKind = "breadboard" | "wires" | "leds" | "resistors";
 
 @component
 export class SpaceSetupDivider extends BaseScriptComponent {
@@ -11,7 +11,7 @@ export class SpaceSetupDivider extends BaseScriptComponent {
       new ComboBoxItem("Breadboard", "breadboard"),
       new ComboBoxItem("Wires", "wires"),
       new ComboBoxItem("LEDs", "leds"),
-      new ComboBoxItem("Transistors", "transistors"),
+      new ComboBoxItem("Resistor", "resistors"),
     ]),
   )
   kind: string = "breadboard";

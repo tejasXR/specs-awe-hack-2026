@@ -713,7 +713,7 @@ export class InstructionsController
       value === "breadboard" ||
       value === "wires" ||
       value === "leds" ||
-      value === "transistors"
+      value === "resistors"
     ) {
       return value;
     }

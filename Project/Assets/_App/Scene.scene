@@ -3216,7 +3216,7 @@
 - !<SceneObject/38709429-0bce-4e87-8782-8261cfbfe4b5>
   PrefabRemaps:
     []
-  Name: Transistor Line Point
+  Name: Resistor Line Point
   Enabled: true
   Layers: 1
   LocalTransform: !<TransformEntity>
@@ -3544,7 +3544,7 @@
 - !<SceneObject/3c726ca4-ba4f-44f5-9a7e-7f6b7aafc9c1>
   PrefabRemaps:
     []
-  Name: Transistor Area
+  Name: Resistor Area
   Enabled: true
   Layers: 1
   LocalTransform: !<TransformEntity>
@@ -3690,7 +3690,7 @@
     {}
   ScriptInputs:
     "":
-      kind: transistors
+      kind: resistors
       lineAnchor: !<reference.SceneObject> 38709429-0bce-4e87-8782-8261cfbfe4b5
   ScriptTypes:
     "":
@@ -6551,7 +6551,7 @@
 - !<SceneObject/7fb7f674-cd30-4410-8f04-bf194c0ab368>
   PrefabRemaps:
     []
-  Name: Transistor Placement Glow
+  Name: Resistor Placement Glow
   Enabled: true
   Layers: 1
   LocalTransform: !<TransformEntity>
@@ -12014,7 +12014,7 @@
   MeshShadowMode: None
   ShadowColor: {x: 1.000000, y: 1.000000, z: 1.000000, w: 1.000000}
   ShadowDensity: 1.000000
-  Text: Transistors
+  Text: Resistors
   Editable: false
   ShowEditingPreview: true
   TouchHandler: !<reference> 00000000-0000-0000-0000-000000000000
@@ -12815,7 +12815,7 @@
 - !<SceneObject/e89a3842-35ce-4fed-8ee9-b1e2dcc570e8>
   PrefabRemaps:
     []
-  Name: Transistor Placement
+  Name: Resistor Placement
   Enabled: true
   Layers: 1
   LocalTransform: !<TransformEntity>

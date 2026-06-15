@@ -43,5 +43,5 @@
     -
       {}
   InputLines:
-    - '// @input string kind = "breadboard" {"hint":"Which component this divider represents — how SpaceSetup addresses it", "widget":"combobox", "values":[{"label":"Breadboard", "value":"breadboard"}, {"label":"Wires", "value":"wires"}, {"label":"LEDs", "value":"leds"}, {"label":"Transistors", "value":"transistors"}]}'
+    - '// @input string kind = "breadboard" {"hint":"Which component this divider represents — how SpaceSetup addresses it", "widget":"combobox", "values":[{"label":"Breadboard", "value":"breadboard"}, {"label":"Wires", "value":"wires"}, {"label":"LEDs", "value":"leds"}, {"label":"Resistor", "value":"resistors"}]}'
     - "// @input SceneObject lineAnchor {\"hint\":\"Line anchor for this divider's connector line — held for line-visibility control, not the show/hide target.\"}"
