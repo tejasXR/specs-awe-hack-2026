@@ -32,6 +32,7 @@
     mainTrack: true
     mainTrackVolume: true
     onboardingController: true
+    spaceSetup: true
     menuConsole: true
     instructionPrompt: true
     linePrefab: true
@@ -39,7 +40,6 @@
     calloutStartAnchor: true
     hoverOffsetCm: true
     instructionDefinitions: true
-    autoStart: true
   ScriptTypesDefault:
     {}
   ScriptInputs:
@@ -49,15 +49,15 @@
       mainTrackVolume: !<float> 0.000000
       breadboardOrigin: !<reference.SceneObject> 3805ce42-8b9f-4696-a624-c0b5225017c0
       onboardingController: !<MappingBased.AssignableType_1> 00000000-0000-0000-0000-000000000000
-      menuConsole: !<MappingBased.AssignableType_2> 00000000-0000-0000-0000-000000000000
-      instructionPrompt: !<MappingBased.AssignableType_3> 00000000-0000-0000-0000-000000000000
+      spaceSetup: !<MappingBased.AssignableType_2> 00000000-0000-0000-0000-000000000000
+      menuConsole: !<MappingBased.AssignableType_3> 00000000-0000-0000-0000-000000000000
+      instructionPrompt: !<MappingBased.AssignableType_4> 00000000-0000-0000-0000-000000000000
       linePrefab: !<reference.ObjectPrefab> 00000000-0000-0000-0000-000000000000
       linePoolParent: !<reference.SceneObject> 00000000-0000-0000-0000-000000000000
       calloutStartAnchor: !<reference.SceneObject> 00000000-0000-0000-0000-000000000000
       hoverOffsetCm: !<float> 1.000000
       instructionDefinitions:
         []
-      autoStart: false
   ScriptTypes:
     "":
       {}
