@@ -58,6 +58,4 @@
     - "// @input AssignableType_2 voice {\"hint\":\"ZappyVoice — speaks Zappy's lines\"}"
     - "// @input AssignableType_3 movement {\"hint\":\"ZappyMovement — Zappy's locomotion\"}"
     - // @input bool hideOnStart
-    - '// @ui {"widget":"separator"}'
-    - '// @ui {"widget":"label", "label":"Settings"}'
-    - '// @input bool enableLogging {"hint":"Enable debug logging"}'
+    - // @input bool enableLogging

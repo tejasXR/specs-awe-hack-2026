@@ -11,7 +11,7 @@
  * Implemented by ZappySnapVoiceProvider and ZappyElevenLabsVoiceProvider —
  * both @component classes, so they're wired into ZappyVoice in the Inspector.
  */
-import { ZappyEmotionData } from "./ZappyBrain";
+import { ZappyEmotionData } from "./ZappyResponse";
 
 /** Async result channel for a single synthesis request. */
 export interface VoiceSynthesisCallbacks {

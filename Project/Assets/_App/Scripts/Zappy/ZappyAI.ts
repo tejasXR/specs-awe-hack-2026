@@ -15,7 +15,6 @@ import {
   ZappyBrain,
   ZappyEmotion,
   ZappyEmotionData,
-  ZappyPersonality,
   ZappyResponse,
 } from "./ZappyBrain";
 import { ZappyEmotionController } from "./ZappyEmotionController";
@@ -25,7 +24,7 @@ import { ScaleVisibilityAnimator } from "../Utils/ScaleVisibilityAnimator";
 
 // Re-export the domain types so existing `from "./ZappyAI"` imports
 // (ExperienceOrchestrator, CheckWorkController) keep compiling.
-export { ZappyEmotion, ZappyPersonality } from "./ZappyBrain";
+export { ZappyEmotion } from "./ZappyBrain";
 export type { ZappyEmotionData, ZappyResponse } from "./ZappyBrain";
 
 @component
@@ -51,10 +50,7 @@ export class ZappyAI extends BaseScriptComponent {
   @input
   hideOnStart: boolean = false;
 
-  @ui.separator
-  @ui.label("Settings")
   @input
-  @hint("Enable debug logging")
   enableLogging: boolean = false;
 
   private _animator!: ScaleVisibilityAnimator;
@@ -68,6 +64,11 @@ export class ZappyAI extends BaseScriptComponent {
 
   readonly onEmotionChanged: PublicApi<ZappyEmotionData> =
     this.onEmotionChangedEvent.publicApi();
+
+  private readonly onRequestFailedEvent = new Event<string>();
+  /** Forwarded from the brain — a Gemini request failed (no spoken reply). */
+  readonly onRequestFailed: PublicApi<string> =
+    this.onRequestFailedEvent.publicApi();
 
   private unsubs: unsubscribe[] = [];
 
@@ -88,9 +89,10 @@ export class ZappyAI extends BaseScriptComponent {
       ),
     );
     this.unsubs.push(
-      this.brain.onRequestFailed.add(() =>
-        this.setEmotion(ZappyEmotion.Sad, 0.7),
-      ),
+      this.brain.onRequestFailed.add((error) => {
+        this.setEmotion(ZappyEmotion.Sad, 0.7);
+        this.onRequestFailedEvent.invoke(error);
+      }),
     );
     this.unsubs.push(
       this.brain.onResponse.add((resp) => this.routeResponse(resp)),
@@ -162,23 +164,23 @@ export class ZappyAI extends BaseScriptComponent {
     this.emotionController.setEmotion(emotion, intensity);
   }
 
-  // ─── Public API — Personality ─────────────────────────────────
-
-  setPersonality(mode: ZappyPersonality): void {
-    this.brain.setPersonality(mode);
-  }
-
-  getPersonality(): ZappyPersonality {
-    return this.brain.getPersonality();
-  }
-
-  togglePersonality(): ZappyPersonality {
-    return this.brain.togglePersonality();
-  }
-
   /** Returns true if a Gemini call is currently in flight. */
   getIsBusy(): boolean {
     return this.brain.getIsBusy();
+  }
+
+  /**
+   * True while Zappy is occupied — thinking (Gemini in flight) or speaking. The
+   * lightweight shared guard callers check before starting a new response so
+   * chat, check-work, and voice Q&A don't talk over each other.
+   */
+  isResponding(): boolean {
+    return this.brain.getIsBusy() || this.voice.isSpeaking;
+  }
+
+  /** Cut off any current speech — e.g. to duck Zappy before listening. */
+  stopSpeaking(): void {
+    this.voice.stop();
   }
 
   show(): void {

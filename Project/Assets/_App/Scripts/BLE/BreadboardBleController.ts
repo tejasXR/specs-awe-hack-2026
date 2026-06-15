@@ -40,7 +40,6 @@ export interface LedCommand {
 export class BreadboardBleController extends BaseScriptComponent {
   @input
   @hint("BluetoothCentralModule asset from the project's Modules folder")
-  @allowUndefined
   bluetoothModule!: Bluetooth.BluetoothCentralModule;
 
   @input

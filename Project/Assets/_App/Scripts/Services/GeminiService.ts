@@ -30,6 +30,12 @@ export interface GeminiGenerateOptions {
    * responseSchema for structured/bounding-box output.
    */
   generationConfig?: GeminiTypes.Common.GenerationConfig;
+  /**
+   * System instruction — persona / standing context, kept out of the turn
+   * contents so it never enters conversation history. Mapped to Gemini's
+   * dedicated systemInstruction field.
+   */
+  systemInstruction?: string;
 }
 
 const DEFAULT_MODEL = "gemini-2.5-flash";
@@ -46,11 +52,20 @@ export class GeminiService {
     contents: GeminiContent[],
     options: GeminiGenerateOptions = {},
   ): Promise<string> {
-    const body: { contents: GeminiContent[]; generationConfig?: object } = {
+    const body: {
+      contents: GeminiContent[];
+      generationConfig?: object;
+      systemInstruction?: { parts: GeminiTextPart[] };
+    } = {
       contents: contents,
     };
     if (options.generationConfig) {
       body.generationConfig = options.generationConfig;
+    }
+    if (options.systemInstruction) {
+      body.systemInstruction = {
+        parts: [{ text: options.systemInstruction }],
+      };
     }
 
     const request = {

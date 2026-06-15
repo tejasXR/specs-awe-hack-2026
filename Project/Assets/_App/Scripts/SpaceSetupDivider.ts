@@ -25,12 +25,10 @@ export class SpaceSetupDivider extends BaseScriptComponent {
   private animator!: ScaleVisibilityAnimator;
 
   onAwake(): void {
-    // Animate this component's own object; snap hidden so show() animates in.
     this.animator = new ScaleVisibilityAnimator(this.getSceneObject());
     this.animator.hideImmediate();
   }
 
-  /** This divider's kind, narrowed from the inspector string to DividerKind. */
   get dividerKind(): DividerKind {
     return this.kind as DividerKind;
   }

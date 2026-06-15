@@ -22,11 +22,13 @@
   VersionMajor: 0
   VersionMinor: 0
   VersionPatch: 0
-  ComponentUid: 00000000-0000-0000-0000-000000000000
+  ComponentUid: 4438b3ae-c439-4ccb-9643-0881532390fe
   ExportUid: 00000000-0000-0000-0000-000000000000
   PackagePolicy: CanBeUnpacked
   ScriptInputsHidden:
-    {}
+    bleController: false
+    gestureController: false
+    text: false
   ScriptTypesHidden:
     {}
   ReadMe: !<reference> 00000000-0000-0000-0000-000000000000
@@ -36,10 +38,16 @@
   Attachments:
     []
   DefaultScriptInputs:
-    -
-      {}
+    - text: !<reference.Text> 00000000-0000-0000-0000-000000000000
+      bleController: !<MappingBased.AssignableType> 00000000-0000-0000-0000-000000000000
+      gestureController: !<MappingBased.AssignableType_1> 00000000-0000-0000-0000-000000000000
   ScriptTypes:
     -
       {}
   InputLines:
-    []
+    - '// @ui {"widget":"label", "label":"<span style=\"color: #60A5FA;\">LedDebugReadout</span><br/><span style=\"color: #94A3B8; font-size: 11px;\">Renders BLE link + LED command state to a Text for on-device debugging.</span>"}'
+    - '// @ui {"widget":"separator"}'
+    - '// @ui {"widget":"label", "label":"<span style=\"color: #60A5FA;\">References</span>"}'
+    - '// @input Component.Text text {"hint":"Text component the readout is written to"}'
+    - '// @input AssignableType bleController {"hint":"The BLE link — provides connection state and board status"}'
+    - '// @input AssignableType_1 gestureController {"hint":"Optional — shows the live command (mode / brightness / Hz) being sent"}'

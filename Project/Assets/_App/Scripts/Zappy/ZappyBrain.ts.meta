@@ -27,6 +27,7 @@
   PackagePolicy: CanBeUnpacked
   ScriptInputsHidden:
     enableLogging: false
+    persona: false
   ScriptTypesHidden:
     {}
   ReadMe: !<reference> 00000000-0000-0000-0000-000000000000
@@ -36,9 +37,11 @@
   Attachments:
     []
   DefaultScriptInputs:
-    - enableLogging: false
+    - persona: !<MappingBased.AssignableType> 00000000-0000-0000-0000-000000000000
+      enableLogging: false
   ScriptTypes:
     -
       {}
   InputLines:
+    - "// @input AssignableType persona {\"hint\":\"Persona — Zappy's identity, mission, tone, and live build context\"}"
     - '// @input bool enableLogging {"hint":"Enable debug logging"}'

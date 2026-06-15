@@ -41,11 +41,6 @@ export class ZappyOptionsController extends BaseScriptComponent {
   }
 
   private onStart(): void {
-    if (isNull(this.interactions)) {
-      print("Interactions controller not wired -- returning early.");
-      return;
-    }
-
     if (this.hideOnStart) {
       void this.setOptionsEnabled(false);
     }

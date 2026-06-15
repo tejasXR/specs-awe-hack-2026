@@ -1,54 +1,57 @@
 /**
- * ZappyBrain — Zappy's Gemini client, and nothing else.
+ * ZappyBrain — Zappy's Gemini client: transport + conversation history only.
  *
- * Owns the personality prompts, conversation history, request building, and
- * structured-response parsing. Reports facts via events (request started,
- * response, request failed); what Zappy does about them — emotion, voice,
- * movement — is policy and belongs to ZappyAI, the facade.
+ * Who Zappy is and what he knows now lives in ZappyPersona (identity, mission,
+ * adaptive tone, live build context); the response shape lives in ZappyResponse.
+ * ZappyBrain just composes [history + user turn], attaches the persona's
+ * systemInstruction and the schema-enforced JSON contract, sends, and reports
+ * facts via events. What Zappy does about a response — emotion, voice, movement
+ * — is policy and belongs to ZappyAI, the facade.
  *
  * SETUP: Requires RemoteServiceGateway.lspkg installed via Lens Studio
  *        Asset Library + Google Token set in RemoteServiceGatewayCredentials.
  */
 import { GeminiService } from "../Services/GeminiService";
+import { ZappyPersona } from "./ZappyPersona";
+import {
+  parseZappyResponse,
+  RESPONSE_SCHEMA,
+  ZappyEmotion,
+  ZappyResponse,
+} from "./ZappyResponse";
 import Event, { PublicApi } from "SpectaclesInteractionKit.lspkg/Utils/Event";
 
-// ─── Types ──────────────────────────────────────────────────────
-// Domain types live with their producer. ZappyAI re-exports them, so
-// existing `import { ... } from "./ZappyAI"` lines keep working.
+// Re-export the response domain so existing `import { ... } from "./ZappyBrain"`
+// lines (ZappyAI, ZappyVoice, CheckWork) keep working from one place.
+export {
+  parseZappyResponse,
+  RESPONSE_CONTRACT,
+  RESPONSE_SCHEMA,
+  ZappyEmotion,
+} from "./ZappyResponse";
+export type { ZappyResponse, ZappyEmotionData } from "./ZappyResponse";
 
-export enum ZappyEmotion {
-  Happy = "happy",
-  Sad = "sad",
-  Thinking = "thinking",
-  Excited = "excited",
-  Confused = "confused",
-  Neutral = "neutral",
-}
-
-export enum ZappyPersonality {
-  Mascot = "mascot",
-  Tutor = "tutor",
-}
-
-export interface ZappyResponse {
-  emotion: ZappyEmotion;
-  intensity: number;
-  speech: string;
-}
-
-export interface ZappyEmotionData {
-  emotion: ZappyEmotion;
-  intensity: number;
-}
+// ─── Content shape (local to the chat transport) ────────────────
 
 type TextPart = { text: string };
 type ImagePart = { inlineData: { mimeType: string; data: string } };
 type GeminiContent = { role: string; parts: Array<TextPart | ImagePart> };
 
+// Generation config that enforces the structured response contract.
+const JSON_GENERATION_CONFIG = {
+  responseMimeType: "application/json",
+  responseSchema: RESPONSE_SCHEMA,
+};
+
 // ─── Component ──────────────────────────────────────────────────
 
 @component
 export class ZappyBrain extends BaseScriptComponent {
+  @input
+  @hint("Persona — Zappy's identity, mission, tone, and live build context")
+  @allowUndefined
+  persona!: ZappyPersona;
+
   @input
   @hint("Enable debug logging")
   enableLogging: boolean = false;
@@ -72,25 +75,8 @@ export class ZappyBrain extends BaseScriptComponent {
 
   // ─── Private State ────────────────────────────────────────────
 
-  private personality: ZappyPersonality = ZappyPersonality.Mascot;
   private isBusy: boolean = false;
   private history: Array<{ role: string; parts: TextPart[] }> = [];
-
-  private readonly MASCOT_PROMPT =
-    "You are Zappy, a tiny energetic electricity-based AR mascot for Zapatory Lab! " +
-    "You help users build breadboard circuits. Speak in short, punchy, enthusiastic " +
-    "sentences with electricity puns. Keep responses under 2 sentences. Be fun! " +
-    "CRITICAL: Always respond in this EXACT JSON format, nothing else: " +
-    '{"emotion":"happy","intensity":0.8,"speech":"Your response here"} ' +
-    "Valid emotions: happy, sad, thinking, excited, confused, neutral. intensity: 0.0 to 1.0";
-
-  private readonly TUTOR_PROMPT =
-    "You are Zappy, a patient and knowledgeable AR electronics tutor for Zapatory Lab. " +
-    "You guide users step-by-step through building breadboard circuits. Explain WHY each " +
-    "connection matters. Be clear, supportive, educational. Under 3 sentences. " +
-    "CRITICAL: Always respond in this EXACT JSON format, nothing else: " +
-    '{"emotion":"happy","intensity":0.8,"speech":"Your response here"} ' +
-    "Valid emotions: happy, sad, thinking, excited, confused, neutral. intensity: 0.0 to 1.0";
 
   // ─── Public API — Requests ────────────────────────────────────
 
@@ -154,28 +140,6 @@ export class ZappyBrain extends BaseScriptComponent {
     return true;
   }
 
-  // ─── Public API — Personality ─────────────────────────────────
-
-  setPersonality(mode: ZappyPersonality): void {
-    this.personality = mode;
-    this.history = [];
-    this.log("Personality set to: " + mode);
-  }
-
-  getPersonality(): ZappyPersonality {
-    return this.personality;
-  }
-
-  togglePersonality(): ZappyPersonality {
-    this.personality =
-      this.personality === ZappyPersonality.Mascot
-        ? ZappyPersonality.Tutor
-        : ZappyPersonality.Mascot;
-    this.history = [];
-    this.log("Personality toggled to: " + this.personality);
-    return this.personality;
-  }
-
   /** Returns true if a Gemini call is currently in flight. */
   getIsBusy(): boolean {
     return this.isBusy;
@@ -183,16 +147,9 @@ export class ZappyBrain extends BaseScriptComponent {
 
   // ─── Private — Gemini Integration ─────────────────────────────
 
-  /** System prompt + the last `historyCount` turns, ready for a user part. */
+  /** The last `historyCount` turns, ready for a user part to be appended. */
   private buildContents(historyCount: number): GeminiContent[] {
-    const sysPrompt =
-      this.personality === ZappyPersonality.Tutor
-        ? this.TUTOR_PROMPT
-        : this.MASCOT_PROMPT;
-
-    const contents: GeminiContent[] = [
-      { role: "model", parts: [{ text: sysPrompt }] },
-    ];
+    const contents: GeminiContent[] = [];
     for (const entry of this.history.slice(-historyCount)) {
       contents.push(entry);
     }
@@ -204,7 +161,10 @@ export class ZappyBrain extends BaseScriptComponent {
     this.onRequestStartedEvent.invoke(undefined);
     this.log("Calling Gemini...");
 
-    GeminiService.generate(contents)
+    GeminiService.generate(contents, {
+      systemInstruction: this.resolveSystemInstruction(),
+      generationConfig: JSON_GENERATION_CONFIG,
+    })
       .then((rawText) => {
         this.log("Raw: " + rawText);
 
@@ -233,55 +193,18 @@ export class ZappyBrain extends BaseScriptComponent {
       });
   }
 
+  /** Persona-composed standing context, or undefined if the persona is unwired. */
+  private resolveSystemInstruction(): string | undefined {
+    if (isNull(this.persona)) {
+      this.log("Persona not assigned -- sending without system instruction");
+      return undefined;
+    }
+    return this.persona.systemInstruction();
+  }
+
   private log(message: string): void {
     if (this.enableLogging) {
       print("[ZappyBrain] " + message);
     }
-  }
-}
-
-/**
- * Parse a raw Gemini reply into a structured ZappyResponse, tolerating
- * markdown code fences. Returns null if the text isn't the expected
- * {emotion,intensity,speech} JSON. Shared by ZappyBrain (chat) and any other
- * caller that prompts for the same response shape (e.g. CheckWorkController).
- */
-export function parseZappyResponse(raw: string): ZappyResponse | null {
-  try {
-    let jsonStr = raw.trim();
-
-    // Strip markdown code fences if Gemini wraps JSON in ```
-    if (jsonStr.indexOf("```") === 0) {
-      const start = jsonStr.indexOf("{");
-      const end = jsonStr.lastIndexOf("}") + 1;
-      if (start >= 0 && end > start) {
-        jsonStr = jsonStr.substring(start, end);
-      }
-    }
-
-    const obj = JSON.parse(jsonStr);
-    if (!obj.speech || typeof obj.speech !== "string") return null;
-
-    const validEmotions = [
-      "happy",
-      "sad",
-      "thinking",
-      "excited",
-      "confused",
-      "neutral",
-    ];
-    let emotion = ZappyEmotion.Neutral;
-    if (validEmotions.indexOf(obj.emotion) >= 0) {
-      emotion = obj.emotion as ZappyEmotion;
-    }
-
-    let intensity = 0.5;
-    if (typeof obj.intensity === "number") {
-      intensity = Math.max(0, Math.min(1, obj.intensity));
-    }
-
-    return { emotion, intensity, speech: obj.speech };
-  } catch (e) {
-    return null;
   }
 }

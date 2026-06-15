@@ -43,7 +43,5 @@
     -
       {}
   InputLines:
-    - '// @ui {"widget":"separator"}'
-    - '// @ui {"widget":"label", "label":"References"}'
     - '// @input AssignableType speechBox {"hint":"The speech box this controller exclusively owns"}'
     - '// @input bool enableLogging {"hint":"Enable debug logging"}'
