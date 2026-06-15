@@ -280,11 +280,30 @@ export class InstructionsController
   readonly onSequenceCompleted: PublicApi<void> =
     this.onSequenceCompletedEvent.publicApi();
 
+  private readonly onFinalStepEnteredEvent = new Event<void>();
+
+  /**
+   * Fires when the last instruction step is *shown* (entered) — not when the
+   * sequence is advanced past. The LED-control handoff listens for this so the
+   * board comes alive while the final "pinch to illuminate" step is on screen.
+   */
+  readonly onFinalStepEntered: PublicApi<void> =
+    this.onFinalStepEnteredEvent.publicApi();
+
   private readonly onCheckpointReachedEvent = new Event<number>();
 
   /** Fires when a checkpoint step is shown, carrying its step index. */
   readonly onCheckpointReached: PublicApi<number> =
     this.onCheckpointReachedEvent.publicApi();
+
+  private readonly onCheckRequestedEvent = new Event<void>();
+
+  /**
+   * Fires when the user asks to check their work — the primary menu press while
+   * on a checkpoint. The check-work orchestrator listens for this.
+   */
+  readonly onCheckRequested: PublicApi<void> =
+    this.onCheckRequestedEvent.publicApi();
 
   get currentIndex(): number {
     return this._currentIndex;
@@ -317,6 +336,43 @@ export class InstructionsController
     return this.instructionDefinitions
       .slice(0, this._currentIndex + 1)
       .filter((def) => !def.isCheckpoint);
+  }
+
+  /**
+   * The completed steps as a numbered list labelled with each step's TRUE
+   * 1-based position in the sequence, e.g. "2. Place the resistor (...)\n4.
+   * ...". Checkpoints are skipped (they're recaps, not repeatable actions), but
+   * the numbering stays absolute — so a number Gemini returns against this list
+   * is already the step's index + 1, and goToStep(n - 1) reaches it with no
+   * translation.
+   */
+  describeCompletedStepsNumbered(): string {
+    if (this._currentIndex < 0) {
+      return "(no steps completed yet)";
+    }
+    const lines: string[] = [];
+    for (let i = 0; i <= this._currentIndex; i++) {
+      const def = this.instructionDefinitions[i];
+      if (def.isCheckpoint) {
+        continue;
+      }
+      lines.push(`${i + 1}. ${this.describeInstruction(def)}`);
+    }
+    return lines.length > 0 ? lines.join("\n") : "(no steps completed yet)";
+  }
+
+  /**
+   * Show an arbitrary step by its 0-based index — the public, bounds-guarded
+   * seam over moveToStep that the relative next()/previous() helpers lack.
+   * No-ops (and returns false) when the index is out of range.
+   */
+  goToStep(index: number): boolean {
+    if (index < 0 || index >= this.instructionDefinitions.length) {
+      print(`[InstructionsController] goToStep: ${index} out of range`);
+      return false;
+    }
+    this.moveToStep(index);
+    return true;
   }
 
   /**
@@ -402,21 +458,6 @@ export class InstructionsController
     }
 
     // Menu buttons drive navigation: primary -> next, secondary -> previous.
-    if (!isNull(this.menuConsole)) {
-      this._unsubscribeFromPrimary = this.menuConsole.onPrimaryPressed.add(() =>
-        this.onMenuPrimaryPressed(),
-      );
-      this._unsubscribeFromSecondary = this.menuConsole.onSecondaryPressed.add(
-        () => this.onMenuSecondaryPressed(),
-      );
-      this._unsubscribeFromTertiary = this.menuConsole.onTertiaryPressed.add(
-        () => this.onMenuTertiaryPressed(),
-      );
-    }
-
-    // if (this.autoStart && this.instructionDefinitions.length > 0) {
-    //   this.startSequence();
-    // }
   }
 
   private onDestroy(): void {
@@ -426,8 +467,22 @@ export class InstructionsController
     this._unsubscribeFromTertiary?.();
   }
 
-  /** Primary menu button: advance to the next instruction. */
+  /**
+   * Primary menu button. On a checkpoint the press means "check my work" —
+   * fire onCheckRequested and don't advance; the orchestrator advances past
+   * the checkpoint itself once the check passes. Otherwise, advance as usual.
+   */
   private onMenuPrimaryPressed(): void {
+    const current = this.getCurrentInstruction();
+    if (current !== null && current.isCheckpoint) {
+      this.onCheckRequestedEvent.invoke(undefined);
+      return;
+    }
+    // The final step is terminal (pinch-to-illuminate) — there's nothing to
+    // advance to, so don't let the primary press tear the step down.
+    if (this._currentIndex === this.instructionDefinitions.length - 1) {
+      return;
+    }
     this.nextInSequence();
   }
 
@@ -442,15 +497,22 @@ export class InstructionsController
   /** The onboarding flow finished — kick off the build instructions. */
   private onOnboardingCompleted(): void {
     this.startSequence();
+
+    if (!isNull(this.menuConsole)) {
+      this._unsubscribeFromPrimary = this.menuConsole.onPrimaryPressed.add(() =>
+        this.onMenuPrimaryPressed(),
+      );
+      this._unsubscribeFromSecondary = this.menuConsole.onSecondaryPressed.add(
+        () => this.onMenuSecondaryPressed(),
+      );
+      this._unsubscribeFromTertiary = this.menuConsole.onTertiaryPressed.add(
+        () => this.onMenuTertiaryPressed(),
+      );
+    }
   }
 
   startSequence(): void {
-    if (this.instructionDefinitions.length === 0) {
-      return;
-    }
-
     this.musicController.play(this.mainTrack, this.mainTrackVolume);
-
     this.moveToStep(0);
   }
 
@@ -507,6 +569,13 @@ export class InstructionsController
     // additional, more-specific signal for "check your work" logic.
     if (instructionDefinition.isCheckpoint) {
       this.onCheckpointReachedEvent.invoke(index);
+    }
+
+    // Entering the last step is the LED-control handoff cue — fired on enter
+    // (not on advance-past), so the board comes alive while the step is shown.
+    // Idempotent downstream: re-entering (back-then-forward) is guarded there.
+    if (index === this.instructionDefinitions.length - 1) {
+      this.onFinalStepEnteredEvent.invoke(undefined);
     }
   }
 
